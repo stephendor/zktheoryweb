@@ -1,0 +1,7 @@
+{
+  "cliVersion": "0.5.4",
+  "templateVersion": "v0.5.4+templates.1",
+  "assistants": ["GitHub Copilot", "Claude Code"],
+  "installedAt": "2026-04-02T12:53:01.525Z",
+  "lastUpdated": "2026-04-02T12:53:24.103Z"
+}

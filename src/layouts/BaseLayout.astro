@@ -1,0 +1,123 @@
+---
+/**
+ * BaseLayout.astro — Task 1.5 — Agent_Design_Templates
+ * Shared page shell: <head>, skip link, header/main/footer structure.
+ * Imports global.css which activates the full token + font pipeline.
+ */
+import '@styles/global.css';
+import printCssUrl from '@styles/print.css?url';
+import SiteNav from '@components/shared/SiteNav.astro';
+import SiteFooter from '@components/shared/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  section?: 'counting-lives' | 'tda' | 'learn' | 'writing' | 'about' | 'home';
+}
+
+const { title, description, ogImage, section } = Astro.props;
+const isHome = section === 'home';
+const pageTitle = isHome ? 'zktheory.org' : `${title} | zktheory.org`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <!-- Print stylesheet — loaded separately so browser defers it for non-print -->
+    <link rel="stylesheet" media="print" href={printCssUrl} />
+  </head>
+
+  <body>
+    <!-- Skip-to-content: visible on keyboard focus, hidden otherwise -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="site-wrapper">
+      <header>
+        <SiteNav />
+      </header>
+
+      <main id="main-content">
+        <slot />
+      </main>
+
+      <footer>
+        <SiteFooter />
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  /* ── Box-model reset ────────────────────────────────────────────────────── */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* ── Base typography ────────────────────────────────────────────────────── */
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-neutral-body);
+    background-color: var(--color-neutral-bg);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Display font for primary headings */
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    line-height: var(--leading-tight);
+  }
+
+  /* ── Layout shell ───────────────────────────────────────────────────────── */
+  .site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  /* ── Skip-to-content link ───────────────────────────────────────────────── */
+  /*
+   * Hidden off-screen by default; moves on-screen when focused via keyboard.
+   * Uses --font-ui to match the nav typography context.
+   */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: var(--space-2);
+    z-index: 999;
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-neutral-surface);
+    color: var(--color-neutral-body);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .skip-link:focus {
+    left: var(--space-2);
+  }
+</style>

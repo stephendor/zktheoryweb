@@ -1,0 +1,389 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Prose Styles — zktheory.org
+   Task 1.6 — Agent_Design_System
+
+   All rules scoped to .prose to avoid interference with navigation,
+   footer, and interactive components.
+
+   Structure:
+     1. CSS counter reset for sidenotes
+     2. Two-column prose + sidenote grid layout
+     3. Reading progress bar (decorative, CSS-only)
+     4. Heading hierarchy
+     5. Body text & paragraphs
+     6. Lists
+     7. Blockquotes
+     8. Inline code & code blocks
+     9. Tables
+    10. Links
+    11. Dark-mode overrides
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* ── 1. Sidenote counter reset ──────────────────────────────────────────── */
+.prose {
+  counter-reset: sidenote;
+}
+
+/* ── 2. Two-column prose + sidenote grid layout ──────────────────────────── */
+/*
+ * On wide viewports (≥1024px) the prose area becomes a CSS Grid with:
+ *   - a named "main" column capped at --measure-prose (65ch)
+ *   - a named "sidenote" column of --sidenote-width (220px)
+ *   - a gap of --space-6 between them
+ *
+ * All direct children that are NOT .sidenote fall into "main" by default.
+ * .sidenote elements are explicitly placed in the "sidenote" column.
+ *
+ * On <1024px the grid collapses to a single column and sidenotes become
+ * collapsible inline disclosures (handled in Sidenote.astro + Step 2).
+ */
+.prose {
+  display: grid;
+  grid-template-columns: [main-start] minmax(0, var(--measure-prose)) [main-end sidenote-start] var(--sidenote-width) [sidenote-end];
+  column-gap: var(--space-6);
+  /* Row gaps handled via element margins; no row-gap to keep margins crisp */
+}
+
+/* All direct block children except .sidenote go in "main" column */
+.prose > * {
+  grid-column: main;
+}
+
+/* ── 3. Reading progress bar (decorative, CSS-only) ─────────────────────── */
+/*
+ * A 3px horizontal bar sticky at the top of .prose using a fixed gradient.
+ * True scroll-progress tracking is deferred to Phase 4; this is decorative.
+ */
+.prose > .reading-progress {
+  grid-column: main / sidenote-end; /* span full grid width */
+  position: sticky;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--color-cl-red), var(--color-tda-teal));
+  margin-bottom: 0;
+  z-index: 10;
+}
+
+/* ── 4. Heading hierarchy ────────────────────────────────────────────────── */
+/*
+ * h1, h2 — display font (Playfair Display), heavy weight, tight leading.
+ * BaseLayout already sets font-family and line-height globally for h1/h2;
+ * here we add prose-context size, weight, spacing, and colour.
+ */
+.prose h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--color-neutral-body);
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-4);
+}
+
+.prose h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--color-neutral-body);
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-4);
+}
+
+.prose h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  color: var(--color-neutral-body);
+  margin-top: var(--space-9);
+  margin-bottom: var(--space-4);
+}
+
+.prose h4 {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  color: var(--color-neutral-body);
+  margin-top: var(--space-9);
+  margin-bottom: var(--space-4);
+}
+
+.prose h5,
+.prose h6 {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  color: var(--color-neutral-body);
+  margin-top: var(--space-9);
+  margin-bottom: var(--space-4);
+}
+
+/* First heading after the progress bar — remove excess top margin */
+.prose > .reading-progress + h1,
+.prose > .reading-progress + h2 {
+  margin-top: var(--space-7);
+}
+
+/* ── 5. Body text & paragraphs ───────────────────────────────────────────── */
+.prose p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  max-width: var(--measure-prose);
+  margin-top: 0;
+  margin-bottom: var(--space-5);
+  color: var(--color-neutral-body);
+}
+
+/* Lead paragraph — slightly larger opening paragraph */
+.prose p.lead {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-neutral-muted);
+}
+
+/* ── 6. Lists ────────────────────────────────────────────────────────────── */
+.prose ul,
+.prose ol {
+  margin-left: var(--space-6);
+  margin-bottom: var(--space-5);
+  padding-left: 0;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-relaxed);
+}
+
+/* Nested lists */
+.prose li > ul,
+.prose li > ol {
+  margin-top: var(--space-2);
+  margin-bottom: 0;
+}
+
+/* ── 7. Blockquotes ──────────────────────────────────────────────────────── */
+.prose blockquote {
+  border-left: 4px solid var(--color-cl-ochre);
+  padding-left: var(--space-6);
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: var(--space-5);
+  font-style: italic;
+  color: var(--color-neutral-muted);
+}
+
+.prose blockquote p {
+  color: inherit;
+}
+
+/* ── 8. Inline code & code blocks ────────────────────────────────────────── */
+.prose code:not(pre > code) {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--color-neutral-border);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.3em;
+  /* Prevent overly long inline code from breaking layout */
+  word-break: break-word;
+}
+
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  background: var(--color-cl-charcoal);
+  margin-bottom: var(--space-5);
+  /* Shiki will inject colour tokens; we provide the base dark background */
+}
+
+.prose pre code {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* ── 9. Tables ───────────────────────────────────────────────────────────── */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-5);
+  font-size: var(--text-sm);
+}
+
+.prose th {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 2px solid var(--color-neutral-border);
+  color: var(--color-neutral-body);
+}
+
+.prose td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-neutral-border);
+}
+
+/* Alternating row shading */
+.prose tbody tr:nth-child(odd) {
+  background-color: var(--color-neutral-bg);
+}
+
+.prose tbody tr:nth-child(even) {
+  background-color: var(--color-neutral-surface);
+}
+
+/* ── 10. Links ───────────────────────────────────────────────────────────── */
+.prose a {
+  color: var(--color-tda-slate);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color 200ms ease;
+}
+
+.prose a:hover {
+  color: var(--color-tda-teal);
+}
+
+.prose a:visited {
+  color: var(--color-tda-slate-light);
+}
+
+/* ── Sidenote system ─────────────────────────────────────────────────────── */
+/*
+ * The <Sidenote> component renders two children wrapped in a span with
+ * display:contents, making them direct grid participants:
+ *   1. <aside class="sidenote">   — placed in the "sidenote" grid column
+ *   2. <details class="sidenote-disclosure"> — collapsible mobile pattern
+ * The counter tracks sidenote numbering for CSS-counter auto-numbering.
+ */
+.prose > .sidenote-wrapper {
+  display: contents;
+}
+
+/* Desktop (≥1024px): aside in named sidenote grid column */
+@media (min-width: 1024px) {
+  .prose .sidenote {
+    grid-column: sidenote;
+    counter-increment: sidenote;
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    line-height: var(--leading-normal);
+    padding-top: var(--space-1); /* optical alignment with adjacent paragraph */
+  }
+
+  /* CSS counter-based number prefix when explicit number span is absent */
+  .prose .sidenote:not(:has(.sidenote-num))::before {
+    content: counter(sidenote) ". ";
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+  }
+
+  .prose .sidenote-num {
+    font-weight: 600;
+    margin-right: var(--space-1);
+    color: var(--color-neutral-muted);
+  }
+
+  /* No paragraph margin within sidenote */
+  .prose .sidenote p {
+    margin-bottom: var(--space-2);
+  }
+
+  /* Hide mobile disclosure on desktop */
+  .prose .sidenote-disclosure {
+    display: none;
+  }
+}
+
+/* Mobile (<1024px): hide aside, show details/summary disclosure */
+@media (max-width: 1023px) {
+  .prose .sidenote {
+    display: none;
+  }
+
+  .prose .sidenote-disclosure {
+    display: block;
+    background: var(--color-neutral-surface);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-4);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  .prose .sidenote-disclosure-summary {
+    padding: var(--space-3) 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-tda-slate);
+    /* Remove default disclosure triangle */
+    list-style: none;
+  }
+
+  .prose .sidenote-disclosure-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .prose .sidenote-disclosure[open] {
+    padding-bottom: var(--space-3);
+  }
+
+  .prose .sidenote-disclosure[open] .sidenote-disclosure-summary {
+    margin-bottom: var(--space-2);
+  }
+}
+
+/* ── Responsive: collapse to single column on <1024px ───────────────────── */
+@media (max-width: 1023px) {
+  .prose {
+    display: block;
+  }
+}
+
+/* ── 11. Dark-mode overrides ─────────────────────────────────────────────── */
+/*
+ * The neutral token overrides in [data-theme="dark"] already handle
+ * most colour reversals. These selectors apply prose-specific overrides
+ * where the light-mode palette colour does not invert automatically.
+ */
+[data-theme="dark"] .prose blockquote {
+  border-left-color: var(--color-cl-ochre);
+  /* --color-cl-ochre is unchanged in dark mode (base palette stays);
+     the dark token overrides ochre-light, not ochre itself, so this
+     border colour remains pleasantly warm on dark backgrounds. */
+}
+
+[data-theme="dark"] .prose a {
+  color: var(--color-tda-teal-light);
+}
+
+[data-theme="dark"] .prose a:hover {
+  color: var(--color-tda-teal);
+}
+
+[data-theme="dark"] .prose a:visited {
+  color: var(--color-tda-slate-light);
+}
+
+[data-theme="dark"] .prose code:not(pre > code) {
+  background: var(--color-neutral-border);
+  color: var(--color-neutral-body);
+}

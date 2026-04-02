@@ -1,0 +1,17 @@
+/* ─── KaTeX math rendering CSS (compile-time; zero client JS) ──────────────── */
+@import 'katex/dist/katex.min.css';
+
+/* ─── Tailwind CSS v4 entry point ──────────────────────────────────────────── */
+@import 'tailwindcss';
+
+/* ─── Design tokens ─────────────────────────────────────────────────────────── */
+@import './tokens.css';
+
+/* ─── Self-hosted web font declarations ─────────────────────────────────────── */
+@import './fonts.css';
+
+/* ─── Layout grid system ─────────────────────────────────────────────────────── */
+@import './layout.css';
+
+/* ─── Prose styles (long-form reading; scoped to .prose) ────────────────────── */
+@import './prose.css';

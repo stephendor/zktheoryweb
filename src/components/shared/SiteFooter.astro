@@ -1,0 +1,120 @@
+---
+// SiteFooter.astro — Task 1.5 — Agent_Design_Templates
+// Site-wide footer: copyright, institutional affiliation, external links, credits.
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <p class="footer-copyright">&copy; {year} zktheory.org</p>
+      <p class="footer-affiliation">[Institutional affiliation]</p>
+    </div>
+
+    <nav class="footer-links" aria-label="External profiles and contact">
+      <a
+        href="#orcid-placeholder"
+        class="footer-link"
+        aria-label="ORCID researcher profile (external site)"
+        rel="noopener noreferrer"
+      >ORCID</a>
+      <a
+        href="#github-placeholder"
+        class="footer-link"
+        aria-label="GitHub repository (external site)"
+        rel="noopener noreferrer"
+      >GitHub</a>
+      <a
+        href="#scholar-placeholder"
+        class="footer-link"
+        aria-label="Google Scholar profile (external site)"
+        rel="noopener noreferrer"
+      >Google Scholar</a>
+      <a
+        href="#contact-placeholder"
+        class="footer-link"
+        aria-label="Contact"
+      >Contact</a>
+    </nav>
+
+    <p class="footer-credits">
+      Built with <a
+        href="https://astro.build"
+        class="footer-link"
+        rel="noopener noreferrer"
+        aria-label="Astro web framework (external site)"
+      >Astro</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-neutral-border);
+    background-color: var(--color-neutral-surface);
+    padding: var(--space-7) 0 var(--space-8);
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .footer-copyright,
+  .footer-affiliation,
+  .footer-credits {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin: 0;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .footer-link {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-link:hover {
+    color: var(--color-neutral-body);
+    text-decoration: underline;
+  }
+
+  .footer-link:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      padding: 0 var(--space-4);
+    }
+
+    .footer-top {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+  }
+</style>

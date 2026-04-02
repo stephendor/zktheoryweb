@@ -1,0 +1,81 @@
+---
+/**
+ * Sidenote.astro — Task 1.6 — Agent_Design_System
+ *
+ * Tufte-tradition margin note component for use inside `.prose` grid.
+ *
+ * USAGE (in MDX — place as a block element between paragraphs):
+ *
+ *   Some text with a reference<sup aria-describedby="sn-1">1</sup>.
+ *
+ *   <Sidenote number={1}>The note content here.</Sidenote>
+ *
+ *   Next paragraph.
+ *
+ * The component must be on its own line in MDX so it becomes a direct
+ * child of the `.prose` CSS Grid container. The `.sidenote-wrapper` has
+ * `display: contents` in CSS, making the <aside> and <details> grid
+ * participants. CSS Grid auto-placement puts the <aside> in the "sidenote"
+ * named column in the same row as the preceding paragraph.
+ *
+ * RENDERING:
+ *   Desktop (≥1024px): <aside> placed in grid `sidenote` column; <details> hidden.
+ *   Mobile  (<1024px) : <aside> hidden; <details>/<summary> disclosure shown.
+ *
+ * PROPS:
+ *   number — optional explicit note number (1, 2, 3…).
+ *            If omitted, the CSS `counter(sidenote)` is used via ::before.
+ */
+
+interface Props {
+  number?: number;
+}
+
+const { number } = Astro.props;
+
+// Stable id for aria-describedby linkage
+const uid = number !== undefined ? String(number) : crypto.randomUUID().slice(0, 8);
+const noteId = `sn-${uid}`;
+
+// Render slot content once; inject in both aside and details via set:html
+// so the same content appears in both desktop and mobile renderings.
+const noteContent = await Astro.slots.render('default');
+---
+
+<!--
+  .sidenote-wrapper has `display: contents` in CSS:
+    → <aside>   becomes a direct grid item → grid-column: sidenote
+    → <details> becomes a direct grid item → display:none on desktop
+-->
+<span class="sidenote-wrapper">
+  <!--
+    Desktop: margin note in sidenote grid column.
+    role="note" + aria-label provides semantic meaning for assistive tech.
+    id links to the inline <sup aria-describedby="sn-N"> in the prose text.
+  -->
+  <aside
+    id={noteId}
+    class="sidenote"
+    role="note"
+    aria-label={number !== undefined ? `Sidenote ${number}` : 'Sidenote'}
+  >
+    {number !== undefined && (
+      <sup class="sidenote-num" aria-hidden="true">{number}</sup>
+    )}
+    <Fragment set:html={noteContent} />
+  </aside>
+
+  <!--
+    Mobile: collapsible <details>/<summary> disclosure.
+    The inline marker "[n]" is the <summary>; note content is the body.
+    aria-hidden on the details because the aside above already provides
+    the semantic note via aria-describedby on desktop; on mobile the
+    details content is inherently accessible via the disclosure pattern.
+  -->
+  <details class="sidenote-disclosure">
+    <summary class="sidenote-disclosure-summary">
+      {number !== undefined ? `[${number}]` : '[note]'}
+    </summary>
+    <Fragment set:html={noteContent} />
+  </details>
+</span>

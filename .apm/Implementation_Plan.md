@@ -1,0 +1,667 @@
+# zktheory.org Research Portfolio Website – APM Implementation Plan
+
+**Memory Strategy:** Dynamic-MD
+**Last Modification:** Task 2.1 findings resolved: (1) `key_claims` corrected to `z.array(z.object({ claim: z.string(), detail: z.string() }))` in `src/content.config.ts` — aligns with PRD §4.3 and ExpandableCard component; Task 2.6a updated accordingly. (2) `papers` status enum `planned/in-progress` confirmed canonical (not `drafting`). (3) `data-justice` path slug confirmed canonical; Task 6.1 updated. Prior: Task 1.6 `.container-prose--wide` fix carried to Task 2.2a.
+**Project Overview:** Full build of zktheory.org — a research portfolio website for two interconnected research programmes (Counting Lives book + TDA research programme). Astro 6, Tailwind CSS 4, React 19, TypeScript. Features: dual-palette design system, 18 chapter pages, 10 paper pages, 4 learning paths (34 modules), 10+ interactive visualisations (D3/Three.js), Zotero bibliography integration, Pagefind search, Netlify deployment. Six-phase build from foundation through polish. Content-first approach with interactive escalation review gates.
+
+## Phase 1: Foundation
+
+### Task 1.1 – Astro Project Scaffold & Build Configuration - Agent_Infra
+
+**Objective:** Initialize the Astro 6 project with all core integrations and the full directory structure.
+**Output:** Working Astro project that builds and serves locally with React, Tailwind CSS 4, MDX, and Netlify adapter configured.
+**Guidance:** Follow PRD §4.1 stack and §4.2 content architecture for directory structure. TypeScript strict mode.
+
+1. Initialize Astro 6 project with TypeScript (strict mode), install core dependencies: `@astrojs/react`, `@tailwindcss/vite`, `@astrojs/mdx`, `@astrojs/netlify`, `react`, `react-dom`
+2. Configure `astro.config.mjs` with all integrations (React, Tailwind, MDX, Netlify adapter), set output mode to `static`, configure site URL to `https://zktheory.org`
+3. Set up Tailwind CSS 4 configuration with the project's custom token structure; create initial `src/styles/tokens.css` placeholder
+4. Create the directory scaffold per PRD §4.2: `src/content/`, `src/components/` (with subdirectories: counting-lives, tda, learn, interactives, shared), `src/layouts/`, `src/styles/`, `src/pages/` with route stubs for all top-level routes (/, /counting-lives/, /tda/, /learn/, /writing/, /about/)
+5. Verify the project builds cleanly and serves locally; confirm all integrations load without errors
+
+### Task 1.2 – Code Standards Setup - Agent_Infra
+
+**Objective:** Establish consistent code formatting, linting with a11y rules, and git conventions.
+**Output:** Prettier, ESLint configs, npm scripts, git conventions documented.
+**Guidance:** Include `eslint-plugin-jsx-a11y` from the start per a11y-first requirement. **Depends on: Task 1.1 Output**
+
+- Install and configure Prettier with Astro plugin (`prettier-plugin-astro`); set consistent defaults (single quotes, semicolons, 2-space indent, trailing commas)
+- Install and configure ESLint with `@typescript-eslint`, `eslint-plugin-astro`, `eslint-plugin-jsx-a11y` (a11y linting from start); add npm scripts `lint` and `format`
+- Establish git conventions: branch naming `feature/<phase>-<description>`, `fix/<description>`; conventional commits format; update `.gitignore` for Astro build artifacts, environment files
+- Create a brief `CONTRIBUTING.md` documenting these standards for consistency across agent sessions
+
+### Task 1.3 – Design Token System & Colour Palettes - Agent_Design_System
+
+**Objective:** Create the dual-palette design token system with light and dark mode structural support.
+**Output:** Complete `src/styles/tokens.css` with all colour tokens, Tailwind integration.
+**Guidance:** Follow PRD §3.2 colour system. WCAG AA contrast required for key pairings (body text on bg, heading on bg, link on bg, palette darkest on lightest). For the 8-colour data viz palette, use an established colour-blind-safe scheme (e.g., d3-chromatic categorical or ColorBrewer qualitative) rather than creating one from scratch. Dark mode as structural foundation (toggle deferred Phase 6). **Depends on: Task 1.1 Output**
+
+- Define CSS custom properties in `src/styles/tokens.css` covering: neutral base (warm off-white, dark charcoal), Counting Lives palette (muted reds, deep ochre, archival cream), TDA palette (deep teal, slate blue, warm grey), shared highlight (warm amber), and 8-colour colour-blind-safe data viz palette sourced from an established scheme — verify WCAG AA contrast for key pairings: body text on page background, heading on page background, link colour on page background, each palette’s darkest on its lightest
+- Create light and dark mode token variants using `:root` and `[data-theme="dark"]` selector patterns; dark mode as a structural foundation (toggle UI deferred to Phase 6)
+- Integrate tokens into Tailwind CSS 4 configuration so utility classes map to custom properties (e.g., `text-cl-red`, `bg-tda-teal`, `text-neutral-body`)
+- Define spacing scale, border radius, and shadow tokens for consistent component styling
+
+### Task 1.4 – Typography Exploration & Integration - Agent_Design_System
+
+**Objective:** Select and integrate fonts for all four typographic roles with a complete type scale.
+**Output:** Integrated web fonts, typographic scale in tokens, typography sample page at `/dev/typography`.
+**Guidance:** First selections: Charter/Source Serif Pro (body), Instrument Sans (UI), JetBrains Mono (code). Explore display serif options. PRD §3.2 typography specs. **Depends on: Task 1.3 Output**
+
+1. Ad-Hoc Delegation – Font evaluation: Research and evaluate font pairings for the four typographic roles per PRD §3.2. Evaluation criteria: open-source licensing (required for Netlify hosting), rendering quality at body sizes on screen, visual harmony with KaTeX math output, WOFF2 availability, total file size budget (<200KB all fonts). Start with Charter/Source Serif Pro (body), Instrument Sans (UI), JetBrains Mono (code), and identify 1–2 display serif candidates (Freight Display space — consider Playfair Display, Libre Caslon, or similar open-source alternatives)
+2. Integrate first-selection fonts: configure web font loading (self-hosted with `font-display: swap` for performance), set up @font-face declarations, add to Tailwind font family configuration
+3. Define typographic scale in `tokens.css`: heading sizes (h1–h6), body size, small text, line heights (1.5–1.6 for body), letter-spacing; ensure measure targets 65–75 characters at content width
+4. Create a typography sample page (`/dev/typography`) demonstrating all font roles, sizes, weights, and prose rendering — include placeholder blocks where KaTeX math samples will be added once Task 1.7 completes; serves as a reference and review artefact for user checkpoint
+
+### Task 1.5 – Base Layout & Navigation Components - Agent_Design_Templates
+
+**Objective:** Build the shared page shell with responsive navigation, footer, and layout grid.
+**Output:** `BaseLayout.astro`, navigation component, footer component, responsive 12-column grid.
+**Guidance:** Semantic HTML landmarks, skip-to-content link, `data-theme` attribute for future dark mode. PRD §3.2 layout specs (720px prose, 1080px viz, full-bleed). **Depends on: Task 1.1 Output by Agent_Infra, Task 1.3 Output by Agent_Design_System, Task 1.4 Output by Agent_Design_System**
+
+1. Create `BaseLayout.astro` with HTML document structure: semantic `<header>`, `<main>`, `<footer>` landmarks, skip-to-content link, viewport meta, Open Graph metadata slots, font loading, token CSS import, and a `data-theme` attribute on `<html>` for future dark mode toggle; verify landmark structure with `eslint-plugin-jsx-a11y`
+2. Build responsive site navigation component: desktop horizontal nav with links to all top-level routes (Home, Counting Lives, TDA, Learn, Writing, About), mobile hamburger menu using minimal vanilla JS with proper ARIA attributes (`aria-expanded`, `aria-controls`, `aria-label`) — avoid CSS-only toggle due to a11y limitations; active route highlighting; keyboard navigable (Tab through links, Escape to close mobile menu)
+3. Build site footer component: copyright, institutional affiliation placeholder, links to ORCID/GitHub/Google Scholar/contact, site credits; semantic `<footer>` with `role="contentinfo"`
+4. Implement responsive layout grid: 12-column grid with generous gutters using Tailwind, content width constraints (720px prose, 1080px viz, full-bleed hero), and asymmetric layout support for sidenote margins; verify colour contrast against tokens at all breakpoints
+
+### Task 1.6 – Prose Styles, Sidenote System & Print Foundations - Agent_Design_System
+
+**Objective:** Create the long-form reading experience with Tufte-tradition sidenotes and print stylesheet.
+**Output:** `prose.css`, `<Sidenote>` component, `print.css`.
+**Guidance:** Sidenotes in margin column on desktop, inline footnotes on mobile. PRD §3.2 layout and §3.3 interaction design. **Depends on: Task 1.4 Output, Task 1.5 Output by Agent_Design_Templates**
+
+1. Create `src/styles/prose.css` with comprehensive long-form reading styles: heading hierarchy with appropriate font pairings (display serif for h1–h2, body serif for h3+), paragraph spacing, list styles, blockquote styling (archival feel), inline code, code blocks with syntax highlighting integration point, table styles, link styles with hover states per PRD §3.3, reading progress indicator CSS
+2. Build `<Sidenote>` Astro/React component implementing Tufte-tradition margin notes: numbered sidenotes using CSS counter-increment for automatic numbering, CSS grid/flexbox positioning in the margin column on desktop (content width + margin = asymmetric layout from Task 1.5), collapsible inline footnotes on viewports narrower than 1024px; accessible with `aria-describedby` linking the inline marker to the note content
+3. Create `src/styles/print.css` with clean print layout: hide navigation, footer, interactive chrome; proper pagination breaks; footnotes instead of sidenotes; legible typography without web-specific styling
+4. Test prose styles with a sample MDX page containing headings, paragraphs, sidenotes, code blocks, LaTeX (placeholder), blockquotes, and lists — validate rendering at desktop, tablet, and mobile breakpoints
+
+### Task 1.7 – MDX Pipeline Configuration - Agent_Schema_Platform
+
+**Objective:** Configure compile-time KaTeX rendering and syntax highlighting for the MDX pipeline.
+**Output:** Working MDX pipeline with KaTeX (zero client-side JS), Shiki syntax highlighting, test page.
+**Guidance:** PRD §4.1 specifies rehype-katex compile-time. Include KaTeX aria-labels for accessibility (PRD §4.5). **Depends on: Task 1.1 Output**
+
+- Install and configure `remark-math` and `rehype-katex` in the Astro MDX integration; add KaTeX CSS to the base layout; verify compile-time rendering produces zero client-side math JS
+- Configure Shiki syntax highlighting (Astro's built-in) with a theme that complements the design tokens; support Python, TypeScript, JavaScript, YAML, and shell languages
+- Add KaTeX `aria-label` configuration for screen-reader-compatible math rendering per PRD §4.5
+- Create a test MDX file with inline math (`$...$`), display math (`$$...$$`), and code blocks to verify the full pipeline renders correctly
+
+### Task 1.8 – User Review Checkpoint: Phase 1 - User
+
+**Objective:** Review Phase 1 foundation output and approve before proceeding to content architecture.
+**Output:** User approval or change requests for Phase 1 deliverables.
+**Guidance:** Review covers: typography selections, colour palette, layout proportions, sidenote behaviour, navigation, MDX pipeline. **Depends on: All Phase 1 tasks**
+
+1. Compile review artefacts: serve the site locally, document what's been built (layouts, tokens, typography sample page, prose styles with sidenotes, MDX math/code rendering), and present to user
+2. User reviews and provides feedback on: typography selections (approve or request alternatives), colour palette feel, layout proportions, sidenote behaviour, navigation structure, overall Foundation quality
+3. Incorporate any user-requested changes; confirm Phase 1 approval before proceeding to Phase 2
+
+## Phase 2: Content Architecture
+
+### Task 2.1 – Content Collection Schemas (Zod) - Agent_Schema_Platform
+
+**Objective:** Define strict Zod schemas for all content collections matching PRD data models.
+**Output:** Complete `src/content.config.ts` with all collections registered.
+**Guidance:** Follow PRD §4.3 data models exactly. All frontmatter fields must be typed. **Depends on: Task 1.1 Output by Agent_Infra**
+
+- Define Zod schemas for Counting Lives collections: `chapters` (matching PRD §4.3 chapter frontmatter exactly — title, chapter_number, part, transition, spine_role, status, key_figures, mathematical_concepts, interludes, threads, related_tda_papers, key_claims), `transitions`, `threads`, `interludes`, `figures`
+- Define Zod schemas for TDA collections: `papers` (matching PRD §4.3 paper frontmatter exactly — title, paper_number, stage, status, target_journal, depends_on, enables, methods, datasets, compute, key_findings, abstract, plain_summary, bibtex), `methods`, `data-sources`
+- Define Zod schemas for Learning and Writing collections: `learn-modules` (title, path, module_number, core_concept, interactive_slug, connections, check_understanding), `interactives` (matching PRD §4.3 interactive manifest), `essays`, `notes`
+- Register all collections in `src/content.config.ts` using Astro's `defineCollection` API; export the complete config. **Note (Astro 6):** Import `z` from `zod` directly (`import { z } from 'zod'`), NOT from `astro:content` (deprecated in Astro 6).
+
+### Task 2.2a – ChapterLayout & Shared Sticky ToC - Agent_Design_Templates
+
+**Objective:** Build the chapter page layout structure and the shared sticky sidebar table of contents component.
+**Output:** `ChapterLayout.astro` with hero, prose area, sticky ToC, chapter navigation. Sticky ToC is reusable by PaperLayout and other layouts.
+**Guidance:** The sticky ToC is a shared component — build it generically for reuse. Follow PRD §2.2.1 for chapter layout structure. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 1.5 Output by Agent_Design_Templates**
+
+**Pre-step (fix from Task 1.6):** Before building ChapterLayout, add a `.container-prose--wide` variant to `src/styles/layout.css`: `max-width: calc(var(--content-prose) + var(--sidenote-width) + var(--space-6))` (≈ 964px). Use this wider container on all pages that include the `.prose` sidenote grid, so the main text column preserves the 65ch target (~650px) rather than collapsing to the ~476px produced by the standard `.container-prose` (720px).
+
+1. Build a shared sticky sidebar table of contents component: auto-generates from heading hierarchy, sticky positioning on desktop, collapsible disclosure on mobile, keyboard navigable, highlights current section on scroll; designed for reuse across ChapterLayout, PaperLayout, and ModuleLayout
+2. Create `ChapterLayout.astro` extending `BaseLayout` with chapter-specific structure: hero section (title, part, chapter number, status badge), prose content area using the shared sticky ToC, next/previous chapter navigation; wrap prose content in `.container-prose--wide` (not `.container-prose`) to preserve 65ch reading measure
+3. Test the layout with a minimal sample MDX file; verify sticky ToC works at all breakpoints and with varying heading depths
+
+### Task 2.2b – Expandable Card & Figure Card Components (Shared) - Agent_Design_Templates
+
+**Objective:** Build the reusable expandable card component and key figures biographical card — used across chapters, papers, and learning modules.
+**Output:** `<ExpandableCard>` React island (reusable), `<FigureCard>` component.
+**Guidance:** The expandable card pattern is reused for: chapter key claims, paper key findings, module reflection questions. Build generically. **Depends on: Task 1.5 Output by Agent_Design_Templates**
+
+1. Build `<ExpandableCard>` React island: accepts title/summary text and detail content as props, expands on click to reveal detail, accessible expand/collapse with `aria-expanded` and `aria-controls`, smooth transition (200–300ms per PRD §3.3), keyboard operable (Enter/Space to toggle)
+2. Build `<FigureCard>` component: portrait/photo placeholder, name, dates, role description, links to related chapters; supports grid layout for multiple figures on a page
+3. Add Vitest tests for ExpandableCard expand/collapse behaviour and ARIA attribute toggling
+
+### Task 2.2c – Thread Markers & Concept Tooltips - Agent_Design_Templates
+
+**Objective:** Build the chapter-specific thread marker indicators and mathematical concept preview tooltips.
+**Output:** `<ThreadMarker>` component, `<ConceptTooltip>` React island, integrated into ChapterLayout.
+**Guidance:** Thread markers are chapter-specific. Concept tooltips link to Mathematical Interludes. **Depends on: Task 2.2a Output, Task 2.2b Output**
+
+1. Build `<ThreadMarker>` component: visual indicators (Scottish = colour-coded strand using Counting Lives palette, Gender = colour-coded strand) showing which threads run through the chapter, with navigable links to thread pages; render from chapter frontmatter `threads` data
+2. Build `<ConceptTooltip>` React island: mathematical concept inline links with preview tooltip showing the concept definition and link to the relevant Mathematical Interlude page; hover/focus triggered, dismissable, accessible with `role="tooltip"` and keyboard support
+3. Integrate thread markers and concept tooltips into ChapterLayout; test with a sample chapter MDX file demonstrating all chapter-specific features end-to-end
+
+### Task 2.3 – Paper Page Template & Layout - Agent_Design_Templates
+
+**Objective:** Build the TDA paper page experience with all PRD §2.3.1 components.
+**Output:** `PaperLayout.astro` with status badges, expandable findings, methodology links, BibTeX copy, downloads.
+**Guidance:** Reuse shared sticky ToC from Task 2.2a and ExpandableCard from Task 2.2b for key findings. Follow PRD §2.3.1 spec. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.2a Output, Task 2.2b Output**
+
+1. Create `PaperLayout.astro` extending `BaseLayout` with paper-specific structure: hero (title, paper number, stage badge, status badge with target journal), abstract section, plain-language summary section, shared sticky ToC from Task 2.2a
+2. Build paper-specific components: reuse `<ExpandableCard>` from Task 2.2b for key findings cards, methodology summary linking to `/tda/methods/` pages, computational requirements display (hardware, runtime, cloud indicator), dependency graph position indicator showing where this paper sits in the 10-paper sequence (static visual — interactive version in Phase 3)
+3. Build downloads and citation section: preprint PDF link, supplementary materials link, code repository link, data access instructions, BibTeX one-click copy button (React island using `navigator.clipboard`)
+4. Integrate all components into PaperLayout; test with a sample paper MDX file; ensure all interactive elements are accessible
+
+### Task 2.4 – Learning Module Template & Layout - Agent_Design_Templates
+
+**Objective:** Build the learning path module page experience per PRD §2.4.1.
+**Output:** `ModuleLayout.astro` with interactive slot, reflection questions, module navigation.
+**Guidance:** Reuse shared sticky ToC from Task 2.2a and ExpandableCard from Task 2.2b for reflection questions. Follow PRD §2.4.1. Progress tracking logic deferred to Phase 4 (visual indicator only here). **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.2a Output, Task 2.2b Output**
+
+1. Create `ModuleLayout.astro` extending `BaseLayout` with module-specific structure: path breadcrumb (path name > module title), prose content area, interactive element slot (for embedding React islands), connections sidebar (links to related chapters, papers, other modules), shared sticky ToC from Task 2.2a
+2. Build "check your understanding" component using `<ExpandableCard>` from Task 2.2b: 2–3 reflection questions per module, each wrapping the question as summary and suggested thinking as expandable detail
+3. Build module navigation: previous/next within the learning path, path progress indicator showing completed/current/upcoming modules (visual only — progress tracking logic in Phase 4), path overview link
+4. Integrate components into ModuleLayout; test with a sample module MDX file; validate responsive behaviour and accessibility
+
+### Task 2.5 – Blog/Writing Post Template & Layout - Agent_Design_Templates
+
+**Objective:** Build the writing section post template with essay and note variants, tag archive, and RSS feed.
+**Output:** `PostLayout.astro`, tag archive page, RSS feed.
+**Guidance:** Follow PRD §2.5. Support LaTeX, code, embedded interactives, sidenotes. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 1.5 Output by Agent_Design_Templates**
+
+1. Create `PostLayout.astro` extending `BaseLayout` with writing-specific structure: title, date, estimated reading time (calculated from word count), tags with links to tag archive pages, author byline; style essay variant (long-form with section headings, pull quotes, embedded interactive slots) and note variant (shorter, informal); both support LaTeX, code blocks, sidenotes, and embedded interactives via MDX component imports
+2. Build tag archive page template (`/writing/archive/`) with chronological listing and tag-based filtering (client-side filter using URL parameters or Astro static routes per tag)
+3. Build RSS feed generation for the writing section using Astro's `@astrojs/rss` integration; configure feed metadata, item descriptions, and publication dates
+4. Test with sample essay and note MDX files; verify reading time calculation, tag links, tag archive filtering, and RSS output validates correctly
+
+### Task 2.6a – Counting Lives: Overview & Chapter MDX Stubs - Agent_Content
+
+**Objective:** Create the section overview and all 18 chapter MDX stubs with complete frontmatter and structured placeholder prose.
+**Output:** 20 MDX files (overview, counter-mathematics page, 18 chapters).
+**Guidance:** All frontmatter must validate against Zod schemas from Task 2.1. Placeholder prose should be realistic in length and structure. Use PRD Appendix A for chapter data. Chapters are the backbone content — prioritise frontmatter completeness. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.2a Output by Agent_Design_Templates**
+
+1. Create the Counting Lives overview page (`/counting-lives/overview`) and the counter-mathematics page with structurally complete placeholder content describing the book's argument, five transitions, and two threads
+2. Create all 18 chapter MDX files in `src/content/counting-lives/chapters/` with complete frontmatter per PRD §4.3 (title, chapter_number, part, transition, spine_role, status, key_figures, mathematical_concepts, interludes, threads, related_tda_papers, key_claims) and structured placeholder prose (synopsis ~400 words, spine role sentence, 3–5 key claims with expandable detail placeholders). **Schema note:** `key_claims` is `Array<{claim: string, detail: string}>` — author each entry as `- claim: "..." \n  detail: "..."` in YAML frontmatter.
+
+### Task 2.6b – Counting Lives: Transitions, Threads, Interludes & Figures - Agent_Content
+
+**Objective:** Create all supporting content: transition, thread, interlude, and figure MDX stubs.
+**Output:** ~12 MDX files (5 transitions, 2 threads, 4 interludes, 5–8 figure stubs).
+**Guidance:** These support the chapter backbone. Threads are essay-length (~2,000 words). Interludes have three-level mathematical structure. **Depends on: Task 2.6a Output**
+
+1. Create 5 transition MDX files in `src/content/counting-lives/transitions/` with frontmatter and placeholder prose describing each transition era, date range, key chapters, and key figures
+2. Create 2 thread MDX files (`scottish-thread.mdx`, `gender-thread.mdx`) with frontmatter and placeholder content (~2,000 words each) including thread-specific timeline, chapter annotations, key figures, and essay structure
+3. Create 4 interlude MDX files in `src/content/counting-lives/interludes/` with three-level structure (intuitive, intermediate, formal) and placeholder content; create initial figure stub files for key historical actors (Orshansky, Galton, Beveridge, Eubanks, Quetelet — 5–8 stubs)
+
+### Task 2.7 – TDA Section MDX Stubs - Agent_Content
+
+**Objective:** Create structurally complete placeholder MDX files for the entire TDA section.
+**Output:** ~23 MDX files (10 papers, 6 methods, 3 data sources, overview, code, computational log, visualisations gallery).
+**Guidance:** All frontmatter must validate against Zod schemas. Use PRD Appendix B for paper data. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.3 Output by Agent_Design_Templates**
+
+1. Create the TDA overview page (`/tda/overview`) with structurally complete placeholder describing the three-stage research programme architecture, 10-paper sequence, and programme narrative
+2. Create all 10 paper MDX files in `src/content/tda/papers/` with complete frontmatter per PRD §4.3 (title, paper_number, stage, status, target_journal, depends_on, enables, methods, datasets, compute, key_findings, abstract, plain_summary, bibtex) and structured placeholder prose (abstract, plain-language summary, key findings, methodology summary)
+3. Create 6 methods MDX files in `src/content/tda/methods/` with structured placeholder content (intuitive introduction, mathematical formulation placeholder with LaTeX, implementation section with Python code stubs, application to research, further reading); create 3 data source MDX files with dataset descriptions, access information, and ethics notes
+4. Create code/replication page, computational log page (public lab notebook format), and visualisations gallery page as MDX stubs with appropriate structure
+
+### Task 2.8 – Landing Page & About Page - Agent_Design_Templates
+
+**Objective:** Build the homepage and about section per PRD §2.1 and §2.6.
+**Output:** Landing page with hero, project cards, activity feed; about page with bio, CV, contact, media kit.
+**Guidance:** Recent activity feed pulls from content collections. **Depends on: Task 1.5 Output, Task 2.6a Output by Agent_Content, Task 2.7 Output by Agent_Content**
+
+1. Build the landing page (`src/pages/index.astro`): hero section with site tagline and visual identity (full-bleed), two project cards (Counting Lives and TDA) with brief descriptions and links to section hubs, recent activity feed pulling latest content across all sections (chapters, papers, posts by date)
+2. Build the about page (`src/pages/about/index.astro`): bio section with positionality statement placeholder, web CV with filterable sections (education, publications, presentations, teaching), research interests linked to both project hubs, teaching section linked to learning paths, contact section (email, institutional page, ORCID, Google Scholar, GitHub links), media kit (headshot placeholder, short bio 150 words, long bio 500 words — all placeholder)
+3. Build a downloadable CV component: PDF download link placeholder, structured web version using the CV data; ensure both pages are responsive and accessible
+
+### Task 2.9a – Zotero Fetch Script & Caching - Agent_Integration
+
+**Objective:** Build the Zotero Web API v3 fetch script with incremental updates and resilient fallback caching.
+**Output:** Fetch script (`src/lib/zotero.ts`), JSON cache at `src/data/zotero-library.json`, fallback logic.
+**Guidance:** User provides Zotero credentials at task start (blocking user action). Use Web API v3 REST endpoints. Build must NEVER fail due to Zotero outage. **Depends on: Task 2.1 Output by Agent_Schema_Platform**
+
+1. User provides Zotero API key and user ID; agent creates `.env` file (gitignored) with `ZOTERO_API_KEY` and `ZOTERO_USER_ID` environment variables; add `.env.example` documenting required variables
+2. Build Zotero fetch script (`src/lib/zotero.ts`): fetch full library from `api.zotero.org/users/{userID}/items` with `format=json&include=data,bib,citation`, store library version number, support incremental updates with `?since={version}` header, handle pagination (Zotero returns 100 items per page), write results to `src/data/zotero-library.json`
+3. Implement fallback logic: if Zotero API unreachable at build time, use cached JSON from last successful fetch; log warning but never fail the build; add npm script `fetch:zotero` for manual refresh; verify the fetch runs as part of Astro build pipeline (custom integration or prebuild script)
+
+### Task 2.9b – Citation Components & Bibliography Pages - Agent_Integration
+
+**Objective:** Build citation display components, inline popovers, bibliography pages, and BibTeX generation.
+**Output:** Citation popover React island, bibliography list component, bibliography pages, citation resolution.
+**Guidance:** Zotero tags map to filterable categories per PRD §6.3. Components read from the JSON cache produced by Task 2.9a. **Depends on: Task 2.9a Output**
+
+1. Build inline citation popover (React island): hover/focus on a citation reference shows the full bibliographic entry in a positioned popover; dismiss on click-outside or Escape; accessible with `role="tooltip"` and keyboard support
+2. Build bibliography list component: searchable, filterable list of all Zotero items; Zotero tags map to filterable category pills (e.g., "TDA-methods", "poverty-measurement", "Scottish-thread"); BibTeX one-click copy per entry using `navigator.clipboard`
+3. Create bibliography pages: Counting Lives (`/counting-lives/bibliography`) and TDA references; integrate citation resolution so that chapter and paper MDX files can reference items by Zotero key and the build resolves to full citation data
+4. Test citation resolution end-to-end: verify popover renders, bibliography filters work, BibTeX copy succeeds, fallback data displays correctly when API was unavailable
+
+### Task 2.10 – Pagefind Search Integration - Agent_Integration
+
+**Objective:** Integrate Pagefind static search across all content.
+**Output:** Build-time indexing, search UI component accessible from navigation.
+**Guidance:** PRD §4.1. Keyboard shortcut Ctrl/Cmd+K. **Depends on: Task 2.6a Output by Agent_Content, Task 2.7 Output by Agent_Content**
+
+- Install and configure Pagefind as an Astro integration; ensure it indexes all content pages (chapters, papers, modules, posts) at build time with appropriate weighting (titles > headings > body)
+- Build a search UI component (accessible from navigation): search input with keyboard shortcut (Ctrl/Cmd+K), results dropdown with highlighted matches, links to matching pages; style to match design tokens
+- Test search across content types; ensure mathematical notation in content doesn't break indexing; verify accessibility (keyboard navigation, screen reader announcements for result counts)
+
+### Task 2.11 – Vitest Setup & First Component Tests - Agent_Infra
+
+**Objective:** Establish the test framework and write initial component tests.
+**Output:** Vitest configured, initial tests for key components, `test` npm script.
+**Guidance:** Incremental testing introduction. Test key interactive components from Phases 1–2. **Depends on: Task 1.5 Output by Agent_Design_Templates, Task 1.6 Output by Agent_Design_System**
+
+1. Ad-Hoc Delegation – Test framework evaluation: Confirm Vitest is the right choice for Astro 6 + React 19 testing; install `vitest`, `@testing-library/react`, `happy-dom` (or `jsdom`), configure `vitest.config.ts` for Astro project structure
+2. Write initial component tests: test `<Sidenote>` renders correctly and toggles on mobile, test expandable key claims component expand/collapse behaviour, test BibTeX copy button functionality; add `test` npm script
+3. Verify test pipeline runs cleanly; document testing patterns in `CONTRIBUTING.md` for future agent sessions
+
+### Task 2.12 – User Review Checkpoint: Phase 2 - User
+
+**Objective:** Review all content templates, MDX stubs, integrations, and search before proceeding.
+**Output:** User approval or change requests for Phase 2 deliverables.
+**Guidance:** Review covers: page templates (chapter, paper, module, post), MDX stub quality, Zotero integration, Pagefind search, landing/about pages. **Depends on: All Phase 2 tasks**
+
+1. Compile review artefacts: demonstrate chapter page template with sample content, paper page template, module template, post template, Zotero bibliography page, Pagefind search; serve locally
+2. User reviews: content template quality (do chapter/paper/module pages feel right?), MDX stub structure (is placeholder content realistic enough?), bibliography integration (are citations rendering?), search functionality, landing page and about page
+3. Incorporate user feedback; confirm Phase 2 approval before proceeding to Phase 3
+
+## Phase 3: Interactive Core
+
+### Task 3.1 – Shared Interactive Infrastructure - Agent_Interactive_Core
+
+**Objective:** Establish reusable foundations for all interactive components: React island conventions, D3/Observable Plot setup, a11y helpers, Storybook.
+**Output:** Shared utility modules, responsive container, a11y infrastructure, Storybook config.
+**Guidance:** All interactives will use these patterns. Colour palette from design tokens. A11y infrastructure is substantial — give it focused attention. **Depends on: Task 1.1 Output by Agent_Infra, Task 1.3 Output by Agent_Design_System**
+
+1. Establish React island conventions for interactives: standard props interface pattern (data, dimensions, callbacks), responsive container component that handles `ResizeObserver` and passes dimensions to child visualization, `client:visible` or `client:idle` loading strategy decisions documented
+2. Set up D3.js and Observable Plot: install dependencies, create shared D3 utility functions (`src/lib/viz/`): scale factories, axis helpers, colour mapping from design tokens to D3 scales, reusable tooltip component with positioning logic, Observable Plot wrappers for lighter chart types. **Note (from Task 1.3):** When building the colour mapping from tokens to D3 scales, add a dark-mode override for `--color-viz-4` in `[data-theme="dark"]` inside `tokens.css`: suggest `#D4C000` or `#C8B800` to bring the yellow above 3:1 contrast on `#1A1A1A`. Also note that custom spacing uses a non-linear scale — `--space-7` = 2rem (32px), not 1.75rem; use `--space-*` custom properties in bespoke CSS rather than high Tailwind integer utilities.
+3. Create shared a11y infrastructure for interactives (`src/lib/viz/a11y/`): keyboard navigation helpers (arrow-key focus management for data points), ARIA live region component for announcing dynamic data changes, text-description toggle component (shows text summary as alternative to visual), reduced-motion detection hook with static-rendering fallback, colour-blind-safe palette enforcement reading from tokens
+4. Configure Storybook for interactive component development in isolation: React + TypeScript, import design tokens and shared utilities, create a template story demonstrating the responsive container and a11y toggle patterns
+
+### Task 3.2 – Normal Distribution Explorer (Simple D3) - Agent_Interactive_Core
+
+**Objective:** Build the normal distribution interactive with draggable parameters and historical overlays per PRD §2.4.2.
+**Output:** Working interactive at `/learn/interactives/normal-distribution-explorer`, Storybook story, tests.
+**Guidance:** Simple D3/SVG version. Escalation decision at Task 3.8. **Depends on: Task 3.1 Output**
+
+1. Build the core normal distribution rendering: D3 SVG area chart showing the PDF curve, draggable handles for mean (μ) and standard deviation (σ) parameters, real-time curve update on drag, axis labels and value display
+2. Add historical overlay system: toggle-able overlays showing named distributions (Quetelet's "average man" c.1835, Galton's hereditary talent ranking c.1869, IQ distribution c.1912, benefit eligibility threshold lines c.1960s) with contextual labels explaining each overlay's political significance — use structurally complete placeholder annotations connecting to relevant Counting Lives chapters (Ch 1, 2, 10); each overlay should have a 2–3 sentence political context note
+3. Implement a11y: keyboard controls for parameter adjustment (arrow keys to shift mean/σ), ARIA live region announcing current values, text description mode toggle, reduced-motion fallback (static rendering with input fields instead of drag)
+4. Create the interactive manifest MDX file, add Storybook story, test responsive behaviour at desktop and tablet breakpoints; write Vitest unit test for parameter calculation logic
+
+### Task 3.3 – Poverty Threshold Simulator (Simple D3) - Agent_Interactive_Core
+
+**Objective:** Build the poverty threshold interactive with parameter controls and measurement method comparison per PRD §2.4.2.
+**Output:** Working interactive at `/learn/interactives/poverty-threshold-simulator`, Storybook story, tests.
+**Guidance:** Simple D3/SVG version. Demonstrate that thresholds are political choices. **Depends on: Task 3.1 Output**
+
+1. Build the data model: define poverty threshold calculation logic (basket-based — Rowntree/JRF Minimum Income Standard approach; relative — 60% of median income, ~£15,000 single adult 2024; equivalised — modified OECD scale), household parameters (size 1–6, composition with child/adult mix, region), simulated population distribution; use specific UK policy parameter values rather than abstract placeholders
+2. Build the core visualization: D3 SVG showing population distribution with a moveable poverty line, colour-coded regions for above/below threshold, real-time poverty rate counter, household parameter controls as form inputs
+3. Add equivalisation method comparison: toggle between different measurement approaches (absolute, relative 60% median, basket-based) and see how the line and rate change; contextual annotation explaining each method's political origin
+4. Implement a11y (keyboard controls, ARIA, text mode, reduced-motion), create interactive manifest MDX, Storybook story, responsive testing, Vitest tests for threshold calculations
+
+### Task 3.4 – Research Pipeline Graph (D3 Force-Directed) - Agent_Interactive_Core
+
+**Objective:** Build the TDA research programme pipeline visualization per PRD §2.3.2.
+**Output:** Working interactive at `/tda/pipeline/`, Storybook story, tests.
+**Guidance:** D3 force-directed graph. Data from paper content collection (PRD Appendix B). If Task 2.7 content stubs aren't ready, hardcode initial data from PRD Appendix B paper index and add a TODO to switch to Astro content collection queries. **Depends on: Task 3.1 Output, Task 2.7 Output by Agent_Content**
+
+1. Build the data layer: extract paper nodes from content collection (paper_number, title, stage, status, depends_on, enables, compute) and generate edge list from dependency data; group nodes by stage (0, 1, 2, 3)
+2. Build D3 force-directed graph: nodes as circles sized/coloured by stage and status, directed edges for dependencies, force simulation with stage-based x-positioning (left-to-right progression), labels, hover tooltips showing paper title and status
+3. Add interactive features: click-through to paper pages, timeline overlay showing 0–48 month horizon along x-axis, computational resource indicators (CPU/GPU/Cloud icons), status colour legend
+4. Implement a11y (keyboard-navigable nodes with focus indicators, ARIA descriptions, text-list fallback for screen readers), Storybook story, responsive behaviour (simplified layout on mobile), Vitest test for data extraction logic
+
+### Task 3.5 – User Review Checkpoint: Simple Interactives - User
+
+**Objective:** Review first three interactives and confirm approach before building more complex ones.
+**Output:** User feedback and approval to proceed.
+**Guidance:** Mid-phase gate. Review interaction quality, visual styling, a11y, responsiveness. **Depends on: Task 3.2, 3.3, 3.4 Output**
+
+1. Present the three completed interactives (Normal Distribution Explorer, Poverty Threshold Simulator, Research Pipeline Graph) for user review: interaction quality, visual styling, a11y, responsiveness
+2. User provides feedback and confirms approach is correct before proceeding to the more complex interactives (Five Transitions Timeline, Persistence Diagram Builder)
+
+### Task 3.6a – Five Transitions Timeline: Data Model & Visual Rendering - Agent_Interactive_Core
+
+**Objective:** Build the timeline data model, core horizontal rendering, and thread strand visualization.
+**Output:** Working timeline rendering showing five transitions with thread strands, viewable in Storybook.
+**Guidance:** Simple D3/SVG version. Centrepiece Counting Lives interactive. Escalation decision at Task 3.8. **Depends on: Task 3.1 Output, Task 2.6a Output by Agent_Content**
+
+1. Build timeline data model: define five transitions with date ranges (1830s–1900s, 1900s–1940s, 1940s–1970s, 1970s–2000s, 2000s–present), overlapping periods, associated chapters (per PRD Appendix A), key claims, key figures; define thread data (Scottish, Gender) with chapter-level markers; define counter-mathematics thread
+2. Build core timeline rendering: D3 SVG horizontal scrolling timeline (1830s–present), transition eras as overlapping horizontal bands with visual layering and distinct colours from the Counting Lives palette, era labels and date markers, smooth horizontal scroll/pan
+3. Add thread strands: colour-coded Scottish and Gender thread lines woven through the timeline, counter-mathematics running thread alongside all transitions, click-through links to transition detail pages; add Storybook story for the visual artefact
+
+### Task 3.6b – Five Transitions Timeline: Interaction & Accessibility - Agent_Interactive_Core
+
+**Objective:** Add the interaction layer, responsive mobile layout, and comprehensive a11y to the timeline.
+**Output:** Fully interactive, accessible, responsive timeline at `/counting-lives/transitions/`.
+**Guidance:** Mobile requires a fundamentally different layout (vertical). Reduced-motion needs a static alternative. **Depends on: Task 3.6a Output**
+
+1. Add interaction: hover annotations (pull-quotes and key claims visible on hover/focus for each transition era), click through to transition detail views, touch/swipe support for mobile with momentum scrolling
+2. Build responsive layout: vertical timeline layout on narrow viewports (stacked eras instead of horizontal scroll), maintaining all thread strands and interactive features; test transition between horizontal and vertical at breakpoint
+3. Implement a11y: keyboard navigation through timeline eras (arrow keys to advance, Enter to open detail), ARIA landmarks for each era, text-list fallback for screen readers (ordered list of eras with chapters), reduced-motion static version (no scroll animation, all eras visible); update Storybook story, write Vitest tests for data model
+
+### Task 3.7a – Persistence Diagram Builder: Algorithm & Point Cloud Input - Agent_Interactive_Core
+
+**Objective:** Implement the Vietoris-Rips filtration algorithm in TypeScript and the point cloud input UI.
+**Output:** Working VR filtration computation with point cloud editor, unit tests for known topological features.
+**Guidance:** Pure computational logic — test thoroughly before building visualization. Max ~30 points for acceptable real-time SVG performance. Consider existing npm packages (e.g., `simplicial-complex`) before implementing from scratch. **Depends on: Task 3.1 Output**
+
+1. Build point cloud input UI: allow users to click to place 2D points on a D3 scatter plot (or load preset point clouds — circle, clusters, figure-8, random), drag to reposition, clear/reset; cap at ~30 points for performance
+2. Implement Vietoris-Rips filtration algorithm in TypeScript: given a set of 2D points and a radius parameter, compute the simplicial complex (0-simplices, 1-simplices, 2-simplices) and track birth/death of homological features (H₀ connected components, H₁ loops); handle edge cases (collinear points, duplicate points, empty input)
+3. Write comprehensive Vitest unit tests for the algorithm: verify known topological features (circle point cloud should produce 1 persistent H₁ feature; two clusters should produce 2 H₀ features that merge; figure-8 should produce 2 H₁ features); test performance with 30 points
+
+### Task 3.7b – Persistence Diagram Builder: Visualization & Interaction - Agent_Interactive_Core
+
+**Objective:** Build the dual synchronized visualization panels, interaction controls, and a11y.
+**Output:** Fully interactive persistence diagram builder at `/learn/interactives/persistence-diagram-builder`, Storybook story.
+**Guidance:** Dual synchronized panels. Left = point cloud with growing complex, right = persistence diagram. WebGL escalation possible at Task 3.8. **Depends on: Task 3.7a Output**
+
+1. Build dual synchronized visualization: left panel shows point cloud with growing balls/edges as filtration parameter increases (D3 SVG circles and lines), right panel shows persistence diagram populating in real time (birth-death scatter plot with diagonal reference line)
+2. Add interactive features: filtration parameter slider with play/pause animation, step-through mode, speed control; highlight correspondence between features — clicking a point in the persistence diagram highlights the corresponding feature in the complex (and vice versa)
+3. Implement a11y: keyboard slider control for filtration parameter, ARIA descriptions announcing current filtration state and feature counts (e.g., "Radius 0.3: 5 components, 1 loop"), text mode describing topological features in prose, reduced-motion static version; Storybook story, responsive layout (stacked panels on mobile)
+
+### Task 3.8 – User Review Checkpoint: Phase 3 & Escalation Decisions - User
+
+**Objective:** Review all Phase 3 interactives and make explicit escalation decisions for each one for Phase 5.
+**Output:** User approval, escalation decisions documented for all 5 interactives.
+**Guidance:** Every interactive gets a conscious keep/upgrade decision. Key upgrades to consider: Persistence Diagram Builder (2D SVG vs. 3D WebGL filtration), Five Transitions Timeline (SVG vs. canvas/WebGL for smoother scrolling). **Depends on: All Phase 3 tasks**
+
+1. Present all five completed interactives for comprehensive review: visual quality, interaction feel, pedagogical effectiveness, performance, a11y compliance
+2. User makes explicit escalation decisions for each of the 5 interactives: (a) Normal Distribution Explorer — likely sufficient as SVG, confirm or flag, (b) Poverty Threshold Simulator — likely sufficient, confirm or flag, (c) Research Pipeline Graph — evaluate force layout performance, (d) Five Transitions Timeline — SVG scroll vs. canvas/WebGL for smoother experience, (e) Persistence Diagram Builder — 2D SVG vs. 3D WebGL filtration with point cloud rotation
+3. Incorporate user feedback; document all escalation decisions in a Phase 3 review summary; confirm Phase 3 approval before proceeding to Phase 4
+
+## Phase 4: Learning Paths
+
+### Task 4.1 – Learning Hub Structure & Path Landing Pages - Agent_Design_Templates
+
+**Objective:** Build the `/learn/` section navigation: hub index, path landing pages, interactives gallery.
+**Output:** Learn hub page, path landing page template, interactives gallery page.
+**Guidance:** Path cards show progress summaries. **Depends on: Task 1.5 Output**
+
+1. Build the learn hub index page (`/learn/`): display all four learning paths as cards with title, target audience, module count, estimated time, progress summary (visual progress bar); link to path landing pages; display standalone interactives gallery link
+2. Build path landing page template: show all modules in sequence with title, core concept snippet, completion status indicator (integrates with progress tracking from Task 4.2), estimated reading time; start/continue button
+3. Build the standalone interactives gallery page (`/learn/interactives/`): grid of all interactive tools with titles, descriptions, complexity indicators, thumbnail/preview; each links to its standalone page
+
+### Task 4.2 – Progress Tracking System (localStorage) - Agent_Schema_Platform
+
+**Objective:** Build localStorage-based learning progress tracking per PRD §2.4.1.
+**Output:** Progress React context/hook, UI integration in module and path pages.
+**Guidance:** No login required. Must handle SSR gracefully (client-only hydration). **Depends on: Task 2.4 Output by Agent_Design_Templates**
+
+1. Design progress data model: define localStorage schema (path completion state per path, module completion per module, last visited module, timestamps), versioning for future migration, storage key naming convention
+2. Build React context/hook (`useProgress`): read/write progress from localStorage, provide methods for marking module complete/incomplete, calculating path percentage, getting current module; handle SSR (Astro) gracefully with client-only hydration
+3. Integrate progress UI into Module Layout: mark-complete button at end of each module, path progress bar on path landing page and module navigation, visual indicators (completed/current/upcoming) in module list
+4. Test progress tracking: verify localStorage persistence across page loads, test edge cases (cleared storage, multiple paths), verify SSR doesn't break (no `window` access during build), add Vitest tests for progress logic
+
+### Task 4.3 – Path 1 MDX Stubs: Topology for Social Scientists - Agent_Content
+
+**Objective:** Create 8 structurally complete module MDX files for Path 1 per PRD §2.4.1.
+**Output:** 8 MDX files in `src/content/learn/topology-social-scientists/`.
+**Guidance:** PRD Path 1 table for module data. ~1,000 words per module structured as: (a) hook/motivation paragraph, (b) core concept explanation 500–600 words, (c) interactive context paragraph explaining what the embedded interactive demonstrates, (d) connections sidebar data linking to related chapters/papers/modules, (e) 2–3 “check your understanding” reflection questions. Reference Phase 3 interactives. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.4 Output by Agent_Design_Templates**
+
+- Create modules 1–2 (What is a shape?, Point clouds and distance): frontmatter (path, module_number, core_concept, interactive_slug, connections, check_understanding), prose placeholder ~1,000 words each, interactive element reference, 2–3 reflection questions, connections to related TDA papers and methods
+- Create modules 3–4 (Simplicial complexes, Homology: counting holes): increasing mathematical depth, LaTeX placeholder for formal definitions, interactive slots for filtration and homology count tools
+- Create modules 5–6 (Persistence diagrams, From diagrams to statistics): reference the Persistence Diagram Builder interactive, include Wasserstein distance and landscape discussion placeholders, statistical interpretation connections
+- Create modules 7–8 (The Markov memory ladder, Reading the results): connect to Paper 1, include placeholder walkthrough of results, reflection questions on methodology and findings
+
+### Task 4.4 – Path 2 MDX Stubs: Mathematics of Poverty - Agent_Content
+
+**Objective:** Create 8 structurally complete module MDX files for Path 2 per PRD §2.4.1.
+**Output:** 8 MDX files in `src/content/learn/mathematics-of-poverty/`.
+**Guidance:** PRD Path 2 table for module data. ~1,000 words per module structured as: (a) hook/motivation paragraph, (b) core concept explanation 500–600 words, (c) interactive context paragraph explaining what the embedded interactive demonstrates, (d) connections sidebar data linking to related chapters/papers/modules, (e) 2–3 “check your understanding” reflection questions. Reference Phase 3 interactives. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.4 Output by Agent_Design_Templates**
+
+- Create modules 1–2 (Drawing the line, The average person): frontmatter, prose placeholder ~1,000 words each, references to Poverty Threshold Simulator and Normal Distribution Explorer interactives, connections to Counting Lives chapters 1 and 4, reflection questions
+- Create modules 3–4 (Counting what counts, The welfare formula): reference Orshansky's thresholds and Beveridge, interactive slots for comparison tools, connections to chapters 3–4
+- Create modules 5–6 (Optimisation and control, The score): increasing technical depth, logistic regression and algorithmic scoring contexts, connections to chapters 5–6 and 10–12
+- Create modules 7–8 (The black box, Counter-mathematics): neural networks and data justice, reference chapters 14–17, interactive slots for classifier training and participatory measurement tools
+
+### Task 4.5 – Embed Phase 3 Interactives in Learning Modules - Agent_Interactive_Core
+
+**Objective:** Integrate completed Phase 3 interactives into relevant learning path modules.
+**Output:** Interactives embedded in appropriate module MDX files with correct imports and configuration.
+**Guidance:** Match interactive to module per PRD tables. **Depends on: Task 3.2, 3.3, 3.4, 3.7b Output, Task 4.3, 4.4 Output by Agent_Content**
+
+- Embed Normal Distribution Explorer in Path 1 Module 2 (Point clouds) and Path 2 Module 2 (The average person); embed Poverty Threshold Simulator in Path 2 Module 1 (Drawing the line)
+- Embed Persistence Diagram Builder in Path 1 Module 5 (Persistence diagrams); embed Research Pipeline Graph in a TDA overview context
+- Verify all embedded interactives render correctly within module layout; test responsive behaviour and a11y within the module context
+
+### Task 4.6 – Glossary Foundation - Agent_Integration
+
+**Objective:** Build the shared glossary with dual definitions spanning both projects per PRD §7.2.
+**Output:** Glossary data model, searchable glossary page, inline glossary tooltip component.
+**Guidance:** Terms have dual definitions (TDA + Counting Lives). 20–30 initial terms. **Depends on: Task 2.6a Output by Agent_Content, Task 2.7 Output by Agent_Content**
+
+1. Design glossary data model: YAML or JSON data file for glossary entries, each with term, slug, definitions array (each definition has domain — "TDA" or "Counting Lives" or "Shared" — and definition text), related terms, linked content (chapters, papers, modules)
+2. Build glossary page (`/learn/glossary/`): alphabetical listing with search/filter, domain filter (show TDA terms, Counting Lives terms, or both), click to expand full entry with dual definitions displayed side-by-side where applicable; populate with 20–30 key initial terms as placeholder
+3. Build inline glossary tooltip component: when a glossary term appears in prose, optionally render as a link with hover tooltip showing the brief definition; integrate with MDX rendering pipeline
+
+### Task 4.7 – Reading Lists & Curated Resources - Agent_Content
+
+**Objective:** Create curated reading lists by topic and level per PRD §2.4.
+**Output:** Reading list data model, page template, 4–6 placeholder lists.
+**Guidance:** Organized by topic and level. Connect to Zotero library. **Depends on: Task 2.9b Output by Agent_Integration**
+
+- Create reading list data model and page template at `/learn/reading-lists/`: lists organized by topic (topology, poverty measurement, data justice, TDA methods) and level (introductory, intermediate, advanced)
+- Create 4–6 placeholder reading lists with annotated entries: title, author, year, brief annotation, difficulty level, relevance to site content (which chapters/papers/paths it connects to); reference Zotero library integration where applicable
+- Build reading list page with filtering by topic and level, clean typography for annotations
+
+### Task 4.8 – User Review Checkpoint: Phase 4 - User
+
+**Objective:** Review learning path infrastructure, module content, progress tracking, glossary.
+**Output:** User approval or change requests for Phase 4 deliverables.
+**Guidance:** Review covers: learning hub UX, path landing pages, module with embedded interactive, progress tracking, glossary, reading lists. **Depends on: All Phase 4 tasks**
+
+1. Compile review artefacts: demonstrate learning hub, path landing pages, sample module with embedded interactive, progress tracking flow (mark complete, see progress bar update), glossary page, reading lists
+2. User reviews: learning path UX, progress tracking behaviour, module structure quality, glossary usefulness, embedded interactive quality within modules
+3. Incorporate feedback; confirm Phase 4 approval before proceeding to Phase 5
+
+## Phase 5: Advanced Interactives & Paths
+
+### Task 5.1 – Escalated Interactive Upgrades (Conditional) - Agent_Interactive_Advanced
+
+**Objective:** Upgrade Phase 3 interactives to WebGL/3D/canvas as per user escalation decisions from Task 3.8.
+**Output:** Upgraded interactive versions (or no-op if no escalations requested).
+**Guidance:** Progressive enhancement — keep SVG fallback. Performance target <3s TTI. **Depends on: Task 3.8 Output**
+
+1. Review escalation decisions documented in Task 3.8; identify which interactives require upgrade and the specific target (WebGL, canvas, 3D)
+2. For each escalated interactive: build the upgraded version alongside the simple version (progressive enhancement, not replacement), implement Three.js/R3F or canvas rendering as appropriate, maintain all existing a11y features with fallback to SVG version for reduced-motion or unsupported browsers
+3. Test upgraded interactives: verify performance targets (PRD §4.4 — <3s TTI on broadband), compare with simple versions, update Storybook stories; if no escalations were requested, this task is complete with zero work
+
+### Task 5.2 – Mapper Parameter Lab - Agent_Interactive_Advanced
+
+**Objective:** Build the Mapper interactive per PRD §2.4.2 with adjustable cover, overlap, and clustering parameters.
+**Output:** Working interactive at `/learn/interactives/mapper-parameter-lab`, Storybook story, tests.
+**Guidance:** Simplified Mapper algorithm in TypeScript. D3 force-directed graph output. **Depends on: Task 3.1 Output**
+
+1. Implement a simplified Mapper algorithm in TypeScript: given a point cloud, a filter function (e.g., PCA projection), cover parameters (resolution, overlap percentage), and a clustering method (single linkage), compute the Mapper graph (nodes = cluster groups, edges = shared points)
+2. Build the parameter control panel: sliders for cover resolution, overlap percentage, filter function selector (PCA, density, eccentricity), clustering threshold; all controls with real-time updates
+3. Build the Mapper graph visualization: D3 force-directed layout of the Mapper graph with nodes sized by cluster membership count, edges weighted by shared points, colour by filter function value; load preset datasets (synthetic circles, blobs, or anonymised/synthetic trajectory data)
+4. Implement a11y (keyboard parameter controls, ARIA descriptions, text-list fallback), Storybook story, responsive, Vitest tests for Mapper algorithm
+
+### Task 5.3 – Filtration Playground - Agent_Interactive_Advanced
+
+**Objective:** Build the VR filtration step-through interactive with simplicial complex visualization.
+**Output:** Working interactive at `/learn/interactives/filtration-playground`, Storybook story, tests.
+**Guidance:** Extends Phase 3 persistence diagram work. Focus on complex construction visualization. **Depends on: Task 3.1 Output, Task 3.7a Output**
+
+1. Build point cloud editor: click-to-place, drag-to-move, preset shapes; density/distribution controls; integrate with or extend the Phase 3 point cloud input component
+2. Build step-through filtration visualization: at each radius increment, show balls growing around points, edges forming (1-simplices as lines), triangles filling (2-simplices as shaded triangles); step-by-step mode with forward/back, continuous animation mode with speed control
+3. Add educational annotations: at each step, display Betti numbers (β₀, β₁, β₂), highlight births and deaths of homological features with explanatory text, link to relevant learning path modules
+4. Implement a11y, Storybook story, responsive layout, Vitest tests; ensure performance is acceptable for up to ~50 points
+
+### Task 5.4 – Benefit Taper Calculator - Agent_Interactive_Advanced
+
+**Objective:** Build the Universal Credit taper rate interactive per PRD §2.4.2.
+**Output:** Working interactive at `/learn/interactives/benefit-taper-calculator`, Storybook story, tests.
+**Guidance:** Realistic UK policy parameters. Show poverty traps and effective marginal tax rates. **Depends on: Task 3.1 Output**
+
+1. Build Universal Credit data model: taper rate (currently 55%), work allowances, housing element calculation, childcare element, sanctions regime (levels and durations); use realistic UK policy parameters
+2. Build core visualization: D3 line/area chart showing income vs. benefit withdrawal, effective marginal tax rate curve, net income curve; input controls for earnings level, household composition, housing costs
+3. Add poverty trap visualization: highlight income ranges where effective marginal rates exceed 60%, show how sanctions create cliff edges; add comparison mode showing historical parameter changes (pre-2024 vs. current)
+4. Implement a11y, Storybook story, responsive, Vitest tests for calculation logic; contextual annotations linking to relevant Counting Lives chapters
+
+### Task 5.5a – Pyodide Feasibility Research - Agent_Interactive_Advanced
+
+**Objective:** Evaluate Pyodide for in-browser TDA computation and produce a design decision record.
+**Output:** Feasibility report documenting: available TDA libraries in Pyodide, performance benchmarks, limitations, recommended fallback strategy.
+**Guidance:** Ad-hoc research task. The outcome gates Task 5.5b implementation. If Ripser/scikit-tda aren't available via micropip, document alternatives (giotto-tda, pre-computed results, server-side API). **Depends on: Task 3.1 Output**
+
+1. Ad-Hoc Delegation – Pyodide feasibility: Test Pyodide loading time, determine which TDA libraries are available as WASM packages via micropip (Ripser, scikit-tda, giotto-tda), benchmark a small persistence computation (~20 points) for acceptable performance (<5s)
+2. Identify limitations: memory constraints, missing C extensions, numerical precision issues; determine max point cloud size for real-time computation
+3. Recommend implementation strategy: (a) full Pyodide with TDA libs if available, (b) Pyodide with pre-computed heavy results and live light computations, (c) fallback to pre-computed-only with no live Python if Pyodide TDA is infeasible; document decision for user review before proceeding
+
+### Task 5.5b – Pyodide Loader & Code Runner Implementation - Agent_Interactive_Advanced
+
+**Objective:** Build the Pyodide runtime loader, code editor/runner UI, and working TDA demo based on feasibility findings.
+**Output:** Pyodide loader component, code runner React island, working persistence computation demo.
+**Guidance:** Use CodeMirror 6 for the code editor (~150KB gzipped, lighter than Monaco). Lazy-load Pyodide only when user enters a practitioner module. Always provide pre-computed fallback. PRD §4.1. **Depends on: Task 5.5a Output**
+
+1. Build Pyodide loader component: async loading of Pyodide runtime with progress indicator, lazy loading (only load when user enters a TDA practitioner module using `client:visible`), package pre-installation via micropip per 5.5a findings, error handling for unsupported browsers with graceful degradation to pre-computed results
+2. Build code runner UI component (React island): CodeMirror 6 editor panel (syntax-highlighted, editable Python), output panel (text + plot rendering via matplotlib→SVG or pre-computed image), run button, reset button, pre-populated code templates for TDA operations; styled to match design tokens
+3. Create integration demo: a working example running a basic persistence computation (per 5.5a recommended approach), displaying the persistence diagram; verify performance is acceptable for toy examples; add fallback for browsers without WASM or slow devices (pre-computed results display with note)
+
+### Task 5.6 – Path 4 MDX Stubs: TDA for Practitioners - Agent_Content
+
+**Objective:** Create 12 structurally complete module MDX files for Path 4 per PRD §2.4.1.
+**Output:** 12 MDX files in `src/content/learn/tda-practitioners/`.
+**Guidance:** Graduate-level content. PRD Path 4 table. ~1,200 words per module structured as: (a) hook/motivation, (b) core concept 600–800 words with LaTeX, (c) interactive/code runner context, (d) connections, (e) reflection questions. Include Python code block placeholders with `{/* Pyodide code runner slot */}` comments — actual Pyodide integration happens in Task 5.7, not here. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.4 Output by Agent_Design_Templates**
+
+- Create modules 1–3 (Setup and first computation, Point cloud preprocessing, VR persistent homology): frontmatter, prose placeholder ~1,200 words each, Python code blocks referencing Pyodide integration, interactive slots for code runner and step-through filtration
+- Create modules 4–6 (Reading persistence diagrams, Null models/hypothesis testing, Mapper): reference Persistence Diagram Builder and Mapper Parameter Lab interactives, statistical interpretation focus, connections to papers 1–2
+- Create modules 7–9 (Zigzag persistence, Multi-parameter persistence, Wasserstein/landscape distances): advanced TDA methods, LaTeX for formal definitions, connections to papers 3–4, interactive slots for bifiltration explorer and distance calculator
+- Create modules 10–12 (TDA to deep learning, Fairness and topology, Designing your own TDA study): connect to papers 7–10, topological deep learning placeholders, fairness audit pipeline reference, checklist generator interactive slot
+
+### Task 5.7 – Embed Advanced Interactives in Paths & Content - Agent_Interactive_Advanced
+
+**Objective:** Integrate Phase 5 interactives into relevant learning modules and content pages.
+**Output:** All Phase 5 interactives properly embedded in appropriate pages.
+**Guidance:** Match interactive to content per PRD tables. **Depends on: Task 5.2, 5.3, 5.4, 5.5b Output, Task 5.6 Output by Agent_Content**
+
+- Embed Mapper Parameter Lab in Path 4 Module 6 and TDA methods/mapper page; embed Filtration Playground in Path 1 Module 3 and Path 4 Module 3
+- Embed Benefit Taper Calculator in Path 2 Module 4 and relevant Counting Lives chapter pages; embed Pyodide code runner in Path 4 modules 1–12 where code execution is specified
+- Verify all embeddings render correctly; test responsive and a11y within page context
+
+### Task 5.8 – Playwright Integration Testing Setup - Agent_Infra
+
+**Objective:** Set up Playwright for end-to-end testing of interactives and page flows.
+**Output:** Playwright configured, integration tests for key interactives and progress tracking.
+**Guidance:** Incremental testing juncture. Test interactive flows and cross-page behaviour. **Depends on: Task 3.2, 3.7b Output by Agent_Interactive_Core, Task 4.2 Output by Agent_Schema_Platform**
+
+1. Install Playwright and configure for the Astro project; set up test runner, browser targets (Chromium, Firefox, WebKit), create npm script `test:e2e`
+2. Write integration tests for key interactives: test Normal Distribution Explorer drag interaction, test Persistence Diagram Builder point-to-diagram flow, test Research Pipeline Graph click-through, test progress tracking persistence across page navigation
+3. Verify all tests pass; integrate into CI-ready scripts (even if CI not yet configured); document Playwright testing patterns in `CONTRIBUTING.md`
+
+### Task 5.9 – User Review Checkpoint: Phase 5 - User
+
+**Objective:** Review advanced interactives, Pyodide, TDA practitioners path, integration tests.
+**Output:** User approval or change requests for Phase 5 deliverables.
+**Guidance:** Key areas: advanced interactive quality, Pyodide performance, Path 4 structure, test coverage. **Depends on: All Phase 5 tasks**
+
+1. Compile review artefacts: demonstrate Mapper Parameter Lab, Filtration Playground, Benefit Taper Calculator, Pyodide code runner, any escalated interactive upgrades, TDA Practitioners path modules, Playwright test results
+2. User reviews: advanced interactive quality, Pyodide performance (acceptable for toy examples?), Path 4 module structure, integration test coverage
+3. Incorporate feedback; confirm Phase 5 approval before proceeding to Phase 6
+
+## Phase 6: Polish & Launch
+
+### Task 6.1 – Path 3 MDX Stubs: Data Justice Foundations - Agent_Content
+
+**Objective:** Create 6 structurally complete module MDX files for Path 3 per PRD §2.4.1.
+**Output:** 6 MDX files in `src/content/learn/data-justice/`.
+**Guidance:** Target audience: activists, policy workers, community researchers. PRD Path 3 table. ~1,000 words per module. Tonal guidance: use narrative style, case studies, and plain-language explanations. Avoid LaTeX except where explaining how data categories are constructed. Connect to lived-experience examples from Counting Lives chapters. Structure: (a) real-world scenario hook, (b) concept explanation in plain language, (c) interactive context, (d) connections to chapters, (e) reflection questions framed as practical/ethical considerations. **Schema note (from Task 2.1):** The `learn-modules` `path` enum value for this path is `'data-justice'` (not `'data-justice-foundations'`). Use `path: data-justice` in all module frontmatter. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.4 Output by Agent_Design_Templates**
+
+- Create modules 1–2 (Who counts?, Whose categories?): frontmatter, prose placeholder ~1,000 words each, interactive slots for missing data explorer and category builder, connections to Counting Lives chapters 14–15
+- Create modules 3–4 (The view from above, Indigenous data sovereignty): Scott's legibility thesis and Kukutai's CARE principles, connections to counter-mathematics thread, interactive slots
+- Create modules 5–6 (Feminist data gaps, Algorithmic accountability): D'Ignazio and Klein references, Eubanks digital poorhouse, connections to chapters 10–13, interactive slots for gender gap calculator and algorithm audit
+
+### Task 6.2 – Complete Remaining Content Pages - Agent_Content
+
+**Objective:** Audit and fill all remaining content gaps across all sections.
+**Output:** All content pages structurally complete, glossary expanded to 50+ terms.
+**Guidance:** Survey all sections for gaps. Expand figure stubs, transition details, thread annotations. **Depends on: All Phase 2 and Phase 4 content tasks**
+
+1. Audit all content pages across sections: identify any MDX stubs that are still minimal, missing frontmatter fields, or lacking structural completeness; compile gap list
+2. Complete all figure/biographical card stubs (expand to full set per PRD §2.2.1), complete all transition detail pages, ensure thread pages have full chapter-by-chapter annotations, expand glossary to 50+ terms
+3. Ensure all section hub pages (counting-lives overview, TDA overview, learn hub) aggregate their child content correctly and display accurate counts/statuses
+
+### Task 6.3 – Cross-Project Connections & "Two Lenses" Feature - Agent_Integration
+
+**Objective:** Build bidirectional linking between projects and the "Two Lenses" toggle per PRD §7.
+**Output:** Bidirectional link components, interlude↔method connections, "Two Lenses" toggle.
+**Guidance:** PRD §7.1–7.3. The site's intellectual coherence depends on visible cross-project navigation. **Depends on: Task 2.6a Output by Agent_Content, Task 2.7 Output by Agent_Content**
+
+1. Build bidirectional link resolution: using frontmatter data (related_tda_papers, methods, interludes), generate "Related in TDA" sections on chapter pages and "Related in Counting Lives" sections on paper/methods pages; render as linked cards with title and brief description
+2. Implement interlude↔method bidirectional links: each Mathematical Interlude page links to TDA methods that formalize the concept; each methods page links back to the chapters examining its political stakes
+3. Build "Two Lenses" toggle component (React island): on key concept pages (e.g., logistic regression), provide "Read as Mathematics" / "Read as Politics" toggle or split view; content rendered from the same MDX with conditional sections
+4. Verify all cross-project connections render correctly; test navigation flow between projects (can a user follow a thread from chapter → interlude → method → paper seamlessly?); ensure links are valid
+
+### Task 6.4 – Dark Mode Toggle & Palette Tuning - Agent_Design_System
+
+**Objective:** Build the dark mode UI toggle and tune dark mode colours for all components.
+**Output:** Toggle component in navigation, tuned dark mode palette, localStorage persistence.
+**Guidance:** Tokens already support dark mode (Phase 1). This task adds the toggle UI and visual tuning. **Depends on: Task 1.3 Output**
+
+1. Build dark mode toggle component: accessible toggle button in navigation (sun/moon icon or similar), persist preference in localStorage, respect system preference via `prefers-color-scheme` as default, toggle `data-theme` attribute on `<html>`, no flash of incorrect theme on load (inline script in `<head>`)
+2. Tune dark mode colour palette: review all tokens in dark mode context, ensure WCAG AA contrast across all component types (prose, cards, navigation, interactive backgrounds, code blocks, KaTeX rendering), adjust any tokens that don't work well in dark mode
+3. Test dark mode comprehensively: verify all page types (chapter, paper, module, post, interactive, landing, about), verify interactives render correctly in dark mode (D3 colours pick up token changes), verify print stylesheet ignores dark mode
+
+### Task 6.5 – Accessibility Audit & Remediation - Agent_Design_System
+
+**Objective:** Comprehensive site-wide a11y audit per PRD §4.5.
+**Output:** Audit report, all issues remediated, WCAG 2.1 AA compliance confirmed.
+**Guidance:** Automated (axe-core via Playwright) + manual audit. Both light and dark modes. **Depends on: Task 6.4 Output**
+
+1. Run automated a11y audit using axe-core (via Playwright): scan all major page types, compile report of violations by severity
+2. Manual audit checklist: keyboard navigation through all interactive components, screen reader testing of KaTeX output and interactive state announcements, colour contrast verification in both light and dark modes, touch target size verification (44×44px minimum), reduced-motion mode verification
+3. Remediate all identified issues: fix colour contrast failures, add missing ARIA labels, fix keyboard traps, add missing skip links or landmarks, ensure all images have alt text
+4. Re-run automated audit to confirm all issues resolved; document remaining known issues (if any) with rationale
+
+### Task 6.6 – Performance Optimization - Agent_Infra
+
+**Objective:** Meet all PRD §4.4 performance targets.
+**Output:** Lighthouse scores meeting targets, optimized bundle, documented exceptions.
+**Guidance:** Targets: ≥95 prose, ≥80 interactive, LCP <1.5s, <50KB JS on prose pages. **Depends on: All prior phases**
+
+1. Run Lighthouse audits on representative pages (prose chapter, paper with interactive, learning module, landing page); identify performance gaps against PRD targets
+2. Optimize asset loading: verify zero JS on prose pages (Astro islands only hydrate when needed), lazy-load interactive components with `client:visible`, optimize font loading (subset, `font-display: swap`), optimize images (if any — use Astro image optimization)
+3. Optimize interactive loading: code-split D3 and Three.js per-interactive (not bundled into main), tree-shake unused D3 modules, defer Pyodide loading, ensure Storybook and dev-only code is excluded from production builds
+4. Re-run Lighthouse audits; verify all PRD §4.4 targets met; document any exceptions with rationale (e.g., interactive pages with Pyodide may exceed 50KB JS target)
+
+### Task 6.7 – SEO, Open Graph & Structured Data - Agent_Integration
+
+**Objective:** Implement full discoverability per PRD §8.
+**Output:** OG/Twitter cards, JSON-LD, sitemap, RSS, Google Scholar metadata.
+**Guidance:** PRD §8. ScholarlyArticle for papers, Person for about, Course for learning paths. **Depends on: Task 1.5 Output by Agent_Design_Templates**
+
+1. Build SEO component integrated into BaseLayout: generate Open Graph and Twitter Card meta tags for every page type (chapter, paper, module, post, interactive) with appropriate titles, descriptions, and images (placeholder OG images)
+2. Add JSON-LD structured data: ScholarlyArticle for paper pages, Person for about page (with ORCID link), Course/LearningResource for learning paths, WebSite for site-level search; validate with Google's Rich Results Test
+3. Configure sitemap generation (Astro built-in `@astrojs/sitemap`), verify RSS feed from writing section works correctly, add ORCID integration linking publications to profile
+4. Optimize for Google Scholar indexing: ensure paper pages have correct meta tags (`citation_title`, `citation_author`, `citation_publication_date`, `citation_pdf_url`); verify crawlability
+
+### Task 6.8 – Netlify Deployment Configuration - Agent_Infra
+
+**Objective:** Configure and verify Netlify deployment for zktheory.org.
+**Output:** `netlify.toml`, production deployment, deploy previews working.
+**Guidance:** User connects repo to Netlify. Configure security headers, caching, redirects. **Depends on: Task 6.6 Output**
+
+1. Create `netlify.toml` with Astro build configuration: build command, publish directory, Astro Netlify adapter settings, redirect rules (if needed), header configuration (security headers, caching)
+2. User connects GitHub repo to Netlify, configures environment variables (ZOTERO_API_KEY, ZOTERO_USER_ID), enables deploy previews per branch
+3. Verify production build deploys correctly to zktheory.org; verify deploy previews work for feature branches; set up Zotero build hook for bibliography updates (optional)
+
+### Task 6.9 – Final Polish - Agent_Design_System
+
+**Objective:** Complete remaining polish: print stylesheet, reduced-motion, 404 page, favicon, cross-browser testing.
+**Output:** Polished, production-ready site.
+**Guidance:** Final quality pass across all page types and browsers. **Depends on: Task 6.4, 6.5 Output**
+
+- Finalize print stylesheet: test all major page types print cleanly, sidenotes convert to footnotes, interactives show static fallback or hide, pagination breaks are sensible, bibliography entries print correctly
+- Verify reduced-motion mode works across all interactives: all animations disabled, static alternatives displayed, no functionality lost
+- Create custom 404 page with helpful navigation links, create favicon set (using site identity colours), add web app manifest for PWA basics
+- Final cross-browser testing: verify in Chrome, Firefox, Safari, Edge; verify mobile responsiveness on iOS Safari and Chrome Android (via device emulation)
+
+### Task 6.10 – User Review Checkpoint: Phase 6 / Launch Readiness - User
+
+**Objective:** Final comprehensive review and launch approval.
+**Output:** Launch approval or final change requests.
+**Guidance:** Full site walkthrough. All PRD requirements verified. **Depends on: All Phase 6 tasks**
+
+1. Compile final review: full site walkthrough covering all sections, dark mode, cross-project navigation, search, bibliography, all interactives, learning paths with progress tracking, a11y compliance report, Lighthouse scores, deployed site on Netlify
+2. User performs comprehensive review: navigate all major page types, test dark mode, try learning paths, verify deployment, check mobile experience, review overall quality against PRD vision
+3. Address any final issues; confirm launch readiness; site goes live at zktheory.org

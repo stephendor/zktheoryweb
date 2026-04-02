@@ -1,0 +1,163 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Print Stylesheet — zktheory.org
+   Task 1.6 — Agent_Design_System
+
+   Loaded via <link rel="stylesheet" media="print"> in BaseLayout.astro.
+   All rules are scoped inside @media print so this file is harmless if
+   accidentally imported elsewhere.
+
+   Objectives:
+     - Hide navigation, footer, interactive UI chrome
+     - Force single-column layout at readable print dimensions
+     - Use system-safe serif fonts (web fonts may not print reliably)
+     - Append URLs after external links
+     - Prevent orphaned headings and broken pre/table blocks across pages
+   ──────────────────────────────────────────────────────────────────────────── */
+
+@media print {
+
+  /* ── 1. Hide UI chrome ──────────────────────────────────────────────────── */
+  header,
+  footer,
+  .skip-link,
+  .reading-progress,
+  .nav-hamburger,
+  [aria-hidden="true"].decorative,
+  .site-nav,
+  .sidenote-disclosure {
+    display: none !important;
+  }
+
+  /* ── 2. Page setup & base typography ────────────────────────────────────── */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 11pt;
+    line-height: 1.4;
+    /* Georgia is universally available and renders well in print */
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #000;
+    background: #fff;
+  }
+
+  /* ── 3. Single-column layout ─────────────────────────────────────────────── */
+  /* Remove prose grid — sidenotes are collapsed to inline disclosure (details
+     is open by default in most print renderers, showing note content inline) */
+  .prose {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Remove container centering constraints */
+  .container-prose,
+  .container-viz,
+  .container-full {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Remove grid layouts */
+  .grid-12 {
+    display: block;
+  }
+
+  /* Remove site-wrapper flex layout */
+  .site-wrapper {
+    display: block;
+  }
+
+  /* ── 4. Hide margin sidenotes (content accessible via details fallback) ─── */
+  .sidenote {
+    display: none;
+  }
+
+  /* ── 5. Headings ─────────────────────────────────────────────────────────── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #000;
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2 {
+    page-break-before: auto;
+  }
+
+  /* Prevent heading from sitting at bottom of page without following content */
+  .prose h2,
+  .prose h3 {
+    page-break-after: avoid;
+  }
+
+  /* ── 6. Prevent mid-content page breaks ─────────────────────────────────── */
+  pre,
+  blockquote,
+  table,
+  figure,
+  .bib-entry {
+    page-break-inside: avoid;
+  }
+
+  /* ── 7. Links — append URL after external links ─────────────────────────── */
+  a[href^="http"]::after,
+  a[href^="https"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  /* Don't append URLs to nav links or internal/anchor links */
+  a[href^="#"]::after,
+  a[href^="/"]::after {
+    content: none;
+  }
+
+  /* ── 8. Images ───────────────────────────────────────────────────────────── */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* ── 9. Code blocks ─────────────────────────────────────────────────────── */
+  pre,
+  code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    border: 1px solid #ccc;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* ── 10. Tables ──────────────────────────────────────────────────────────── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid #999;
+    padding: 4pt 6pt;
+    font-size: 10pt;
+    text-align: left;
+  }
+
+  th {
+    background: #eee !important;
+    font-weight: bold;
+  }
+
+} /* end @media print */

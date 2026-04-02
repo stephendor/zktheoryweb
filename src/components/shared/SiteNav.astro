@@ -1,0 +1,276 @@
+---
+// SiteNav.astro — Task 1.5 — Agent_Design_Templates
+// Site-wide navigation with accessible mobile hamburger menu.
+// Keyboard: Escape closes menu; Tab through links; focus returns to button on close.
+
+const navLinks = [
+  { label: 'Home',           href: '/'                },
+  { label: 'Counting Lives', href: '/counting-lives/' },
+  { label: 'TDA',            href: '/tda/'            },
+  { label: 'Learn',          href: '/learn/'          },
+  { label: 'Writing',        href: '/writing/'        },
+  { label: 'About',          href: '/about/'          },
+] as const;
+
+const pathname = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+}
+---
+
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand" aria-label="zktheory.org — go to home page">
+      zktheory.org
+    </a>
+
+    <!-- Hamburger: visible on mobile only, hidden on desktop via CSS -->
+    <button
+      class="nav-hamburger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Open navigation menu"
+    >
+      <span class="hamburger-bar" aria-hidden="true"></span>
+      <span class="hamburger-bar" aria-hidden="true"></span>
+      <span class="hamburger-bar" aria-hidden="true"></span>
+    </button>
+
+    <ul id="nav-menu" class="nav-list">
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            href={href}
+            class:list={['nav-link', { 'nav-link--active': isActive(href) }]}
+            aria-current={isActive(href) ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('.site-nav');
+  const btn = nav?.querySelector<HTMLButtonElement>('.nav-hamburger');
+
+  if (nav && btn) {
+    function openMenu(): void {
+      nav!.setAttribute('data-open', '');
+      btn!.setAttribute('aria-expanded', 'true');
+      btn!.setAttribute('aria-label', 'Close navigation menu');
+    }
+
+    function closeMenu(): void {
+      nav!.removeAttribute('data-open');
+      btn!.setAttribute('aria-expanded', 'false');
+      btn!.setAttribute('aria-label', 'Open navigation menu');
+    }
+
+    btn.addEventListener('click', () => {
+      if (nav.hasAttribute('data-open')) {
+        closeMenu();
+        btn.focus();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Escape closes the menu and returns focus to the hamburger button
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && nav.hasAttribute('data-open')) {
+        closeMenu();
+        btn.focus();
+      }
+    });
+
+    // Close when focus leaves the nav entirely (Tab past last link)
+    nav.addEventListener('focusout', (e: FocusEvent) => {
+      const relatedTarget = e.relatedTarget as Node | null;
+      if (!nav.contains(relatedTarget) && nav.hasAttribute('data-open')) {
+        closeMenu();
+      }
+    });
+  }
+</script>
+
+<style>
+  /* ── Navigation shell ───────────────────────────────────────────────────── */
+  .site-nav {
+    position: relative; /* anchor for mobile dropdown */
+    background-color: var(--color-neutral-surface);
+    border-bottom: 1px solid var(--color-neutral-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: var(--space-3) var(--space-6);
+    gap: var(--space-4);
+  }
+
+  /* ── Site brand ─────────────────────────────────────────────────────────── */
+  .nav-brand {
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-neutral-body);
+    text-decoration: none;
+    letter-spacing: var(--tracking-tight);
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+
+  .nav-brand:hover {
+    color: var(--color-cl-red);
+  }
+
+  .nav-brand:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Nav list — desktop behaviour ──────────────────────────────────────── */
+  .nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    letter-spacing: var(--tracking-wide);
+    transition: color 0.15s, background-color 0.15s;
+  }
+
+  .nav-link:hover {
+    color: var(--color-neutral-body);
+    background-color: var(--color-neutral-border);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /* Active route: bottom underline indicator */
+  .nav-link--active {
+    color: var(--color-neutral-body);
+    font-weight: 700;
+    box-shadow: inset 0 -2px 0 0 var(--color-cl-red);
+  }
+
+  /* ── Hamburger button — hidden on desktop ───────────────────────────────── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: var(--space-2);
+    background: transparent;
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s;
+  }
+
+  .nav-hamburger:hover {
+    border-color: var(--color-neutral-muted);
+  }
+
+  .nav-hamburger:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /*
+   * Hamburger bars: 3 × 2px, gap 5px.
+   * Total occupied height = 3×2 + 2×5 = 16px.
+   * X animation: bar 1 moves down 7px and rotates 45°;
+   *              bar 2 fades out;
+   *              bar 3 moves up 7px and rotates -45°.
+   */
+  .hamburger-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--color-neutral-body);
+    border-radius: var(--radius-full);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .site-nav[data-open] .hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .site-nav[data-open] .hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-nav[data-open] .hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ── Mobile breakpoint (≤640px) ─────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .nav-hamburger {
+      display: flex;
+    }
+
+    /* Hidden off-screen on mobile; absolute so it overlays page content */
+    .nav-list {
+      display: none;
+      position: absolute;
+      top: 100%; /* flush below the nav bar */
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background-color: var(--color-neutral-surface);
+      border-bottom: 1px solid var(--color-neutral-border);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-2) var(--space-4) var(--space-3);
+      z-index: 100;
+    }
+
+    /* Shown when .site-nav has [data-open] attribute */
+    .site-nav[data-open] .nav-list {
+      display: flex;
+    }
+
+    .nav-link {
+      padding: var(--space-3) var(--space-2);
+      font-size: var(--text-base);
+    }
+
+    .nav-inner {
+      padding: var(--space-3) var(--space-4);
+    }
+  }
+</style>

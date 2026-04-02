@@ -1,0 +1,101 @@
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Sidenote from '@components/shared/Sidenote.astro';
+
+<BaseLayout title="Prose Test">
+<div class="container-prose">
+<article class="prose">
+
+<div class="reading-progress" aria-hidden="true"></div>
+
+## Typography & Prose Elements
+
+This is a development test page for the prose styling system. It exercises every
+element type defined in `prose.css` to verify visual correctness and responsive
+behaviour of the Tufte-style sidenote system.<sup aria-describedby="sn-1">1</sup>
+
+<Sidenote number={1}>
+  This is the first sidenote. On a wide desktop viewport it appears in the
+  right-hand margin column. On mobile it collapses into a
+  details / summary disclosure.
+</Sidenote>
+
+The measure is constrained to `--measure-prose` (65ch) for comfortable long-form
+reading. Line height uses `--leading-relaxed` (1.625) which is optimal for
+body text at `--text-base` (1rem / 16px).
+
+### Body Copy and Inline Elements
+
+Prose body copy is set in Source Serif 4 with generous leading. Inline `code`
+uses JetBrains Mono at a smaller size with a neutral background chip.
+[External links](https://example.com) render in slate blue and transition to
+teal on hover via a `200ms ease` colour transition. Links also receive a
+visited state in a lighter tint.<sup aria-describedby="sn-2">2</sup>
+
+<Sidenote number={2}>
+  Link colours are intentionally drawn from the TDA "Mathematical" palette
+  (`--color-tda-slate`) to convey precision and trust.
+</Sidenote>
+
+### Lists
+
+Unordered list example:
+
+- Topological Data Analysis applies algebraic topology to data science
+- Persistent homology tracks shape features across multiple scales
+- The barcode diagram encodes the birth and death of topological features
+- Mapper constructs a compressed nerve of a covering
+
+Ordered list example:
+
+1. Compute a filtration of the data at increasing scale parameter ε
+2. Track connected components, loops, and voids as ε grows
+3. Record (birth, death) intervals as points in a persistence diagram
+4. Interpret long-lived features as topologically significant structure
+
+### Blockquote
+
+> The poverty line is not a fact about the world; it is a decision about what
+> matters. Every threshold embeds a theory of the minimum.
+
+### Code Block
+
+```python
+import numpy as np
+from scipy.spatial.distance import cdist
+
+def rips_complex(points: np.ndarray, epsilon: float) -> list[tuple]:
+    """Return edges of the Vietoris-Rips complex at scale epsilon."""
+    dists = cdist(points, points)
+    n = len(points)
+    return [
+        (i, j)
+        for i in range(n)
+        for j in range(i + 1, n)
+        if dists[i, j] <= epsilon
+    ]
+```
+
+### Table
+
+| Measure | Year | Coverage |
+|---------|------|----------|
+| MPI (Oxford) | 2010 | 100+ countries |
+| Foster-Greer-Thorbecke | 1984 | Global |
+| Alkire-Foster | 2011 | UNDP HDR |
+
+### Second Section
+
+This paragraph tests the heading spacing. The `h2` above should have
+`margin-top: --space-10` (4rem) of breathing room before it, with
+`margin-bottom: --space-4` (1rem) below before this paragraph begins.
+The vertical rhythm should feel generous but not wasteful.<sup aria-describedby="sn-3">3</sup>
+
+<Sidenote number={3}>
+  Vertical rhythm in typography is the consistent spacing of text elements
+  to create a sense of visual harmony. The baseline grid concept, popularised
+  by the Bauhaus tradition, underpins this approach.
+</Sidenote>
+
+</article>
+</div>
+</BaseLayout>

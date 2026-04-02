@@ -1,0 +1,110 @@
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+<BaseLayout title="Math & Code Test">
+
+<style>{`
+  .dev-banner {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #7c3aed;
+    color: #fff;
+    text-align: center;
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+`}</style>
+
+<div class="dev-banner">Development Preview — Math & Code Pipeline Test</div>
+
+<div class="container-prose">
+<article class="prose">
+
+## Math & Code Pipeline Test
+
+This page verifies `remark-math` + `rehype-katex` (compile-time, zero client JS) and Shiki syntax highlighting work end-to-end in the MDX pipeline.
+
+---
+
+### Inline Math
+
+The Euler identity is $e^{i\pi} + 1 = 0$.
+
+The standard normal density is $f(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$.
+
+### Display Math — Simplicial Homology
+
+$$
+H_n(X) = \ker(\partial_n) / \text{im}(\partial_{n+1})
+$$
+
+### Display Math — Bottleneck Distance
+
+$$
+d_\infty(D_1, D_2) = \inf_{\gamma: D_1 \to D_2} \sup_{x \in D_1} \|x - \gamma(x)\|_\infty
+$$
+
+---
+
+### Python — Vietoris-Rips Complex
+
+```python
+import numpy as np
+from scipy.spatial.distance import cdist
+
+def rips_complex(points: np.ndarray, epsilon: float) -> list[tuple]:
+    """Return edges of the Vietoris-Rips complex at scale epsilon."""
+    dists = cdist(points, points)
+    n = len(points)
+    return [
+        (i, j)
+        for i in range(n)
+        for j in range(i + 1, n)
+        if dists[i, j] <= epsilon
+    ]
+```
+
+### TypeScript — Persistence Diagram
+
+```typescript
+interface PersistencePoint {
+  birth: number;
+  death: number;
+  dimension: number;
+}
+
+function bottleneckDistance(d1: PersistencePoint[], d2: PersistencePoint[]): number {
+  // Naive O(n²) matching for illustration — use a proper assignment solver in production
+  let maxDist = 0;
+  for (const p of d1) {
+    const nearest = d2.reduce((best, q) => {
+      const dist = Math.max(Math.abs(p.birth - q.birth), Math.abs(p.death - q.death));
+      return dist < best ? dist : best;
+    }, Infinity);
+    maxDist = Math.max(maxDist, nearest);
+  }
+  return maxDist;
+}
+```
+
+### Shell / Bash
+
+```bash
+# Build and inspect output for KaTeX spans
+npm run build
+grep -c 'class="katex"' dist/dev/math-test/index.html
+grep -c 'style="color:' dist/dev/math-test/index.html
+```
+
+---
+
+*Development artefact — Task 1.7 — Agent_Schema_Platform*
+
+</article>
+</div>
+
+</BaseLayout>

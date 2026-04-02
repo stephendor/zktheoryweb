@@ -1,0 +1,79 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Layout Grid System — zktheory.org
+   Task 1.5 — Agent_Design_Templates
+
+   Provides:
+     - Content-width constraint tokens (--content-prose, --content-viz, --content-full)
+     - Sidenote gutter width token (--sidenote-width, reserved for Task 1.6)
+     - 12-column grid utility class (.grid-12)
+     - Centred content containers (.container-prose, .container-viz, .container-full)
+   ──────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Content-width constraints ──────────────────────────────────────────── */
+  --content-prose: 720px;  /* max-width for long-form prose / article content  */
+  --content-viz:   1080px; /* max-width for visualisation / wide-layout content*/
+  --content-full:  100%;   /* full-bleed — no width constraint applied         */
+
+  /*
+   * Sidenote gutter — reserved for Task 1.6 (Tufte-style margin notes).
+   *
+   * In a two-column prose layout the main prose column is constrained to
+   * ~65ch (--measure-prose) and the sidenote column occupies --sidenote-width
+   * in the outer margin. Implement in a .prose-with-sidenotes layout variant
+   * once Task 1.6 builds the sidenote component.
+   */
+  --sidenote-width: 220px;
+}
+
+/* ── 12-column grid utility ─────────────────────────────────────────────── */
+/*
+ * Use .grid-12 on a container element. Place children with Tailwind
+ * col-span-* utilities or inline grid-column styles:
+ *   <div class="grid-12">
+ *     <section style="grid-column: 1 / 9">prose</section>
+ *     <aside   style="grid-column: 9 / 13">sidebar</aside>
+ *   </div>
+ */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-6);
+}
+
+/* ── Content containers — centred with horizontal gutter ────────────────── */
+/*
+ * .container-prose  →  max 720px, ideal for long-form reading.
+ * .container-viz    →  max 1080px, for charts and wide content.
+ * .container-full   →  spans viewport width (no max-width constraint).
+ *
+ * All containers are horizontally centred via auto margins and carry
+ * symmetric horizontal padding (gutters) that reduces on small screens.
+ */
+.container-prose,
+.container-viz,
+.container-full {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+.container-prose { max-width: var(--content-prose); }
+.container-viz   { max-width: var(--content-viz);   }
+.container-full  { max-width: var(--content-full);  }
+
+/* ── Responsive gutter reduction on small screens ───────────────────────── */
+@media (max-width: 640px) {
+  .container-prose,
+  .container-viz,
+  .container-full {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  /* Collapse 12-column grid to single column on mobile */
+  .grid-12 {
+    grid-template-columns: 1fr;
+  }
+}
