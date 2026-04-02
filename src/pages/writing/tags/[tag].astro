@@ -1,0 +1,245 @@
+---
+/**
+ * [tag].astro — Task 2.5 — Agent_Design_Templates
+ * Static tag archive page for the writing section.
+ *
+ * Generates one page per unique tag across essays + notes collections.
+ * Posts are sorted chronologically descending.
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+type EssayEntry = CollectionEntry<'essays'> & { variant: 'essay' };
+type NoteEntry  = CollectionEntry<'notes'>  & { variant: 'note'  };
+type AnyEntry   = EssayEntry | NoteEntry;
+
+export async function getStaticPaths() {
+  const [essays, notes] = await Promise.all([
+    getCollection('essays'),
+    getCollection('notes'),
+  ]);
+
+  const allEntries: AnyEntry[] = [
+    ...essays.map((e): EssayEntry => ({ ...e, variant: 'essay' })),
+    ...notes.map((e): NoteEntry  => ({ ...e, variant: 'note'  })),
+  ];
+
+  // Collect all unique tags → entries mapping
+  const tagMap = new Map<string, AnyEntry[]>();
+  for (const entry of allEntries) {
+    for (const tag of entry.data.tags) {
+      if (!tagMap.has(tag)) tagMap.set(tag, []);
+      tagMap.get(tag)!.push(entry);
+    }
+  }
+
+  return Array.from(tagMap.entries()).map(([tag, entries]) => ({
+    params: { tag },
+    props: {
+      tag,
+      entries: entries.sort(
+        (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+      ),
+    },
+  }));
+}
+
+interface Props {
+  tag: string;
+  entries: AnyEntry[];
+}
+
+const { tag, entries } = Astro.props;
+
+const formatDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+
+const postHref = (entry: AnyEntry) =>
+  `/writing/${entry.variant === 'essay' ? 'essays' : 'notes'}/${entry.id}/`;
+
+const summary = (entry: AnyEntry): string | undefined =>
+  'summary' in entry.data ? (entry.data as { summary?: string }).summary : undefined;
+---
+
+<BaseLayout
+  title={`Tag: ${tag}`}
+  description={`All writing tagged "${tag}" — essays and notes on zktheory.org`}
+  section="writing"
+>
+  <div class="container-prose">
+    <header class="tag-header">
+      <p class="tag-back">
+        <a href="/writing/">← All writing</a>
+      </p>
+      <h1>
+        <span class="tag-label">Tag:</span>
+        <span class="tag-name">{tag}</span>
+      </h1>
+      <p class="tag-count">
+        {entries.length} {entries.length === 1 ? 'post' : 'posts'}
+      </p>
+    </header>
+
+    <ol class="posts-list">
+      {entries.map((entry) => {
+        const entrySummary = summary(entry);
+        return (
+          <li class="post-item">
+            <article>
+              <div class="post-item-meta">
+                <time datetime={entry.data.date.toISOString()}>
+                  {formatDate(entry.data.date)}
+                </time>
+                <span
+                  class:list={['variant-badge', `variant-badge--${entry.variant}`]}
+                  aria-label={`Post type: ${entry.variant === 'essay' ? 'Essay' : 'Note'}`}
+                >
+                  {entry.variant === 'essay' ? 'Essay' : 'Note'}
+                </span>
+              </div>
+              <h2 class="post-item-title">
+                <a href={postHref(entry)}>{entry.data.title}</a>
+              </h2>
+              {entrySummary && (
+                <p class="post-item-summary">{entrySummary}</p>
+              )}
+            </article>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── Tag header ──────────────────────────────────────────────────────────── */
+  .tag-header {
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-neutral-border);
+    margin-bottom: var(--space-8);
+  }
+
+  .tag-back a {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+  }
+
+  .tag-back a:hover {
+    color: var(--color-neutral-body);
+  }
+
+  .tag-header h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  .tag-label {
+    color: var(--color-neutral-muted);
+    font-weight: 400;
+    margin-right: var(--space-2);
+  }
+
+  .tag-name {
+    color: var(--color-neutral-body);
+  }
+
+  .tag-count {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin: 0;
+  }
+
+  /* ── Posts list ──────────────────────────────────────────────────────────── */
+  .posts-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .post-item {
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  .post-item:last-child {
+    border-bottom: none;
+  }
+
+  .post-item-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  /* ── Variant badge ───────────────────────────────────────────────────────── */
+  .variant-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.125rem var(--space-2);
+    border-radius: var(--radius-sm);
+  }
+
+  .variant-badge--essay {
+    background: var(--color-cl-cream);
+    color: var(--color-cl-red);
+    border: 1px solid var(--color-cl-red-light);
+  }
+
+  .variant-badge--note {
+    background: var(--color-tda-warm-grey);
+    color: var(--color-tda-teal);
+    border: 1px solid var(--color-tda-teal-light);
+  }
+
+  /* ── Post item title ─────────────────────────────────────────────────────── */
+  .post-item-title {
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: var(--leading-snug);
+    margin-top: 0;
+    margin-bottom: var(--space-3);
+  }
+
+  .post-item-title a {
+    color: var(--color-neutral-body);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .post-item-title a:hover {
+    color: var(--color-tda-teal);
+  }
+
+  /* ── Summary ─────────────────────────────────────────────────────────────── */
+  .post-item-summary {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-neutral-muted);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+</style>

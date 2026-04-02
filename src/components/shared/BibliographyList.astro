@@ -1,0 +1,50 @@
+---
+/**
+ * BibliographyList.astro — Task 2.9b — Agent_Integration
+ *
+ * Astro shell component that renders a searchable, tag-filterable bibliography.
+ *
+ * Props:
+ *   items        — ZoteroItem[] pre-filtered by the calling Astro page
+ *   accentColor  — CSS custom property value for accent elements;
+ *                  defaults to var(--color-cl-red) (Counting Lives palette)
+ *
+ * BibTeX generation: generateBibTeX(item) is called HERE at build time for every
+ * item, and the resulting string is attached as the `bibtex` field on each entry
+ * before passing to the client React island. This keeps BibTeX generation
+ * server-side only and out of the client JS bundle.
+ *
+ * Filtering approach: React island (BibliographyFilter.tsx) with client:load.
+ * Chosen over URL-parameter approach because:
+ *   - Items are already materialised as props at build time.
+ *   - No page reload needed; instant filtering feels natural for a bibliography.
+ *   - Consistent with the existing React island pattern on the site.
+ */
+
+import type { ZoteroItem } from '@lib/zotero';
+import { generateBibTeX } from '@lib/bibliography';
+import { BibliographyFilter } from './BibliographyFilter';
+import type { BibliographyEntry } from './BibliographyFilter';
+
+interface Props {
+  items: ZoteroItem[];
+  accentColor?: string;
+}
+
+const { items, accentColor = 'var(--color-cl-red)' } = Astro.props;
+
+// Pre-compute BibTeX for every item at build time so the React island receives
+// ready-made strings and does not need to import generateBibTeX client-side.
+const entries: BibliographyEntry[] = items.map(item => ({
+  ...item,
+  bibtex: generateBibTeX(item),
+}));
+---
+
+<div class="bibliography-list">
+  <BibliographyFilter
+    client:load
+    items={entries}
+    accentColor={accentColor}
+  />
+</div>

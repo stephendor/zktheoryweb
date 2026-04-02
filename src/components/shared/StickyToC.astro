@@ -1,0 +1,245 @@
+---
+/**
+ * StickyToC.astro — Task 2.2a — Agent_Design_Templates
+ *
+ * Shared sticky Table of Contents sidebar, reusable across ChapterLayout,
+ * PaperLayout, and ModuleLayout.
+ *
+ * Props:
+ *   headings  — Array<{depth, slug, text}> from Astro render() result
+ *   section   — optional theme key (defaults to 'counting-lives')
+ *
+ * Desktop (≥1024px): position:sticky sidebar; shows h2 + h3 only.
+ * Mobile (<1024px):  collapsible <details>/<summary> disclosure.
+ * Active heading:    tracked via IntersectionObserver; aria-current="true"
+ *                    on the active link.
+ */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  section?: 'counting-lives' | 'tda' | 'learn';
+}
+
+const { headings, section = 'counting-lives' } = Astro.props;
+
+// Include h2 (depth 2) and h3 (depth 3) only
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{tocHeadings.length > 0 && (
+  <nav class="sticky-toc" aria-label="Table of contents" data-section={section}>
+
+    {/* ── Mobile: collapsible disclosure (<1024px) ── */}
+    <details class="toc-mobile">
+      <summary class="toc-summary">Contents</summary>
+      <ul class="toc-list">
+        {tocHeadings.map((heading) => (
+          <li class={`toc-item depth-${heading.depth}`}>
+            <a href={`#${heading.slug}`} class="toc-link">
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+
+    {/* ── Desktop: sticky sidebar (≥1024px) ── */}
+    <div class="toc-desktop">
+      <p class="toc-heading">Contents</p>
+      <ul class="toc-list">
+        {tocHeadings.map((heading) => (
+          <li class={`toc-item depth-${heading.depth}`}>
+            <a
+              href={`#${heading.slug}`}
+              class="toc-link"
+              data-toc-slug={heading.slug}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+  </nav>
+)}
+
+<script>
+  /**
+   * IntersectionObserver-based active section highlighting.
+   * Watches h2/h3 elements inside #main-content; sets aria-current="true"
+   * on the corresponding desktop ToC link when the heading enters the
+   * active detection zone (top ~20% of viewport).
+   */
+  const links = document.querySelectorAll<HTMLAnchorElement>(
+    '.toc-desktop .toc-link[data-toc-slug]',
+  );
+
+  if (links.length > 0) {
+    const slugToLink = new Map<string, HTMLAnchorElement>();
+    links.forEach((link) => {
+      const slug = link.dataset.tocSlug;
+      if (slug) slugToLink.set(slug, link);
+    });
+
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      const headingEls = mainContent.querySelectorAll<HTMLElement>('h2[id], h3[id]');
+
+      const clearActive = () => {
+        links.forEach((l) => l.removeAttribute('aria-current'));
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              const id = entry.target.getAttribute('id');
+              clearActive();
+              if (id) {
+                const activeLink = slugToLink.get(id);
+                if (activeLink) activeLink.setAttribute('aria-current', 'true');
+              }
+              break;
+            }
+          }
+        },
+        {
+          // Active zone: between 10% and 30% from the top of the viewport.
+          // Keeps only one heading "active" at a time in typical reading flow.
+          rootMargin: '-10% 0px -70% 0px',
+          threshold: 0,
+        },
+      );
+
+      headingEls.forEach((el) => observer.observe(el));
+    }
+  }
+</script>
+
+<style>
+  .sticky-toc {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+
+  /* ── Mobile: collapsible disclosure ─────────────────────────────────── */
+  .toc-mobile {
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .toc-summary {
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    color: var(--color-neutral-body);
+    padding: var(--space-1) 0;
+  }
+
+  /* Hide default disclosure triangle in all browsers */
+  .toc-summary::-webkit-details-marker { display: none; }
+  .toc-summary::marker { display: none; }
+
+  .toc-summary::after {
+    content: ' ▾';
+    font-size: var(--text-xs);
+    color: var(--color-neutral-muted);
+  }
+
+  details[open] > .toc-summary::after {
+    content: ' ▴';
+  }
+
+  /* ── Desktop: sticky sidebar ─────────────────────────────────────────── */
+  .toc-desktop {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .toc-mobile {
+      display: none;
+    }
+
+    .toc-desktop {
+      display: block;
+      position: sticky;
+      top: var(--space-9);
+    }
+  }
+
+  .toc-heading {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  /* ── Shared list styles ──────────────────────────────────────────────── */
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-item {
+    margin-bottom: var(--space-2);
+  }
+
+  /* h3 links indented relative to h2 */
+  .toc-item.depth-3 {
+    padding-left: var(--space-4);
+  }
+
+  .toc-link {
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+    display: block;
+    padding-left: var(--space-3);
+    border-left: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .toc-link:hover {
+    color: var(--color-neutral-body);
+    border-left-color: var(--color-neutral-border);
+  }
+
+  /* Keyboard focus — visible ring, no outline for mouse */
+  .toc-link:focus-visible {
+    outline: 2px solid var(--color-cl-red);
+    outline-offset: 2px;
+  }
+
+  /* ── Active link — default (counting-lives) theme ───────────────────── */
+  .toc-link[aria-current='true'] {
+    color: var(--color-cl-red);
+    border-left-color: var(--color-cl-red);
+    font-weight: 500;
+  }
+
+  /* ── Active link — TDA section theme ────────────────────────────────── */
+  [data-section='tda'] .toc-link[aria-current='true'] {
+    color: var(--color-tda-teal);
+    border-left-color: var(--color-tda-teal);
+  }
+
+  /* ── Active link — Learn section theme ──────────────────────────────── */
+  [data-section='learn'] .toc-link[aria-current='true'] {
+    color: var(--color-tda-slate);
+    border-left-color: var(--color-tda-slate);
+  }
+</style>

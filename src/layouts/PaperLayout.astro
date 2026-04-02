@@ -1,0 +1,862 @@
+---
+/**
+ * PaperLayout.astro — Task 2.3 — Agent_Design_Templates
+ *
+ * Layout for TDA paper pages. Extends BaseLayout with section="tda".
+ *
+ * Props:
+ *   entry     — CollectionEntry<'papers'>  (full content entry)
+ *   prevPaper — { slug, title } | undefined
+ *   nextPaper — { slug, title } | undefined
+ *
+ * Rendering: uses Astro 6 render() API — `const { Content, headings } = await render(entry)`
+ *
+ * Structure:
+ *   1. Hero band (TDA palette) — paper number badge, h1 title,
+ *      stage badge, status badge, target journal
+ *   2. Abstract + plain-language summary
+ *   3. Wide prose body — .prose main content + sticky ToC sidebar
+ *      + key findings, methodology pills, compute display, dependency strip
+ *   4. Downloads & Citation (BibTeX copy button)
+ *   5. Prev / Next paper navigation
+ *
+ * Compatibility note:
+ *   entry.data.key_findings is z.array(z.object({ claim, detail })).
+ *   Schema updated post Task 2.3 to match ExpandableCard interface.
+ *   Rendered via <ExpandableCard> with tda-teal accent.
+ */
+
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import StickyToC from '@components/shared/StickyToC.astro';
+import { ExpandableCard } from '@components/shared/ExpandableCard';
+import { BibTexCopyButton } from '@components/tda/BibTexCopyButton';
+
+interface PaperRef {
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  entry: CollectionEntry<'papers'>;
+  prevPaper?: PaperRef;
+  nextPaper?: PaperRef;
+}
+
+const { entry, prevPaper, nextPaper } = Astro.props;
+const {
+  title,
+  paper_number,
+  stage,
+  status,
+  target_journal,
+  depends_on,
+  enables,
+  methods,
+  compute,
+  key_findings,
+  abstract,
+  plain_summary,
+  bibtex,
+} = entry.data;
+
+const { Content, headings } = await render(entry);
+
+/* ── Stage labels ── */
+const stageLabels: Record<number, string> = {
+  0: 'Stage 0 – Foundation',
+  1: 'Stage 1 – Exploration',
+  2: 'Stage 2 – Development',
+  3: 'Stage 3 – Advanced',
+};
+
+/* ── Status label + style key ── */
+const statusConfig: Record<
+  string,
+  { label: string; modifier: string }
+> = {
+  planned:    { label: 'Planned',     modifier: 'planned' },
+  'in-progress': { label: 'In Progress', modifier: 'in-progress' },
+  submitted:  { label: 'Submitted',   modifier: 'submitted' },
+  'in-review':   { label: 'In Review',  modifier: 'in-review' },
+  revision:   { label: 'Revision',    modifier: 'revision' },
+  published:  { label: 'Published',   modifier: 'published' },
+};
+const statusInfo = statusConfig[status] ?? { label: status, modifier: 'planned' };
+
+/* ── Dependency position strip: 10 papers ── */
+const TOTAL_PAPERS = 10;
+const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
+---
+
+<BaseLayout title={title} description={abstract ?? plain_summary} section="tda">
+
+  {/* ════════════════════════════════════════════════════════════════════
+      HERO — full-width TDA band
+      ════════════════════════════════════════════════════════════════════ */}
+  <div class="paper-hero">
+    <div class="container-prose--wide">
+
+      {/* Paper number badge */}
+      <p class="hero-paper-number" aria-label={`Paper ${paper_number}`}>
+        Paper {paper_number}
+      </p>
+
+      {/* Title */}
+      <h1 class="hero-title">{title}</h1>
+
+      {/* Target journal */}
+      {target_journal && (
+        <p class="hero-journal">{target_journal}</p>
+      )}
+
+      {/* ── Meta row: stage + status badges ── */}
+      <div class="hero-meta">
+        <span class="stage-badge" aria-label={stageLabels[stage]}>
+          {stageLabels[stage] ?? `Stage ${stage}`}
+        </span>
+        <span
+          class={`status-badge status-${statusInfo.modifier}`}
+          aria-label={`Status: ${statusInfo.label}`}
+        >
+          {statusInfo.label}
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      ABSTRACT + PLAIN SUMMARY — full-width band below hero
+      ════════════════════════════════════════════════════════════════════ */}
+  {(abstract || plain_summary) && (
+    <div class="paper-abstracts">
+      <div class="container-prose--wide">
+        <div class="abstracts-grid">
+
+          {abstract && (
+            <section class="abstract-section" aria-labelledby="abstract-heading">
+              <h2 id="abstract-heading" class="abstract-heading">Abstract</h2>
+              <p class="abstract-body">{abstract}</p>
+            </section>
+          )}
+
+          {plain_summary && (
+            <section class="abstract-section" aria-labelledby="plain-summary-heading">
+              <h2 id="plain-summary-heading" class="abstract-heading">Plain-Language Summary</h2>
+              <p class="abstract-body">{plain_summary}</p>
+            </section>
+          )}
+
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* ════════════════════════════════════════════════════════════════════
+      BODY — wide prose container with sidebar ToC
+      ════════════════════════════════════════════════════════════════════ */}
+  <div class="paper-body">
+    <div class="container-prose--wide">
+      <div class="paper-grid">
+
+        {/* ── Main article column ── */}
+        <article class="paper-article prose">
+          <Content />
+
+          {/* ── Key Findings ── */}
+          {key_findings.length > 0 && (
+            <section class="key-findings" aria-labelledby="key-findings-heading">
+              <h2 id="key-findings-heading">Key Findings</h2>
+              {key_findings.map((kf) => (
+                <ExpandableCard
+                  client:visible
+                  title={kf.claim}
+                  detail={kf.detail}
+                  accentColor="var(--color-tda-teal)"
+                />
+              ))}
+            </section>
+          )}
+
+          {/* ── Methodology pills ── */}
+          {methods.length > 0 && (
+            <section class="methodology-section" aria-labelledby="methods-heading">
+              <h2 id="methods-heading">Methods</h2>
+              <ul class="method-pills" aria-label="Methods used in this paper">
+                {methods.map((slug) => (
+                  <li class="method-pill-item">
+                    <a
+                      href={`/tda/methods/${slug}/`}
+                      class="method-pill"
+                    >
+                      {slug}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* ── Computational requirements ── */}
+          {compute && (
+            <section class="compute-section" aria-labelledby="compute-heading">
+              <h2 id="compute-heading">Computational Requirements</h2>
+              <dl class="compute-list">
+                {compute.hardware && (
+                  <>
+                    <dt class="compute-term">Hardware</dt>
+                    <dd class="compute-detail">{compute.hardware}</dd>
+                  </>
+                )}
+                {compute.runtime && (
+                  <>
+                    <dt class="compute-term">⏱ Runtime</dt>
+                    <dd class="compute-detail">{compute.runtime}</dd>
+                  </>
+                )}
+                {compute.cloud && (
+                  <>
+                    <dt class="compute-term">☁ Cloud</dt>
+                    <dd class="compute-detail">Cloud compute required</dd>
+                  </>
+                )}
+              </dl>
+            </section>
+          )}
+
+          {/* ── Dependency position strip ── */}
+          <section class="dep-section" aria-labelledby="dep-heading">
+            <h2 id="dep-heading">Position in Research Programme</h2>
+            <div class="dep-strip" aria-label={`Paper ${paper_number} of ${TOTAL_PAPERS} in the research programme`}>
+              {paperNodes.map((n) => {
+                const isCurrent = n === paper_number;
+                const isDep = depends_on.includes(n);
+                const isEnabled = enables.includes(n);
+                return (
+                  <div
+                    class:list={[
+                      'dep-node',
+                      isCurrent && 'dep-node--current',
+                      isDep && 'dep-node--depends',
+                      isEnabled && 'dep-node--enables',
+                    ]}
+                    aria-label={
+                      isCurrent
+                        ? `Paper ${n} (this paper)`
+                        : isDep
+                        ? `Paper ${n} (this paper depends on it)`
+                        : isEnabled
+                        ? `Paper ${n} (enabled by this paper)`
+                        : `Paper ${n}`
+                    }
+                    title={
+                      isCurrent
+                        ? `Paper ${n} — current`
+                        : isDep
+                        ? `Paper ${n} — dependency`
+                        : isEnabled
+                        ? `Paper ${n} — enabled`
+                        : `Paper ${n}`
+                    }
+                  >
+                    <span class="dep-node-label" aria-hidden="true">{n}</span>
+                    {isDep && <span class="dep-arrow dep-arrow--in" aria-hidden="true">→</span>}
+                    {isEnabled && <span class="dep-arrow dep-arrow--out" aria-hidden="true">→</span>}
+                  </div>
+                );
+              })}
+            </div>
+            <div class="dep-legend">
+              <span class="legend-item legend-current">■ This paper</span>
+              {depends_on.length > 0 && (
+                <span class="legend-item legend-depends">■ Dependency</span>
+              )}
+              {enables.length > 0 && (
+                <span class="legend-item legend-enables">■ Enabled by this paper</span>
+              )}
+            </div>
+          </section>
+
+          {/* ── Downloads & Citation ── */}
+          <section class="citation-section" aria-labelledby="citation-heading">
+            <h2 id="citation-heading">Downloads &amp; Citation</h2>
+
+            {/*
+              TODO Task 2.7+: Replace these <span> placeholders with real <a> elements
+              once URL fields (pdf_url, supplement_url, code_url, data_url) are added
+              to the papers schema and populated in MDX frontmatter.
+              Pattern: <a href={entry.data.pdf_url} class="download-link" rel="noopener noreferrer">
+            */}
+            <div class="download-links">
+              <span class="download-link download-link--placeholder" aria-label="Preprint PDF (coming soon)">
+                Preprint PDF <span class="download-note">(coming soon)</span>
+              </span>
+              <span class="download-link download-link--placeholder" aria-label="Supplementary Materials (coming soon)">
+                Supplementary Materials <span class="download-note">(coming soon)</span>
+              </span>
+              <span class="download-link download-link--placeholder" aria-label="Code Repository (coming soon)">
+                Code Repository <span class="download-note">(coming soon)</span>
+              </span>
+              <span class="download-link download-link--placeholder" aria-label="Data Access (coming soon)">
+                Data Access <span class="download-note">(coming soon)</span>
+              </span>
+            </div>
+
+            {/* BibTeX copy button — React island, rendered only if bibtex is defined */}
+            {bibtex && (
+              <div class="bibtex-block">
+                <BibTexCopyButton client:visible bibtex={bibtex} />
+              </div>
+            )}
+          </section>
+        </article>
+
+        {/* ── Sticky ToC sidebar ── */}
+        <aside class="paper-sidebar" aria-label="Paper navigation sidebar">
+          <StickyToC headings={headings} section="tda" />
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      PAPER NAVIGATION — prev / next links
+      ════════════════════════════════════════════════════════════════════ */}
+  {(prevPaper || nextPaper) && (
+    <nav class="paper-nav container-prose--wide" aria-label="Paper navigation">
+      <div class="paper-nav-inner">
+
+        {prevPaper ? (
+          <a href={`/tda/papers/${prevPaper.slug}/`} class="paper-nav-link paper-nav-prev">
+            <span class="nav-direction" aria-hidden="true">←</span>
+            <span class="nav-meta">Previous paper</span>
+            <span class="nav-title">{prevPaper.title}</span>
+          </a>
+        ) : (
+          <div aria-hidden="true" />
+        )}
+
+        {nextPaper ? (
+          <a href={`/tda/papers/${nextPaper.slug}/`} class="paper-nav-link paper-nav-next">
+            <span class="nav-direction" aria-hidden="true">→</span>
+            <span class="nav-meta">Next paper</span>
+            <span class="nav-title">{nextPaper.title}</span>
+          </a>
+        ) : (
+          <div aria-hidden="true" />
+        )}
+
+      </div>
+    </nav>
+  )}
+
+</BaseLayout>
+
+<style>
+  /* ══ Hero band ═══════════════════════════════════════════════════════════ */
+  .paper-hero {
+    background-color: var(--color-tda-warm-grey);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-10);
+    border-bottom: 3px solid var(--color-tda-teal);
+  }
+
+  .hero-paper-number {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-tda-teal);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .hero-journal {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-style: italic;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-5) 0;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* ── Stage badge ── */
+  .stage-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    background-color: var(--color-tda-slate);
+    color: #fff;
+  }
+
+  /* ── Status badges ── */
+  .status-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+  }
+
+  .status-planned {
+    background-color: var(--color-neutral-border);
+    color: var(--color-neutral-muted);
+  }
+
+  .status-in-progress {
+    background-color: color-mix(in srgb, var(--color-tda-teal) 15%, transparent);
+    color: var(--color-tda-teal);
+    border: 1px solid var(--color-tda-teal);
+  }
+
+  .status-submitted {
+    background-color: color-mix(in srgb, var(--color-tda-slate) 15%, transparent);
+    color: var(--color-tda-slate);
+    border: 1px solid var(--color-tda-slate);
+  }
+
+  .status-in-review {
+    background-color: color-mix(in srgb, var(--color-tda-teal) 25%, transparent);
+    color: var(--color-tda-teal);
+    border: 1px solid var(--color-tda-teal);
+  }
+
+  .status-revision {
+    background-color: color-mix(in srgb, var(--color-accent-amber) 15%, transparent);
+    color: var(--color-accent-amber);
+    border: 1px solid var(--color-accent-amber);
+  }
+
+  .status-published {
+    background-color: var(--color-tda-teal);
+    color: #fff;
+  }
+
+  /* ══ Abstracts band ══════════════════════════════════════════════════════ */
+  .paper-abstracts {
+    background-color: var(--color-neutral-surface);
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-9);
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  .abstracts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .abstracts-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .abstract-heading {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-tda-teal);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .abstract-body {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-body);
+    margin: 0;
+    max-width: var(--measure-prose);
+  }
+
+  /* ══ Body layout ══════════════════════════════════════════════════════════ */
+  .paper-body {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-12);
+  }
+
+  .paper-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .paper-grid {
+      grid-template-columns: 1fr var(--sidenote-width, 14rem);
+      align-items: start;
+    }
+  }
+
+  .paper-article {
+    min-width: 0;
+  }
+
+  .paper-sidebar {
+    min-width: 0;
+  }
+
+  /* ══ Key Findings ══════════════════════════════════════════════════════════ */
+  .key-findings {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .findings-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .findings-item {
+    padding: var(--space-4) var(--space-5);
+    background-color: color-mix(in srgb, var(--color-tda-teal) 8%, transparent);
+    border-left: 3px solid var(--color-tda-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-body);
+  }
+
+  /* ══ Methodology pills ═══════════════════════════════════════════════════ */
+  .methodology-section {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .method-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    list-style: none;
+    padding: 0;
+  }
+
+  .method-pill-item {
+    display: contents; /* pill item is purely structural */
+  }
+
+  .method-pill {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-2) var(--space-4);
+    border: 1.5px solid var(--color-tda-teal);
+    border-radius: var(--radius-full);
+    color: var(--color-tda-teal);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    background-color: transparent;
+  }
+
+  .method-pill:hover {
+    background-color: var(--color-tda-teal);
+    color: #fff;
+  }
+
+  .method-pill:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /* ══ Computational requirements ══════════════════════════════════════════ */
+  .compute-section {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .compute-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-2) var(--space-6);
+    margin: var(--space-5) 0 0 0;
+    align-items: baseline;
+  }
+
+  .compute-term {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+    white-space: nowrap;
+  }
+
+  .compute-detail {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-neutral-body);
+    margin: 0;
+  }
+
+  /* ══ Dependency strip ════════════════════════════════════════════════════ */
+  .dep-section {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .dep-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: var(--space-5);
+    background-color: var(--color-neutral-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .dep-node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-neutral-border);
+    border: 1.5px solid var(--color-neutral-border);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+    transition: transform 0.1s ease;
+  }
+
+  .dep-node--current {
+    background-color: var(--color-tda-teal);
+    border-color: var(--color-tda-teal);
+    color: #fff;
+    transform: scale(1.15);
+    box-shadow: var(--shadow-md);
+    z-index: 1;
+  }
+
+  /* Dependency: paper this one relies on — slate outline */
+  .dep-node--depends {
+    border-color: var(--color-tda-slate);
+    color: var(--color-tda-slate);
+    background-color: color-mix(in srgb, var(--color-tda-slate) 12%, transparent);
+  }
+
+  /* Enabled: papers this one unlocks — teal outline */
+  .dep-node--enables {
+    border-color: var(--color-tda-teal-light);
+    color: var(--color-tda-teal);
+    background-color: color-mix(in srgb, var(--color-tda-teal) 10%, transparent);
+  }
+
+  /* Inbound/outbound arrows — attached to node as absolute positioned spans */
+  .dep-arrow {
+    position: absolute;
+    font-size: 0.6rem;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .dep-arrow--in {
+    top: -0.7rem;
+    left: 50%;
+    transform: translateX(-50%) rotate(-90deg);
+    color: var(--color-tda-slate);
+  }
+
+  .dep-arrow--out {
+    bottom: -0.7rem;
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+    color: var(--color-tda-teal-light);
+  }
+
+  .dep-node-label {
+    /* label text sits inside the node; arrows are absolute-positioned outside */
+  }
+
+  .dep-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin-top: var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    color: var(--color-neutral-muted);
+  }
+
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .legend-current { color: var(--color-tda-teal); }
+  .legend-depends  { color: var(--color-tda-slate); }
+  .legend-enables  { color: var(--color-tda-teal-light); }
+
+  /* ══ Citation & Downloads ════════════════════════════════════════════════ */
+  .citation-section {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .download-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+
+  .download-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-2) var(--space-5);
+    border: 1.5px solid var(--color-neutral-border);
+    border-radius: var(--radius-md);
+    color: var(--color-neutral-body);
+    text-decoration: none;
+    background-color: var(--color-neutral-surface);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .download-link:hover {
+    border-color: var(--color-tda-teal);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .download-link:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  .download-note {
+    font-size: var(--text-xs);
+    color: var(--color-neutral-muted);
+    font-style: italic;
+  }
+
+  .download-link--placeholder {
+    cursor: default;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .bibtex-block {
+    margin-top: var(--space-5);
+  }
+
+  /* ══ Prev / Next navigation ══════════════════════════════════════════════ */
+  .paper-nav {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-10);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .paper-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .paper-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background-color: var(--color-neutral-surface);
+  }
+
+  .paper-nav-link:hover {
+    border-color: var(--color-tda-teal);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .paper-nav-link:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  .paper-nav-next {
+    text-align: right;
+  }
+
+  .nav-direction {
+    font-size: var(--text-xl);
+    color: var(--color-tda-teal);
+    line-height: 1;
+  }
+
+  .nav-meta {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+  }
+
+  .nav-title {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-body);
+    font-weight: 500;
+    line-height: var(--leading-snug);
+  }
+
+  /* ── Mobile responsive ── */
+  @media (max-width: 640px) {
+    .paper-nav-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-title {
+      font-size: var(--text-4xl);
+    }
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+title: "Sample Chapter"
+chapter_number: 1
+part: "Part I: Counting the Poor"
+part_number: 1
+transition: 1
+spine_role: "This chapter establishes the baseline argument."
+status: drafting
+key_figures:
+  - "Seebohm Rowntree"
+mathematical_concepts: []
+interludes: []
+threads:
+  - scottish-thread
+  - gender-thread
+related_tda_papers: []
+key_claims:
+  - claim: "Poverty measurement is always political"
+    detail: "Every threshold encodes a value judgement about what constitutes a decent life."
+  - claim: "The normal distribution naturalised inequality"
+    detail: "Quetelet's 'average man' made the bell curve a moral instrument."
+---
+
+import { ConceptTooltip } from '@components/shared/ConceptTooltip';
+import Sidenote from '@components/shared/Sidenote.astro';
+
+## Introduction
+
+Sample chapter introduction paragraph for layout testing. This section exercises
+the full prose rendering pipeline: heading hierarchy, body text, sidenote grid
+placement, and the sticky table of contents sidebar.
+
+The mathematical foundation for this work draws on <ConceptTooltip client:visible concept="persistent homology" interlude="persistent-homology" definition="A method for measuring topological features of data — connected components, loops, and voids — that persist across multiple scales of resolution." /> to reveal structural patterns in poverty data that conventional statistics obscure.<sup aria-describedby="sn-1">1</sup>
+
+<Sidenote number={1}>Persistent homology was developed by Edelsbrunner, Letscher and Zomorodian (2002) and has since become a cornerstone of topological data analysis.</Sidenote>
+
+### First Section
+
+Body text goes here. The `.prose` CSS Grid places this content in the `main`
+named column (capped at `--measure-prose`, ~65ch), while the sticky ToC occupies
+the `--sidenote-width` (220px) column to the right inside `.container-prose--wide`.
+
+The notion of a <ConceptTooltip client:visible concept="Betti number" interlude="betti-numbers" definition="A sequence of integers counting the number of independent holes in each dimension of a topological space: β₀ counts components, β₁ counts loops, β₂ counts voids." /> provides a compact algebraic summary of topological complexity.<sup aria-describedby="sn-2">2</sup>
+
+<Sidenote number={2}>Betti numbers are named after the Italian mathematician Enrico Betti (1871), though their modern formulation is due to Poincaré.</Sidenote>
+
+### Second Section
+
+A second h3 section to verify the ToC renders multiple entries and that the
+`IntersectionObserver` active-link highlighting transitions between them during
+scroll.
+
+## Methodology
+
+An h2 section to confirm ToC grouping — h2 entries appear at the top level, h3
+entries are indented below them.
+
+### Data and Sources
+
+Nested h3 under the Methodology h2 for testing indentation in the ToC list. The
+datasets used here are described in detail in the supplementary material.<sup aria-describedby="sn-3">3</sup>
+
+<Sidenote number={3}>All Scottish Poor Law records used in this analysis are held at the National Records of Scotland (NRS) and accessed under the Open Government Licence v3.0.</Sidenote>

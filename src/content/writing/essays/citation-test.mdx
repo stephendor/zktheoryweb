@@ -1,0 +1,42 @@
+---
+title: "Citation Test: CitationPopover Component"
+date: 2026-04-03
+description: "Dev sandbox for the CitationPopover React island. Not for production."
+tags: ["dev", "test"]
+draft: true
+---
+
+import { getBibliographyItems } from '@lib/bibliography';
+import { CitationPopover } from '@components/shared/CitationPopover';
+
+export const TEST_KEYS = ['G7VZ6UKQ', 'X3E3AWXN', 'RQ2S8QZX'];
+export const bibItems = getBibliographyItems().filter(item => TEST_KEYS.includes(item.key));
+
+> **Dev note:** This essay is `draft: true` and will not appear in production listings. It exercises the `CitationPopover` component with three real Zotero keys from the live cache.
+
+---
+
+## Testing `CitationPopover`
+
+The `CitationPopover` component renders an inline citation trigger — hover or focus to reveal the tooltip with full title, author list, year, and links.
+
+### Single-author citation
+
+The administration of the cohabitation rule by the Supplementary Benefits Commission is one of the most contested chapters in post-war welfare history <CitationPopover client:visible citeKey="G7VZ6UKQ" items={bibItems} />.
+
+### Institutional-author citation
+
+Opposition to the wage stop came from campaigning organisations across the welfare rights movement <CitationPopover client:visible citeKey="X3E3AWXN" items={bibItems} />.
+
+### Report citation
+
+Systematic data collection on household welfare was established by major government surveys of the early 1970s <CitationPopover client:visible citeKey="RQ2S8QZX" items={bibItems} />.
+
+---
+
+### Accessibility checks
+
+- **Keyboard**: Tab to each citation trigger, press Enter/Space to toggle, Escape to dismiss.
+- **Screen reader**: Trigger announces `"View citation: {title}"`; tooltip has `role="tooltip"`.
+- **Reduced motion**: Set `prefers-reduced-motion: reduce` in OS settings — tooltip should appear instantly with no transition.
+- **Right-edge flip**: In a narrow viewport, the tooltip should flip right-aligned rather than overflow.

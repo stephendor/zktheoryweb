@@ -1,0 +1,98 @@
+---
+/**
+ * counting-lives/bibliography.astro — Task 2.9b — Agent_Integration
+ *
+ * Bibliography page for the Counting Lives section.
+ * Extends BaseLayout; renders all bibliography items using the CL palette.
+ *
+ * Tag filtering note: The Zotero cache contains only generic Library of Congress
+ * subject headings (e.g. "Great Britain", "Poor", "History") — no project-specific
+ * tags such as 'counting-lives' or 'poverty-measurement' were found. The full
+ * unfiltered bibliography is rendered. When the Zotero library is tagged with
+ * project-specific tags, update the `filter()` call below to match them.
+ *
+ * Accent: --color-cl-red (Counting Lives / Archival palette)
+ */
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import BibliographyList from '@components/shared/BibliographyList.astro';
+import { getBibliographyItems } from '@lib/bibliography';
+
+const allItems = getBibliographyItems();
+
+// ── Tag filtering ─────────────────────────────────────────────────────────────
+// Update these tag strings when the Zotero library has project-specific tags.
+const CL_TAGS = new Set(['counting-lives', 'poverty-measurement']);
+const filteredItems = allItems.filter(item =>
+  item.tags?.some(t => CL_TAGS.has(t.tag))
+);
+
+// Fall back to full list when no items match the target tags.
+const items = filteredItems.length > 0 ? filteredItems : allItems;
+const isFiltered = filteredItems.length > 0;
+---
+
+<BaseLayout
+  title="Bibliography — Counting Lives"
+  description="Full bibliography for the Counting Lives research project on poverty measurement."
+  section="counting-lives"
+>
+  <div class="container-prose">
+    <header class="biblio-header">
+      <h1>Bibliography</h1>
+      <p class="biblio-subtitle">
+        Sources cited and consulted in <em>Counting Lives</em>.
+      </p>
+      {!isFiltered && (
+        <p class="biblio-note">
+          Showing full library ({items.length} items). Items will be filtered by
+          project tags once the Zotero library is tagged.
+        </p>
+      )}
+    </header>
+
+    <BibliographyList
+      items={items}
+      accentColor="var(--color-cl-red)"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .container-prose {
+    max-width: var(--prose-width, 65ch);
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .biblio-header {
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-8);
+    border-bottom: 2px solid var(--color-cl-red);
+  }
+
+  .biblio-header h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    color: var(--color-neutral-heading);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .biblio-subtitle {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .biblio-note {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    background: color-mix(in srgb, var(--color-cl-red) 8%, transparent);
+    border-left: 3px solid var(--color-cl-red);
+    padding: var(--space-3) var(--space-4);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin: 0;
+  }
+</style>

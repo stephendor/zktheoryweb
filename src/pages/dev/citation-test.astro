@@ -1,0 +1,27 @@
+---
+/**
+ * citation-test.astro — Task 2.9b — Agent_Integration
+ *
+ * Dev test route for the CitationPopover component.
+ * Renders the citation-test essay (draft: true) via PostLayout to verify
+ * CitationPopover renders correctly in a prose context.
+ *
+ * Access at: /dev/citation-test/
+ * Not linked from any production navigation.
+ */
+
+import { getCollection } from 'astro:content';
+import PostLayout from '@layouts/PostLayout.astro';
+
+const essays = await getCollection('essays');
+const entry = essays.find((e) => e.id === 'citation-test');
+
+if (!entry) {
+  throw new Error(
+    'citation-test.astro: essay "citation-test" not found in essays collection. ' +
+    'Ensure src/content/writing/essays/citation-test.mdx exists.',
+  );
+}
+---
+
+<PostLayout entry={entry} variant="essay" />

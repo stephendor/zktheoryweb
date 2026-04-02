@@ -17,10 +17,7 @@ const chapters = defineCollection({
     key_figures: z.array(z.string()).default([]),
     mathematical_concepts: z.array(z.string()).default([]),
     interludes: z.array(z.string()).default([]),
-    threads: z.object({
-      scottish: z.boolean().default(false),
-      gender: z.boolean().default(false),
-    }),
+    threads: z.array(z.string()).default([]),
     related_tda_papers: z.array(z.number().int()).default([]),
     key_claims: z.array(z.object({ claim: z.string(), detail: z.string() })).default([]),
   }),
@@ -104,7 +101,7 @@ const papers = defineCollection({
         cloud: z.boolean().default(false),
       })
       .optional(),
-    key_findings: z.array(z.string()).default([]),
+    key_findings: z.array(z.object({ claim: z.string(), detail: z.string() })).default([]),
     abstract: z.string().optional(),
     plain_summary: z.string().optional(),
     bibtex: z.string().optional(),
@@ -158,7 +155,7 @@ const learnModules = defineCollection({
       modules: z.array(z.string()).default([]),
       methods: z.array(z.string()).default([]),
     }),
-    check_understanding: z.array(z.string()).default([]),
+    check_understanding: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
     status: z.enum(['drafting', 'in-review', 'complete']).default('drafting'),
   }),
 });
@@ -185,7 +182,8 @@ const essays = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.date(),
-    description: z.string().optional(),
+    description: z.string().optional(), // SEO meta description
+    summary: z.string().optional(),     // human-readable teaser for list pages
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
@@ -198,6 +196,7 @@ const notes = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.date(),
+    summary: z.string().optional(),     // human-readable teaser for list pages
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),

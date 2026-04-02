@@ -1,0 +1,67 @@
+---
+title: 'Zigzag Persistence'
+method_slug: 'zigzag-persistence'
+related_papers: [3, 7]
+related_interludes: []
+status: 'drafting'
+---
+
+## What Is Zigzag Persistence?
+
+Standard persistent homology watches a single expanding wave: features are born as the scale parameter grows and die when they merge. Zigzag persistence generalises this to a **two-way tide**: the wave can both advance and retreat, and features are tracked through both the incoming and outgoing water. This makes zigzag persistence appropriate for data that changes through time — populations that grow, shrink, merge, and split across sequential samples.
+
+The name comes from the zigzag shape of the diagram connecting the sequence of spaces: arrows pointing left and right alternate, like the lines of a zigzag seam.
+
+## Mathematical Formulation
+
+A **zigzag persistence module** is a sequence of vector spaces connected by linear maps in alternating directions:
+
+$$
+V_0 \leftrightarrow V_1 \leftrightarrow V_2 \leftrightarrow \cdots \leftrightarrow V_n
+$$
+
+where each $\leftrightarrow$ denotes a map in either direction (forward or backward). This arises in practice from a sequence of spaces $X_0, X_1, \ldots, X_n$ connected by inclusion into unions:
+
+$$
+X_0 \hookrightarrow X_0 \cup X_1 \hookleftarrow X_1 \hookrightarrow X_1 \cup X_2 \hookleftarrow \cdots
+$$
+
+The **Structure Theorem for zigzag modules** (Carlsson–de Silva 2010) guarantees decomposition into interval modules $\mathbb{I}[b,d]$, yielding a barcode exactly as in ordinary persistence. Feature intervals now represent periods during which a topological feature (component, loop, void) is present in the sequence.
+
+$$
+M \cong \bigoplus_k \mathbb{I}[b_k, d_k]
+$$
+
+## Python Code Stub
+
+```python
+import gudhi
+
+def compute_zigzag_persistence(
+    rips_complex_sequence: list,
+    max_dimension: int = 2,
+) -> list:
+    """
+    Compute zigzag persistence from a time-ordered list of precomputed Rips complexes.
+    Each element is a Gudhi SimplexTree for a time window.
+    Returns a list of (dimension, (birth, death)) pairs.
+    """
+    # Gudhi zigzag API (as of Gudhi 3.9):
+    # gudhi.zigzag_persistence.compute_zigzag_persistence(zigzag_filtration)
+    # Build the zigzag filtration from the sequence of simplex trees
+    filtration = []
+    for i, st in enumerate(rips_complex_sequence):
+        for simplex, _ in st.get_filtration():
+            filtration.append((simplex, i, i + 1))  # present in window i
+
+    zz = gudhi.zigzag_persistence.compute_zigzag_persistence(filtration)
+    return zz.persistence()
+```
+
+## Application to the Research Programme
+
+Zigzag persistence is the primary method in **Paper 3**, where it is applied to five-year rolling windows of the BHPS/Understanding Society linked panel to track how employment trajectory topology evolves across macroeconomic cycles. The **topological complexity index** — a summary statistic derived from the sum of H₁ barcode lengths per window — is shown to lead official unemployment statistics by approximately two quarters.
+
+In **Paper 7**, zigzag-derived complexity indices serve as time-series features in the geometric forecasting model, contributing approximately 15% of combined SHAP feature importance.
+
+The primary computational challenge is that zigzag persistence cannot be trivially parallelised across windows (the zigzag structure requires sequential computation), leading to the ~14-hour runtime on HPC hardware documented in the [Computational Log](/tda/computational-log).

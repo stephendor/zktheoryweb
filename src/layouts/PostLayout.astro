@@ -1,0 +1,269 @@
+---
+/**
+ * PostLayout.astro — Task 2.5 — Agent_Design_Templates
+ *
+ * Writing post layout for essay and note variants. Extends BaseLayout.
+ *
+ * Props:
+ *   entry   — CollectionEntry<'essays'> | CollectionEntry<'notes'>
+ *   variant — 'essay' | 'note'  (drives typography and decorative differences)
+ *
+ * Rendering: Astro 6 render() API — `const { Content } = await render(entry)`
+ *
+ * Structure:
+ *   1. Optional draft banner (role="note", ochre background)
+ *   2. <article class="prose post--essay|post--note"> inside .container-prose
+ *     a. <header> — title, formatted date, reading time, tag pills
+ *     b. Decorative <hr> for essays only
+ *     c. <Content /> — MDX body
+ *     d. <footer> — nav back to /writing/
+ */
+
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+interface Props {
+  entry: CollectionEntry<'essays'> | CollectionEntry<'notes'>;
+  variant: 'essay' | 'note';
+}
+
+const { entry, variant } = Astro.props;
+const { Content } = await render(entry);
+
+const { title, date, tags, draft } = entry.data;
+
+// summary is present in both schemas (after Task 2.5 schema update)
+// description is present only in essays schema — use as SEO fallback
+const summary = 'summary' in entry.data ? (entry.data as { summary?: string }).summary : undefined;
+const description = 'description' in entry.data
+  ? (entry.data as { description?: string }).description
+  : undefined;
+const metaDescription = summary ?? description;
+
+// Human-readable date: "2 April 2026"
+const formattedDate = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(date);
+
+// Estimated reading time (~200 wpm, minimum "1 min read")
+const wordCount = entry.body ? entry.body.trim().split(/\s+/).filter(Boolean).length : 0;
+const minutes = Math.max(1, Math.round(wordCount / 200));
+const readingTimeLabel = `${minutes} min read`;
+---
+
+<BaseLayout title={title} description={metaDescription} section="writing">
+  <div class="container-prose--wide">
+
+    {draft && (
+      <div class="draft-banner" role="note">
+        Draft — this post is not yet published
+      </div>
+    )}
+
+    <article
+      class:list={['prose', variant === 'essay' ? 'post--essay' : 'post--note']}
+      aria-label={title}
+    >
+      <header class="post-header">
+        <h1 class="post-title">{title}</h1>
+
+        <div class="post-meta">
+          <time datetime={date.toISOString()} class="post-date">{formattedDate}</time>
+          <span class="post-reading-time" aria-label={`Estimated reading time: ${readingTimeLabel}`}>
+            {readingTimeLabel}
+          </span>
+
+          {tags.length > 0 && (
+            <ul class="post-tags" aria-label="Tags">
+              {tags.map((tag) => (
+                <li>
+                  <a href={`/writing/tags/${tag}/`} class="tag-pill">{tag}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {variant === 'essay' && <hr class="post-rule" aria-hidden="true" />}
+      </header>
+
+      <Content />
+
+      <footer class="post-footer">
+        <nav aria-label="Post navigation">
+          <a href="/writing/" class="back-link">&larr; Back to Writing</a>
+        </nav>
+      </footer>
+    </article>
+
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── Draft banner ────────────────────────────────────────────────────────── */
+  .draft-banner {
+    background-color: var(--color-cl-ochre-light);
+    color: var(--color-cl-charcoal);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: var(--space-7);
+  }
+
+  /* ── Post header ─────────────────────────────────────────────────────────── */
+  .post-header {
+    margin-bottom: var(--space-8);
+  }
+
+  /* ── Essay title: large display serif ──────────────────────────────────── */
+  :global(.post--essay) .post-title {
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin-top: var(--space-9);
+    margin-bottom: var(--space-5);
+  }
+
+  /* ── Note title: smaller, body serif ───────────────────────────────────── */
+  :global(.post--note) .post-title {
+    font-family: var(--font-body);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    line-height: var(--leading-snug);
+    color: var(--color-neutral-body);
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-4);
+  }
+
+  /* ── Metadata block ──────────────────────────────────────────────────────── */
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-5);
+  }
+
+  /* Note variant: more subdued metadata */
+  :global(.post--note) .post-meta {
+    opacity: 0.75;
+  }
+
+  .post-reading-time::before {
+    content: '·';
+    margin-right: var(--space-5);
+  }
+
+  /* ── Tag pills ────────────────────────────────────────────────────────────── */
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: lowercase;
+    text-decoration: none;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-neutral-border);
+    background: var(--color-neutral-surface);
+    color: var(--color-neutral-muted);
+    transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+
+  .tag-pill:hover {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-body);
+    border-color: var(--color-neutral-muted);
+  }
+
+  /* ── Essay decorative rule ──────────────────────────────────────────────── */
+  .post-rule {
+    border: none;
+    border-top: 2px solid var(--color-cl-ochre);
+    width: 4rem;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: var(--space-8);
+  }
+
+  /* ── Essay blockquote: pull-quote style ─────────────────────────────────── */
+  /* Overrides .prose blockquote scoped to .post--essay on the article */
+  :global(.post--essay.prose blockquote) {
+    border-left: none;
+    padding: var(--space-6) var(--space-7) var(--space-6) calc(var(--space-7) + 1.5rem);
+    margin: var(--space-8) 0;
+    background: var(--color-neutral-subtle);
+    border-radius: var(--radius-md);
+    font-size: var(--text-lg);
+    font-style: italic;
+    color: var(--color-neutral-body);
+    position: relative;
+  }
+
+  :global(.post--essay.prose blockquote::before) {
+    content: '\201C';
+    font-family: var(--font-display);
+    font-size: var(--text-6xl);
+    color: var(--color-cl-ochre);
+    position: absolute;
+    top: calc(-1 * var(--space-3));
+    left: var(--space-5);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  :global(.post--essay.prose blockquote p) {
+    color: inherit;
+    margin-bottom: 0;
+  }
+
+  /* ── Post footer ─────────────────────────────────────────────────────────── */
+  .post-footer {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .back-link {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-neutral-body);
+  }
+
+  /* ── Responsive ──────────────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    :global(.post--essay) .post-title {
+      font-size: var(--text-4xl);
+    }
+  }
+</style>

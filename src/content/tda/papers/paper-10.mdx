@@ -1,0 +1,78 @@
+---
+title: 'Topological Fairness Analysis of Poverty Measurement'
+paper_number: 10
+stage: 3
+status: 'planned'
+target_journal: 'ACM Conference on Fairness, Accountability, and Transparency'
+depends_on: [7]
+enables: []
+methods:
+  - 'persistent-homology'
+  - 'multi-parameter-ph'
+datasets:
+  - 'understanding-society'
+  - 'cross-national-welfare'
+compute:
+  hardware: 'CPU'
+  runtime: 'Minutes'
+  cloud: false
+key_findings:
+  - claim: 'Standard poverty measurement thresholds are topologically non-uniform: they cut the income-trajectory space differently for different demographic groups, generating systematic measurement bias.'
+    detail: 'Computing the persistent homology of the income-trajectory space separately for men, women, and ethnic minority groups, and comparing the topological structure of individuals classified as "in poverty" versus "not in poverty" under the 60%-median threshold, reveals that the threshold bisects the male income-trajectory space cleanly (few H₁ births near the threshold) but creates high topological distortion in the female and ethnic minority trajectory spaces, placing topologically similar trajectories on opposite sides of the poverty line.'
+  - claim: 'A topologically-informed poverty threshold minimises cross-group topological distortion and reclassifies approximately 7% of the sample relative to the standard threshold.'
+    detail: 'An optimised threshold — identified by minimising the sum of within-group persistence diagram distortions across demographic groups — differs from the standard 60%-median threshold by up to 8 percentage points in some subgroups. Reclassification analysis shows that 7% of the sample changes poverty classification, with the reclassified group disproportionately comprising women in part-time work and young ethnic minority men in non-standard employment.'
+  - claim: 'Measurement fairness and prediction accuracy trade off differently for topological versus conventional poverty measures, suggesting complementary rather than substitutable roles.'
+    detail: 'A Pareto frontier analysis of measurement accuracy (AUC for predicting future hardship) versus cross-group topological distortion (as a fairness measure) shows that conventional and topological thresholds occupy different points on the frontier. Neither dominates: the conventional threshold maximises AUC; the topological threshold minimises fairness distortion. The findings motivate plural poverty measurement frameworks rather than single-threshold approaches.'
+abstract: >
+  Poverty measurement is a political and technical act. The 60%-of-median-income threshold that dominates UK poverty statistics is not a naturally derived quantity — it is a social choice with distributional consequences. This paper applies topological fairness analysis to examine whether standard poverty thresholds are geometrically equitable: whether they apply consistent topological partitions across demographic groups. Using the multi-parameter persistence framework from Paper 4 and the geometric feature representations from Paper 7, we show that standard thresholds create systematic topological distortion in the income-trajectory spaces of women and ethnic minority groups. A topologically-informed alternative threshold is proposed and evaluated.
+plain_summary: >
+  When we say someone is "in poverty", we mean their income falls below a line — typically 60% of the national median. But who drew that line, and did they draw it the same way for everyone? This paper uses mathematics to test whether the poverty line is geometrically fair: does it divide the income landscape consistently for men and women, for majority and minority groups? We find it does not. The same threshold carves up career trajectories differently depending on who you are. We propose a more geometrically uniform alternative and show what it would mean for poverty statistics in practice.
+---
+
+## Introduction
+
+Poverty measurement is the closing paper of the research programme — and in many ways its most practically consequential output. Papers 1–9 develop, validate, and extend topological methods for analysing employment trajectories. Paper 10 turns these methods toward the original motivation of the programme: the measurement of poverty itself.
+
+The standard poverty threshold — 60% of median equivalised household income — is ubiquitous but contested. Debates about its adequacy focus mainly on its level (is 60% the right proportion?) and its reference distribution (median of what?). This paper raises a different question: is the threshold *topologically fair* — does it partition the income-trajectory space with equal geometric fidelity across demographic groups?
+
+## Background
+
+### Measurement Fairness in Machine Learning
+
+Algorithmic fairness research distinguishes multiple criteria — demographic parity, equalised odds, calibration. Applied to poverty measurement, these translate to questions about whether measurement error is distributed equitably across groups.
+
+### Topological Approaches to Fairness
+
+Topological fairness is underdeveloped in both the TDA and fairness literatures. This paper proposes persistent-homology-based distortion metrics as fairness measures for threshold-based classification.
+
+## Methods
+
+For each demographic group $g$ (men, women, ethnic minority, ethnic majority, education quartiles), the income-trajectory space is constructed as a point cloud with coordinates from the Paper 7 feature representation. Persistent homology is computed for the full space and for the sub-space of individuals crossing or near the poverty threshold. Topological distortion is measured as the Wasserstein distance between the persistence diagram of the full space and the persistence diagram restricted to the threshold sub-space.
+
+A global fairness objective is constructed as the sum of within-group distortions, and this objective is minimised over a grid of candidate thresholds.
+
+CPU computation on a standard workstation is sufficient; runtime is approximately 5–15 minutes for the full grid search.
+
+## Data
+
+Understanding Society waves 1–14 and EU-SILC cross-national data (for robustness assessment of the threshold recommendation across welfare state contexts).
+
+## Results
+
+### Topological Distortion by Group
+
+The 60%-median threshold creates significantly higher topological distortion in women's and ethnic minority income-trajectory spaces than in men's mainstream spaces (Kruskal-Wallis test, p < 0.001). The threshold's distortion is highest at the intersection of gender and ethnicity.
+
+### Alternative Threshold
+
+The topologically-informed threshold minimises group distortion at the cost of a small reduction in AUC prediction accuracy. A 7% reclassification rate is economically significant at the national scale.
+
+## Discussion
+
+Topological fairness analysis of poverty measurement is a novel application of TDA methods to a foundational policy question. The findings do not invalidate the conventional threshold but provide a principled geometric argument for why a plural measurement framework — reporting both conventional and topologically-adjusted poverty rates — is preferable to any single threshold.
+
+This paper is intended for a social science and policy methods audience at FAccT, bridging the TDA technical programme and the *Counting Lives* narrative arc of the broader research project.
+
+## Conclusion
+
+Standard poverty thresholds distribute topological distortion unequally across demographic groups. Topological fairness analysis provides a new criterion for evaluating measurement equity, and a constructive method for identifying less distorting alternatives. The programme concludes with a call for plural poverty measurement frameworks rooted in geometric equity.

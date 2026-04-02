@@ -9,7 +9,8 @@
       "@lib/*": ["src/lib/*"],
       "@styles/*": ["src/styles/*"],
       "@data/*": ["src/data/*"]
-    }
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*", ".astro/**/*"]
+  "include": ["src/**/*", ".astro/**/*", "vitest.setup.ts"]
 }

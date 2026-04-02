@@ -1,0 +1,71 @@
+---
+title: 'Mapper'
+method_slug: 'mapper'
+related_papers: [2, 5, 7]
+related_interludes: []
+status: 'drafting'
+---
+
+## What Is Mapper?
+
+Think of the Mapper algorithm as making a **transit map of your data**. A physical transit map does not show every building and street; it schematises the city, showing major stations connected by lines, making visible structural relationships that a satellite photograph would obscure. Mapper does the same for high-dimensional data: it produces a network (graph) whose vertices are clusters of data points and whose edges represent cluster overlaps, preserving the topological "shape" of the data while discarding irrelevant detail.
+
+The result is legible and interpretable: clusters become nodes, structural bridges become edges, and the global layout of the network reflects the global shape of the data manifold.
+
+## Mathematical Formulation
+
+Given a data set $X$ with a lens function $f: X \to \mathbb{R}^k$ and a cover $\mathcal{U} = \{U_i\}$ of $f(X)$, the Mapper graph $M(X, f, \mathcal{U}, \text{clust})$ is constructed as follows:
+
+1. For each $U_i \in \mathcal{U}$, form the preimage $f^{-1}(U_i) \subseteq X$
+2. Cluster $f^{-1}(U_i)$ using a clustering algorithm (typically single-linkage): produces clusters $\{C_{ij}\}$
+3. Construct the nerve of the cover: vertices are clusters $C_{ij}$; edges connect $C_{ij}$ and $C_{kl}$ when $C_{ij} \cap C_{kl} \neq \emptyset$
+
+The Mapper graph is the 1-skeleton of this nerve:
+
+$$
+M = \left(\{C_{ij}\},\; \{\{C_{ij}, C_{kl}\} : C_{ij} \cap C_{kl} \neq \emptyset\}\right)
+$$
+
+The choice of lens function $f$ determines what structure Mapper highlights. In this programme, $f$ is typically kernel density estimation on the trajectory space, revealing density-based topological structure.
+
+## Python Code Stub
+
+```python
+import kmapper as km
+import numpy as np
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.preprocessing import MinMaxScaler
+
+def run_mapper(
+    X: np.ndarray,
+    n_cubes: int = 15,
+    overlap: float = 0.5,
+) -> km.KeplerMapper:
+    """Apply Mapper to a feature matrix X."""
+    mapper = km.KeplerMapper(verbose=0)
+    scaler = MinMaxScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # Lens: kernel density estimate projected to 1D
+    lens = mapper.fit_transform(X_scaled, projection="knn_distance_2")
+
+    # Cover with n_cubes intervals and given overlap
+    cover = km.Cover(n_cubes=n_cubes, perc_overlap=overlap)
+
+    # Cluster within each cover element
+    graph = mapper.map(
+        lens,
+        X_scaled,
+        cover=cover,
+        clusterer=AgglomerativeClustering(n_clusters=None, distance_threshold=0.5),
+    )
+    return graph
+```
+
+## Application to the Research Programme
+
+Mapper is used in **Paper 2** to reveal the interior topological structure of UK employment trajectory space, identifying five robust topological clusters including a distinctive flare sub-population corresponding to early labour-market exit. Bootstrap stability analysis (1000 draws) confirms that the five-cluster topology is structurally stable across parameter choices.
+
+The Mapper graph representation is also used in **Paper 5** for cross-national comparison of employment trajectory topology and in **Paper 7** as a node embedding feature for the geometric forecasting model.
+
+Parameter sensitivity (number of intervals, overlap percentage, clustering threshold) is systematically assessed in each application; the stability analysis protocol is described in Paper 2's supplementary materials.

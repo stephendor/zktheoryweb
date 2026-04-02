@@ -1,0 +1,105 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ExpandableCard.css — Task 2.2b — Agent_Design_Templates
+
+   Scoped under the .ec- prefix to avoid conflicts with other components.
+   All values reference tokens from src/styles/tokens.css.
+   The expand/collapse animation uses the CSS grid trick:
+     grid-template-rows: 0fr → 1fr
+   which avoids the height:auto→pixel-value problem and is transition-friendly.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Card wrapper ────────────────────────────────────────────────────────── */
+.ec-card {
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-md);
+  background: var(--color-neutral-surface);
+  margin-block: var(--space-3);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Trigger button ──────────────────────────────────────────────────────── */
+.ec-trigger {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: var(--leading-snug);
+  text-align: left;
+  color: var(--color-neutral-body);
+  transition: background-color 150ms ease;
+}
+
+.ec-trigger:hover {
+  background-color: color-mix(in srgb, var(--ec-accent, var(--color-cl-red)) 6%, transparent);
+}
+
+.ec-trigger:focus-visible {
+  outline: 2px solid var(--ec-accent, var(--color-cl-red));
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── +/− icon ────────────────────────────────────────────────────────────── */
+.ec-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.1em; /* optical alignment with first line of title */
+  width: 1.25em;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ec-accent, var(--color-cl-red));
+}
+
+/* ── Title ───────────────────────────────────────────────────────────────── */
+.ec-title {
+  flex: 1;
+}
+
+/* ── Detail panel — grid expand/collapse animation ───────────────────────── */
+.ec-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 250ms ease;
+}
+
+.ec-panel--open {
+  grid-template-rows: 1fr;
+}
+
+/* Inner wrapper: overflow:hidden collapses the row to zero height */
+.ec-panel-inner {
+  overflow: hidden;
+  padding-inline: var(--space-5);
+  padding-bottom: 0;
+  color: var(--color-neutral-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  transition: padding-bottom 250ms ease;
+}
+
+/* Add bottom padding only when open so it animates in alongside the content */
+.ec-panel--open > .ec-panel-inner {
+  padding-bottom: var(--space-5);
+}
+
+/* ── Respect prefers-reduced-motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ec-panel,
+  .ec-panel-inner,
+  .ec-trigger {
+    transition: none;
+  }
+}

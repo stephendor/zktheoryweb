@@ -1,0 +1,372 @@
+---
+/**
+ * ChapterLayout.astro — Task 2.2a — Agent_Design_Templates
+ *
+ * Layout for Counting Lives chapter pages. Extends BaseLayout.
+ *
+ * Props:
+ *   entry       — CollectionEntry<'chapters'>  (full content entry)
+ *   prevChapter — { slug, title, chapter_number } | undefined
+ *   nextChapter — { slug, title, chapter_number } | undefined
+ *
+ * Rendering: uses Astro 6 render() API — `const { Content, headings } = await render(entry)`
+ *
+ * Structure:
+ *   1. Hero band (archival cream) — part label, chapter number, title,
+ *      spine role, status badge, thread indicators
+ *   2. Wide prose body — .prose main content + sticky ToC sidebar
+ *   3. Key claims disclosures
+ *   4. Prev / Next chapter navigation
+ */
+
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import StickyToC from '@components/shared/StickyToC.astro';
+import { ExpandableCard } from '@components/shared/ExpandableCard';
+import ThreadMarker from '@components/counting-lives/ThreadMarker.astro';
+// ConceptTooltip is used directly in MDX files via component imports.
+// Confirmed importable here for type-checking; no direct usage in this layout.
+import type { ConceptTooltipProps } from '@components/shared/ConceptTooltip';
+
+interface ChapterRef {
+  slug: string;
+  title: string;
+  chapter_number: number;
+}
+
+interface Props {
+  entry: CollectionEntry<'chapters'>;
+  prevChapter?: ChapterRef;
+  nextChapter?: ChapterRef;
+}
+
+const { entry, prevChapter, nextChapter } = Astro.props;
+const {
+  title,
+  chapter_number,
+  part,
+  part_number,
+  spine_role,
+  status,
+  threads,
+  key_claims,
+} = entry.data;
+
+const { Content, headings } = await render(entry);
+
+/* ── Status badge helpers ── */
+const statusLabels: Record<typeof status, string> = {
+  drafting: 'Drafting',
+  'in-review': 'In Review',
+  complete: 'Complete',
+};
+---
+
+<BaseLayout title={title} description={spine_role} section="counting-lives">
+
+  {/* ════════════════════════════════════════════════════════════════════
+      HERO — full-width archival cream band
+      ════════════════════════════════════════════════════════════════════ */}
+  <div class="chapter-hero">
+    <div class="container-prose--wide">
+
+      {/* Part label */}
+      {part && (
+        <p class="hero-part">
+          {part_number ? `Part ${part_number}` : part}
+        </p>
+      )}
+
+      {/* Chapter number */}
+      <p class="hero-chapter-number">Chapter {chapter_number}</p>
+
+      {/* Title */}
+      <h1 class="hero-title">{title}</h1>
+
+      {/* Spine role (subtitle / argumentative hook) */}
+      <p class="hero-spine">{spine_role}</p>
+
+      {/* ── Meta row: status badge + thread indicators ── */}
+      <div class="hero-meta">
+
+        {/* Status badge */}
+        <span class={`status-badge status-${status}`} aria-label={`Status: ${statusLabels[status]}`}>
+          {statusLabels[status]}
+        </span>
+
+        {/* Thread indicator pills — Task 2.2c <ThreadMarker> component */}
+        <ThreadMarker threads={threads} />
+
+      </div>
+    </div>
+  </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      BODY — wide prose container with sidebar ToC
+      ════════════════════════════════════════════════════════════════════ */}
+  <div class="chapter-body">
+    <div class="container-prose--wide">
+      <div class="chapter-grid">
+
+        {/* ── Main prose column ── */}
+        <article class="chapter-article prose">
+          <Content />
+
+          {/* Key Claims section — <ExpandableCard> React island (Task 2.2b) */}
+          {key_claims.length > 0 && (
+            <section class="key-claims" aria-labelledby="key-claims-heading">
+              <h2 id="key-claims-heading">Key Claims</h2>
+              <div class="key-claims-list">
+                {key_claims.map((kc) => (
+                  <ExpandableCard
+                    client:visible
+                    title={kc.claim}
+                    detail={kc.detail}
+                    accentColor="var(--color-cl-red)"
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+        </article>
+
+        {/* ── Sticky ToC sidebar ── */}
+        <aside class="chapter-sidebar" aria-label="Chapter navigation sidebar">
+          <StickyToC headings={headings} section="counting-lives" />
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      CHAPTER NAVIGATION — prev / next links
+      ════════════════════════════════════════════════════════════════════ */}
+  {(prevChapter || nextChapter) && (
+    <nav class="chapter-nav container-prose--wide" aria-label="Chapter navigation">
+      <div class="chapter-nav-inner">
+
+        {prevChapter ? (
+          <a href={`/counting-lives/${prevChapter.slug}/`} class="chapter-nav-link chapter-nav-prev">
+            <span class="nav-direction" aria-hidden="true">←</span>
+            <span class="nav-meta">Previous chapter</span>
+            <span class="nav-title">
+              Ch.{prevChapter.chapter_number} — {prevChapter.title}
+            </span>
+          </a>
+        ) : (
+          <div aria-hidden="true" />
+        )}
+
+        {nextChapter ? (
+          <a href={`/counting-lives/${nextChapter.slug}/`} class="chapter-nav-link chapter-nav-next">
+            <span class="nav-direction" aria-hidden="true">→</span>
+            <span class="nav-meta">Next chapter</span>
+            <span class="nav-title">
+              Ch.{nextChapter.chapter_number} — {nextChapter.title}
+            </span>
+          </a>
+        ) : (
+          <div aria-hidden="true" />
+        )}
+
+      </div>
+    </nav>
+  )}
+
+</BaseLayout>
+
+<style>
+  /* ══ Hero band ═══════════════════════════════════════════════════════════ */
+  .chapter-hero {
+    background-color: var(--color-cl-cream);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  .hero-part {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .hero-chapter-number {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-cl-red);
+    letter-spacing: var(--tracking-wide);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-cl-charcoal);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .hero-spine {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-style: italic;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-6) 0;
+    max-width: 60ch;
+    line-height: var(--leading-relaxed);
+  }
+
+  /* ── Meta row ── */
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+  }
+
+  .status-drafting {
+    background-color: var(--color-neutral-border);
+    color: var(--color-neutral-muted);
+  }
+
+  .status-in-review {
+    background-color: var(--color-cl-ochre-light);
+    color: var(--color-cl-charcoal);
+  }
+
+  .status-complete {
+    background-color: var(--color-cl-red);
+    color: #fff;
+  }
+
+  /* ══ Body layout ══════════════════════════════════════════════════════════ */
+  .chapter-body {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-12);
+  }
+
+  /* Two-column grid: main article + sidebar ToC */
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .chapter-grid {
+      /* Sidebar occupies the sidenote-width; article takes the rest */
+      grid-template-columns: 1fr var(--sidenote-width);
+      align-items: start;
+    }
+  }
+
+  .chapter-article {
+    min-width: 0; /* prevent grid blowout from wide pre/table children */
+  }
+
+  .chapter-sidebar {
+    min-width: 0;
+  }
+
+  /* ══ Key Claims section ════════════════════════════════════════════════════ */
+  .key-claims {
+    margin-top: var(--space-10);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  /* ══ Chapter prev / next navigation ═══════════════════════════════════════ */
+  .chapter-nav {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-10);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .chapter-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .chapter-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background-color: var(--color-neutral-surface);
+  }
+
+  .chapter-nav-link:hover {
+    border-color: var(--color-cl-red);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .chapter-nav-link:focus-visible {
+    outline: 2px solid var(--color-cl-red);
+    outline-offset: 2px;
+  }
+
+  .chapter-nav-next {
+    text-align: right;
+  }
+
+  .nav-direction {
+    font-size: var(--text-xl);
+    color: var(--color-cl-red);
+    line-height: 1;
+  }
+
+  .nav-meta {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+  }
+
+  .nav-title {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-body);
+    font-weight: 500;
+    line-height: var(--leading-snug);
+  }
+
+  /* Collapse to single column on mobile */
+  @media (max-width: 640px) {
+    .chapter-nav-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-title {
+      font-size: var(--text-4xl);
+    }
+  }
+</style>

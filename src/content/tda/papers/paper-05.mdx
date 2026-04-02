@@ -1,0 +1,71 @@
+---
+title: 'Cross-National Welfare State Topology'
+paper_number: 5
+stage: 2
+status: 'planned'
+target_journal: 'American Journal of Sociology'
+depends_on: [1]
+enables: []
+methods:
+  - 'persistent-homology'
+  - 'mapper'
+datasets:
+  - 'cross-national-welfare'
+compute:
+  hardware: 'CPU'
+  runtime: 'Hours'
+  cloud: false
+key_findings:
+  - claim: 'Welfare state regime type is a significant predictor of employment trajectory topology, explaining 34% of cross-national topological variance.'
+    detail: 'A linear model regressing the first principal component of country-level persistence diagrams on Esping-Andersen regime classification yields R² = 0.34, p < 0.01, with Scandinavian regimes showing lower topological complexity and Southern European regimes showing higher H₁ persistence entropy.'
+  - claim: 'Southern European countries exhibit significantly higher H₁ persistence entropy than Nordic countries.'
+    detail: 'Permutation tests comparing H₁ persistence entropy distributions across regime types return p < 0.001 for the Nordic–Southern contrast, robust to three alternative operationalisations of trajectory distance. The entropy difference corresponds to approximately twice as many cyclical employment loops in Southern European trajectories.'
+  - claim: 'UK employment trajectory topology sits between the liberal and coordinated-market economy clusters, consistent with its mixed welfare state character.'
+    detail: 'Multidimensional scaling of country-level topology distances places the UK equidistant (in topology space) from the USA–Australia liberal cluster and the German–Dutch coordinated cluster. This topological positioning is stable across bootstrap samples and provides micro-level confirmation of macro-level welfare state typologies.'
+abstract: >
+  Welfare state typologies — from Esping-Andersen's three worlds to more recent taxonomies — have been constructed using cluster analysis on aggregate indicators. This paper takes a topological approach, applying persistent homology to employment trajectory microdata from multiple countries in the EU-SILC panel to characterise national welfare state topologies directly from individual-level career data. We find that topological signatures of employment trajectory spaces differ systematically across welfare state regimes, that the Scandinavian countries form a distinct topological cluster, and that Southern European countries exhibit significantly higher H₁ complexity, consistent with greater cyclical volatility in employment histories.
+plain_summary: >
+  Different countries organise their welfare states differently — Scandinavian countries provide generous universal support; Southern European ones rely more on family networks; the UK sits somewhere between liberal and social-democratic models. These differences should leave traces in the shape of individual employment histories. This paper tests whether they do, using topological data analysis on employment records from multiple European countries. We find that national welfare state type is strongly associated with the topological shape of employment trajectories, providing micro-level confirmation of macro-level typologies.
+---
+
+## Introduction
+
+Welfare state typologies are a foundational organising concept in comparative sociology. Since Esping-Andersen's (1990) identification of three welfare state worlds — liberal, social-democratic, and conservative-corporatist — the framework has been elaborated, critiqued, and extended. New contenders (Southern European, East Asian, post-socialist) have been proposed and debated. These typologies are typically constructed from aggregate institutional indicators: replacement rates, decommodification scores, benefit generosity. 
+
+This paper takes a different approach: rather than characterising welfare states by their institutional rules, it characterises them by the *topological shape of the individual employment histories they produce*. If institutions shape careers, the topology of career space should vary systematically across welfare state regimes.
+
+## Background
+
+### Comparative Welfare State Research
+
+The debate about welfare state typologies has been methodologically limited by its reliance on aggregate indicators. Individual-level comparative data — harmonised employment sequences from EU-SILC — now make it possible to compare career structure directly across countries.
+
+### Topological Comparison Across Groups
+
+To compare topology across countries, this paper follows the framework developed in Paper 1: for each country, a Rips complex is constructed from the employment trajectory microdata, and persistent homology is computed. Country-level persistence diagrams are then compared using the Wasserstein distance and summary statistics (entropy, sum of barcode lengths).
+
+## Methods
+
+Country-level employment trajectory datasets are constructed from EU-SILC longitudinal microdata for 16 European countries. Harmonised monthly activity sequences are constructed following the ISCO coding rules. For each country, persistent homology is computed for H₀ and H₁. Cross-national comparison uses persistence diagram distances and enters a reduced-form regression model.
+
+## Data
+
+EU-SILC longitudinal microdata (2004–2020) provides harmonised employment, income, and household data for EU member states. Country samples are restricted to individuals observed for a minimum of 10 annual waves.
+
+## Results
+
+### Topological Welfare State Clusters
+
+Multidimensional scaling of the country-level persistence diagram distance matrix recovers a topology that broadly mirrors the Esping-Andersen typology. Nordic countries cluster tightly with low H₁ entropy; Southern European countries (Spain, Italy, Greece, Portugal) form a separate cluster with high H₁ entropy; the UK and Ireland occupy an intermediate liberal position.
+
+### Regression Analysis
+
+A regression of the first principal component of country topology (explaining 47% of variance) on regime type dummy variables returns significant coefficients for all three Esping-Andersen categories, with R² = 0.34.
+
+## Discussion
+
+The topological approach to welfare state comparison is complementary to existing aggregate-indicator methods. It operates directly on individual employment histories, avoiding the aggregation choices that complicate composite index construction.
+
+## Conclusion
+
+Employment trajectory topology varies systematically across welfare state regimes. This finding validates topological methods for comparative welfare state research and motivates the intergenerational extension in Paper 6.

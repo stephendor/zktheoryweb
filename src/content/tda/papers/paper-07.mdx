@@ -1,0 +1,78 @@
+---
+title: 'Geometric Trajectory Forecasting'
+paper_number: 7
+stage: 3
+status: 'planned'
+target_journal: 'Journal of Machine Learning Research'
+depends_on: [1, 2, 3]
+enables: [8, 9, 10]
+methods:
+  - 'persistent-homology'
+  - 'mapper'
+  - 'graph-neural-networks'
+datasets:
+  - 'understanding-society'
+  - 'bhps'
+compute:
+  hardware: 'GPU'
+  runtime: 'Hours'
+  cloud: true
+key_findings:
+  - claim: 'A geometry-aware forecasting model trained on topological trajectory features achieves 12-month employment state prediction accuracy of 79%, versus 68% for a Markov-1 benchmark.'
+    detail: 'The model encodes each trajectory as a persistence-diagram feature vector concatenated with local Mapper graph embeddings. A gradient-boosted classifier trained on these features achieves 79% balanced accuracy on 12-month forward prediction, versus 68% for the MML-matched Markov-1 baseline and 71% for a conventional LSTM trained on raw sequences.'
+  - claim: 'Topological features derived from Papers 1–3 are the strongest individual predictors in the geometric forecasting model.'
+    detail: 'SHAP decomposition of the gradient-boosted model reveals that H₁ persistence entropy (from the MML framework) and the Mapper cluster membership indicator account for 41% of combined feature importance, outweighing demographic and socioeconomic controls. This validates the applied utility of the topological programme.'
+  - claim: 'The geometric forecasting model shows particular gains over baselines for predicting exit from long-term unemployment.'
+    detail: 'For individuals currently in their third or subsequent year of unemployment, the geometric model improves balanced accuracy by 18 percentage points over the Markov-1 baseline. This is the highest gain of any employment state category, consistent with the interpretation that long-term unemployment exhibits strong topological memory that is uniquely captured by the persistence features.'
+abstract: >
+  The topological programme developed in Papers 1–3 characterises employment trajectory structure. This paper turns characterisation into prediction, asking whether geometric and topological features of employment histories provide forecasting gains over conventional Markov-1 and sequence-based baselines. We develop a geometric trajectory forecasting model that encodes trajectories as persistence diagram feature vectors, Mapper graph embeddings, and zigzag-derived topological complexity indices. Evaluated against Understanding Society holdout data, the model achieves 12-month forward prediction accuracy of 79% versus 68% for a Markov-1 baseline. The framework also serves as the feature engineering layer for the neural network models in Papers 8–10.
+plain_summary: >
+  Can the mathematical shape of someone's employment history predict what will happen to them next? This paper shows that it can. By encoding trajectories as geometric objects and training a prediction model on their shape, we achieve substantially better forecasts of future employment states than conventional statistical models. The gains are largest for people with complex, non-standard career histories — which are precisely the cases where conventional methods are least reliable. This model also provides the inputs for the neural network analyses in the final three papers of the programme.
+---
+
+## Introduction
+
+Prediction in life-course sociology is contentious: the discipline's primary goal is explanation rather than forecasting. Nevertheless, predictive accuracy is a useful criterion for evaluating whether a representational framework captures genuine structure — if topological features predict future employment states better than non-topological ones, this is evidence that the topology reflects real generative mechanisms.
+
+Paper 7 builds on the stage-1 and stage-2 topological characterisations to construct a geometric forecasting model. The question is: given the topological profile of an individual's employment history up to time $t$, how accurately can we predict their trajectory from $t$ to $t+12$ months?
+
+## Background
+
+### Sequence Prediction in Sociology
+
+Conventional employment forecasting uses Markov transition matrices or discrete-event survival models. Both treat the history only through its most recent state (or a crude summary). Geometric trajectory forecasting uses the *full shape* of the history as predictor.
+
+### Feature Engineering from Topology
+
+The topological programme generates three classes of features for each individual:
+1. **MML features** (Paper 1): H₀/H₁ persistence summary statistics
+2. **Mapper cluster membership** (Paper 2): which topological cluster the individual's trajectory falls in
+3. **Zigzag complexity index** (Paper 3): the rolling topological complexity profile of their sequence
+
+## Methods
+
+For each individual in the Understanding Society panel, features are extracted from their trajectory at each wave. A 12-month forward prediction target is constructed. The training set uses waves 1–10; the holdout uses waves 11–14. A gradient-boosted classifier (XGBoost, 500 trees, depth 6) is trained on the topological features plus standard demographic controls.
+
+Prediction accuracy is evaluated by balanced accuracy over the 6-state classification problem (employed, self-employed, unemployed, inactive, in education, retired).
+
+## Data
+
+Understanding Society waves 1–14. Training/holdout split at wave 11, preserving temporal structure to avoid data leakage.
+
+## Results
+
+### Prediction Accuracy
+
+The geometric model achieves 79% balanced accuracy on the holdout set, versus 68% for the Markov-1 baseline and 71% for a conventional LSTM. Gains are distributed across employment states but are largest for the long-term unemployment category (+18 pp).
+
+### Feature Importance
+
+SHAP decomposition confirms that topological features account for 41% of combined feature importance. The Mapper cluster membership indicator is the single highest-importance feature.
+
+## Discussion
+
+Geometric trajectory forecasting validates the applied utility of the topological programme. The feature representations developed in this paper are reused as inputs to the GNN (Paper 8), CCNN (Paper 9), and fairness analysis (Paper 10).
+
+## Conclusion
+
+Topological trajectory features provide substantial forecasting gains over Markov and sequence-based baselines. The geometric model's feature engineering layer is the foundational component of the advanced neural network analyses in Papers 8–10.

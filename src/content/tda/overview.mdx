@@ -1,0 +1,60 @@
+---
+title: 'TDA Research Programme: Overview'
+description: 'A ten-paper programme applying topological data analysis to employment trajectories and poverty measurement.'
+---
+
+# Topological Data Analysis Research Programme
+
+## What This Programme Is
+
+This research programme applies **topological data analysis** (TDA) — a branch of mathematics concerned with the shape and structure of data — to two connected problems in social science: the structure of employment trajectories over the working life, and the measurement of poverty.
+
+The programme comprises **ten papers** arranged in three stages. Each stage builds on the last, moving from foundational methods (Stage 1: Papers 1–3) through applied structural analysis (Stage 2: Papers 4–6) to advanced machine learning and policy applications (Stage 3: Papers 7–10).
+
+## Why Topology?
+
+Standard statistical methods model employment as a sequence of independent transitions — from employed to unemployed, from unemployed to inactive. These methods implicitly assume that what happens next depends only on what is happening now. The **Markov Memory Ladder** (Paper 1) tests this assumption directly and finds it wanting: UK employment histories carry persistent structural memory that Markov models miss.
+
+Topology provides the language for describing that memory. Rather than asking "what is the probability of transition $A \to B$?", topology asks "what is the *shape* of the space of all trajectories?" Loops, clusters, flares, and voids in that shape correspond to meaningful social phenomena: precarious cycling between employment states, stable career types, early labour market exit, and structural poverty traps.
+
+## Three Stages of the Programme
+
+### Stage 0–1: Foundations and Exploration (Papers 1–3)
+
+**Paper 1 — The Markov Memory Ladder** establishes the foundational result: UK employment trajectories exhibit topological structure significantly in excess of a Markov-1 null model. It introduces the MML framework and provides the benchmark against which all subsequent analyses are calibrated.
+
+**Paper 2 — Mapper for Interior Trajectory Structure** applies the Mapper algorithm to reveal clusters, flares, and loops within the employment trajectory space. Five robust topological clusters are identified, including a distinctive flare sub-population of early labour-market exits.
+
+**Paper 3 — Zigzag Persistence for Business Cycle Topology** extends the analysis through time, showing how the topology of employment trajectory space changes during recessions. Topological complexity leads official unemployment statistics by approximately two quarters.
+
+### Stage 2: Structural Applications (Papers 4–6)
+
+**Paper 4 — Multi-Parameter PH for Poverty Trap Detection** introduces two-parameter persistent homology to distinguish genuine poverty traps from extended transient poverty, identifying a topological signature of structural trapping concentrated in specific regional and demographic sub-populations.
+
+**Paper 5 — Cross-National Welfare State Topology** applies the TDA framework comparatively across 16 European countries, showing that welfare state regime type is associated with systematic differences in employment trajectory topology.
+
+**Paper 6 — Intergenerational Topological Inheritance** demonstrates that the structural shape of employment trajectories — not only outcomes — transmits across generations, with cyclical instability topology showing the highest heritability.
+
+### Stage 3: Advanced Methods and Policy (Papers 7–10)
+
+**Paper 7 — Geometric Trajectory Forecasting** converts the topological characterisation into a prediction framework, demonstrating that geometric trajectory features substantially outperform Markov-1 baselines in 12-month employment prediction.
+
+**Paper 8 — GNNs on Household Social Graphs** embeds individual topological features in household social graphs, using Graph Neural Networks to reveal social contagion of employment instability at the household level.
+
+**Paper 9 — Combinatorial Complex Neural Networks** extends the network analysis to higher-order neighbourhood structures, achieving state-of-the-art prediction by explicitly modelling group-level employment dynamics.
+
+**Paper 10 — Topological Fairness Analysis** closes the programme by turning TDA on the foundational measurement question: are standard poverty thresholds geometrically equitable across demographic groups? Findings motivate a plural measurement framework informed by topological fairness criteria.
+
+## Methods and Data
+
+The programme draws on a consistent set of TDA methods — persistent homology, Mapper, zigzag persistence, multi-parameter persistence, and topological neural networks — applied to UK panel survey data (BHPS and Understanding Society) and cross-national microdata (EU-SILC).
+
+For technical details, see the [Methods](/tda/methods) reference pages. For data access and construction protocols, see the [Data Sources](/tda/data-sources) documentation.
+
+## Code and Replication
+
+All analyses are developed as reproducible Python pipelines. Replication packages will be deposited with the paper repositories at time of submission. Interim code is maintained at the project GitHub repository. See the [Code & Replication](/tda/code) page for details.
+
+## Computational Resources
+
+Papers 7–9 require GPU computation. Cloud compute budgets are documented in the [Computational Log](/tda/computational-log). Papers 1–6 and Paper 10 are CPU-tractable on standard research workstations.

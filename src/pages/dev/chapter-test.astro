@@ -1,0 +1,21 @@
+---
+/**
+ * chapter-test.astro — Task 2.2a — Agent_Design_Templates
+ * Dev test route for ChapterLayout. Renders the ch-00-sample chapter entry.
+ * Remove or gate behind a dev flag before production deployment.
+ */
+import { getCollection } from 'astro:content';
+import ChapterLayout from '@layouts/ChapterLayout.astro';
+
+const chapters = await getCollection('chapters');
+const entry = chapters.find((c) => c.id === 'ch-00-sample');
+
+if (!entry) {
+  throw new Error(
+    'chapter-test.astro: ch-00-sample not found in chapters collection. ' +
+    'Ensure src/content/counting-lives/chapters/ch-00-sample.mdx exists.'
+  );
+}
+---
+
+<ChapterLayout entry={entry} />

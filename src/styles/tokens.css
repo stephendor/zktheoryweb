@@ -36,6 +36,7 @@
   --color-neutral-muted:    #555555; /* secondary / muted text                  */
   --color-neutral-border:   #DEDBD4; /* subtle border                           */
   --color-neutral-surface:  #FFFFFF; /* elevated surface — cards, panels        */
+  --color-neutral-subtle:   #EDEAE2; /* subtle tinted surface — placeholders, hover backgrounds */
 
   /* ── Shared accent ─────────────────────────────────────────────────────── */
   --color-accent-amber:  #D4841A;
@@ -133,6 +134,7 @@
   --color-neutral-muted:    #999999; /* secondary / muted text                  */
   --color-neutral-border:   #3A3A3A; /* subtle dark border                      */
   --color-neutral-surface:  #242424; /* slightly lighter surface for cards      */
+  --color-neutral-subtle:   #2A2A2A; /* subtle tinted surface — dark-mode */
 
   /* ── CL palette — tints lightened for dark backgrounds ────────────────── */
   --color-cl-red-light:    #D48080; /* brighter for visibility on dark bg       */

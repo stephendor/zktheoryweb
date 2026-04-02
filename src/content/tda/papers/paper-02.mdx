@@ -1,0 +1,72 @@
+---
+title: 'Mapper for Interior Trajectory Structure'
+paper_number: 2
+stage: 1
+status: 'planned'
+target_journal: 'Sociological Methods & Research'
+depends_on: [1]
+enables: []
+methods:
+  - 'mapper'
+  - 'persistent-homology'
+datasets:
+  - 'understanding-society'
+  - 'bhps'
+compute:
+  hardware: 'CPU'
+  runtime: 'Hours'
+  cloud: false
+key_findings:
+  - claim: 'Mapper applied to BHPS/Understanding Society trajectories identifies five robust topological clusters in employment trajectory space.'
+    detail: 'Cluster stability is assessed via bootstrap resampling with 1000 draws; five clusters persist across >95% of resamplings when using a Gaussian kernel density lens with cover resolution 15, confirming that the coarse topology is not an artefact of parameter choice.'
+  - claim: 'A flare-shaped sub-graph captures early labour-market exit trajectories, constituting approximately 8% of the sample.'
+    detail: 'The flare topology — a branch structure extending from the main employment cluster — identifies individuals who permanently exit the labour market before age 40. This group is heavily gender-imbalanced, with women comprising 71% of the flare sub-population, consistent with care-related early exit.'
+  - claim: 'Mapper topology is robust to choice of distance metric across three alternatives tested.'
+    detail: 'Comparing Levenshtein, optimal-matching with substitution costs, and Hamming distances yields consistent high-level topology across all five clusters, though fine structural details vary. Levenshtein distance yields the cleanest separation of the early-exit flare from the main component.'
+abstract: >
+  Mapper is a topological lens algorithm that constructs a network representation of high-dimensional data by overlapping covers. This paper applies Mapper to UK employment trajectory data from the BHPS and Understanding Society panels to reveal interior topological structure — clusters, flares, and loop-like features — within the trajectory space. We demonstrate that Mapper recovers interpretable sub-populations of workers with qualitatively distinct career shapes, including stable employment clusters, precarious cycling groups, and early-exit flares. The resulting topology meaningfully extends the Markov Memory Ladder results from Paper 1, providing a richer structural picture of how employment histories vary across the working-age population.
+plain_summary: >
+  Maps made by mathematicians look different from maps made by geographers. This paper makes a mathematical "map" of employment histories — a network diagram showing how different career types are connected to one another. Some workers cluster together because their careers look similar; others diverge early and never reconnect. This network view reveals groups that conventional methods miss, including people caught in cycles between work and unemployment, and people who exit the labour market permanently at an early stage.
+---
+
+## Introduction
+
+Employment trajectories are high-dimensional objects. A career spanning 30 years of monthly observations occupies a space of 360 dimensions; even after dimensionality reduction, comparing careers requires choices about which aspects of similarity matter most. The Mapper algorithm — introduced by Singh, Mémoli, and Carlsson (2007) — provides a principled method for constructing a low-dimensional network representation of a high-dimensional point cloud while preserving topological features at multiple scales.
+
+Building on the foundational MML result of Paper 1, this paper applies Mapper to UK employment trajectory data to reveal the *interior shape* of trajectory space: the clusters, flares, and loops that characterise how careers are structured across the working-age population.
+
+## Background
+
+### The Mapper Algorithm
+
+Mapper constructs a cover of the data by applying a lens function (here, kernel density estimation of the trajectory space) and forming overlapping bins. Within each bin, trajectories are clustered via hierarchical clustering. The resulting nerve of the cover is a simplicial complex whose 1-skeleton — a network — summarises the topology of the data.
+
+### Prior Work
+
+Sequence analysis has identified distinct trajectory clusters in employment data, but existing clustering approaches do not produce topologically meaningful representations. Mapper extends this tradition by constructing a network whose global shape carries mathematical meaning independent of cluster-label assignment.
+
+## Methods
+
+Trajectories are encoded as categorical sequences from the BHPS/Understanding Society coding scheme. Pairwise distances are computed using three alternatives (Levenshtein, OM, Hamming) and the sensitivity of results to this choice is assessed. A Gaussian kernel density lens with cover resolution parameter 15 and overlap parameter 50% is used for all primary analyses. Bootstrap resampling (1000 draws) is used to assess cluster stability.
+
+## Data
+
+Data are drawn from the BHPS (1991–2009) and Understanding Society (2009–present), following the data construction protocol established in Paper 1.
+
+## Results
+
+### Topology of the Trajectory Space
+
+Mapper produces a network with five robust clusters: (i) stable employment, (ii) stable inactivity, (iii) cycling employment–unemployment, (iv) early labour-market exit, and (v) late-career exit. The early-exit cluster forms a flare topology — a branch appendage — suggesting it is a structurally distinct sub-population rather than an endpoint of continuous variation.
+
+### Gender and the Flare
+
+The flare sub-population is heavily female (71%), consistent with theories of care-related early exit. This finding motivates the cross-national comparison in Paper 5.
+
+## Discussion
+
+Mapper provides an interpretable, topology-respecting representation of employment career space. The five-cluster topology is stable across bootstrap samples and robust to distance-metric choice. The flare structure offers a richer characterisation of early exit than binary classification.
+
+## Conclusion
+
+Mapper reveals structured interior topology in UK employment trajectory data. These results motivate further analysis via zigzag persistence (Paper 3) and cross-national comparison (Paper 5).

@@ -11,18 +11,23 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "fetch:zotero": "npx tsx src/lib/zotero.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/netlify": "^7.0.6",
     "@astrojs/react": "^5.0.2",
+    "@astrojs/rss": "^4.0.18",
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "agentic-pm": "^0.5.4",
     "astro": "^6.1.3",
+    "astro-pagefind": "^1.8.6",
+    "dotenv": "^17.4.0",
     "katex": "^0.16.44",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -33,12 +38,19 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
+    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "happy-dom": "^20.8.9",
     "prettier": "^3.8.1",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "tsx": "^4.21.0",
+    "vitest": "^4.1.2"
   }
 }

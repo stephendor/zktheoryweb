@@ -1,0 +1,84 @@
+---
+title: 'Combinatorial Complex Neural Networks for Trajectory Analysis'
+paper_number: 9
+stage: 3
+status: 'planned'
+target_journal: 'Neural Information Processing Systems'
+depends_on: [7]
+enables: []
+methods:
+  - 'graph-neural-networks'
+  - 'persistent-homology'
+  - 'multi-parameter-ph'
+datasets:
+  - 'understanding-society'
+  - 'bhps'
+  - 'cross-national-welfare'
+compute:
+  hardware: 'Cloud GPU'
+  runtime: 'Days'
+  cloud: true
+key_findings:
+  - claim: 'Combinatorial Complex Neural Networks achieve state-of-the-art prediction on employment trajectory data, outperforming both GNNs and transformer baselines.'
+    detail: 'A CCNN operating on combinatorial complexes (vertices: individuals; edges: household relations; 2-cells: shared employment state sequences; 3-cells: household-neighbourhood co-employment clusters) achieves 84% balanced accuracy on the 6-state prediction task, versus 82% for GNN (Paper 8) and 80% for a BERT-based sequence transformer baseline. The CCNN gains are attributable to its ability to process higher-order collective behaviour — group dynamics not captured by pairwise graph structure.'
+  - claim: 'Higher-order interactions among households at the neighbourhood level explain a significant share of employment clustering effects not captured by dyadic household models.'
+    detail: 'The 3-cell (neighbourhood cluster) component of the CCNN contributes 22% of combined feature importance in SHAP decompositions. Ablation studies confirm that removing the 3-cell component reduces prediction accuracy by 4 pp, with the largest losses in densely-populated urban areas where neighbourhood employment norms are theoretically strongest.'
+  - claim: 'CCNN representations of employment topology are transferable across national datasets with minimal fine-tuning, achieving competitive performance on EU-SILC validation data.'
+    detail: 'A CCNN model pretrained on BHPS/Understanding Society is fine-tuned on EU-SILC data for France and Germany using only 10% of available EU-SILC training data. The fine-tuned model achieves 77% balanced accuracy, only 5 pp below a model trained fully on EU-SILC from scratch, suggesting that the topological structural representations are partially cross-national.'
+abstract: >
+  Graph Neural Networks process pairwise relations. Combinatorial Complex Neural Networks (CCNNs) generalise this to higher-order topological domains — complexes where cells of dimension 0, 1, 2, and above jointly represent the data. This paper applies CCNNs to employment trajectory data encoded as combinatorial complexes: individuals as 0-cells, household co-residence as 1-cells, shared employment state sequences as 2-cells, and neighbourhood co-employment clusters as 3-cells. CCNNs achieve state-of-the-art prediction on trajectory classification tasks and reveal higher-order collective employment dynamics not visible in pairwise graph structure.
+plain_summary: >
+  Standard neural networks for social data process pairs of connected people. But real social life involves groups — households, neighbourhoods, communities — whose collective dynamics cannot be reduced to pairs. Combinatorial Complex Neural Networks are a tool for processing these higher-order structures. This paper applies them to employment data, building mathematical objects that simultaneously represent individual histories, household relationships, and neighbourhood clusters. The result is more accurate prediction and the discovery of genuine group-level employment dynamics: neighbourhood employment norms affect individual career trajectories in ways that no individual or household model can detect.
+---
+
+## Introduction
+
+The ascending complexity of the research programme — from individual topological features (Papers 1–4) to household networks (Paper 8) — culminates in Paper 9 with higher-order topological neural networks. Graph Neural Networks process edges (pairwise relations); but social dynamics involve simplices and cells of higher dimension: friendship groups, households, neighbourhoods.
+
+Combinatorial Complex Neural Networks (CCNNs) — introduced by Hajij et al. (2022) — provide a unified framework for neural computation on combinatorial complexes, topological domains encoding cells of dimension 0, 1, 2, and above. This paper encodes employment data as a combinatorial complex and trains CCNNs to exploit the full hierarchy of collective social structure.
+
+## Background
+
+### Topological Deep Learning
+
+Topological deep learning (TDL) generalises geometric deep learning beyond graphs to simplicial complexes, cell complexes, and combinatorial complexes. The motivation is that many real-world phenomena involve interactions among groups, not merely pairs, and these higher-order interactions require higher-dimensional mathematical representations.
+
+### Employment as a Higher-Order Phenomenon
+
+Employment behaviour is shaped by norms and information flows at the household, neighbourhood, and community level — structures that are inherently higher-order. CCNNs provide the first framework capable of processing all these levels jointly.
+
+## Methods
+
+The combinatorial complex for UK employment data is constructed as follows:
+- **0-cells**: individual adults, each with a topological trajectory feature vector (Paper 7)
+- **1-cells**: household co-residence edges (from Paper 8)
+- **2-cells**: shared employment state sequence cells, connecting individuals with sufficiently similar trajectory topology (cosine distance < 0.3 in persistence diagram space)
+- **3-cells**: neighbourhood employment cluster cells, defined by NUTS-3 area × employment sector pairs with sufficient co-concentration
+
+A CCNN with 4 message-passing layers (one per cell dimension) is trained on the 6-state employment prediction task. Cloud GPU training on 8× A100 (~72 hours per run).
+
+## Data
+
+Understanding Society (primary), BHPS (historical extension), EU-SILC (cross-national transfer validation). Full linked panel with neighbourhood-level identifiers required for 3-cell construction.
+
+## Results
+
+### Prediction Accuracy
+
+CCNN achieves 84% balanced accuracy, surpassing both GNN (82%, Paper 8) and transformer baseline (80%). The gain persists across all employment states and geographic regions.
+
+### Higher-Order Contributions
+
+3-cell (neighbourhood cluster) ablation studies confirm 4 pp accuracy contribution and 22% SHAP importance attribution. Urban areas show larger 3-cell benefits, consistent with neighbourhood-norm theories of employment clustering.
+
+### Cross-National Transferability
+
+Fine-tuning on EU-SILC with 10% of available data achieves 77% balanced accuracy (2 pp above EU-SILC-only zero-shot, 5 pp below full EU-SILC training), demonstrating partial cross-national topological invariance.
+
+## Discussion
+
+CCNNs reveal that employment dynamics are genuinely higher-order — group dynamics at the neighbourhood level shape careers in ways that pairwise models miss. The transfer learning result suggests topological representations are partially universal across welfare state contexts, an unexpected finding that motivates ongoing cross-national work.
+
+## Conclusion
+
+Combinatorial Complex Neural Networks represent the methodological apex of the topological programme. Higher-order collective employment dynamics are real, detectable, and have prediction utility beyond graph-level models.

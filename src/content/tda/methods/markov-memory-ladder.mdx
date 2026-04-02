@@ -1,0 +1,78 @@
+---
+title: 'The Markov Memory Ladder'
+method_slug: 'markov-memory-ladder'
+related_papers: [1, 6]
+related_interludes: []
+status: 'drafting'
+---
+
+## What Is the Markov Memory Ladder?
+
+The Markov Memory Ladder (MML) is a framework for measuring how much *memory* a sequence carries — not in the colloquial sense, but in a precise topological sense. A sequence has no memory if each step depends only on the current position (Markov-1). It has memory if what came before continues to influence the trajectory as a whole. The MML measures the *degree* of this memory as a graded topological property: how much more structured is the observed trajectory topology compared to what a Markov-1 process would produce?
+
+The metaphor of a ladder captures the graded nature of the measurement: each rung corresponds to a higher order of memory (Markov-2, Markov-3, ...), and the MML tells you where on the ladder the observed data sits.
+
+## Mathematical Formulation
+
+Let $\mathbf{x} = (x_1, x_2, \ldots, x_T)$ be a categorical sequence over state set $S$. A **Markov-$k$ null model** preserves the $k$-th order transition matrix and sequence length but randomises the sequence beyond those constraints.
+
+The MML memory score for dimension $p$ is:
+
+$$
+\text{MML}_p(\mathbf{x}) = \frac{\sum_{(b,d) \in \text{Dgm}_p(\mathbf{x})} (d - b) - \mathbb{E}_{\text{Markov-1}}[\sum_{(b,d)} (d-b)]}{\text{SD}_{\text{Markov-1}}[\sum_{(b,d)} (d-b)]}
+$$
+
+This is a $z$-score: the observed sum of H$_p$ lifespans relative to the mean and standard deviation under the Markov-1 permutation null. Values significantly below zero indicate that the observed topology is *less complex* than random (suppressed memory); significantly above zero indicates excess topological memory.
+
+The test statistic for Paper 1's primary finding is $\text{MML}_1 \approx -3.7$: observed H₁ complexity is 3.7 standard deviations below the Markov-1 null — not random noise, but structured, sub-random topology that is consistent with persistent patterns of employment concentration.
+
+## Python Code Stub
+
+```python
+import numpy as np
+from typing import Callable
+
+def mml_score(
+    trajectory: list[int],
+    compute_persistence_sum: Callable[[list[int]], float],
+    n_permutations: int = 1000,
+    rng: np.random.Generator | None = None,
+) -> float:
+    """
+    Compute the Markov Memory Ladder z-score for a single trajectory.
+
+    Parameters
+    ----------
+    trajectory            : sequence of integer state codes
+    compute_persistence_sum : function mapping a sequence to sum of H1 barcode lengths
+    n_permutations        : number of draws from the Markov-1 null
+    rng                   : NumPy random generator (for reproducibility)
+
+    Returns
+    -------
+    z-score relative to Markov-1 null
+    """
+    rng = rng or np.random.default_rng()
+    observed = compute_persistence_sum(trajectory)
+
+    null_scores = []
+    transitions = list(zip(trajectory[:-1], trajectory[1:]))
+    for _ in range(n_permutations):
+        rng.shuffle(transitions)
+        null_seq = [trajectory[0]] + [b for _, b in transitions]
+        null_scores.append(compute_persistence_sum(null_seq))
+
+    mean_null = np.mean(null_scores)
+    sd_null = np.std(null_scores, ddof=1)
+    return (observed - mean_null) / sd_null if sd_null > 0 else 0.0
+```
+
+## Application to the Research Programme
+
+The MML is the foundational framework of the entire programme, introduced in **Paper 1**. It provides:
+
+1. The primary test of topological memory in UK employment trajectories (z ≈ −3.7)
+2. The permutation null model framework used in all subsequent hypothesis tests
+3. The individual-level MML score that serves as a feature in the forecasting models (Papers 7–9)
+
+An extended application in **Paper 6** uses the MML framework to compare parent–offspring trajectory topology, demonstrating that the intergenerational transmission coefficient can be estimated using the same permutation infrastructure.

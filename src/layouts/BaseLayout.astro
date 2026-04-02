@@ -39,6 +39,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <!-- Print stylesheet — loaded separately so browser defers it for non-print -->
     <link rel="stylesheet" media="print" href={printCssUrl} />
+
+    <!-- RSS feed — writing section only -->
+    {section === 'writing' && (
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="zktheory.org — Writing"
+        href="/writing/rss.xml"
+      />
+    )}
   </head>
 
   <body>
@@ -50,7 +60,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <SiteNav />
       </header>
 
-      <main id="main-content">
+      <main id="main-content" data-pagefind-body>
         <slot />
       </main>
 

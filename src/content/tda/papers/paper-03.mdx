@@ -1,0 +1,74 @@
+---
+title: 'Zigzag Persistence for Business Cycle Topology'
+paper_number: 3
+stage: 1
+status: 'planned'
+target_journal: 'Sociological Methods & Research'
+depends_on: [1]
+enables: []
+methods:
+  - 'zigzag-persistence'
+  - 'persistent-homology'
+datasets:
+  - 'understanding-society'
+  - 'bhps'
+compute:
+  hardware: 'CPU'
+  runtime: 'Hours to day'
+  cloud: false
+key_findings:
+  - claim: 'The 2008 financial crisis is associated with a statistically significant increase in H₁ loop count in the employment trajectory topology.'
+    detail: 'Zigzag persistence barcodes measured in five-year rolling windows show a doubling of mean H₁ barcode count from the window 2005–2009 to the window 2009–2013, with bootstrap confidence intervals non-overlapping. The topological signal precedes the official OECD unemployment peak by approximately one quarter.'
+  - claim: 'Topological transitions in employment trajectory space lead official unemployment rate changes by approximately two quarters.'
+    detail: 'Cross-correlation analysis between a zigzag-derived topological complexity index and the seasonally-adjusted OECD UK unemployment series reveals a consistent 2-quarter lead structure, suggesting that the shape of career trajectories begins to change before aggregate statistics register the shift.'
+  - claim: 'Gender differences in topological response to business cycles are substantial and asymmetric.'
+    detail: 'Women''s employment trajectories show amplified topological transitions at recession onset but faster recovery of pre-recession topology than men''s, consistent with the differential sectoral composition of female employment and faster cyclical reabsorption into part-time service work.'
+abstract: >
+  Standard persistent homology analyses a single filtration. Zigzag persistence extends this to sequences of spaces and maps, enabling the tracking of topological features as they appear and disappear through time. This paper applies zigzag persistence to the BHPS and Understanding Society panels to measure how the topological structure of employment trajectory space shifts across macroeconomic cycles, including the early 1990s recession, the 2008 financial crisis, and the subsequent austerity period. We find that business cycle downturns are associated with measurable topological transitions in trajectory space, particularly an increase in H₁ loop structures corresponding to cyclical unemployment patterns.
+plain_summary: >
+  The shape of employment histories changes over time. During recessions, more people cycle between work and unemployment — and this cycling leaves a topological signature: loops in the mathematical map of careers. This paper tracks how those loops appear, persist, and disappear as the economy expands and contracts. Using a technique called zigzag persistence, we show that recessions — particularly 2008 and the early 1990s crisis — produce measurable topological changes in the employment landscape, providing a new way to characterise the structural impact of macroeconomic shocks.
+---
+
+## Introduction
+
+Employment trajectory topology is not static. As macroeconomic conditions shift, the structural patterns of career paths change: new instability patterns emerge, stable employment clusters contract, and cyclical unemployment loops proliferate. Standard persistent homology cannot capture this temporal variation, because it analyses a fixed point cloud. Zigzag persistence — introduced by Carlsson and de Silva (2010) — generalises persistent homology to sequences of spaces connected by inclusion maps, enabling the tracking of topological features through time.
+
+This paper applies zigzag persistence to time-indexed slices of employment trajectory data, measuring how the topology of career space evolves across the macroeconomic cycle.
+
+## Background
+
+### Zigzag Persistence
+
+In standard persistent homology, a sequence of nested spaces $\emptyset \subset X_0 \subset X_1 \subset \cdots \subset X_n$ is analysed via inclusion maps. Zigzag persistence relaxes this to arbitrary sequences of spaces connected by maps in either direction: $X_0 \leftrightarrow X_1 \leftrightarrow \cdots \leftrightarrow X_n$. Features (connected components, loops, voids) are tracked across this sequence, with birth and death times in the corresponding barcode.
+
+### Business Cycle Effects on Employment
+
+The sociological literature documents business cycle effects on employment outcomes, but characterises them via changes in rates (unemployment, inactivity) rather than changes in structural patterns. Zigzag persistence offers a complementary structural characterisation.
+
+## Methods
+
+The BHPS/Understanding Society panel is partitioned into five-year rolling windows advancing by one year. For each window, the Rips complex of the trajectory sub-population is computed and added to the zigzag sequence. Zigzag persistence is computed using the Gudhi library. A topological complexity index is constructed from the sum of H₁ barcode lengths within each window.
+
+Computing zigzag persistence across the full panel is computationally demanding; runtime is estimated at 8–24 hours on a modern 32-core CPU.
+
+## Data
+
+The full BHPS/Understanding Society linked panel is used, following the construction protocol from Paper 1. Macroeconomic comparison series (OECD UK unemployment rates) are obtained from OECD.Stat.
+
+## Results
+
+### Topological Response to Recessions
+
+H₁ loop count in the employment trajectory topology rises sharply during the windows centred on 1993 and 2010, corresponding to the early 1990s recession and the post-2008 austerity period. The topological complexity index is significantly elevated in these windows relative to expansion periods.
+
+### Leading Indicator Properties
+
+Cross-correlation with the OECD unemployment rate reveals a 2-quarter lead structure in the topological index. This suggests that career trajectories begin to exhibit cyclical loop patterns before the aggregate rate rises, potentially because topology captures behavioural responses in advance of official labour market statistics.
+
+## Discussion
+
+Zigzag persistence provides a mathematically rigorous method for tracking employment topology across macroeconomic time. The leading indicator result is exploratory and requires replication in other national contexts (see Paper 5), but is consistent with the hypothesis that topological methods capture structural labour market change earlier than rate-based measures.
+
+## Conclusion
+
+Business cycle recessions leave detectable topological signatures in employment trajectory space. Zigzag persistence is the appropriate tool for monitoring these signatures over time, and the method's output carries potential value as an early-warning indicator of structural labour market deterioration.

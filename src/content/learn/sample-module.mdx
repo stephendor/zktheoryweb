@@ -1,0 +1,44 @@
+---
+title: 'Shapes Without Numbers: An Introduction to Topological Spaces'
+path: 'topology-social-scientists'
+module_number: 1
+core_concept: 'What is a shape? Topological spaces and continuous deformation'
+interactive_slug: 'normal-distribution-explorer'
+connections:
+  chapters: [1, 2]
+  papers: [1]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'What property is preserved when you continuously deform a topological space?'
+    answer: 'Connectivity and neighbourhood relationships are preserved. A coffee mug and a donut are topologically identical because one can be continuously deformed into the other without tearing or gluing — both have exactly one hole.'
+  - question: 'Why does topology matter for studying poverty data?'
+    answer: 'Poverty data exists in high-dimensional space (many variables per household). Topology reveals the global shape of this data — clusters, loops, and voids — that both linear statistics and simple visualisations miss. Two datasets can have identical means and variances yet profoundly different topological structure.'
+status: 'drafting'
+---
+
+import Sidenote from '@components/shared/Sidenote.astro';
+
+## What Is a Topological Space?
+
+Topology is often described as "rubber-sheet geometry" — the study of properties that survive continuous stretching, bending, and twisting, but not tearing or gluing. A circle and a square are topologically the same; a circle and a figure-eight are not.
+
+More formally, a **topological space** is a set $X$ together with a collection of open sets $\tau$ satisfying three axioms: the empty set and $X$ itself are in $\tau$, arbitrary unions of open sets are in $\tau$, and finite intersections of open sets are in $\tau$.<sup aria-describedby="sn-1">1</sup>
+
+<Sidenote number={1}>The three axioms encode our intuition about "nearness" without requiring a notion of distance. This is precisely what makes topology more general than geometry.</Sidenote>
+
+## Continuous Maps and Homeomorphisms
+
+A function $f: X \to Y$ between topological spaces is **continuous** if the preimage of every open set in $Y$ is open in $X$. When $f$ is a bijection and both $f$ and $f^{-1}$ are continuous, we call it a **homeomorphism** — a topological equivalence.
+
+The classic example: a coffee mug is homeomorphic to a donut (torus), since both have exactly one hole. Neither is homeomorphic to a sphere, which has none.
+
+## Why This Matters for Data
+
+When we represent a population dataset as a point cloud in $\mathbb{R}^n$, each variable becomes a dimension and each household a point. The *shape* of this cloud — how points cluster, whether they form loops, where the voids lie — encodes structural inequality that summary statistics cannot capture.
+
+Topological Data Analysis asks: what is the persistent shape of poverty data across all scales of resolution? The answer, as we will see in later modules, reveals features invisible to conventional econometric methods.
+
+## From Spaces to Simplicial Complexes
+
+In practice, we cannot work with continuous spaces on a computer. Instead, we build **simplicial complexes**: combinatorial approximations made of vertices (points), edges (pairs), triangles (triples), and higher-dimensional simplices. The Vietoris–Rips and Čech complexes are two standard constructions we will explore in detail in the next module.

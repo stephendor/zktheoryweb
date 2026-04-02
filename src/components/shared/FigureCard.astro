@@ -1,0 +1,195 @@
+---
+/**
+ * FigureCard.astro — Task 2.2b — Agent_Design_Templates
+ *
+ * A card for historical figures used across Counting Lives chapter pages.
+ * Designed for use inside a CSS auto-fill grid on the parent:
+ *
+ *   .figures-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: var(--space-5); }
+ *
+ * This component sets min-width: 16rem to match that minmax, so no wrapper
+ * logic is needed here.
+ *
+ * NOTE on --color-neutral-subtle: added to tokens.css in Task 2.2c.
+ * The portrait placeholder uses this shared neutral token rather than
+ * --color-cl-cream so FigureCard is not tied to the Counting Lives palette.
+ */
+
+interface RelatedChapter {
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  name: string;
+  dates: string;
+  role: string;
+  relatedChapters: RelatedChapter[];
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+const { name, dates, role, relatedChapters, imageSrc, imageAlt } = Astro.props;
+---
+
+<article class="figure-card">
+
+  {/* ── Portrait area ── */}
+  <div class="figure-portrait" aria-hidden="true">
+    {imageSrc ? (
+      <img
+        src={imageSrc}
+        alt={imageAlt ?? `Portrait of ${name}`}
+        class="figure-portrait-img"
+        width="240"
+        height="240"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <div
+        class="figure-portrait-placeholder"
+        role="img"
+        aria-label={`Portrait of ${name}`}
+      ></div>
+    )}
+  </div>
+
+  {/* ── Bio / meta ── */}
+  <div class="figure-info">
+
+    <h3 class="figure-name">{name}</h3>
+    <p class="figure-dates">{dates}</p>
+    <p class="figure-role">{role}</p>
+
+    {relatedChapters.length > 0 && (
+      <ul class="figure-chapters" aria-label={`Chapters relating to ${name}`}>
+        {relatedChapters.map((ch) => (
+          <li>
+            <a href={`/counting-lives/${ch.slug}/`} class="figure-chapter-link">
+              {ch.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+
+  </div>
+
+</article>
+
+<style>
+  /* ── Card wrapper ──────────────────────────────────────────────────────── */
+  .figure-card {
+    /* Minimum width matches the parent auto-fill grid's minmax first arg */
+    min-width: 16rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-neutral-surface);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Portrait ──────────────────────────────────────────────────────────── */
+  .figure-portrait {
+    /* Square crop ratio */
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--color-neutral-subtle);
+    flex-shrink: 0;
+  }
+
+  .figure-portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Placeholder: same background as portrait wrapper, styled with a subtle
+     inner ring to suggest an absent photograph */
+  .figure-portrait-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--color-neutral-subtle);
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  /* ── Info section ──────────────────────────────────────────────────────── */
+  .figure-info {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .figure-name {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin: 0;
+  }
+
+  .figure-dates {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin: 0;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .figure-role {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-neutral-body);
+    margin: 0;
+  }
+
+  /* ── Related chapter links ─────────────────────────────────────────────── */
+  .figure-chapters {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-2) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .figure-chapter-link {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    color: var(--color-cl-red);
+    text-decoration: none;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-cl-red-light);
+    border-radius: var(--radius-sm);
+    line-height: var(--leading-snug);
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+
+  .figure-chapter-link:hover {
+    background-color: var(--color-cl-red);
+    border-color: var(--color-cl-red);
+    color: #fff;
+  }
+
+  .figure-chapter-link:focus-visible {
+    outline: 2px solid var(--color-cl-red);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .figure-chapter-link {
+      transition: none;
+    }
+  }
+</style>

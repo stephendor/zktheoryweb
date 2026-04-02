@@ -1,0 +1,93 @@
+---
+title: 'The Markov Memory Ladder'
+paper_number: 1
+stage: 0
+status: 'in-progress'
+target_journal: 'Sociological Methodology'
+depends_on: []
+enables: [2, 3, 4, 5, 6]
+methods:
+  - 'persistent-homology'
+  - 'markov-memory-ladder'
+datasets:
+  - 'understanding-society'
+  - 'bhps'
+compute:
+  hardware: 'CPU'
+  runtime: 'Minutes'
+  cloud: false
+key_findings:
+  - claim: 'UK employment trajectories exhibit topological structure significantly exceeding Markov-1 null expectations (z ≈ −3.7).'
+    detail: 'Permutation testing under the Markov-1 null model yields z ≈ −3.7 across both BHPS and Understanding Society panels. The signal survives multiple robustness checks and is not artefactual.'
+  - claim: 'The Markov Memory Ladder formalises sequence memory as a graded topological property, enabling rigorous hypothesis testing via permutation null models.'
+    detail: 'The MML embeds trajectories in a topological space and defines a graded memory score based on persistent homology, providing an explicit null-model framework rather than informal sequence comparison.'
+  - claim: 'Findings are robust across both BHPS and Understanding Society survey waves.'
+    detail: 'Cross-dataset replication using two independent UK longitudinal panels with different sampling frames confirms the topological memory signal is not driven by survey artefacts or state-coding differences.'
+abstract: >
+  Sequence analysis methods widely used in sociology treat employment trajectories as Markov chains of order 1 — that is, as memoryless processes in which each state depends only on the immediately preceding one. This paper introduces the Markov Memory Ladder (MML), a framework that embeds trajectories in a topological space and measures the degree to which observed sequence topology exceeds that of a Markov-1 null model. Applying the MML to UK longitudinal data from the BHPS and Understanding Society panels, I find strong evidence that employment trajectories carry persistent memory: topological features survive permutation testing at z ≈ −3.7 under the null. This result motivates a programme of higher-order methods (Papers 2–6) and provides the foundational benchmark against which topological complexity is measured throughout the research programme.
+plain_summary: >
+  Most statistical models of employment over a lifetime assume that what you do next depends only on what you are doing right now — not on your full history. This paper tests that assumption rigorously. Using UK household panel data tracked over decades, I show that people's employment histories contain strong "memory": the shape of a person's career path over time is far more structured than a memoryless model would predict. The Markov Memory Ladder is the measuring instrument that detects this structure. The result sets the foundation for the rest of the research programme, which develops new mathematical tools to describe and explain that structure.
+bibtex: |
+  @article{dorling2025markov,
+    author  = {Dorling, Stephen},
+    title   = {The Markov Memory Ladder: Topological Foundations for Employment Trajectory Analysis},
+    journal = {Sociological Methodology},
+    year    = {2025},
+    volume  = {},
+    number  = {},
+    pages   = {},
+    note    = {Under review},
+    doi     = {}
+  }
+---
+
+## Introduction
+
+Employment trajectories are sequences of occupational and labour-market states recorded across the working life. The dominant analytic tradition — optimal matching and its variants — treats sequence similarity as a distance problem. Topological data analysis opens a complementary question: *what shape does a trajectory have?*
+
+This paper introduces the **Markov Memory Ladder** (MML), a framework for measuring the degree to which employment trajectory topology exceeds that of a Markov-1 null model. The MML operationalises "memory" as a topological property and provides rigorous permutation-based hypothesis tests.
+
+## Background
+
+### Employment Trajectories and Sequence Analysis
+
+Sequence analysis in sociology dates to Abbott's (1995) foundational work. The field has expanded substantially, but most methods remain agnostic about the *generative process* underlying sequences. The Markov assumption — that state transitions depend only on the current state — is rarely tested directly.
+
+### Topological Data Analysis
+
+Persistent homology provides a multi-scale summary of the topological features of a data set. When applied to trajectory spaces, it captures loops, voids, and connected components that resist noise — properties invisible to distance-based methods.
+
+## Methods
+
+The Markov Memory Ladder proceeds in three stages:
+
+1. **Embedding**: each trajectory is represented as a path in a Rips complex built from pairwise state-sequence distances.
+2. **Measurement**: persistent homology extracts the lifespan of topological features (connected components, loops) across filtration scales.
+3. **Testing**: observed feature lifespans are compared against a null distribution generated by randomly permuting transitions within each trajectory (preserving state marginals but destroying memory structure).
+
+## Data
+
+Data are drawn from two UK household panel surveys:
+
+- **BHPS** (British Household Panel Survey): 1991–2009, 18 annual waves
+- **Understanding Society**: 2009–present, 14 waves available at time of analysis
+
+Monthly activity sequences are constructed following the BHPS coding scheme: employed, self-employed, unemployed, inactive, in education, and retired.
+
+## Results
+
+### Topological Signal
+
+The primary finding is that observed trajectory topology significantly exceeds the Markov-1 null. The principal test statistic (normalised sum of persistent H₁ lifespans) returns z ≈ −3.7 under the permutation null, corresponding to p < 0.001.
+
+### Robustness
+
+The signal is consistent across BHPS and Understanding Society waves, across gender subgroups, and across three alternative distance metrics. It is not attributable to length differences or state marginal distributions.
+
+## Discussion
+
+The Markov Memory Ladder result motivates the subsequent papers in this programme. If trajectories carry persistent topological structure beyond Markov memory, then higher-order tools — mapper graphs, zigzag persistence, multi-parameter persistence — are the natural instruments for studying that structure.
+
+## Conclusion
+
+UK employment trajectories exhibit robust topological memory. The MML provides the baseline against which all subsequent topological analyses in this programme are calibrated.

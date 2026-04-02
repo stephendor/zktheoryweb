@@ -1,0 +1,21 @@
+---
+/**
+ * paper-test.astro — Task 2.3 — Agent_Design_Templates
+ * Dev test route for PaperLayout. Renders the paper-01-sample entry.
+ * Remove or gate behind a dev flag before production deployment.
+ */
+import { getCollection } from 'astro:content';
+import PaperLayout from '@layouts/PaperLayout.astro';
+
+const papers = await getCollection('papers');
+const entry = papers.find((p) => p.id === 'paper-01-sample');
+
+if (!entry) {
+  throw new Error(
+    'paper-test.astro: paper-01-sample not found in papers collection. ' +
+    'Ensure src/content/tda/papers/paper-01-sample.mdx exists.',
+  );
+}
+---
+
+<PaperLayout entry={entry} />

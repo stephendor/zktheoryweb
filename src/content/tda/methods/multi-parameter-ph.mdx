@@ -1,0 +1,83 @@
+---
+title: 'Multi-Parameter Persistent Homology'
+method_slug: 'multi-parameter-ph'
+related_papers: [4, 9, 10]
+related_interludes: []
+status: 'drafting'
+---
+
+## What Is Multi-Parameter Persistent Homology?
+
+In standard persistent homology, a single dial controls the analysis — the scale parameter $\varepsilon$. You turn the dial, watch features appear and disappear, record the lifespan of each. Multi-parameter persistent homology (MPH) gives you **two or more dials simultaneously**: scale *and* density, scale *and* poverty depth, scale *and* time. Features are born and die as a result of joint changes across all parameters at once, producing a richer picture of the data's structure.
+
+The cost of this richness is algebraic complexity: with two or more parameters, indecomposable modules become generically wild, and no single barcode summarises the persistence module completely. Instead, researchers work with tractable invariants — the rank function, fibered barcodes, and multigraded Betti numbers — that capture aspects of the full multi-parameter structure.
+
+## Mathematical Formulation
+
+A **two-parameter persistence module** $M$ is a functor from $(\mathbb{R}^2, \leq)$ to $\mathbf{Vec}$: for each $(s, t) \in \mathbb{R}^2$ a vector space $M_{s,t}$, with structure maps $M_{s,t} \to M_{s',t'}$ for $(s,t) \leq (s',t')$.
+
+The **rank function** of $M$ is the map:
+
+$$
+\text{rk}(M)(a, b) = \text{rank}(M_a \to M_b), \quad a \leq b \in \mathbb{R}^2
+$$
+
+The **fibered barcode** restricts $M$ to each line $L$ of positive slope through $\mathbb{R}^2$, recovering a single-parameter persistence module $M|_L$ and its standard barcode. The collection of fibered barcodes across all lines forms a complete invariant:
+
+$$
+\text{Fib}(M) = \{(\ell, \text{Dgm}(M|_\ell)) : \ell \text{ a line of positive slope}\}
+$$
+
+In practice, a finite approximation is computed by sampling lines over a grid.
+
+## Python Code Stub
+
+```python
+import numpy as np
+
+def fibered_barcode_approximation(
+    distance_matrices: dict[tuple[float, float], np.ndarray],
+    line_slopes: list[float],
+    n_samples: int = 50,
+) -> dict[float, list[tuple[float, float]]]:
+    """
+    Approximate the fibered barcode of a two-parameter persistence module.
+
+    Parameters
+    ----------
+    distance_matrices : dict mapping (s, t) parameter pairs to distance matrices
+    line_slopes       : slopes of lines through parameter space to sample
+    n_samples         : number of sample points per line
+
+    Returns
+    -------
+    dict mapping slope -> list of (birth, death) pairs (fibered barcode)
+    """
+    import gudhi
+
+    barcodes: dict[float, list] = {}
+    for slope in line_slopes:
+        # Sample points along line through origin with given slope
+        t_vals = np.linspace(0, 2, n_samples)
+        pairs = [(t, slope * t) for t in t_vals]
+
+        # Build 1-parameter filtration by restricting to line
+        restricted_dms = [distance_matrices.get(p) for p in pairs if p in distance_matrices]
+        if not restricted_dms:
+            continue
+
+        rips = gudhi.RipsComplex(distance_matrix=restricted_dms[0], max_edge_length=np.inf)
+        st = rips.create_simplex_tree(max_dimension=2)
+        st.compute_persistence()
+        barcodes[slope] = st.persistence()
+
+    return barcodes
+```
+
+## Application to the Research Programme
+
+MPH is the central method in **Paper 4**, where it is applied to income-augmented employment trajectory data with filtration parameters indexing both income depth and time. The two-parameter persistence module identifies topological invariants associated with poverty trap configurations, distinguishing them from transient poverty.
+
+GPU computation (using a custom CUDA extension to Gudhi) is required for practical estimation at scale; the cloud infrastructure is documented in the [Computational Log](/tda/computational-log).
+
+MPH-derived feature representations also appear in **Paper 9** (CCNN 2-cell construction) and **Paper 10** (fairness analysis of poverty thresholds).

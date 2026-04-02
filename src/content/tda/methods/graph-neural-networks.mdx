@@ -1,0 +1,66 @@
+---
+title: 'Graph Neural Networks'
+method_slug: 'graph-neural-networks'
+related_papers: [7, 8, 9]
+related_interludes: []
+status: 'drafting'
+---
+
+## What Are Graph Neural Networks?
+
+A Graph Neural Network (GNN) learns from data that is structured as a **network of related objects** — rather than assuming all data points are independent, it explicitly represents the connections between them and learns how information propagates through those connections. The intuition is that a person's characteristics are partly a function of who they are connected to: their neighbourhood in the network influences their own properties.
+
+GNNs generalise this intuition into a learnable algorithm. In each layer, each node collects messages from its neighbours, aggregates them, and updates its own representation. After several layers of message passing, each node's representation contains information about its local neighbourhood's structure — making GNNs sensitive to social context in a way that conventional machine learning is not.
+
+## Mathematical Formulation
+
+Let $G = (V, E)$ be a graph with node feature matrix $\mathbf{X} \in \mathbb{R}^{|V| \times d}$ and adjacency matrix $\mathbf{A}$. A single **Graph Convolutional Network** (GCN) layer computes:
+
+$$
+\mathbf{H}^{(\ell+1)} = \sigma\!\left(\tilde{\mathbf{D}}^{-1/2}\tilde{\mathbf{A}}\tilde{\mathbf{D}}^{-1/2}\mathbf{H}^{(\ell)}\mathbf{W}^{(\ell)}\right)
+$$
+
+where $\tilde{\mathbf{A}} = \mathbf{A} + \mathbf{I}$ is the adjacency matrix with added self-loops, $\tilde{\mathbf{D}}$ is the corresponding degree matrix, $\mathbf{W}^{(\ell)}$ is a learnable weight matrix, and $\sigma$ is a nonlinear activation.
+
+The **GraphSAGE** variant used in this programme replaces the symmetric normalisation with a sample-and-aggregate scheme:
+
+$$
+\mathbf{h}_v^{(\ell+1)} = \sigma\!\left(\mathbf{W}^{(\ell)}\left[\mathbf{h}_v^{(\ell)} \,\Vert\, \text{AGG}\!\left(\{\mathbf{h}_u^{(\ell)} : u \in \mathcal{N}(v)\}\right)\right]\right)
+$$
+
+where $\mathcal{N}(v)$ is the neighbourhood of node $v$, and AGG is a learnable aggregator (mean, max, or LSTM).
+
+## Python Code Stub
+
+```python
+import torch
+import torch.nn.functional as F
+from torch_geometric.nn import SAGEConv
+
+class TrajectoryGNN(torch.nn.Module):
+    """GraphSAGE model for employment outcome prediction on household graphs."""
+
+    def __init__(self, in_channels: int, hidden_channels: int, out_channels: int):
+        super().__init__()
+        self.conv1 = SAGEConv(in_channels, hidden_channels)
+        self.conv2 = SAGEConv(hidden_channels, hidden_channels)
+        self.conv3 = SAGEConv(hidden_channels, out_channels)
+
+    def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
+        x = F.relu(self.conv1(x, edge_index))
+        x = F.dropout(x, p=0.3, training=self.training)
+        x = F.relu(self.conv2(x, edge_index))
+        x = F.dropout(x, p=0.3, training=self.training)
+        x = self.conv3(x, edge_index)
+        return x
+```
+
+## Application to the Research Programme
+
+GNNs appear across the Stage 3 papers:
+
+- **Paper 7** uses GNN-derived Mapper graph embeddings as forecasting features (offline, not trained end-to-end)
+- **Paper 8** trains a GraphSAGE model on household social graphs with topological trajectory node features, revealing household-level employment contagion effects
+- **Paper 9** extends to Combinatorial Complex Neural Networks (CCNNs), which generalise GNNs to higher-order topological domains (cells of dimension 0–3), enabling modelling of group-level employment dynamics at the neighbourhood level
+
+The GNN and CCNN implementations use **PyTorch Geometric** and the **TopoModelX** library respectively; both require GPU computation for the full Understanding Society panel.

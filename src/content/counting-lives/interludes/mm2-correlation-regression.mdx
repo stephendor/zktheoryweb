@@ -1,0 +1,32 @@
+---
+title: "Correlation and Regression"
+interlude_slug: "mm2-correlation-regression"
+related_chapters: [2, 5, 6]
+related_tda_methods:
+  - "markov-memory-ladder"
+status: drafting
+---
+
+#### Intuitive
+
+Suppose you notice that taller parents tend to have taller children — not always, but on average. And suppose you want to express that tendency as a single number: a measure of how tightly the two variables track each other. That number is a correlation coefficient. If parents' and children's heights moved in perfect lockstep, the correlation would be exactly 1. If height were entirely random between generations, it would be 0. Galton invented this idea in the 1880s while trying to measure how strongly physical "fitness" was inherited — a question he was asking in the service of eugenics.
+
+Regression is the companion idea. If you know the correlation between two variables, regression tells you the best straight line you could draw through a scatterplot to predict one from the other. Galton called his version "regression to mediocrity": no matter how exceptional the parents, children tended to regress back toward the population average. He read this as a deep biological law. It is, in fact, a mathematical artefact of working with correlated distributions — but it took decades of careful analysis to untangle the finding from its eugenic interpretation.
+
+#### Intermediate
+
+The Pearson correlation coefficient $r$ between two variables $X$ and $Y$ measures the strength and direction of their linear relationship and always lies in $[-1, 1]$. A value near $+1$ means a strong positive relationship; near $-1$ a strong negative one; near $0$ no linear relationship.
+
+In simple linear regression, we estimate the best-fit line $\hat{Y} = \alpha + \beta X$ by ordinary least squares (OLS) — minimising the sum of squared residuals $(Y_i - \hat{Y}_i)^2$. The slope coefficient $\beta$ tells us the expected change in $Y$ for a one-unit increase in $X$.
+
+Post-war poverty researchers working in the cybernetic systems tradition (Chapters 5–6) used regression extensively to model the determinants of poverty — the relationship between education, income, employment, and poverty status. These models were taken to reveal causal structure. But correlation does not imply causation, and the regression framework, by design, partitions variance statistically rather than modelling the actual generative processes of poverty. The consequence was a set of policy recommendations oriented toward individual-level variables (education, skill formation) that the regression models identified as correlated with poverty exit, regardless of whether changing those variables would actually reduce poverty at population level.
+
+#### Formal
+
+Let $(X_1, Y_1), \ldots, (X_n, Y_n)$ be $n$ observations. The OLS estimator for the slope in simple linear regression is:
+
+$$\hat{\beta} = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2} = \frac{\text{Cov}(X,Y)}{\text{Var}(X)}$$
+
+This is precisely $r \cdot (\sigma_Y / \sigma_X)$, so slope and correlation are algebraically inseparable. The Gauss–Markov theorem guarantees that OLS is the Best Linear Unbiased Estimator (BLUE) under homoskedasticity, independence, and zero conditional mean of errors — assumptions almost never fully satisfied in social data.
+
+The Markov memory ladder (a TDA method examined elsewhere) addresses a limitation this framework cannot: it captures long-range temporal dependencies in poverty trajectories that regression-to-the-mean systematically obscures. Where the regression model asks "what is the average relationship between these variables over the sample?", the memory ladder asks "how does the probability of remaining poor depend on how long a household has already been poor?" — a question whose answer cannot be compressed into a single slope coefficient.

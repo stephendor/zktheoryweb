@@ -1,0 +1,66 @@
+---
+title: 'Persistent Homology'
+method_slug: 'persistent-homology'
+related_papers: [1, 2, 3, 4, 5, 6, 7, 10]
+related_interludes: []
+status: 'drafting'
+---
+
+## What Is Persistent Homology?
+
+Imagine inflating a balloon around a scattered collection of points. As the balloon expands, distinct islands of points merge into connected regions; holes form and then fill; voids open and close. Persistent homology is the mathematics that records *when* each of these topological events — the birth and death of a connected component, a loop, a void — occurs as the balloon's radius grows. The result is a **barcode**: a collection of intervals recording the lifespan of each feature across scales.
+
+Features with long lifespans are "persistent" — they survive across many scales and are structurally significant. Features with short lifespans are noise. The barcode is the topological signature of the data.
+
+## Mathematical Formulation
+
+Given a finite metric space $(X, d)$, the **Vietoris–Rips complex** at scale $\varepsilon$ is the simplicial complex $\mathcal{R}_\varepsilon(X)$ containing every subset $\sigma \subseteq X$ with $\text{diam}(\sigma) \leq \varepsilon$.
+
+As $\varepsilon$ increases, a nested sequence of complexes is produced:
+
+$$
+\mathcal{R}_0(X) \subseteq \mathcal{R}_{\varepsilon_1}(X) \subseteq \mathcal{R}_{\varepsilon_2}(X) \subseteq \cdots \subseteq \mathcal{R}_\infty(X)
+$$
+
+Applying the $k$-th homology functor $H_k(-)$ to this sequence yields a sequence of vector spaces connected by linear maps — a **persistence module**:
+
+$$
+H_k(\mathcal{R}_0) \to H_k(\mathcal{R}_{\varepsilon_1}) \to H_k(\mathcal{R}_{\varepsilon_2}) \to \cdots
+$$
+
+The **Structure Theorem** (Zomorodian–Carlsson 2005) guarantees that this persistence module decomposes into interval summands, each encoded by a birth–death pair $(b, d)$ with $b < d$. The collection of these pairs is the **persistence diagram** $\text{Dgm}_k(X)$.
+
+## Python Code Stub
+
+```python
+import gudhi
+import numpy as np
+
+def compute_persistence(distance_matrix: np.ndarray, max_dimension: int = 2) -> list:
+    """Compute persistent homology from a precomputed distance matrix."""
+    rips = gudhi.RipsComplex(distance_matrix=distance_matrix, max_edge_length=2.0)
+    simplex_tree = rips.create_simplex_tree(max_dimension=max_dimension)
+    simplex_tree.compute_persistence()
+    return simplex_tree.persistence()
+
+
+def persistence_to_barcode(persistence: list, dimension: int) -> list[tuple[float, float]]:
+    """Extract birth–death pairs for a given homology dimension."""
+    return [
+        (birth, death)
+        for (dim, (birth, death)) in persistence
+        if dim == dimension and death != float('inf')
+    ]
+```
+
+## Application to the Research Programme
+
+Persistent homology is the foundational tool of the entire TDA programme. It appears in:
+
+- **Paper 1** (MML): Rips complex of employment trajectory space; H₁ persistence tested against Markov-1 null
+- **Papers 2–3**: H₀ and H₁ barcodes used as input to Mapper and zigzag persistence
+- **Paper 4**: Two-parameter extension (multi-parameter PH) for poverty trap detection
+- **Papers 5–6**: Country-level and parent–offspring persistence diagram comparison via Wasserstein distance
+- **Papers 7, 10**: Persistence diagram feature vectors as inputs to forecasting and fairness analysis
+
+The stability theorem — that small perturbations to the data produce small perturbations to the diagram (Chazal et al. 2012) — justifies the use of persistence-based features in noisy social science applications.

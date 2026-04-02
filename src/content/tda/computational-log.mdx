@@ -1,0 +1,78 @@
+---
+title: 'Computational Log'
+description: 'Public laboratory notebook recording compute usage, environment configuration, and resource decisions for the TDA research programme.'
+---
+
+# Computational Log
+
+This page serves as a public computational laboratory notebook, documenting hardware, runtimes, cloud resource decisions, and reproducibility notes for each paper in the TDA research programme. The goal is full computational transparency: every result in every paper should be reproducible given the recorded environment and inputs.
+
+---
+
+## Entry Format
+
+Each log entry records: date, paper reference, task description, hardware used, approximate runtime, output files, and any environment notes.
+
+---
+
+## Log Entries
+
+### 2026-Q1 — Paper 1: MML Baseline Analysis
+
+**Task:** Rips complex construction and persistent homology computation on BHPS+Understanding Society linked panel (N ≈ 12,000 trajectories, 30-year sequences).  
+**Hardware:** MacBook Pro M2 (10-core CPU, 32 GB RAM)  
+**Runtime:** Approximately 20 minutes for full dataset; permutation null (1000 draws) adds ~3 hours.  
+**Output:** `data/outputs/paper01/persistence_diagrams/`, `figures/paper01/barcode_main.pdf`  
+**Notes:** Rips complex built at subsampled scale (every 6th individual) for exploratory runs; full computation at complete N for publication.
+
+---
+
+### 2026-Q1 — Paper 2: Mapper Parameter Sensitivity
+
+**Task:** Grid search over Mapper cover resolution (10–20) and overlap (40–60%) parameters to identify stable cluster topology.  
+**Hardware:** MacBook Pro M2 (CPU, 32 GB RAM)  
+**Runtime:** ~45 minutes for 6×5 parameter grid, 1000 bootstrap draws per cell.  
+**Output:** `data/outputs/paper02/mapper_stability_grid.pkl`  
+**Notes:** Levenshtein distance computed via `editdistance` library (faster than `jellyfish` for batch operations).
+
+---
+
+### 2026-Q1 — Paper 3: Zigzag Persistence Full Panel
+
+**Task:** Zigzag persistence computation across full 35-year rolling window sequence.  
+**Hardware:** 32-core CPU server (QMUL HPC cluster)  
+**Runtime:** ~14 hours.  
+**Cloud:** No. HPC allocation used (project allocation code: `[PLACEHOLDER]`).  
+**Output:** `data/outputs/paper03/zigzag_barcodes/all_windows.pkl`  
+**Notes:** Gudhi zigzag implementation requires sequential computation; parallelism at the level of bootstrap draws, not windows.
+
+---
+
+### 2026-Q2 — Papers 4 & 7–9: Cloud GPU Setup
+
+**Task:** Cloud GPU environment configuration for multi-parameter PH (Paper 4) and neural network papers (7–9).  
+**Provider:** Google Cloud Platform (GCP), A100 instances via Vertex AI  
+**Instance:** `a2-highgpu-1g` (1× A100 40 GB, 12 vCPUs, 85 GB RAM)  
+**Monthly budget:** £[PLACEHOLDER]  
+**Setup notes:** Docker image `tda-gpu:latest` pushed to GCP Artifact Registry. Environment: CUDA 12.1, PyTorch 2.0.1, Gudhi 3.9.0.
+
+---
+
+*Additional entries will be added as each paper's computational phase begins.*
+
+---
+
+## Resource Summary
+
+| Paper | Hardware | Est. Runtime | Cloud |
+|-------|----------|-------------|-------|
+| 1 | CPU | ~3.5 hrs (with null) | No |
+| 2 | CPU | ~45 min | No |
+| 3 | HPC CPU | ~14 hrs | No (HPC) |
+| 4 | GPU | ~4 hrs | Yes |
+| 5 | CPU | ~2 hrs | No |
+| 6 | CPU | ~1.5 hrs | No |
+| 7 | GPU | ~6 hrs | Yes |
+| 8 | GPU | ~48 hrs | Yes |
+| 9 | 8× GPU | ~72 hrs | Yes |
+| 10 | CPU | ~15 min | No |

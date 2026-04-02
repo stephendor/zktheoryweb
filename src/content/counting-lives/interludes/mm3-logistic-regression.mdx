@@ -1,0 +1,38 @@
+---
+title: "Logistic Regression and Classification"
+interlude_slug: "mm3-logistic-regression"
+related_chapters: [10, 11, 12]
+related_tda_methods:
+  - "mapper"
+status: drafting
+---
+
+#### Intuitive
+
+Linear regression predicts a number — income, test score, rent. But sometimes we want to predict a category: eligible or ineligible, likely-to-default or not, high-risk or low-risk. Logistic regression is the classical tool for this. Instead of drawing a straight line through a scatterplot, it draws an S-shaped curve that maps any input — however extreme — to a probability between 0 and 1. Above a threshold (say, 0.5), the model classifies you as belonging to one category; below it, the other.
+
+This sounds innocuous enough as a mathematical technique. But when it enters the world of welfare administration, the categories become consequential: eligible or sanctioned, likely to reoffend or not, high welfare dependency risk or low. The S-curve mediates the difference between receiving benefits and losing them. What determines where the curve sits, which inputs feed into it, and where the classification threshold is drawn are all choices — made by officials, vendors, and algorithm designers — but the logistic regression model presents the output as an objective probability score, not a policy decision.
+
+#### Intermediate
+
+Logistic regression models the log-odds of a binary outcome $Y \in \{0, 1\}$ as a linear function of predictors. For a binary classifier, the probability that $Y = 1$ given input vector $\mathbf{x}$ is:
+
+$$P(Y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^\top \mathbf{x} + b) = \frac{1}{1+e^{-(\mathbf{w}^\top \mathbf{x} + b)}}$$
+
+where $\sigma(\cdot)$ is the logistic sigmoid function, $\mathbf{w}$ is the weight vector, and $b$ is the bias term. Parameters are estimated by maximum likelihood. The classification boundary is the hyperplane $\mathbf{w}^\top \mathbf{x} + b = 0$, which divides the feature space into two regions.
+
+In welfare and credit applications, the features $\mathbf{x}$ typically include proxies for socioeconomic status — postcode, employment history, benefit receipt, household composition — that are correlated with protected characteristics like race and gender. Even without including race or gender directly, the model learns their proxies. The result is algorithmic discrimination: a system that produces racially or gender-disparate outcomes through a sequence of ostensibly neutral mathematical operations.
+
+#### Formal
+
+The Maximum Likelihood Estimator $\hat{\mathbf{w}}$ for logistic regression maximises the log-likelihood:
+
+$$\ell(\mathbf{w}) = \sum_{i=1}^n \left[ y_i \log \sigma(\mathbf{w}^\top \mathbf{x}_i) + (1-y_i) \log(1 - \sigma(\mathbf{w}^\top \mathbf{x}_i)) \right]$$
+
+This is a concave function, so gradient descent (or Newton's method) converges to the global maximum. Unlike linear regression, there is no closed-form solution.
+
+The Mapper algorithm (examined in the TDA methods section) addresses a fundamental limitation of logistic classifiers. Mapper preserves the topological shape of the data distribution — its clusters, branches, and transition zones — instead of partitioning it with a single hyperplane. When applied to populations at risk of welfare sanctions or credit denial, Mapper can reveal that the "high-risk" category is not a coherent cluster at all but a diffuse, topologically disconnected region of the feature space — a finding with direct policy implications: interventions designed for a homogeneous "high-risk" population will fail if that population is in fact topologically fragmented.
+
+$$\text{Mapper}(X, f, \mathcal{U}, \mathcal{C}) = \text{nerve}\!\left(\big\{\mathcal{C}(f^{-1}(U) \cap X)\big\}_{U \in \mathcal{U}}\right)$$
+
+where $f$ is a filter function, $\mathcal{U}$ a cover of $f(X)$, and $\mathcal{C}$ a clustering algorithm applied to each pullback.

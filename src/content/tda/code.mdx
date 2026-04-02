@@ -1,0 +1,49 @@
+---
+title: 'Code & Replication'
+description: 'Software, replication packages, and computational environment for the TDA research programme.'
+---
+
+# Code & Replication
+
+## Repository
+
+The primary code repository for this research programme is maintained at GitHub. Each paper has a dedicated subdirectory with self-contained analysis scripts, environment configuration, and data construction pipelines.
+
+**Repository:** `github.com/[username]/tda-employment-topology` *(placeholder — link to be added at first submission)*
+
+## Software Dependencies
+
+The programme uses a Python scientific stack. Core dependencies:
+
+- **Gudhi** (≥ 3.8) — persistent homology, Rips complex construction, zigzag persistence
+- **scikit-tda** — scikit-learn-compatible TDA feature transformers
+- **PyTorch** (≥ 2.0) + **PyTorch Geometric** — GNN and CCNN models (Papers 7–9)
+- **XGBoost** (≥ 1.7) — gradient-boosted classifiers (Paper 7)
+- **NumPy**, **pandas**, **scipy** — standard scientific computing
+- **matplotlib**, **plotly** — visualisation
+
+A `requirements.txt` and a `conda` environment file are provided in the repository root. Docker images for the GPU-intensive papers (7–9) are provided with pinned CUDA versions.
+
+## Replication Instructions
+
+### Data Preparation
+
+UK Data Service access is required for BHPS and Understanding Society. Upon obtaining access:
+
+1. Download the BHPS and Understanding Society zip archives from UKDS
+2. Run `scripts/data/prepare_bhps.py` and `scripts/data/prepare_ukhls.py` to harmonise coding schemes
+3. Run `scripts/data/link_panels.py` to construct the linked 1991–present panel
+
+EU-SILC replication requires Eurostat microdata access. See `scripts/data/eusilc/README.md`.
+
+### Running Analyses
+
+Each paper directory contains a `run_analysis.sh` script that executes the full analysis pipeline in the correct order. Intermediate outputs are cached to avoid re-running expensive computations.
+
+### Expected Runtime
+
+See the [Computational Log](/tda/computational-log) for per-paper runtime estimates.
+
+## Software Citation
+
+If using the topological trajectory analysis tools developed in this programme, please cite Paper 1 (MML framework) and the relevant paper for the specific method used.

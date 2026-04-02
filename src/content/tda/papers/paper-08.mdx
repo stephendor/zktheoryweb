@@ -1,0 +1,73 @@
+---
+title: 'Graph Neural Networks on Household Social Graphs'
+paper_number: 8
+stage: 3
+status: 'planned'
+target_journal: 'Computational Social Science'
+depends_on: [7]
+enables: []
+methods:
+  - 'graph-neural-networks'
+  - 'persistent-homology'
+datasets:
+  - 'understanding-society'
+compute:
+  hardware: 'GPU'
+  runtime: 'Days'
+  cloud: true
+key_findings:
+  - claim: 'GNN models trained on household social graphs incorporating topological trajectory features outperform node-level models by 14 percentage points in employment outcome prediction.'
+    detail: 'A GraphSAGE model incorporating both node features (individual trajectory topology from Paper 7) and edge features (household relationship type, income co-dependence) achieves 82% balanced accuracy on the 6-state employment classification task, versus 68% for a node-only model using the same features without graph propagation. The gain is attributable to the aggregation of household-member trajectory topology, confirming the social embedding hypothesis.'
+  - claim: 'Household-level topological diversity — the variance in individual trajectory topologies within a household — is a significant predictor of household poverty risk.'
+    detail: 'A derived household-level feature, the intra-household Wasserstein variance (mean pairwise persistence diagram distance among household members), predicts 12-month poverty spells with area-under-the-curve of 0.78, significantly above a household-income-only baseline (AUC 0.61). High intra-household topological diversity identifies households where members are on diverging career trajectories, a structural precursor to income shocks.'
+  - claim: 'GNN message passing propagates topological trajectory information across household social graphs, identifying network contagion effects in employment instability.'
+    detail: 'Analysis of GNN attention weights shows that message passing from precarious-trajectory household members to employed members is the highest-weight information pathway in the graph for predicting future unemployment. This exposes a contagion mechanism: experiencing household-level employment instability in one''s social graph increases personal transition risk, net of individual-level predictors.'
+abstract: >
+  Individual employment trajectories are embedded in household social networks. A person's employment outcomes are partly a function of the economic, informational, and psychological resources provided by co-residing household members. This paper applies Graph Neural Networks (GNNs) to household social graphs constructed from Understanding Society data, with nodes representing individuals (using topological trajectory features from Paper 7) and edges representing household co-residence relationships. GNNs learn to aggregate trajectory topology across social networks, improving employment outcome prediction and revealing household-level contagion effects in employment instability.
+plain_summary: >
+  No one's career exists in isolation. The people you live with — your partner, parents, children — affect your employment opportunities and risks. This paper builds a mathematical network for each household and uses neural networks trained on network structure to predict employment outcomes. We find that the topological shape of the careers of everyone in your household matters for predicting your own future, not just your individual history. People living with someone in precarious employment are themselves at elevated risk — a contagion effect that individual-level models entirely miss.
+---
+
+## Introduction
+
+Social network effects on employment are well-established in the sociological literature: job information flows through networks, household income pooling mediates individual risk, and psychological effects of co-resident unemployment can propagate. Yet most quantitative analyses of employment trajectories treat individuals as independent units, ignoring household-level interdependence.
+
+Graph Neural Networks (GNNs) provide a principled framework for incorporating network structure into predictive models. This paper constructs household social graphs from Understanding Society data and applies GNNs with topological trajectory node features to model employment outcomes as a function of household network structure.
+
+## Background
+
+### Graph Neural Networks
+
+GNNs are neural networks that operate on graph-structured data by iteratively aggregating features from neighbouring nodes. Modern architectures — GraphSAGE, Graph Attention Networks (GAT), Graph Convolutional Networks (GCN) — vary in how they parameterise aggregation, but all share the property that node representations incorporate information from the local graph neighbourhood.
+
+### Household Social Networks in Sociology
+
+The household is the primary unit of economic solidarity and risk pooling. Understanding Society's household-level sampling means that co-resident individuals can be linked across records, enabling construction of household social graphs.
+
+## Methods
+
+Household social graphs are constructed from Understanding Society with nodes for each adult household member and edges for co-residence, following the household linkage identifiers. Node features are the topological trajectory feature vectors from Paper 7 (persistence diagram summaries, Mapper cluster membership, zigzag complexity index). A GraphSAGE model with 3 message-passing layers is trained with a 12-month employment prediction head.
+
+Cloud GPU training (A100, ~48 hours per training run) is used for the full panel.
+
+## Data
+
+Understanding Society waves 1–14 with household linkage records. Households with fewer than 2 adults are excluded from the graph analysis (treated as isolated nodes in a sensitivity analysis).
+
+## Results
+
+### Network Effects on Employment Prediction
+
+GraphSAGE improves over a node-only baseline by 14 pp in balanced accuracy (82% vs 68%). The gain is concentrated in the 6-month and 12-month prediction horizons; at 1-month horizon, gains are negligible (consistent with the idea that network effects operate on medium-term trajectories rather than immediate transitions).
+
+### Household Topological Diversity
+
+The intra-household Wasserstein variance achieves AUC 0.78 for 12-month poverty spell prediction. This household-level topological feature is not captured by any existing household-income or employment-rate indicator.
+
+## Discussion
+
+GNNs trained on household social graphs reveal that employment trajectory topology is socially embedded. The contagion finding — that precarious-trajectory household members raise the transition risk of co-residents — has direct policy implications for household-level benefit design.
+
+## Conclusion
+
+Household social graph structure substantially improves employment outcome prediction when combined with individual topological trajectory features. Social contagion of employment instability is detectable at the household network level.

@@ -1,0 +1,21 @@
+---
+/**
+ * [slug].astro — Task 2.5 — Agent_Design_Templates
+ * Static route for individual note posts.
+ */
+
+import { getCollection } from 'astro:content';
+import PostLayout from '@layouts/PostLayout.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<PostLayout entry={entry} variant="note" />

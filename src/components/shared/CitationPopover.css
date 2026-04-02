@@ -1,0 +1,153 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   CitationPopover.css — Task 2.9b — Agent_Integration
+
+   Scoped under the .cp- prefix. All values reference tokens from tokens.css.
+
+   Tooltip appears below the trigger by default (top: calc(100% + space-1))
+   so hovering from button into tooltip panel stays within the wrapper.
+   Flips to right-aligned when .cp-tooltip--left is set (right-edge overflow
+   detected via getBoundingClientRect in CitationPopover.tsx).
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Wrapper (inline, provides positioning context) ─────────────────────── */
+.cp-wrapper {
+  position: relative;
+  display: inline;
+}
+
+/* ── Trigger button ──────────────────────────────────────────────────────── */
+.cp-trigger {
+  /* Reset button chrome */
+  appearance: none;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+
+  /* Visual styling: cite underline with archival red */
+  color: var(--color-cl-red);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+
+.cp-trigger cite {
+  font-style: normal;
+}
+
+.cp-trigger:hover,
+.cp-trigger:focus-visible {
+  color: var(--color-cl-red-light);
+  text-decoration-style: solid;
+}
+
+.cp-trigger:focus-visible {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Tooltip panel ───────────────────────────────────────────────────────── */
+.cp-tooltip {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  z-index: 100;
+  min-width: 18rem;
+  max-width: 26rem;
+  padding: var(--space-4);
+  background: var(--color-neutral-surface);
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+
+  /* Hidden state */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(calc(-1 * var(--space-1)));
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+/* Visible state */
+.cp-tooltip--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Right-overflow: align to right edge of wrapper instead of left */
+.cp-tooltip--left {
+  left: auto;
+  right: 0;
+}
+
+/* Reduced motion: instant show/hide, no CSS transition */
+.cp-tooltip--instant {
+  transition: none;
+}
+
+/* ── Tooltip content ─────────────────────────────────────────────────────── */
+.cp-title {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  color: var(--color-neutral-heading);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.cp-authors {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-neutral-body);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.cp-year {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-neutral-muted);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.cp-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-top: 1px solid var(--color-neutral-border);
+  padding-top: var(--space-3);
+}
+
+.cp-doi-link,
+.cp-url-link {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-cl-red);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.cp-doi-link:hover,
+.cp-url-link:hover {
+  text-decoration: underline;
+}
+
+.cp-doi-link:focus-visible,
+.cp-url-link:focus-visible {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Missing citation fallback ───────────────────────────────────────────── */
+.cp-missing {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  opacity: 0.7;
+}

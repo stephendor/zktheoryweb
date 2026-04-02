@@ -1,0 +1,26 @@
+---
+/**
+ * module-test.astro — Task 2.4 — Agent_Design_Templates
+ * Dev test route for ModuleLayout.
+ * Visit: http://localhost:4321/dev/module-test/
+ */
+import { getCollection } from 'astro:content';
+import ModuleLayout from '@layouts/ModuleLayout.astro';
+
+const allModules = await getCollection('learn-modules');
+const entry = allModules.find((m) => m.id === 'sample-module');
+
+if (!entry) {
+  throw new Error('[module-test] Could not find learn-modules entry with id "sample-module"');
+}
+
+// Stub path modules so the progress strip renders
+const pathModules = [
+  { slug: 'sample-module', title: entry.data.title, status: entry.data.status },
+];
+---
+
+<ModuleLayout
+  entry={entry}
+  pathModules={pathModules}
+/>

@@ -1,7 +1,7 @@
 # zktheory.org Research Portfolio Website – APM Implementation Plan
 
 **Memory Strategy:** Dynamic-MD
-**Last Modification:** Task 2.1 findings resolved: (1) `key_claims` corrected to `z.array(z.object({ claim: z.string(), detail: z.string() }))` in `src/content.config.ts` — aligns with PRD §4.3 and ExpandableCard component; Task 2.6a updated accordingly. (2) `papers` status enum `planned/in-progress` confirmed canonical (not `drafting`). (3) `data-justice` path slug confirmed canonical; Task 6.1 updated. Prior: Task 1.6 `.container-prose--wide` fix carried to Task 2.2a.
+**Last Modification:** Tasks 2.3/2.5 findings resolved: (1) `papers.key_findings` corrected from `z.array(z.string())` to `z.array(z.object({ claim, detail }))` — matches ExpandableCard interface; PaperLayout and paper-01-sample.mdx migrated; Task 2.7 schema note updated. (2) `essays`/`notes` `summary` field confirmed canonical (Task 2.5 agent added it; `description` retained on essays for SEO). (3) PostLayout `.container-prose` corrected to `.container-prose--wide` — same fix as ChapterLayout; resolves 476px main-column collapse on all writing posts. Prior: Task 2.2c: `chapters.threads` corrected to `z.array(z.string())`; Task 2.2b: `--color-neutral-subtle` token added; Task 2.1: `key_claims` object array, `papers` status enum, `data-justice` slug confirmed.
 **Project Overview:** Full build of zktheory.org — a research portfolio website for two interconnected research programmes (Counting Lives book + TDA research programme). Astro 6, Tailwind CSS 4, React 19, TypeScript. Features: dual-palette design system, 18 chapter pages, 10 paper pages, 4 learning paths (34 modules), 10+ interactive visualisations (D3/Three.js), Zotero bibliography integration, Pagefind search, Netlify deployment. Six-phase build from foundation through polish. Content-first approach with interactive escalation review gates.
 
 ## Phase 1: Foundation
@@ -179,7 +179,7 @@
 **Guidance:** All frontmatter must validate against Zod schemas from Task 2.1. Placeholder prose should be realistic in length and structure. Use PRD Appendix A for chapter data. Chapters are the backbone content — prioritise frontmatter completeness. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.2a Output by Agent_Design_Templates**
 
 1. Create the Counting Lives overview page (`/counting-lives/overview`) and the counter-mathematics page with structurally complete placeholder content describing the book's argument, five transitions, and two threads
-2. Create all 18 chapter MDX files in `src/content/counting-lives/chapters/` with complete frontmatter per PRD §4.3 (title, chapter_number, part, transition, spine_role, status, key_figures, mathematical_concepts, interludes, threads, related_tda_papers, key_claims) and structured placeholder prose (synopsis ~400 words, spine role sentence, 3–5 key claims with expandable detail placeholders). **Schema note:** `key_claims` is `Array<{claim: string, detail: string}>` — author each entry as `- claim: "..." \n  detail: "..."` in YAML frontmatter.
+2. Create all 18 chapter MDX files in `src/content/counting-lives/chapters/` with complete frontmatter per PRD §4.3 (title, chapter_number, part, transition, spine_role, status, key_figures, mathematical_concepts, interludes, threads, related_tda_papers, key_claims) and structured placeholder prose (synopsis ~400 words, spine role sentence, 3–5 key claims with expandable detail placeholders). **Schema note:** `key_claims` is `Array<{claim: string, detail: string}>` — author each entry as `- claim: "..." \n  detail: "..."` in YAML frontmatter. `threads` is `Array<string>` (thread slugs) — author as a YAML list e.g. `threads: [scottish-thread, gender-thread]` or as block sequence `- scottish-thread`. Do NOT use the old object format `{ scottish: boolean, gender: boolean }` — that schema was superseded in Task 2.2c.
 
 ### Task 2.6b – Counting Lives: Transitions, Threads, Interludes & Figures - Agent_Content
 
@@ -198,7 +198,7 @@
 **Guidance:** All frontmatter must validate against Zod schemas. Use PRD Appendix B for paper data. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.3 Output by Agent_Design_Templates**
 
 1. Create the TDA overview page (`/tda/overview`) with structurally complete placeholder describing the three-stage research programme architecture, 10-paper sequence, and programme narrative
-2. Create all 10 paper MDX files in `src/content/tda/papers/` with complete frontmatter per PRD §4.3 (title, paper_number, stage, status, target_journal, depends_on, enables, methods, datasets, compute, key_findings, abstract, plain_summary, bibtex) and structured placeholder prose (abstract, plain-language summary, key findings, methodology summary)
+2. Create all 10 paper MDX files in `src/content/tda/papers/` with complete frontmatter per PRD §4.3 (title, paper_number, stage, status, target_journal, depends_on, enables, methods, datasets, compute, key_findings, abstract, plain_summary, bibtex) and structured placeholder prose (abstract, plain-language summary, key findings, methodology summary). **Schema notes (post Task 2.3):** `key_findings` is `Array<{claim: string, detail: string}>` — author as `- claim: "..." \n  detail: "..."` in YAML; `status` enum is `planned | in-progress | submitted | in-review | revision | published` (6 values, not 3); `compute` is optional outer object with optional `hardware`, `runtime`, and required `cloud: boolean`. See `paper-01-sample.mdx` as a reference for correct frontmatter shape.
 3. Create 6 methods MDX files in `src/content/tda/methods/` with structured placeholder content (intuitive introduction, mathematical formulation placeholder with LaTeX, implementation section with Python code stubs, application to research, further reading); create 3 data source MDX files with dataset descriptions, access information, and ethics notes
 4. Create code/replication page, computational log page (public lab notebook format), and visualisations gallery page as MDX stubs with appropriate structure
 
@@ -220,7 +220,7 @@
 
 1. User provides Zotero API key and user ID; agent creates `.env` file (gitignored) with `ZOTERO_API_KEY` and `ZOTERO_USER_ID` environment variables; add `.env.example` documenting required variables
 2. Build Zotero fetch script (`src/lib/zotero.ts`): fetch full library from `api.zotero.org/users/{userID}/items` with `format=json&include=data,bib,citation`, store library version number, support incremental updates with `?since={version}` header, handle pagination (Zotero returns 100 items per page), write results to `src/data/zotero-library.json`
-3. Implement fallback logic: if Zotero API unreachable at build time, use cached JSON from last successful fetch; log warning but never fail the build; add npm script `fetch:zotero` for manual refresh; verify the fetch runs as part of Astro build pipeline (custom integration or prebuild script)
+3. Implement fallback logic: if Zotero API unreachable at build time, use cached JSON from last successful fetch; log warning but never fail the build; add npm script `fetch:zotero` for manual refresh (incremental by default; `npm run fetch:zotero -- --force` for full fetch); verify the fetch runs as part of Astro build pipeline (custom integration or prebuild script)
 
 ### Task 2.9b – Citation Components & Bibliography Pages - Agent_Integration
 
@@ -239,7 +239,7 @@
 **Output:** Build-time indexing, search UI component accessible from navigation.
 **Guidance:** PRD §4.1. Keyboard shortcut Ctrl/Cmd+K. **Depends on: Task 2.6a Output by Agent_Content, Task 2.7 Output by Agent_Content**
 
-- Install and configure Pagefind as an Astro integration; ensure it indexes all content pages (chapters, papers, modules, posts) at build time with appropriate weighting (titles > headings > body)
+- Install and configure Pagefind as an Astro integration; ensure it indexes all content pages (chapters, papers, modules, posts) at build time with appropriate weighting (titles > headings > body). **Implementation notes (Task 2.10):** `astro-pagefind` writes index to `/pagefind/` (no underscore — NOT `/_pagefind/`); loading Pagefind UI JS requires `<script is:inline>` (regular Astro `<script>` causes Rollup to try to statically bundle the build artifact and fail, even with `/* @vite-ignore */`); `npm run preview` is unsupported by `@astrojs/netlify` adapter — use `npx serve dist` to verify built output locally.
 - Build a search UI component (accessible from navigation): search input with keyboard shortcut (Ctrl/Cmd+K), results dropdown with highlighted matches, links to matching pages; style to match design tokens
 - Test search across content types; ensure mathematical notation in content doesn't break indexing; verify accessibility (keyboard navigation, screen reader announcements for result counts)
 

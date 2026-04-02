@@ -1,0 +1,235 @@
+---
+// SiteSearch.astro — Task 2.10 — Agent_Integration
+// Pagefind static search: trigger button + native <dialog> modal.
+//
+// NOTE: Search requires a production build. Results will NOT appear when running
+// `npm run dev` because Pagefind indexes built HTML output. To test search,
+// run `npm run build && npm run preview` instead.
+---
+
+<button
+  id="search-trigger"
+  type="button"
+  class="search-trigger"
+  aria-label="Search site"
+  aria-keyshortcuts="Control+K Meta+K"
+>
+  <span aria-hidden="true">⌕</span>
+  <span class="search-label">Search</span>
+</button>
+
+<dialog
+  id="search-dialog"
+  class="search-dialog"
+  aria-label="Site search"
+>
+  <div class="search-dialog-header">
+    <span class="search-dialog-title">Search</span>
+    <button type="button" class="search-close" aria-label="Close search">&#x00D7;</button>
+  </div>
+  <div id="search-container"></div>
+</dialog>
+
+<script is:inline>
+  // is:inline is required here so Vite does not attempt to bundle or resolve
+  // the /pagefind/ paths, which are build-time artifacts generated after astro build.
+  (function () {
+    var trigger  = document.getElementById('search-trigger');
+    var dialog   = document.getElementById('search-dialog');
+    var closeBtn = dialog && dialog.querySelector('.search-close');
+
+    var pagefindInitialised = false;
+
+    function openSearch() {
+      if (!dialog) return;
+      dialog.showModal();
+
+      if (!pagefindInitialised) {
+        pagefindInitialised = true;
+
+        // Load Pagefind UI CSS (build artifact — absent on dev server)
+        var link = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.href = '/pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+
+        // Dynamic import of the Pagefind UI script. Because this script runs
+        // as is:inline, Vite never processes it and the path resolves correctly
+        // against the built output at runtime.
+        import('/pagefind/pagefind-ui.js')
+          .then(function (mod) {
+            new mod.PagefindUI({ element: '#search-container', showImages: false });
+          })
+          .catch(function (err) {
+            console.warn(
+              '[SiteSearch] Pagefind UI unavailable. ' +
+              'Run `npm run build && npm run preview` to enable search.',
+              err
+            );
+            var container = document.getElementById('search-container');
+            if (container) {
+              container.innerHTML =
+                '<p class="search-unavailable">' +
+                'Search is only available in the production build. ' +
+                'Run <code>npm run build &amp;&amp; npm run preview</code> to test.' +
+                '</p>';
+            }
+          });
+      }
+    }
+
+    function closeSearch() {
+      if (dialog) dialog.close();
+    }
+
+    if (trigger) trigger.addEventListener('click', openSearch);
+    if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+
+    // Close on backdrop click (clicking the <dialog> element outside its content)
+    if (dialog) {
+      dialog.addEventListener('click', function (e) {
+        if (e.target === dialog) closeSearch();
+      });
+    }
+
+    // Global Ctrl/Cmd+K shortcut
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        if (dialog && dialog.open) {
+          closeSearch();
+        } else {
+          openSearch();
+        }
+      }
+    });
+  }());
+</script>
+
+<style>
+  /* ── Trigger button ─────────────────────────────────────────────────────── */
+  .search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: 1px solid var(--color-neutral-border);
+    border-radius: 0.375rem;
+    color: var(--color-neutral-muted);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .search-trigger:hover {
+    color: var(--color-neutral-body);
+    border-color: var(--color-neutral-muted);
+    background: var(--color-neutral-subtle);
+  }
+
+  .search-trigger:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /* On small screens, hide the text label — icon only */
+  @media (max-width: 767px) {
+    .search-label {
+      display: none;
+    }
+  }
+
+  /* ── Dialog backdrop ────────────────────────────────────────────────────── */
+  .search-dialog::backdrop {
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  /* ── Dialog panel ───────────────────────────────────────────────────────── */
+  .search-dialog {
+    border: none;
+    padding: 0;
+    margin: auto;
+    width: min(600px, calc(100vw - var(--space-8)));
+    max-height: calc(100vh - var(--space-8));
+    overflow-y: auto;
+    background: var(--color-neutral-surface);
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.25);
+    font-family: var(--font-ui);
+
+    /* Pagefind UI colour integration via its own CSS custom properties */
+    --pagefind-ui-primary:    var(--color-tda-teal);
+    --pagefind-ui-text:       var(--color-neutral-body);
+    --pagefind-ui-background: var(--color-neutral-surface);
+    --pagefind-ui-border:     var(--color-neutral-border);
+    --pagefind-ui-tag:        var(--color-neutral-subtle);
+  }
+
+  /* ── Dialog header ──────────────────────────────────────────────────────── */
+  .search-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  .search-dialog-title {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .search-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.25rem;
+    color: var(--color-neutral-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .search-close:hover {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-body);
+  }
+
+  .search-close:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /* ── Pagefind UI mount container ────────────────────────────────────────── */
+  #search-container {
+    padding: var(--space-4) var(--space-5) var(--space-5);
+  }
+
+  /* ── Dev-mode fallback message ──────────────────────────────────────────── */
+  .search-unavailable {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin: 0;
+  }
+
+  .search-unavailable code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    background: var(--color-neutral-subtle);
+    padding: 0.1em 0.35em;
+    border-radius: 0.2rem;
+  }
+</style>

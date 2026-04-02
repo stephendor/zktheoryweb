@@ -1,0 +1,75 @@
+/*
+ * BibTexCopyButton.css — Task 2.3 — Agent_Design_Templates
+ * Styles for the BibTeX copy button React island.
+ */
+
+.bibtex-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bibtex-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--space-2) var(--space-5);
+  border: 1.5px solid var(--color-tda-teal);
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-tda-teal);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.bibtex-btn:hover:not(:disabled) {
+  background-color: var(--color-tda-teal);
+  color: #fff;
+}
+
+.bibtex-btn:focus-visible {
+  outline: 2px solid var(--color-tda-teal);
+  outline-offset: 2px;
+}
+
+.bibtex-btn:disabled {
+  cursor: default;
+}
+
+/* Copied confirmation state */
+.bibtex-btn--copied {
+  background-color: var(--color-tda-teal);
+  color: #fff;
+  border-color: var(--color-tda-teal);
+}
+
+/* Error state */
+.bibtex-btn--error {
+  border-color: var(--color-cl-red);
+  color: var(--color-cl-red);
+}
+
+.bibtex-icon {
+  font-size: var(--text-base);
+  line-height: 1;
+}
+
+.bibtex-label {
+  /* inherits font from .bibtex-btn */
+}
+
+/* Visually-hidden live region — announced by screen readers but not visible */
+.bibtex-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

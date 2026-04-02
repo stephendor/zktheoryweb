@@ -2,6 +2,8 @@
 // SiteNav.astro — Task 1.5 — Agent_Design_Templates
 // Site-wide navigation with accessible mobile hamburger menu.
 // Keyboard: Escape closes menu; Tab through links; focus returns to button on close.
+// Task 2.10 — Agent_Integration: SiteSearch added to nav bar.
+import SiteSearch from '@components/shared/SiteSearch.astro';
 
 const navLinks = [
   { label: 'Home',           href: '/'                },
@@ -20,11 +22,13 @@ function isActive(href: string): boolean {
 }
 ---
 
-<nav class="site-nav" aria-label="Main navigation">
+<nav class="site-nav" aria-label="Main navigation" data-pagefind-ignore>
   <div class="nav-inner">
     <a href="/" class="nav-brand" aria-label="zktheory.org — go to home page">
       zktheory.org
     </a>
+
+    <SiteSearch />
 
     <!-- Hamburger: visible on mobile only, hidden on desktop via CSS -->
     <button

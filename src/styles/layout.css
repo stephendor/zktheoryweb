@@ -63,11 +63,29 @@
 .container-viz   { max-width: var(--content-viz);   }
 .container-full  { max-width: var(--content-full);  }
 
+/* ── Wide prose container — for pages using the .prose sidenote grid ────── */
+/*
+ * Use .container-prose--wide on pages where the .prose CSS Grid
+ * (main column + 220px sidenote) is active. This expands the outer
+ * container so the main text column still reaches ~65ch / ~720px
+ * rather than collapsing to ~476px when the sidenote occupies 220px.
+ *
+ * ~964px = 720px (prose) + 220px (sidenote) + 24px (gap/space-6)
+ */
+.container-prose--wide {
+  max-width: calc(var(--content-prose) + var(--sidenote-width) + var(--space-6));
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
 /* ── Responsive gutter reduction on small screens ───────────────────────── */
 @media (max-width: 640px) {
   .container-prose,
   .container-viz,
-  .container-full {
+  .container-full,
+  .container-prose--wide {
     padding-left: var(--space-4);
     padding-right: var(--space-4);
   }
