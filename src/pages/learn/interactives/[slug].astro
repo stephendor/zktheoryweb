@@ -26,7 +26,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
 import { PovertySimulator } from '@components/interactives/PovertySimulator';
-import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
+import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';
+import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
+import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
 export async function getStaticPaths() {
@@ -68,7 +70,10 @@ const { title, description, slug } = entry.data;
         <PovertySimulator client:visible />
       ) : slug === 'persistence-diagram-builder' ? (
         <PersistenceDiagramBuilderWrapper client:visible />      ) : slug === 'mapper-parameter-lab' ? (
-        <MapperParameterLab client:visible />      ) : (
+        <MapperParameterLab client:visible />
+      ) : slug === 'benefit-taper-calculator' ? (
+        <BenefitTaperCalculator client:visible />
+      ) : (
         <p class="interactive-page__missing">
           Interactive <code>{slug}</code> is not yet implemented.
         </p>
