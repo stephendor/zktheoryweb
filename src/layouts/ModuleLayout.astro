@@ -30,6 +30,9 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import StickyToC from '@components/shared/StickyToC.astro';
 import { ExpandableCard } from '@components/shared/ExpandableCard';
 import MarkCompleteButton from '@components/learn/MarkCompleteButton';
+import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
+import { PovertySimulator } from '@components/interactives/PovertySimulator';
+import { PersistenceDiagramBuilder } from '@components/interactives/PersistenceDiagramBuilder';
 
 interface ModuleRef {
   slug: string;
@@ -144,15 +147,24 @@ const titleId = 'module-title';
             <p class="module-core-concept">{core_concept}</p>
           )}
 
-          {/* Interactive slot — rendered only when interactive_slug is defined */}
+          {/* Interactive slot — inline component rendering when interactive_slug is defined */}
           {interactive_slug && (
-            <div class="module-interactive">
-              <a
-                href={`/learn/interactives/${interactive_slug}/`}
-                class="interactive-launch-link"
-              >
-                Launch interactive →
-              </a>
+            <div class="module-interactive" aria-label="Interactive tool">
+              {interactive_slug === 'normal-distribution-explorer' && (
+                <NormalDistExplorer client:visible />
+              )}
+              {interactive_slug === 'poverty-threshold-simulator' && (
+                <PovertySimulator client:visible />
+              )}
+              {interactive_slug === 'persistence-diagram-builder' && (
+                <PersistenceDiagramBuilder client:visible />
+              )}
+              {/* Fallback link for any interactive without a registered component */}
+              {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder'].includes(interactive_slug) && (
+                <a href={`/learn/interactives/${interactive_slug}/`} class="interactive-launch-link">
+                  Launch interactive →
+                </a>
+              )}
             </div>
           )}
 
@@ -410,8 +422,10 @@ const titleId = 'module-title';
     background-color: var(--color-tda-warm-grey);
     border-left: 4px solid var(--color-tda-teal);
     border-radius: var(--radius-md);
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-6);
     margin-bottom: var(--space-7);
+    overflow: hidden;
+    min-height: 320px;
   }
 
   .interactive-launch-link {
