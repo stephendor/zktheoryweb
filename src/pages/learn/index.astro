@@ -127,17 +127,31 @@ const paths: PathCard[] = [
       </ul>
     </section>
 
-    <section aria-label="Interactive tools" class="learn-hub__interactives">
-      <a href="/learn/interactives/" class="interactives-card">
-        <div class="interactives-card__body">
-          <h2 class="interactives-card__title">Interactive Tools</h2>
-          <p class="interactives-card__desc">
-            Standalone visual explorations — drag parameters, build point clouds,
-            and compare poverty thresholds. No path required.
-          </p>
-        </div>
-        <span class="interactives-card__cta" aria-hidden="true">Explore →</span>
-      </a>
+    <section aria-label="Learning resources" class="learn-hub__resources">
+      <h2 class="learn-hub__resources-heading">Resources</h2>
+      <ul class="resources-grid">
+        <li>
+          <a href="/learn/interactives/" class="resource-card resource-card--tda">
+            <span class="resource-card__title">Interactive Tools</span>
+            <span class="resource-card__desc">Standalone visual explorations — drag parameters, build point clouds, and compare thresholds.</span>
+            <span class="resource-card__cta" aria-hidden="true">Explore →</span>
+          </a>
+        </li>
+        <li>
+          <a href="/learn/glossary/" class="resource-card resource-card--shared">
+            <span class="resource-card__title">Glossary</span>
+            <span class="resource-card__desc">27 terms spanning TDA and Counting Lives — each with dual definitions from both projects.</span>
+            <span class="resource-card__cta" aria-hidden="true">Browse →</span>
+          </a>
+        </li>
+        <li>
+          <a href="/learn/reading-lists/" class="resource-card resource-card--cl">
+            <span class="resource-card__title">Reading Lists</span>
+            <span class="resource-card__desc">Five curated lists covering topology, poverty measurement, data justice, and TDA methods.</span>
+            <span class="resource-card__cta" aria-hidden="true">Read →</span>
+          </a>
+        </li>
+      </ul>
     </section>
 
   </div>
@@ -347,60 +361,91 @@ const paths: PathCard[] = [
     transition: width 0.4s ease;
   }
 
-  /* ── Interactives card ────────────────────────────────────────────────── */
-  .learn-hub__interactives {
-    margin-top: var(--space-4);
+  /* ── Resources section ────────────────────────────────────────────────── */
+  .learn-hub__resources {
+    margin-top: var(--space-10);
   }
 
-  .interactives-card {
+  .learn-hub__resources-heading {
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 var(--space-4);
+  }
+
+  .resources-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .resource-card {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-6);
-    background: var(--color-tda-warm-grey);
+    flex-direction: column;
+    gap: var(--space-2);
     border: 1px solid var(--color-neutral-border);
-    border-left: 4px solid var(--color-tda-slate);
     border-radius: var(--radius-lg);
-    padding: var(--space-6) var(--space-7);
+    padding: var(--space-5) var(--space-6);
     text-decoration: none;
     color: inherit;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
 
-  .interactives-card:hover {
+  .resource-card:hover {
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
   }
 
-  .interactives-card:focus-visible {
+  .resource-card:focus-visible {
     outline: 2px solid var(--color-tda-slate);
     outline-offset: 3px;
-    border-radius: var(--radius-lg);
   }
 
-  .interactives-card__title {
-    font-family: var(--font-ui);
-    font-size: var(--text-xl);
-    font-weight: 600;
-    color: var(--color-neutral-body);
-    margin: 0 0 var(--space-2);
+  .resource-card--tda {
+    background: var(--color-tda-warm-grey);
+    border-left: 4px solid var(--color-tda-slate);
   }
 
-  .interactives-card__desc {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    color: var(--color-neutral-muted);
-    line-height: var(--leading-normal);
-    margin: 0;
+  .resource-card--shared {
+    background: var(--color-tda-warm-grey);
+    border-left: 4px solid var(--color-tda-teal);
   }
 
-  .interactives-card__cta {
+  .resource-card--cl {
+    background: var(--color-cl-cream);
+    border-left: 4px solid var(--color-cl-ochre);
+  }
+
+  .resource-card__title {
     font-family: var(--font-ui);
     font-size: var(--text-lg);
     font-weight: 600;
+    color: var(--color-neutral-body);
+  }
+
+  .resource-card__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    line-height: var(--leading-normal);
+    flex: 1;
+  }
+
+  .resource-card__cta {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
     color: var(--color-tda-slate);
-    white-space: nowrap;
-    flex-shrink: 0;
+  }
+
+  .resource-card--cl .resource-card__cta {
+    color: var(--color-cl-red);
   }
 
   /* ── Responsive adjustments ───────────────────────────────────────────── */
@@ -409,9 +454,14 @@ const paths: PathCard[] = [
       font-size: var(--text-3xl);
     }
 
-    .interactives-card {
-      flex-direction: column;
-      align-items: flex-start;
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .resources-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>
