@@ -10,8 +10,7 @@
  *     client:only="react"
  *     pathSlug={path}
  *     moduleSlug={String(module_number)}
- *     nextModuleSlug={nextModule?.slug}
- *     nextModuleHref={nextModule ? `/learn/modules/${nextModule.slug}/` : undefined}
+ *     nextModuleHref={nextModule ? `/learn/${path}/${module_number + 1}/` : undefined}
  *   />
  *
  * Button states:
@@ -32,7 +31,6 @@ import { ProgressProvider, useProgress } from '@lib/useProgress';
 interface Props {
   pathSlug: string;
   moduleSlug: string;
-  nextModuleSlug?: string;
   nextModuleHref?: string;
 }
 

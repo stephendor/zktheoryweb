@@ -190,8 +190,7 @@ const titleId = 'module-title';
             client:only="react"
             pathSlug={path}
             moduleSlug={String(module_number)}
-            nextModuleSlug={nextModule?.slug}
-            nextModuleHref={nextModule ? `/learn/modules/${nextModule.slug}/` : undefined}
+            nextModuleHref={nextModule ? `/learn/${path}/${module_number + 1}/` : undefined}
           />
 
         </article>
