@@ -33,13 +33,25 @@ In practice, a finite approximation is computed by sampling lines over a grid.
 ## Python Code Stub
 
 ```python
+import math
 import numpy as np
+
+def _find_dm(
+    distance_matrices: dict[tuple[float, float], np.ndarray],
+    query: tuple[float, float],
+    tol: float = 1e-9,
+) -> np.ndarray | None:
+    """Return the distance matrix whose key is within *tol* of *query*, or None."""
+    for key, dm in distance_matrices.items():
+        if math.isclose(key[0], query[0], abs_tol=tol) and math.isclose(key[1], query[1], abs_tol=tol):
+            return dm
+    return None
 
 def fibered_barcode_approximation(
     distance_matrices: dict[tuple[float, float], np.ndarray],
     line_slopes: list[float],
     n_samples: int = 50,
-) -> dict[float, list[tuple[float, float]]]:
+) -> dict[float, list[tuple[int, tuple[float, float]]]]:
     """
     Approximate the fibered barcode of a two-parameter persistence module.
 
@@ -62,12 +74,24 @@ def fibered_barcode_approximation(
         pairs = [(t, slope * t) for t in t_vals]
 
         # Build 1-parameter filtration by restricting to line
-        restricted_dms = [distance_matrices.get(p) for p in pairs if p in distance_matrices]
+        restricted_dms = [
+            dm for p in pairs
+            if (dm := _find_dm(distance_matrices, p)) is not None
+        ]
         if not restricted_dms:
             continue
 
-        rips = gudhi.RipsComplex(distance_matrix=restricted_dms[0], max_edge_length=np.inf)
-        st = rips.create_simplex_tree(max_dimension=2)
+        # Build a single SimplexTree whose filtration values encode position along the line.
+        # For each sample index i, enumerate all simplices from the Rips complex at that
+        # distance matrix and insert them with filtration value i (monotonically increasing).
+        # make_filtration_non_decreasing() then ensures the complex is valid.
+        st = gudhi.SimplexTree()
+        for i, dm in enumerate(restricted_dms):
+            rips = gudhi.RipsComplex(distance_matrix=dm, max_edge_length=np.inf)
+            rips_tree = rips.create_simplex_tree(max_dimension=2)
+            for simplex, _ in rips_tree.get_filtration():
+                st.insert(simplex, filtration=float(i))
+        st.make_filtration_non_decreasing()
         st.compute_persistence()
         barcodes[slope] = st.persistence()
 

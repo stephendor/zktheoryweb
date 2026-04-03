@@ -1,0 +1,496 @@
+/**
+ * PovertySimulator.css — Task 3.3 — Agent_Interactive_Core
+ *
+ * Styles for the PovertySimulator interactive.
+ * Uses CSS custom properties from tokens.css — no hard-coded hex values.
+ *
+ * Counting Lives "Archival" palette:
+ *   --color-cl-red         deep unsaturated brick red (poverty line / shaded area)
+ *   --color-cl-red-light   lighter red (area fill tint)
+ *   --color-cl-ochre       accent for method buttons
+ *   --color-cl-charcoal    body text
+ *   --color-cl-cream       section background
+ */
+
+/* ─── Root wrapper ────────────────────────────────────────────────────────── */
+
+.ps-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--color-cl-cream);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-neutral-border);
+  font-family: var(--font-ui);
+  color: var(--color-cl-charcoal);
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+
+.ps-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ps-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-cl-charcoal);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+.ps-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+/* ─── Method toggle buttons ───────────────────────────────────────────────── */
+
+.ps-method-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.ps-method-btn {
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  border: 1.5px solid var(--color-neutral-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-neutral-surface);
+  color: var(--color-neutral-body);
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.ps-method-btn:hover {
+  background: var(--color-neutral-subtle);
+  border-color: var(--color-cl-red-light);
+}
+
+.ps-method-btn:focus-visible {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 2px;
+}
+
+.ps-method-btn--active {
+  background: var(--color-cl-red);
+  border-color: var(--color-cl-red);
+  color: #fff;
+}
+
+.ps-method-btn--active:hover {
+  background: color-mix(in srgb, var(--color-cl-red) 85%, #000);
+}
+
+/* ─── Household controls fieldset ────────────────────────────────────────── */
+
+.ps-controls {
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin: 0;
+  background: var(--color-neutral-surface);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.ps-controls-legend {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-neutral-muted);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  padding: 0 var(--space-1);
+}
+
+.ps-control-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ps-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-cl-charcoal);
+  min-width: 5ch;
+}
+
+.ps-number-input {
+  width: 5.5rem;
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral-body);
+  text-align: right;
+}
+
+.ps-number-input:focus {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 1px;
+}
+
+.ps-select {
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-neutral-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral-body);
+  cursor: pointer;
+}
+
+.ps-select:focus {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 1px;
+}
+
+/* ─── Poverty rate display ────────────────────────────────────────────────── */
+
+.ps-rate-display {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--color-cl-red) 8%, transparent);
+  border-left: 4px solid var(--color-cl-red);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.ps-rate-number {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--color-cl-red);
+  line-height: 1;
+  min-width: 4ch;
+}
+
+.ps-rate-label {
+  font-size: var(--text-base);
+  color: var(--color-cl-charcoal);
+  line-height: var(--leading-snug);
+}
+
+/* ─── Chart wrapper ───────────────────────────────────────────────────────── */
+
+.ps-chart-wrapper {
+  width: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+  background: var(--color-neutral-surface);
+  border: 1px solid var(--color-neutral-border);
+  overflow: hidden;
+  cursor: ew-resize;
+}
+
+.ps-chart-wrapper:focus {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 2px;
+}
+
+.ps-chart-wrapper:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.ps-chart-wrapper:focus-visible {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 2px;
+}
+
+.ps-svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ─── D3 axis labels ─────────────────────────────────────────────────────── */
+
+.ps-svg .axis-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  fill: var(--color-neutral-muted);
+}
+
+.ps-svg .tick text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--color-neutral-muted);
+}
+
+.ps-svg .domain {
+  stroke: var(--color-neutral-border);
+}
+
+.ps-svg .tick line {
+  stroke: var(--color-neutral-border);
+}
+
+/* ─── Method comparison panel ────────────────────────────────────────────── */
+
+.ps-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ps-comparison-caption {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  font-style: italic;
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+.ps-comparison-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ps-comparison-item {
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-neutral-border);
+  overflow: hidden;
+  transition: border-color 200ms ease;
+}
+
+.ps-comparison-item:hover {
+  border-color: var(--color-cl-red-light);
+}
+
+.ps-comparison-item--active {
+  border-color: var(--color-cl-red);
+}
+
+.ps-comparison-btn {
+  all: unset;
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  grid-template-rows: auto auto;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: var(--color-neutral-surface);
+  transition: background 150ms ease;
+}
+
+.ps-comparison-btn:hover {
+  background: var(--color-neutral-subtle);
+}
+
+.ps-comparison-btn:focus-visible {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: -2px;
+}
+
+.ps-comparison-item--active .ps-comparison-btn {
+  background: color-mix(in srgb, var(--color-cl-red) 5%, var(--color-neutral-surface));
+}
+
+.ps-comparison-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-cl-charcoal);
+  align-self: center;
+}
+
+.ps-comparison-item--active .ps-comparison-label {
+  color: var(--color-cl-red);
+}
+
+.ps-comparison-figures {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ps-comparison-threshold {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-cl-charcoal);
+}
+
+.ps-comparison-item--active .ps-comparison-threshold {
+  color: var(--color-cl-red);
+}
+
+.ps-comparison-rate {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  white-space: nowrap;
+}
+
+.ps-comparison-badge {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.ps-comparison-badge--high {
+  background: color-mix(in srgb, var(--color-cl-red) 12%, transparent);
+  color: var(--color-cl-red);
+}
+
+.ps-comparison-badge--low {
+  background: color-mix(in srgb, var(--color-tda-teal) 12%, transparent);
+  color: var(--color-tda-teal);
+}
+
+/* Bar — visual proportion of threshold against the £80k x-axis */
+.ps-comparison-bar {
+  grid-column: 1 / -1;
+  display: block;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.ps-comparison-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: var(--bar-pct, 0%);
+  background: var(--color-neutral-muted);
+  border-radius: var(--radius-full);
+  transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ps-comparison-item--active .ps-comparison-bar::after {
+  background: var(--color-cl-red);
+}
+
+/* ─── Method annotation panel ─────────────────────────────────────────────── */
+
+.ps-annotation {
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-neutral-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-neutral-border);
+  border-left: 4px solid var(--color-cl-ochre);
+  /* Entry animation: fades + slides in when React remounts on method change */
+  animation: ps-fade-in 280ms ease both;
+}
+
+@keyframes ps-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ps-annotation-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-cl-charcoal);
+  margin: 0 0 var(--space-2) 0;
+  line-height: var(--leading-snug);
+}
+
+.ps-annotation-body {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+/* ─── Accessible range slider ────────────────────────────────────────────── */
+
+.ps-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ps-slider-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-cl-charcoal);
+}
+
+.ps-slider {
+  width: 100%;
+  accent-color: var(--color-cl-red);
+  cursor: ew-resize;
+  height: 6px;
+  border-radius: var(--radius-full);
+}
+
+.ps-slider:focus-visible {
+  outline: 2px solid var(--color-cl-red);
+  outline-offset: 3px;
+}
+
+/* ─── Responsive breakpoints ─────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .ps-root {
+    padding: var(--space-4);
+  }
+
+  .ps-controls {
+    flex-direction: column;
+  }
+
+  .ps-rate-number {
+    font-size: var(--text-3xl);
+  }
+
+  .ps-method-bar {
+    flex-direction: column;
+  }
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────────────
+   D3 transitions are guarded in the component via useReducedMotion.
+   This declaration removes any residual CSS transitions for belt-and-braces. */
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-method-btn,
+  .ps-chart-wrapper,
+  .ps-comparison-item,
+  .ps-comparison-btn,
+  .ps-comparison-bar::after {
+    transition: none;
+  }
+
+  .ps-annotation {
+    animation: none;
+  }
+}

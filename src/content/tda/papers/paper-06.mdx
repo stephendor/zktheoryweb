@@ -4,8 +4,8 @@ paper_number: 6
 stage: 2
 status: 'planned'
 target_journal: 'British Journal of Sociology'
-depends_on: [1]
-enables: []
+depends_on: [3]
+enables: [10]
 methods:
   - 'persistent-homology'
   - 'markov-memory-ladder'
@@ -17,16 +17,16 @@ compute:
   runtime: 'Hours'
   cloud: false
 key_findings:
-  - claim: 'Topological similarity between parent and offspring employment trajectories is substantially higher than expected under a null model of random intergenerational matching.'
-    detail: 'Bootstrap permutation testing yields z = 4.2 for the mean H₀ Wasserstein distance between matched parent–offspring pairs versus randomly reshuffled pairs (p < 0.001). Effect size (Cohen''s d = 0.61) is comparable to conventional intergenerational earnings elasticity estimates, suggesting that topological transmission captures a similarly large share of intergenerational disadvantage.'
-  - claim: 'The intergenerational topological correlation is partially mediated by educational attainment but remains significant after conditioning.'
-    detail: 'A mediation model including highest educational qualification reduces the topological transmission coefficient by 28%, leaving a significant direct pathway (p = 0.003). This residual transmission is consistent with non-educational channels including social networks, geographic immobility, and the direct inheritance of occupational-sector positioning.'
-  - claim: 'Cyclical employment topology — H₁ loop persistence — shows the largest intergenerational correlation, suggesting that instability patterns are specifically heritable.'
-    detail: 'Decomposing topological transmission by homology dimension shows that H₁ similarity (loops corresponding to cyclical employment instability) has a significantly larger intergenerational correlation (r = 0.41) than H₀ similarity (r = 0.29). This asymmetry suggests distinct transmission mechanisms for structural instability versus overall employment level.'
+  - claim: 'The paper aims to test whether topological similarity between parent and offspring employment trajectories is higher than expected under a null model of random intergenerational matching.'
+    detail: 'Bootstrap permutation testing will compare the mean H\u2080 and H\u2081 Wasserstein distances between matched parent\u2013offspring pairs against randomly reshuffled pairs. Effect sizes will be compared to conventional intergenerational earnings elasticity estimates to assess whether topological transmission captures a similarly large share of intergenerational disadvantage.'
+  - claim: 'The paper aims to assess whether the intergenerational topological correlation is partially mediated by educational attainment.'
+    detail: 'A mediation model including highest educational qualification will be used to decompose the topological transmission effect into direct and education-mediated pathways. Any residual direct pathway will be interpreted in terms of non-educational channels including social networks, geographic immobility, and occupational-sector inheritance.'
+  - claim: 'The paper aims to test whether cyclical employment topology \u2014 H\u2081 loop persistence \u2014 shows a larger intergenerational correlation than H\u2080, suggesting instability patterns are specifically heritable.'
+    detail: 'Topological transmission will be decomposed by homology dimension to compare intergenerational correlations for H\u2081 (loops corresponding to cyclical instability) against H\u2080 (connected components). A larger H\u2081 correlation would suggest distinct transmission mechanisms for structural instability versus overall employment level.'
 abstract: >
-  Intergenerational transmission of employment disadvantage is well-documented in life-course sociology. Most studies operationalise transmission via correlation between parent and child status at single time points or via aggregate career outcomes. This paper uses persistent homology to compare the topological structure of parent and offspring employment trajectories in matched BHPS data, measuring whether trajectory topology — not merely status — is transmitted across generations. We find significant intergenerational topological correlation for H₀ and H₁ homology groups, suggesting that the structural shape of careers, including cyclical instability and persistent exclusion patterns, is inherited alongside status. The effect is strongest for father–son pairs and weakest for mother–daughter pairs.
+  Intergenerational transmission of employment disadvantage is well-documented in life-course sociology. Most studies operationalise transmission via correlation between parent and child status at single time points or via aggregate career outcomes. This paper will use persistent homology to compare the topological structure of parent and offspring employment trajectories in matched BHPS data, testing whether trajectory topology — not merely status — is transmitted across generations. The analysis will assess whether intergenerational topological correlation exists for H₀ and H₁ homology groups, and whether the structural shape of careers, including cyclical instability and persistent exclusion patterns, is inherited alongside status.
 plain_summary: >
-  We know that economic disadvantage passes from parents to children. But does the shape of a career — not just whether it is good or bad, but its mathematical structure — also transmit between generations? This paper matches parents and children in UK panel data and compares the topology of their career histories. The answer is yes: children tend to have career shapes that resemble their parents', particularly patterns of cyclical unemployment and early labour-market exit. The shapes of disadvantage are inherited, not just the outcomes.
+  We know that economic disadvantage passes from parents to children. But does the shape of a career — not just whether it is good or bad, but its mathematical structure — also transmit between generations? This paper will match parents and children in UK panel data and compare the topology of their career histories. The aim is to test whether children tend to have career shapes that resemble their parents', particularly patterns of cyclical unemployment and early labour-market exit — and whether the shapes of disadvantage, not just the outcomes, are inherited.
 ---
 
 ## Introduction
@@ -47,28 +47,28 @@ To measure topological similarity between parent and offspring trajectories, thi
 
 ## Methods
 
-Matched parent–offspring pairs are constructed from the BHPS using household identifier linkages. Parents' trajectories are observed from labour market entry through age 50; offspring trajectories are observed equivalently. Both are standardised to 30-year sequences. Persistent homology is computed for each individual, and the Wasserstein distance between parent and offspring persistence diagrams is compared to a bootstrap permutation null.
+Matched parent–offspring pairs are constructed from the BHPS/Understanding Society linked panel using household identifier linkages. BHPS (1991–2009) and Understanding Society (2009–present) are combined into a single harmonised panel to provide sufficient observation windows; the linkage uses the BHPS–USoc sample members who were recontacted at the 2009 transition, as documented in the Understanding Society user guide. Parents' trajectories are observed from labour market entry through age 50; offspring trajectories are observed equivalently. Both will be standardised to 30-year sequences using the combined panel, with individuals observed for fewer than 20 years excluded and shorter series padded using state-last-observed forward-fill rules documented in the analysis protocol. Persistent homology is computed for each individual, and the Wasserstein distance between parent and offspring persistence diagrams is compared to a bootstrap permutation null.
 
 Mediation analysis uses the `mediation` R package with bootstrapped standard errors.
 
 ## Data
 
-BHPS household panel data (1991–2009), using household identifier linkage to construct matched parent–offspring pairs. Final matched sample: approximately 1,200 parent–offspring dyads with complete 30-year trajectories for both members.
+BHPS household panel data (1991–2009) linked to Understanding Society (2009–present), providing a combined observation window of sufficient length for 30-year trajectory construction. Household identifier linkages and the harmonised BHPS–USoc activity variables are used to construct matched parent–offspring pairs. The datasets field in the frontmatter lists both sources. Final matched sample will comprise parent–offspring dyads with at least 20 years of observed trajectories for both members.
 
 ## Results
 
 ### Intergenerational Topology Transmission
 
-The mean Wasserstein distance between matched parent–offspring pairs is significantly smaller than the bootstrap permutation null (z = 4.2, p < 0.001), indicating that parent and offspring career topologies are more similar than chance. The effect holds across all four parent–offspring gender combinations, but is largest for father–son pairs.
+The analysis will use bootstrap permutation testing to assess whether the mean Wasserstein distance between matched parent–offspring pairs is smaller than expected under a null model of random pairing. Results will be reported separately for H₀ (connected components, capturing overall employment level structure) and H₁ (one-cycles, capturing cyclical employment instability), with intergenerational correlations and standardised effect sizes compared to conventional earnings elasticity estimates. The analysis will also test whether the H₁ correlation is significantly larger than the H₀ correlation, and whether effects differ across parent–offspring gender combinations.
 
 ### Mediation by Education
 
-Education mediates 28% of the topological transmission effect. The remaining 72% represents direct transmission, consistent with mechanisms including occupational sector inheritance, geographic immobility, and network-mediated access to stable employment.
+Mediation analysis will decompose the topological transmission effect into education-mediated and direct pathways, testing whether the direct pathway remains significant after conditioning on highest educational qualification.
 
 ## Discussion
 
-The heritability of career topology extends the concept of intergenerational transmission from status to structure. The finding that cyclical employment instability (H₁ topology) is more heritable than overall employment level (H₀) is theoretically significant: it suggests that the specific pattern of career precariousness — the rhythm of in-and-out of work — is transmitted between generations, not only the average level of disadvantage.
+If career topology proves heritable, this would extend the concept of intergenerational transmission from status to structure. A finding that cyclical employment instability (H₁ topology) is more heritable than overall employment level (H₀) would be theoretically significant: it would suggest that the specific pattern of career precariousness — the rhythm of in-and-out of work — is transmitted between generations, not only the average level of disadvantage.
 
 ## Conclusion
 
-Employment trajectory topology transmits intergenerationally in UK panel data, with effect sizes comparable to earnings elasticity estimates. The heritability of instability topology specifically motivates the network-based analyses in Paper 8.
+This paper will test whether employment trajectory topology transmits intergenerationally in UK panel data. If effect sizes prove comparable to earnings elasticity estimates, this would motivate the network-based analyses in Paper 8 and validate topology as a medium through which career disadvantage is inherited.

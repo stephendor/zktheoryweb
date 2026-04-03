@@ -1,0 +1,76 @@
+---
+/**
+ * src/pages/counting-lives/transitions/index.astro
+ * Task 3.6a — Agent_Interactive_Core
+ *
+ * Five Transitions Timeline page.
+ *
+ * Queries both content collections at build time, transforms them into a
+ * fully-typed TimelineData object, then passes it as serialisable props to the
+ * TransitionsTimeline React island (hydrated client:visible — deferred until
+ * visible in the viewport, see src/lib/viz/types.ts loading-strategy notes).
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { buildTimelineData } from '@components/interactives/TransitionsTimeline.data';
+// TransitionsTimeline React island — created in Task 3.6a Step 2
+import TransitionsTimeline from '@components/interactives/TransitionsTimeline';
+
+const transitionsRaw = await getCollection('transitions');
+const chaptersRaw    = await getCollection('chapters');
+
+const timelineData = buildTimelineData(
+  transitionsRaw.map((e) => e.data),
+  chaptersRaw.map((e) => e.data),
+);
+---
+
+<BaseLayout
+  title="Five Transitions in Poverty Measurement"
+  description="An interactive timeline of the five historical transitions that shaped how poverty is measured — from the Victorian statistical era to the algorithmic state."
+  section="counting-lives"
+>
+  <main class="transitions-page">
+    <header class="transitions-header">
+      <h1>Five Transitions</h1>
+      <p class="transitions-lead">
+        The five historical eras in which the measurement of poverty was
+        fundamentally transformed — from Quetelet's average man to algorithmic
+        welfare systems.
+      </p>
+    </header>
+
+    <section
+      class="transitions-timeline-section"
+      aria-label="Five Transitions Timeline"
+    >
+      <TransitionsTimeline client:visible data={timelineData} />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .transitions-page {
+    max-width: none;
+    padding: 0;
+  }
+
+  .transitions-header {
+    max-width: var(--content-max-width, 72ch);
+    margin: 0 auto;
+    padding: var(--space-8, 2rem) var(--space-4, 1rem);
+  }
+
+  .transitions-lead {
+    font-size: var(--text-lg, 1.125rem);
+    color: var(--color-text-muted, inherit);
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+
+  .transitions-timeline-section {
+    width: 100%;
+    /* Horizontal overflow is managed inside the component via its own scroll container. */
+    overflow-x: hidden;
+  }
+</style>

@@ -1,0 +1,194 @@
+/**
+ * PointCloudEditor.css — Task 3.7a — Agent_Interactive_Core
+ *
+ * Styles for the PointCloudEditor interactive component.
+ * Uses design tokens from src/styles/tokens.css (TDA "Mathematical" palette).
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.pce-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Toolbar: presets + counter + clear ────────────────────────────────────── */
+
+.pce-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pce-toolbar__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 0.25rem;
+}
+
+.pce-preset-btn {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  border: 1px solid var(--color-tda-teal, #2a7d8f);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-tda-teal, #2a7d8f);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pce-preset-btn:hover,
+.pce-preset-btn:focus-visible {
+  background: var(--color-tda-teal, #2a7d8f);
+  color: #fff;
+  outline: 2px solid var(--color-tda-teal, #2a7d8f);
+  outline-offset: 2px;
+}
+
+.pce-toolbar__spacer {
+  flex: 1;
+}
+
+.pce-counter {
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-neutral-muted, #6b7280);
+  min-width: 6ch;
+  text-align: right;
+}
+
+.pce-counter--full {
+  color: var(--color-warning, #b45309);
+  font-weight: 600;
+}
+
+.pce-clear-btn {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-neutral-muted, #6b7280);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.pce-clear-btn:hover,
+.pce-clear-btn:focus-visible {
+  background: var(--color-neutral-border, #d1d5db);
+  color: var(--color-neutral-text, #1a1a1a);
+  outline: 2px solid var(--color-neutral-border, #d1d5db);
+  outline-offset: 2px;
+}
+
+.pce-clear-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── SVG canvas ────────────────────────────────────────────────────────────── */
+
+.pce-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 6px;
+  background: var(--color-surface, #fafafa);
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.pce-canvas-wrapper:focus-within {
+  outline: 2px solid var(--color-tda-teal, #2a7d8f);
+  outline-offset: 2px;
+}
+
+.pce-svg {
+  display: block;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Grid lines */
+.pce-grid-line {
+  stroke: var(--color-neutral-border, #e5e7eb);
+  stroke-width: 1;
+}
+
+/* Data points */
+.pce-point {
+  fill: var(--color-tda-teal, #2a7d8f);
+  stroke: #fff;
+  stroke-width: 1.5;
+  cursor: grab;
+  transition: r 0.1s, fill 0.1s;
+}
+
+.pce-point:hover {
+  fill: var(--color-tda-slate, #3a5a8c);
+  r: 7;
+}
+
+.pce-point--dragging {
+  cursor: grabbing;
+  fill: var(--color-tda-slate, #3a5a8c);
+}
+
+/* ── Hint text below canvas ─────────────────────────────────────────────────── */
+
+.pce-hint {
+  font-size: 0.75rem;
+  color: var(--color-neutral-muted, #9ca3af);
+  text-align: center;
+}
+
+/* ── Complex overlay (Task 3.7b) ─────────────────────────────────────────────── */
+
+.pce-overlay-triangle {
+  fill: var(--color-tda-teal, #2a7d8f);
+  fill-opacity: 0.08;
+  pointer-events: none;
+}
+
+.pce-overlay-triangle--hl {
+  fill-opacity: 0.22;
+}
+
+.pce-overlay-edge {
+  stroke: var(--color-tda-teal, #2a7d8f);
+  stroke-width: 1.5;
+  stroke-opacity: 0.45;
+  fill: none;
+  pointer-events: none;
+}
+
+.pce-overlay-edge--hl {
+  stroke-width: 2.5;
+  stroke-opacity: 0.9;
+  stroke: var(--color-tda-slate, #3a5a8c);
+}
+
+.pce-overlay-ball {
+  fill: none;
+  stroke: var(--color-tda-teal, #2a7d8f);
+  stroke-width: 1;
+  stroke-opacity: 0.22;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+
+/* Clickable overlay elements (when onOverlayClick is provided) */
+.pce-overlay-clickable {
+  pointer-events: auto;
+  cursor: pointer;
+}

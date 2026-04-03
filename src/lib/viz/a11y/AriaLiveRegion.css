@@ -1,0 +1,17 @@
+/* AriaLiveRegion.css — Task 3.1 — Agent_Interactive_Core
+   Visually-hidden pattern: element is removed from visual flow but
+   remains reachable by screen readers and the accessibility tree.
+   Do NOT use `display: none` or `visibility: hidden` here — both would
+   hide the content from AT and defeat the purpose of aria-live. */
+
+.alr-region {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

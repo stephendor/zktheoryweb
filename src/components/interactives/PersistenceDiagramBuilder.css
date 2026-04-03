@@ -1,0 +1,274 @@
+/**
+ * PersistenceDiagramBuilder.css — Task 3.7b — Agent_Interactive_Core
+ *
+ * Styles for the Persistence Diagram Builder dual-panel interactive.
+ * Uses design tokens from src/styles/tokens.css (TDA "Mathematical" palette).
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.pdb-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Dual panel row ───────────────────────────────────────────────────────── */
+
+.pdb-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .pdb-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Individual panel ─────────────────────────────────────────────────────── */
+
+.pdb-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.pdb-panel-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* ── Diagram container ────────────────────────────────────────────────────── */
+
+.pdb-diagram-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 6px;
+  background: var(--color-surface, #fafafa);
+  overflow: hidden;
+}
+
+.pdb-diagram-svg {
+  display: block;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Persistence diagram SVG elements ─────────────────────────────────────── */
+
+/* Diagonal noise line (birth = death) */
+.pdb-diag-line {
+  stroke: var(--color-neutral-border, #e5e7eb);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+/* Current radius vertical guideline */
+.pdb-radius-line {
+  stroke: var(--color-tda-teal, #2a7d8f);
+  stroke-width: 1;
+  stroke-opacity: 0.35;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+
+/* Axes */
+.pdb-axis-line {
+  stroke: var(--color-neutral-muted, #9ca3af);
+  stroke-width: 1;
+}
+
+.pdb-axis-tick {
+  stroke: var(--color-neutral-muted, #9ca3af);
+  stroke-width: 1;
+}
+
+.pdb-axis-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  fill: var(--color-neutral-muted, #6b7280);
+}
+
+.pdb-axis-title {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 11px;
+  fill: var(--color-neutral-text, #1a1a1a);
+  font-weight: 500;
+}
+
+/* Immortal (∞) top-edge label */
+.pdb-immortal-label {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 11px;
+  fill: var(--color-neutral-muted, #9ca3af);
+}
+
+/* ── Feature circles ──────────────────────────────────────────────────────── */
+
+.pdb-feature {
+  cursor: pointer;
+  transition: r 0.12s, opacity 0.15s, stroke-width 0.12s;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.pdb-feature:focus-visible {
+  outline: 2px solid var(--color-tda-teal, #2a7d8f);
+  outline-offset: 2px;
+}
+
+/* Feature alive when born ≤ currentRadius < death */
+.pdb-feature--alive {
+  opacity: 1;
+}
+
+/* Feature dead (born and died before currentRadius) */
+.pdb-feature--dead {
+  opacity: 0.25;
+}
+
+/* Feature not yet born */
+.pdb-feature--unborn {
+  opacity: 0.12;
+}
+
+/* Immortal feature (death = null, plotted at top) */
+.pdb-feature--immortal {
+  stroke-dasharray: 2 1;
+}
+
+/* Selected feature */
+.pdb-feature--selected {
+  stroke: var(--color-tda-slate, #3a5a8c);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 3px rgba(58, 90, 140, 0.4));
+}
+
+/* ── Legend ───────────────────────────────────────────────────────────────── */
+
+.pdb-legend-bg {
+  fill: var(--color-surface, #fafafa);
+  stroke: var(--color-neutral-border, #e5e7eb);
+  stroke-width: 1;
+  opacity: 0.92;
+}
+
+.pdb-legend-text {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 10px;
+  fill: var(--color-neutral-text, #1a1a1a);
+  dominant-baseline: middle;
+}
+
+/* ── Educational annotation (Two Clusters) ────────────────────────────────── */
+
+.pdb-annotation-text {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 9px;
+  fill: var(--color-neutral-muted, #6b7280);
+  font-style: italic;
+}
+
+/* ── Controls row ─────────────────────────────────────────────────────────── */
+
+.pdb-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  background: var(--color-surface-alt, #f3f4f6);
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 6px;
+}
+
+.pdb-slider-row,
+.pdb-anim-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdb-control-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ── Filtration slider ────────────────────────────────────────────────────── */
+
+.pdb-slider {
+  flex: 1;
+  min-width: 120px;
+  accent-color: var(--color-tda-teal, #2a7d8f);
+  cursor: pointer;
+}
+
+.pdb-radius-value {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.82rem;
+  color: var(--color-neutral-text, #1a1a1a);
+  min-width: 5ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Animation / step buttons ─────────────────────────────────────────────── */
+
+.pdb-btn {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  border: 1px solid var(--color-tda-teal, #2a7d8f);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-tda-teal, #2a7d8f);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pdb-btn:hover:not(:disabled),
+.pdb-btn:focus-visible:not(:disabled) {
+  background: var(--color-tda-teal, #2a7d8f);
+  color: #fff;
+  outline: 2px solid var(--color-tda-teal, #2a7d8f);
+  outline-offset: 2px;
+}
+
+.pdb-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Speed selector ───────────────────────────────────────────────────────── */
+
+.pdb-select {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 4px;
+  background: var(--color-surface, #fafafa);
+  color: var(--color-neutral-text, #1a1a1a);
+  cursor: pointer;
+}
+
+.pdb-select:focus-visible {
+  outline: 2px solid var(--color-tda-teal, #2a7d8f);
+  outline-offset: 2px;
+}

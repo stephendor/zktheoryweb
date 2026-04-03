@@ -1,0 +1,82 @@
+---
+/**
+ * src/pages/tda/pipeline/index.astro — Task 3.4 — Agent_Interactive_Core
+ *
+ * Data-fetch wrapper for the TDA Research Pipeline Graph.
+ *
+ * Responsibilities:
+ *   1. Fetch all papers via getCollection('papers') at build time.
+ *   2. Transform the flat collection into { nodes, edges } using toPipelineGraph.
+ *   3. Pass the derived graph data to the PipelineGraph React island as the
+ *      `data` prop (VizProps<PipelineGraphData> contract).
+ *
+ * The PipelineGraph component itself (created in Task 3.4 Step 2) is a pure
+ * React island — it performs no Astro API calls.
+ *
+ * Route: /tda/pipeline/
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PipelineGraph from '@components/interactives/PipelineGraph';
+import { toPipelineGraph } from '@components/interactives/PipelineGraph.data';
+import type { PaperEntry } from '@components/interactives/PipelineGraph.data';
+
+// ─── Data fetch ───────────────────────────────────────────────────────────────
+
+const rawPapers = await getCollection('papers');
+
+// Narrow Astro collection entries to the PaperEntry shape expected by the
+// transform. This avoids importing Astro's generated CollectionEntry types
+// into a potentially non-Astro context.
+const papers: PaperEntry[] = rawPapers.map((entry) => ({
+  id: entry.id,
+  data: {
+    paper_number:  entry.data.paper_number,
+    title:         entry.data.title,
+    stage:         entry.data.stage,
+    status:        entry.data.status,
+    compute:       entry.data.compute,
+    depends_on:    entry.data.depends_on,
+    enables:       entry.data.enables,
+  },
+}));
+
+const { nodes, edges } = toPipelineGraph(papers);
+---
+
+<BaseLayout
+  title="Research Pipeline"
+  description="The TDA research programme visualised as a force-directed dependency graph — 10 papers, four stages."
+  section="tda"
+>
+  <main class="pipeline-page">
+    <header class="pipeline-header">
+      <h1>Research Pipeline</h1>
+      <p class="pipeline-intro">
+        A force-directed graph of the ten-paper TDA research programme. Each
+        node is a paper; directed edges indicate prerequisite dependencies.
+        Click any node to open the paper page.
+      </p>
+    </header>
+
+    <PipelineGraph client:visible data={{ nodes, edges }} />
+  </main>
+</BaseLayout>
+
+<style>
+  .pipeline-page {
+    padding: var(--space-8) var(--space-4);
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  .pipeline-header {
+    margin-block-end: var(--space-6);
+  }
+
+  .pipeline-intro {
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+    margin-block-start: var(--space-2);
+  }
+</style>

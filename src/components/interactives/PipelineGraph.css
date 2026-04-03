@@ -1,0 +1,311 @@
+/**
+ * PipelineGraph.css — Task 3.4 — Agent_Interactive_Core
+ *
+ * Styles for the TDA Research Pipeline Graph.
+ * All colours read from CSS custom properties defined in tokens.css.
+ * Fallback values are included for Storybook environments without the
+ * full token pipeline.
+ *
+ * Step 3 additions: .pg-timeline-*, .pg-legend, .pg-compute-icon classes.
+ * Step 4 additions: .pg-node--focused, .pg-list-fallback (mobile), reduced-motion.
+ */
+
+/* ── Outer wrappers ──────────────────────────────────────────────────────────── */
+
+.pg-outer {
+  width: 100%;
+  font-family: var(--font-ui, var(--font-sans, system-ui, sans-serif));
+}
+
+.pg-responsive {
+  width: 100%;
+  height: 540px;
+}
+
+.pg-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pg-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── Edges ───────────────────────────────────────────────────────────────────── */
+
+.pg-edge {
+  stroke: var(--color-tda-warm-grey, #b5b0a6);
+  stroke-width: 1.5;
+  stroke-opacity: 0.75;
+  fill: none;
+  transition: stroke-opacity 0.15s;
+}
+
+.pg-arrowhead {
+  fill: var(--color-tda-warm-grey, #b5b0a6);
+  stroke: none;
+}
+
+/* ── Node circles ────────────────────────────────────────────────────────────── */
+
+.pg-node {
+  cursor: pointer;
+}
+
+.pg-node-circle {
+  stroke: var(--color-tda-teal, #1a5f6a);
+  stroke-width: 2;
+  transition: stroke-width 0.15s ease, filter 0.15s ease;
+}
+
+.pg-node:hover .pg-node-circle,
+.pg-node:focus-within .pg-node-circle {
+  stroke-width: 3.5;
+  filter: brightness(1.1);
+}
+
+/* Stage-specific stroke weight: stage 0 (foundation) gets a heavier border */
+.pg-node--stage-0 .pg-node-circle {
+  stroke-width: 2.5;
+  stroke: var(--color-tda-slate, #3d5a80);
+}
+
+/* ── Status-based fill colours ───────────────────────────────────────────────── */
+
+.pg-node--status-planned .pg-node-circle {
+  fill: var(--color-tda-warm-grey, #e8e6e0);
+}
+
+.pg-node--status-in-progress .pg-node-circle {
+  fill: var(--color-tda-teal-light, #3a8a96);
+}
+
+.pg-node--status-submitted .pg-node-circle {
+  fill: var(--color-tda-slate-light, #6080aa);
+}
+
+.pg-node--status-in-review .pg-node-circle {
+  fill: var(--color-tda-slate, #3d5a80);
+}
+
+.pg-node--status-revision .pg-node-circle {
+  /* Copper — warning tone — no matching TDA token */
+  fill: #b87333;
+}
+
+.pg-node--status-published .pg-node-circle {
+  fill: var(--color-tda-teal, #1a5f6a);
+}
+
+/* ── Node text ───────────────────────────────────────────────────────────────── */
+
+.pg-node-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--color-text-primary, #1a1a1a);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Stage 0's larger radius lets it carry a slightly bigger number */
+.pg-node--stage-0 .pg-node-number {
+  font-size: 13px;
+}
+
+/* Planned nodes get dark text because the fill is very light */
+.pg-node--status-planned .pg-node-number {
+  fill: var(--color-tda-teal, #1a5f6a);
+}
+
+/* All other status fills are dark enough that white text reads better */
+.pg-node--status-in-progress .pg-node-number,
+.pg-node--status-submitted .pg-node-number,
+.pg-node--status-in-review .pg-node-number,
+.pg-node--status-revision .pg-node-number,
+.pg-node--status-published .pg-node-number {
+  fill: #ffffff;
+}
+
+.pg-node-label {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10px;
+  font-weight: 400;
+  fill: var(--color-text-secondary, #555);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Tooltip content classes ─────────────────────────────────────────────────── */
+
+/* .viz-tooltip is declared globally by tooltip.ts; these extend it */
+
+.pg-tt-cloud {
+  color: var(--color-tda-teal, #1a5f6a);
+  font-weight: 600;
+}
+
+.pg-tt-status {
+  font-style: normal;
+  text-transform: capitalize;
+}
+
+.pg-tt-status--planned       { color: #888; }
+.pg-tt-status--in-progress   { color: var(--color-tda-teal-light, #3a8a96); }
+.pg-tt-status--submitted     { color: var(--color-tda-slate-light, #6080aa); }
+.pg-tt-status--in-review     { color: var(--color-tda-slate, #3d5a80); }
+.pg-tt-status--revision      { color: #b87333; }
+.pg-tt-status--published     { color: var(--color-tda-teal, #1a5f6a); }
+
+/* ── Step 3: Timeline overlay ────────────────────────────────────────────────── */
+
+.pg-timeline-band--even {
+  fill: var(--color-tda-teal, #1a5f6a);
+  fill-opacity: 0.06;
+}
+
+.pg-timeline-band--odd {
+  fill: var(--color-tda-slate, #3d5a80);
+  fill-opacity: 0.06;
+}
+
+.pg-timeline-axis-line {
+  stroke: var(--color-border, #ccc);
+  stroke-width: 1;
+}
+
+.pg-timeline-tick {
+  stroke: var(--color-border, #ccc);
+  stroke-width: 1;
+}
+
+.pg-timeline-month-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  fill: var(--color-text-secondary, #888);
+}
+
+.pg-stage-band-label {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--color-text-secondary, #888);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Step 3: Compute indicators ──────────────────────────────────────────────── */
+
+.pg-compute-icon {
+  font-size: 11px;
+  fill: var(--color-tda-teal, #1a5f6a);
+  pointer-events: none;
+  user-select: none;
+}
+.pg-compute-icon--gpu {
+  font-size: 8px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  fill: var(--color-tda-slate, #3d5a80);
+}
+/* ── Step 3: Status legend ───────────────────────────────────────────────────── */
+
+.pg-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-block-start: 0.75rem;
+  font-size: 0.82rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.pg-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-secondary, #555);
+}
+
+.pg-legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-tda-teal, #1a5f6a);
+  flex-shrink: 0;
+}
+
+/* Legend swatch fills — mirror the node circle status fills */
+.pg-swatch--planned       { background: var(--color-tda-warm-grey, #e8e6e0); }
+.pg-swatch--in-progress   { background: var(--color-tda-teal-light, #3a8a96); border-color: var(--color-tda-teal-light, #3a8a96); }
+.pg-swatch--submitted     { background: var(--color-tda-slate-light, #6080aa); border-color: var(--color-tda-slate-light, #6080aa); }
+.pg-swatch--in-review     { background: var(--color-tda-slate, #3d5a80); border-color: var(--color-tda-slate, #3d5a80); }
+.pg-swatch--revision      { background: #b87333; border-color: #b87333; }
+.pg-swatch--published     { background: var(--color-tda-teal, #1a5f6a); border-color: var(--color-tda-teal, #1a5f6a); }
+
+/* ── Step 4: Keyboard focus ring ─────────────────────────────────────────────── */
+
+.pg-node:focus-visible .pg-node-circle,
+.pg-node--focused .pg-node-circle {
+  outline: none;
+  stroke: var(--color-focus-ring, #E69F00);
+  stroke-width: 4;
+  filter: none;
+}
+
+/* ── Step 4: Mobile list fallback (≤ 767px) ─────────────────────────────────── */
+
+.pg-list-fallback {
+  display: none;
+}
+
+.pg-list {
+  margin: 0;
+  padding-inline-start: 1.5rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.pg-list-item {
+  margin-block: 0.6rem;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.pg-list-link {
+  color: var(--color-tda-teal, #1a5f6a);
+  text-underline-offset: 2px;
+}
+
+.pg-list-status {
+  font-style: italic;
+  color: var(--color-text-secondary, #555);
+  font-size: 0.85rem;
+}
+
+.pg-list-deps {
+  color: var(--color-text-secondary, #777);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 767px) {
+  .pg-graph-section {
+    display: none;
+  }
+  .pg-list-fallback {
+    display: block;
+  }
+}
+
+/* ── Reduced motion: disable transitions and animation ───────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-node-circle,
+  .pg-edge {
+    transition: none;
+  }
+}
