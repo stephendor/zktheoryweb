@@ -29,6 +29,7 @@ import { PovertySimulator } from '@components/interactives/PovertySimulator';
 import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';
 import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
 import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
+import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
 export async function getStaticPaths() {
@@ -73,6 +74,8 @@ const { title, description, slug } = entry.data;
         <MapperParameterLab client:visible />
       ) : slug === 'benefit-taper-calculator' ? (
         <BenefitTaperCalculator client:visible />
+      ) : slug === 'filtration-playground' ? (
+        <FiltrationPlayground client:visible />
       ) : (
         <p class="interactive-page__missing">
           Interactive <code>{slug}</code> is not yet implemented.

@@ -216,3 +216,99 @@
   margin: 0;
   font-style: italic;
 }
+
+/* ── Feature event log ────────────────────────────────────────────────────── */
+
+.fp-event-log {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--color-surface, #fafafa);
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 6px;
+  min-height: 6rem;
+}
+
+.fp-event-log__heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem;
+}
+
+.fp-event-log__empty {
+  font-size: 0.8rem;
+  color: var(--color-neutral-muted, #9ca3af);
+  margin: 0;
+  font-style: italic;
+}
+
+.fp-event-log__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fp-event-item {
+  font-size: 0.8rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+/* Most recent event — highlighted */
+.fp-event-item--recent {
+  color: var(--color-tda-teal, #2a7d8f);
+  background: color-mix(in srgb, var(--color-tda-teal, #2a7d8f) 8%, transparent);
+  font-weight: 600;
+}
+
+/* Older events — faded */
+.fp-event-item--muted {
+  color: var(--color-neutral-muted, #6b7280);
+}
+
+/* ── Module links ─────────────────────────────────────────────────────────── */
+
+.fp-module-links {
+  margin-top: 0.75rem;
+}
+
+.fp-module-links__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.4rem;
+}
+
+.fp-module-links__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.fp-module-link {
+  font-size: 0.82rem;
+  color: var(--color-tda-teal, #2a7d8f);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.12s;
+}
+
+.fp-module-link:hover,
+.fp-module-link:focus-visible {
+  border-bottom-color: var(--color-tda-teal, #2a7d8f);
+  outline: 2px solid var(--color-tda-teal, #2a7d8f);
+  outline-offset: 2px;
+  border-radius: 1px;
+}

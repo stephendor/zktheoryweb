@@ -30,7 +30,6 @@ import type { PointCloudEditorProps, ComplexOverlay } from './PointCloudEditor';
 import { computeBettiNumbers } from '@lib/tda/bettiNumbers';
 import { buildComplexFP, maxPairwiseDist, buildRadiusSteps } from '@lib/tda/filtrationUtils';
 import type { Point2D } from '@lib/tda/vietorisRips';
-import { ResponsiveContainer } from '@lib/viz/ResponsiveContainer';
 import { AriaLiveRegion } from '@lib/viz/a11y/AriaLiveRegion';
 import { TextDescriptionToggle } from '@lib/viz/a11y/TextDescriptionToggle';
 import { useReducedMotion } from '@lib/viz/a11y/useReducedMotion';
@@ -49,6 +48,15 @@ const STEP_DURATION_MS = 80;
 
 /** Debounce delay for AriaLiveRegion announcements (ms). */
 const ARIA_DEBOUNCE_MS = 200;
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface TopologicalEvent {
+  id: number;
+  message: string;
+}
 
 // ---------------------------------------------------------------------------
 // FiltrationPointCloudEditor — thin wrapper providing the 50-point cap
@@ -82,6 +90,8 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
   /** 'step' = manual; 'continuous' = RAF animation active. */
   const [mode, setMode] = useState<'step' | 'continuous'>('step');
   const [liveMessage, setLiveMessage] = useState('');
+  const [displayBetti, setDisplayBetti] = useState({ beta0: 0, beta1: 0, beta2: 0 });
+  const [eventLog, setEventLog] = useState<TopologicalEvent[]>([]);
 
   const reducedMotion = useReducedMotion();
 
@@ -134,6 +144,15 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
   }, [speedMultiplier]);
 
   const ariaDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Betti counter animation ref
+  const bettiAnimRef = useRef<number | null>(null);
+
+  // Event log detection refs
+  const prevBettiRef = useRef({ beta0: 0, beta1: 0, beta2: 0 });
+  const prevTriangleCountRef = useRef(0);
+  const prevPointsRef = useRef<Point2D[]>([]);
+  const eventIdRef = useRef(0);
 
   // ── Animation callbacks ───────────────────────────────────────────────────
 
@@ -199,6 +218,7 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
   useEffect(() => {
     return () => {
       if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
+      if (bettiAnimRef.current !== null) cancelAnimationFrame(bettiAnimRef.current);
       if (ariaDebounceRef.current) clearTimeout(ariaDebounceRef.current);
     };
   }, []);
@@ -215,6 +235,7 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
     setMode('step');
     currentStepIdxRef.current = 0;
     setCurrentStepIdx(0);
+    setEventLog([]);
   }, [points]);
 
   // AriaLiveRegion announcements — debounced to avoid flooding screen readers.
@@ -308,6 +329,106 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
     bettiNumbers,
   ]);
 
+  // ── Animated Betti counters ───────────────────────────────────────────────
+  useEffect(() => {
+    if (bettiAnimRef.current !== null) {
+      cancelAnimationFrame(bettiAnimRef.current);
+      bettiAnimRef.current = null;
+    }
+
+    if (!reducedMotion) {
+      const target = bettiNumbers;
+
+      const step = () => {
+        setDisplayBetti((prev) => {
+          const next = {
+            beta0:
+              prev.beta0 < target.beta0
+                ? prev.beta0 + 1
+                : prev.beta0 > target.beta0
+                ? prev.beta0 - 1
+                : prev.beta0,
+            beta1:
+              prev.beta1 < target.beta1
+                ? prev.beta1 + 1
+                : prev.beta1 > target.beta1
+                ? prev.beta1 - 1
+                : prev.beta1,
+            beta2: 0,
+          };
+          const done = next.beta0 === target.beta0 && next.beta1 === target.beta1;
+          if (!done) {
+            bettiAnimRef.current = requestAnimationFrame(step);
+          } else {
+            bettiAnimRef.current = null;
+          }
+          return next;
+        });
+      };
+
+      bettiAnimRef.current = requestAnimationFrame(step);
+    } else {
+      setDisplayBetti(bettiNumbers);
+    }
+
+    return () => {
+      if (bettiAnimRef.current !== null) {
+        cancelAnimationFrame(bettiAnimRef.current);
+        bettiAnimRef.current = null;
+      }
+    };
+  }, [bettiNumbers, reducedMotion]);
+
+  // ── Topological event detection ───────────────────────────────────────────
+  useEffect(() => {
+    const currTriangles = currentComplex.filter((s) => s.dimension === 2).length;
+
+    // On reset (step 0) or after a point-cloud change, sync prev refs without adding events.
+    if (currentStepIdx === 0 || prevPointsRef.current !== points) {
+      prevPointsRef.current = points;
+      prevBettiRef.current = { ...bettiNumbers };
+      prevTriangleCountRef.current = currTriangles;
+      return;
+    }
+
+    const prev = prevBettiRef.current;
+    const prevTriangles = prevTriangleCountRef.current;
+    const newEvents: TopologicalEvent[] = [];
+
+    if (bettiNumbers.beta0 < prev.beta0) {
+      newEvents.push({
+        id: ++eventIdRef.current,
+        message: `Component merged at r\u202f=\u202f${currentRadius.toFixed(2)}`,
+      });
+    }
+    if (bettiNumbers.beta1 > prev.beta1) {
+      newEvents.push({
+        id: ++eventIdRef.current,
+        message: `Loop born at r\u202f=\u202f${currentRadius.toFixed(2)}`,
+      });
+    }
+    if (bettiNumbers.beta1 < prev.beta1) {
+      newEvents.push({
+        id: ++eventIdRef.current,
+        message: `Loop filled at r\u202f=\u202f${currentRadius.toFixed(2)}`,
+      });
+    }
+    if (currTriangles > prevTriangles) {
+      newEvents.push({
+        id: ++eventIdRef.current,
+        message: `Triangle (2-simplex) filled at r\u202f=\u202f${currentRadius.toFixed(2)}`,
+      });
+    }
+
+    if (newEvents.length > 0) {
+      setEventLog((prev) => [...newEvents, ...prev].slice(0, 5));
+    }
+
+    prevPointsRef.current = points;
+    prevBettiRef.current = { ...bettiNumbers };
+    prevTriangleCountRef.current = currTriangles;
+  }, [currentStepIdx, bettiNumbers, currentRadius, currentComplex, points]);
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
@@ -323,16 +444,18 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
             />
           </div>
 
-          {/* Right panel: Betti number display + event log (Step 3) */}
+          {/* Right panel: Betti numbers + event log + module links */}
           <div className="fp-panel fp-panel--right">
             <h3 className="fp-panel-label">Topological Features</h3>
+
+            {/* Betti number display — animated counters */}
             <div className="fp-betti-display">
               <div className="fp-betti-item">
                 <span
                   className="fp-betti-value"
                   aria-label={`Beta zero: ${bettiNumbers.beta0}`}
                 >
-                  {bettiNumbers.beta0}
+                  {displayBetti.beta0}
                 </span>
                 <span className="fp-betti-label">Connected components (β₀)</span>
               </div>
@@ -341,7 +464,7 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
                   className="fp-betti-value"
                   aria-label={`Beta one: ${bettiNumbers.beta1}`}
                 >
-                  {bettiNumbers.beta1}
+                  {displayBetti.beta1}
                 </span>
                 <span className="fp-betti-label">Loops (β₁)</span>
               </div>
@@ -350,12 +473,60 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
                   className="fp-betti-value"
                   aria-label={`Beta two: ${bettiNumbers.beta2}`}
                 >
-                  {bettiNumbers.beta2}
+                  {displayBetti.beta2}
                 </span>
                 <span className="fp-betti-label">Voids (β₂)</span>
               </div>
             </div>
-            {/* Feature event log and module links — Step 3 */}
+
+            {/* Feature event log */}
+            <div
+              className="fp-event-log"
+              role="log"
+              aria-label="Topological event log"
+              aria-live="off"
+            >
+              <p className="fp-event-log__heading">Recent events</p>
+              {eventLog.length === 0 ? (
+                <p className="fp-event-log__empty">
+                  Events will appear as the filtration grows.
+                </p>
+              ) : (
+                <ul className="fp-event-log__list">
+                  {eventLog.map((evt, i) => (
+                    <li
+                      key={evt.id}
+                      className={`fp-event-item${i === 0 ? ' fp-event-item--recent' : ' fp-event-item--muted'}`}
+                    >
+                      {evt.message}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Module links */}
+            <div className="fp-module-links">
+              <p className="fp-module-links__label">Learn more:</p>
+              <ul className="fp-module-links__list">
+                <li>
+                  <a
+                    href="/learn/topology-social-scientists#module-3"
+                    className="fp-module-link"
+                  >
+                    Path 1: Module 3 — Simplicial Complexes
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/learn/topology-social-scientists#module-4"
+                    className="fp-module-link"
+                  >
+                    Path 1: Module 4 — Homology: Counting Holes
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
