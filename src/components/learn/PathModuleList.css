@@ -149,7 +149,7 @@
 
 .module-item__status--complete {
   color: var(--color-neutral-surface);
-  background: var(--color-tda-teal);
+  background: var(--accent-primary);
 }
 
 /* ── Core concept snippet ───────────────────────────────────────────────── */
