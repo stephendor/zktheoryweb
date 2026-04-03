@@ -32,7 +32,7 @@ import { ExpandableCard } from '@components/shared/ExpandableCard';
 import MarkCompleteButton from '@components/learn/MarkCompleteButton';
 import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
 import { PovertySimulator } from '@components/interactives/PovertySimulator';
-import { PersistenceDiagramBuilder } from '@components/interactives/PersistenceDiagramBuilder';
+import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';
 
 interface ModuleRef {
   slug: string;
@@ -157,7 +157,7 @@ const titleId = 'module-title';
                 <PovertySimulator client:visible />
               )}
               {interactive_slug === 'persistence-diagram-builder' && (
-                <PersistenceDiagramBuilder client:visible />
+                <PersistenceDiagramBuilderWrapper client:visible />
               )}
               {/* Fallback link for any interactive without a registered component */}
               {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder'].includes(interactive_slug) && (
