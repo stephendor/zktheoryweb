@@ -30,6 +30,12 @@ import { PersistenceDiagramBuilderWrapper } from '@components/interactives/Persi
 import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
 import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
 import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
+import { TDAResultsExplorer } from '@components/interactives/TDAResultsExplorer';
+
+// Preset map: interactive slug → default presetId for TDAResultsExplorer.
+const PRESET_MAP: Record<string, string> = {
+  'tda-results-explorer': 'circle-20pts',
+};
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
 export async function getStaticPaths() {
@@ -76,6 +82,8 @@ const { title, description, slug } = entry.data;
         <BenefitTaperCalculator client:visible />
       ) : slug === 'filtration-playground' ? (
         <FiltrationPlayground client:visible />
+      ) : slug === 'tda-results-explorer' ? (
+        <TDAResultsExplorer presetId="circle-20pts" client:visible />
       ) : (
         <p class="interactive-page__missing">
           Interactive <code>{slug}</code> is not yet implemented.

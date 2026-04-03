@@ -1,0 +1,109 @@
+---
+title: 'Vietoris-Rips Persistent Homology'
+path: 'tda-practitioners'
+module_number: 3
+core_concept: 'Computing H₀ and H₁ persistent homology with ripser and visualising results with persim'
+interactive_slug: 'filtration-playground'
+connections:
+  chapters: []
+  papers: [1]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'What is the elder rule and why is it the canonical tie-breaking convention in persistent homology implementations?'
+    answer: 'The elder rule states that when two connected components merge, the younger one (born at the larger scale parameter) dies, and the older one (born earlier) persists. The rule is canonical because it minimises pairing ambiguity when multiple simplices are added at the same filtration step — a common occurrence with floating-point data. It also ensures stability: under small perturbations to the point cloud, the elder rule produces consistent pairings that change continuously with the data. The elder rule is the default in ripser, gudhi, and all major TDA libraries, so comparing diagrams across tools is valid without manual adjustment.'
+  - question: 'The bottleneck distance between two persistence diagrams from consecutive survey waves is 0.02, while the individual persistence values in both diagrams range from 0.05 to 1.7. How should you interpret this result?'
+    answer: 'A bottleneck distance of 0.02 means the closest perfect matching between the two diagrams requires displacing some point by at most 0.02 units — approximately 1% of the persistence range. This means the two diagrams are extremely similar: the topological structure of the welfare data has not changed appreciably between the two survey waves. The long-lived features (persistence ~1.7) have shifted by at most 0.02 units in their birth or death coordinates, which is well within the noise tolerance established by the stability theorem. This is a strong result: it indicates that whatever persistent loop or cluster structure exists in the data is robust and reproducible across survey waves, not an artefact of a single data collection exercise.'
+  - question: 'You observe five H₁ features in your persistence diagram. Four have persistence below 0.04 and one has persistence 0.92. How do you report this, and what follow-up analysis should you conduct?'
+    answer: 'Report the one persistent feature as the primary finding and characterise the four near-diagonal features as noise. Compute the median and standard deviation of the near-diagonal persistence values to establish an empirical noise floor, then confirm that 0.92 exceeds it by a factor of at least 10 — this is the informal signal-to-noise threshold used in TDA social-science applications. Subsequently: (1) run a bootstrap test (Module 5) to confirm the feature survives subsampling; (2) compute the bottleneck distance to a null diagram constructed from label-permuted data to establish a statistical threshold; (3) identify which data points are involved in the loop by reading the representative cycle from the ripser output (with maxdim=1 and cocycles=True); (4) interpret those points substantively within the welfare dataset. The one-sentence report is: "One robust H₁ feature with persistence 0.92 was detected; four noise features with mean persistence 0.02 are consistent with sampling artefacts."'
+status: 'drafting'
+---
+
+## End-to-End: From Raw Data to Diagram
+
+Modules 1 and 2 equipped you with the tools and the preprocessing principles. This module assembles both into a complete, reproducible analysis pipeline — from raw point cloud through normalisation, Vietoris–Rips construction, persistent homology computation, and visual interpretation with `persim`. The mathematical concepts introduced here — the elder rule and the bottleneck distance — are not in addition to the pipeline, they are embedded in every step of it. The elder rule governs which features are reported when the filtration is ambiguous; the bottleneck distance governs how you compare diagrams across datasets or time points. Working through a full end-to-end example develops the practical fluency that papers alone cannot provide: an understanding of what `ripser` is doing at each step, why the output has the shape it does, and how to trace a surprising result back to its source.
+
+## Building and Inspecting the Distance Matrix
+
+Before passing data to `ripser`, build and inspect the distance matrix. For a normalised data matrix $X \in \mathbb{R}^{n \times d}$ with z-score normalised columns, the Euclidean distance matrix $D \in \mathbb{R}^{n \times n}$ has entries $D_{ij} = \| x_i - x_j \|_2$. Before any persistent homology is computed, examine the distribution of pairwise distances — a histogram of the upper triangle of $D$. The modal distance (the peak of the histogram) gives you a rough estimate of the scale at which most edges in the VR filtration will be added, and the tail of the distribution tells you which pairs of points are genuine outliers. If the histogram has a bimodal shape, two well-separated clusters are likely present in the data, which will appear as two long-lived H₀ features in `dgms[0]`.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+# from sklearn.preprocessing import StandardScaler
+# from scipy.spatial.distance import pdist, squareform
+# from ripser import ripser
+# from persim import plot_diagrams
+# import matplotlib.pyplot as plt
+
+# Synthetic noisy circle — one known H₁ loop
+np.random.seed(0)
+n = 150
+theta = np.random.uniform(0, 2 * np.pi, n)
+circle = np.column_stack([np.cos(theta), np.sin(theta)])
+X = circle + np.random.normal(0, 0.15, (n, 2))
+
+# Z-score normalise (already unit-scale for this example, shown for pattern)
+# from sklearn.preprocessing import StandardScaler
+# X = StandardScaler().fit_transform(raw_welfare_data)
+
+# Inspect distance distribution
+# D = squareform(pdist(X))
+# triu_vals = D[np.triu_indices(len(D), k=1)]
+# plt.hist(triu_vals, bins=40)
+# plt.xlabel('Pairwise distance')
+# plt.ylabel('Count')
+# plt.title('Distance distribution')
+# plt.savefig('distance_hist.png', dpi=150)
+
+# Run full VR persistent homology up to H₁
+# result = ripser(X, maxdim=1)
+# dgms = result['dgms']
+
+# Visualise persistence diagram
+# fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+# axes[0].scatter(X[:, 0], X[:, 1], s=8, c='steelblue', alpha=0.7)
+# axes[0].set_title('Point cloud (noisy circle)')
+# plot_diagrams(dgms, ax=axes[1], show=False)
+# axes[1].set_title('Persistence diagram: H₀ (blue), H₁ (orange)')
+# plt.tight_layout()
+# plt.savefig('persistence_diagram.png', dpi=150)
+```
+
+Running this on the noisy circle should produce one conspicuous point in `dgms[1]` far from the diagonal — the persistent loop — and all other H₁ points clustered near it. The `plot_diagrams` call from `persim` renders H₀ features as blue dots and H₁ features as orange dots, with the diagonal drawn for reference.
+
+## The Elder Rule
+
+When the filtration adds simplices in unambiguous order — one at a time, each at a distinct scale — the birth–death pairing is uniquely determined. In practice, however, floating-point distance matrices often produce ties: many pairs of points at exactly the same distance, or many triples forming triangles simultaneously. A tie-breaking rule is required to decide which homology class dies and which survives when two components merge at the same scale. The **elder rule** resolves the ambiguity by always killing the younger feature: when components $A$ (born at $r_A$) and $B$ (born at $r_B > r_A$) merge at scale $r_\text{merge}$, component $B$ (the younger one) dies and $A$ (the elder) persists.
+
+The persistence of any feature is:
+
+$$\text{pers}(\sigma) = d(\sigma) - b(\sigma)$$
+
+where $b(\sigma)$ is the birth time and $d(\sigma)$ is the death time. For essential classes — features present throughout the rest of the filtration after they appear — $d(\sigma) = \infty$ by convention. In a connected point cloud filtered by VR, exactly one H₀ class is essential (the final connected component); in a dataset with a persistent loop that is never filled by any triangle or higher-dimensional simplex within the chosen maximum scale, that H₁ class will also be essential.
+
+## Interpreting H₀ and H₁ Bars
+
+In `dgms[0]`, count the rows with $d - b > $ some threshold: these are connected components that persist across a meaningful range of scales. For a well-connected welfare panel, nearly all rows will cluster near the origin with tiny death values (components merging almost immediately), and one row will have $d = \inf$. A few rows with moderate death values indicate small isolated sub-populations that merge into the main cluster only at intermediate scales — this is often sociologically meaningful, flagging groups that are only weakly connected to the rest of the data.
+
+In `dgms[1]`, each row $[b, d]$ represents a loop. Read H₁ bars exactly as you read H₀ bars: the birth coordinate is the scale at which a cycle first appeared in the graph (a closed path that is not yet filled by any triangle), and the death coordinate is when a higher-dimensional simplex closed it. A row far from the diagonal in `dgms[1]` — large $d - b$ — is the key finding: a loop that persisted across a wide range of scales and is therefore robust to the precise choice of filtration threshold. In poverty trajectory data, such a loop implies that households cycle through welfare states — a structural dynamic in which the population does not converge to a fixed point but traces a closed orbit through the variable space.
+
+## Measuring Diagram Similarity: Bottleneck Distance
+
+When comparing two persistence diagrams — from two different populations, two time periods, or a treatment and control group — the appropriate metric is the **bottleneck distance**:
+
+$$d_B(X, Y) = \inf_\gamma \sup_{x \in \text{Dgm}(X)} \| x - \gamma(x) \|_\infty$$
+
+where the infimum is over all matchings $\gamma$ between the points of the two diagrams (extended to include diagonal projections, so that unmatched points are matched to their nearest diagonal projection). A small bottleneck distance means the two datasets have nearly identical persistent topology. `persim` implements this as `persim.bottleneck(dgms_A[1], dgms_B[1])` for H₁ comparison.
+
+The bottleneck distance is bounded above by the Hausdorff distance between the underlying point clouds (the stability theorem), giving a direct link between data perturbation and diagram perturbation: if two datasets differ by at most $\epsilon$ in Hausdorff distance, their H₁ diagrams differ by at most $\epsilon$ in bottleneck distance.
+
+## Using the Interactive: Filtration Playground
+
+The **Filtration Playground** paired with this module externalises the filtration process so that the connection between point cloud geometry and persistence diagram becomes directly observable. Place six to eight points in a rough circle on the canvas, then drag the filtration scale slider from left to right. Watch edges appear between nearby points, then triangles fill in when three mutual edges are present, and observe simultaneously the persistence diagram updating: each H₁ feature appears as a dot when the corresponding loop is born, and moves vertically upward until a triangle fills it and it receives a finite death value.
+
+The most instructive experiment: place one point in the centre of the ring. With the central point absent, the filtration generates one long-lived H₁ loop. With the central point present, the triangles fill in earlier — the loop death value decreases, its birth value may increase, and the persistence shrinks substantially. This demonstrates that the *position* of points matters topologically, not just their count: the central point creates a spoke-and-wheel geometry that triangulates the central void and destroys the loop before it can accumulate persistence. That is the same mechanism by which a highly connected broker household (connected to many welfare-state clusters) can suppress the cyclical structure that would otherwise be visible in a longitudinal panel.
+
+## How This Module Connects
+
+This module completes the computational foundation for the entire Path 4 sequence. The pipeline built here — normalise, compute distances, run `ripser`, plot with `persim` — constitutes the standard workflow referenced in **Paper 1** and is the basis for all subsequent analysis steps: reading diagrams (Module 4), hypothesis testing (Module 5), Mapper construction (Module 6), and statistical vectorisation (Module 9). Module 4 addresses the interpretive challenge directly: given a diagram with one or more persistent features, what substantive claims are you entitled to make about your data?

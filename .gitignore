@@ -23,3 +23,7 @@ Thumbs.db
 # Local Netlify folder
 .netlify
 storybook-static/
+
+# Playwright
+playwright-report/
+test-results/

@@ -1,0 +1,77 @@
+---
+title: 'Reading Persistence Diagrams'
+path: 'tda-practitioners'
+module_number: 4
+core_concept: 'Translating birth-death coordinates into topological claims about your data'
+interactive_slug: 'persistence-diagram-builder'
+connections:
+  chapters: []
+  papers: [1, 2]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'A persistence diagram for your welfare dataset shows one H₁ point at (0.31, 1.88) and twelve H₁ points clustered between (0.40, 0.47) and (0.60, 0.68). What claim is justified, and what language should you avoid?'
+    answer: 'The single point at (0.31, 1.88) has persistence 1.57, while all twelve near-diagonal points have persistence below 0.28. The justified claim is that the data contains one topologically robust loop structure that persists across scales 0.31 through 1.88 — a feature that is stable to small perturbations and survives across a wide range of analysis scales. You should avoid saying "the data contains a cycle" without specifying what cycle means in spatial terms, and you should avoid claiming the loop corresponds to any specific sociological mechanism without corroborating analysis (Module 5 hypothesis testing is the next step). The twelve near-diagonal features should be explicitly reported as noise features consistent with sampling variation, not ignored. A strong report names what was found, what was not found, and what the noise floor looks like.'
+  - question: 'What is persistence entropy and in what analytic situation does it add information beyond the maximum persistence value?'
+    answer: 'Persistence entropy is E = -Σᵢ (lᵢ/L) log(lᵢ/L) where lᵢ = dᵢ - bᵢ is the persistence of the i-th feature and L = Σlᵢ is total persistence. It is the Shannon entropy of the persistence-length distribution, treating each feature as a "probability mass" proportional to its persistence. It adds information beyond maximum persistence when diagrams have comparable maximum values but different distributional shapes: a diagram with one very long bar and many short bars has low entropy (the long bar dominates), while a diagram with many bars of similar length has high entropy. In longitudinal poverty analysis, low entropy with a single dominant H₁ feature suggests one main cyclical mechanism; high entropy suggests distributed, multi-scale cyclical structure with no single dominant loop. Two datasets with the same maximum H₁ persistence but different entropies have structurally different topologies.'
+  - question: 'An essential class appears in dgms[1] — a row with birth coordinate 0.71 and death coordinate infinity. What does this mean geometrically, and is it typically a reliable signal?'
+    answer: 'An essential H₁ class means there exists a loop in the data that is never filled in by any triangle throughout the entire filtration, up to the maximum diameter computed. Geometrically, this indicates a void that persists at all scales — no collection of three mutually nearby points ever simultaneously spans the gap. In practice, this is almost always a computational artefact: the maximum scale passed to ripser was set too low, so the filtration terminated before the void was filled. Genuine essential H₁ classes exist in data with large-scale unfilled holes, but for compact point clouds in bounded domains (welfare data from a national survey), such a class most likely indicates that the max_dgm_size or the filtration maximum distance parameter should be increased. Verify by re-running with a larger maximum distance and checking whether the feature receives a finite death value.'
+status: 'drafting'
+---
+
+## The Diagram Is a Report, Not a Picture
+
+There is a pervasive error in early TDA practice: treating the persistence diagram as a visualisation to be admired rather than a formal report to be read. A persistence diagram is a multi-set of points in the extended plane. Each point is a precise claim about your data: a topological feature was born at scale $b$, died at scale $d$, and had persistence $d - b$. The art of diagram reading is learning which points warrant substantive interpretation, which warrant only methodological reporting, and what language is appropriate for each. Getting this right matters more than the computation itself. The persistence diagram is often the primary exhibit in a TDA analysis paper; if you misread it, you misrepresent what the mathematics actually established.
+
+## Anatomy of a Persistence Diagram
+
+A persistence diagram $\text{Dgm}_k$ records birth–death pairs for $k$-dimensional topological features. In applied TDA, the two diagrams of primary interest are $\text{Dgm}_0$ (connected components) and $\text{Dgm}_1$ (loops). By convention:
+
+- The horizontal axis is the **birth coordinate** $b$ — the scale at which the feature first appeared.
+- The vertical axis is the **death coordinate** $d$ — the scale at which it was destroyed.
+- All points lie strictly above the diagonal $d = b$, because death always follows birth.
+- **Distance from the diagonal** $= \frac{1}{2}(d - b)$ — half the persistence, the most direct measure of feature robustness.
+
+The diagonal region is the **noise zone**: points near $d = b$ represent features that were born and immediately destroyed, contributing no stable topological structure. The accepted heuristic is that features with persistence below the 90th percentile of all persistence values in $\text{Dgm}_1$ are noise candidates. This threshold is not universal — Module 5 replaces it with a principled statistical test — but it is a reliable first-pass diagnostic.
+
+## The Diagonal as Noise Threshold
+
+Why does proximity to the diagonal indicate noise? A feature with small persistence lived through only a narrow range of scale values: it was born when $r$ reached $b$ and immediately killed when $r$ reached $b + \epsilon$ for small $\epsilon$. Such a feature exists because a small local fluctuation in point density created a momentary loop or component — a triangle was missing from a nearly-triangulated region, briefly forming a loop, until the next few simplices closed it. This is the topological signature of sampling variation: with more data, the fine-grained holes would be filled, and the near-diagonal features would shift even closer to the diagonal. By contrast, a feature far from the diagonal persisted through a large range of scales and cannot be explained by sampling fluctuations of any reasonable size without invoking the contradiction of the stability theorem.
+
+## Multiplicity and Repeated Points
+
+A point appearing multiple times in the persistence diagram means multiple independent features with exactly the same birth–death pair. In a sparse data regime, this can happen for topological reasons — two symmetrically placed loops with identical filtration structure. More commonly in social data, coincident points in the diagram reflect symmetries in the underlying dataset (multiple geographic regions with structurally identical poverty landscapes) or discretisation artefacts when variables are measured at coarse ordinal scales. Report multiplicity explicitly: "two H₁ features with persistence 0.61, both born at scale 0.44" is a different finding from "one H₁ feature with persistence 0.61."
+
+## Essential Classes: Infinite Death Coordinates
+
+**Essential classes** are features with $d = \infty$ — they never die within the filtration. For the standard VR filtration on a connected point cloud, exactly one H₀ class is essential (the final surviving connected component of the entire data). Additional H₀ essential classes suggest the data has multiple genuinely disconnected components that were not bridged even at the maximum filtration scale — a situation worth investigating before proceeding to H₁ analysis, as it may indicate a data-loading error or a genuinely bimodal population structure.
+
+An essential H₁ class is rarer and requires careful scrutiny. It means a loop that was never triangulated even at the largest scale `ripser` computed. In practice, this usually reflects an insufficient maximum filtration scale or a point-cloud boundary effect, not a genuinely persistent macroscopic hole.
+
+## Persistence Entropy
+
+Beyond reading individual features, summary statistics of the full persistence diagram can characterise datasets for comparison. **Persistence entropy** treats the distribution of bar lengths as a probability distribution:
+
+$$E = -\sum_i \frac{l_i}{L} \log \frac{l_i}{L}$$
+
+where $l_i = d_i - b_i$ is the persistence of the $i$-th feature and $L = \sum_i l_i$ is total persistence. Low entropy indicates that one or a few features dominate (one long bar and many short ones); high entropy indicates distributed persistence across many features of comparable length. For poverty trajectory data, high $E$ over H₁ suggests multi-scale cyclical structure — poverty cycles operating simultaneously at different time-scales — while low $E$ with a single dominant bar suggests one main feedback mechanism.
+
+## Common Misreadings
+
+Four misreadings appear consistently in early-stage TDA applications to social data:
+
+**Confusing birth and death axes.** Birth is on the horizontal axis, death on the vertical. A feature in the top-left of the diagram (born late, died very late) has high persistence and was born at a large scale. A feature in the bottom-right is impossible — death cannot precede birth. If your diagram contains points below the diagonal, there is a bug in your distance matrix or a data type issue.
+
+**Ignoring H₀.** The connected component diagram encodes clustering information that is at least as substantively interesting as H₁ for welfare data. A long-lived cluster in `dgms[0]` — a point far from the diagonal — is a separated sub-population that deserves direct analysis. Do not skip H₀ in pursuit of the more technically exciting H₁ results.
+
+**Interpreting all H₁ points.** Every persistence diagram has near-diagonal H₁ noise features. These are not findings; they are statistical background. Only H₁ features with persistence exceeding the noise floor — ideally established via a bootstrap test rather than visual inspection — warrant substantive interpretation.
+
+**Over-specifying the interpretation.** A persistent H₁ feature establishes the existence of a loop in the data at those scales. It does not establish which mechanism created the loop, which data points constitute the representative cycle, or what policy implication follows. Each of those claims requires additional analysis.
+
+## Using the Interactive: Persistence Diagram Builder
+
+The **Persistence Diagram Builder** associated with this module allows direct experimentation with the birth–death coordinate reading. Place points in a ring configuration and observe the one long-lived H₁ dot appear far from the diagonal. Then add interior points progressively and watch the dot migrate toward the diagonal as the loop's death coordinate decreases — the interior points provide triangles that fill the void earlier in the filtration. This live correspondence between point-cloud geometry and diagram-point position is the most efficient way to build the intuition that reading a static diagram later requires.
+
+## How This Module Connects
+
+The interpretive discipline developed here is the interpretive layer applied to all findings in **Paper 1** and **Paper 2**. Paper 1 reports one long-lived H₁ feature in UK welfare panel data and must defend the claim that it signals a genuine poverty cycle rather than a sampling artefact; the argument rests on the diagram-reading principles of persistence distance from the diagonal and the stability theorem. Paper 2 addresses the additional complication that non-response in longitudinal surveys leaves structural gaps in the distance matrix, potentially elevating noise features and suppressing genuine signals — the misreading risks identified in this module become quantitative biases that Paper 2 measures and corrects for.

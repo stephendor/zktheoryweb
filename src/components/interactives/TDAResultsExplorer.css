@@ -1,0 +1,292 @@
+/**
+ * TDAResultsExplorer.css — Task 5.5b — Agent_Interactive_Advanced
+ *
+ * Scoped styles for the TDA Results Explorer dual-panel interactive.
+ * Uses TDA "Mathematical" palette tokens from src/styles/tokens.css.
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.tre-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+}
+
+/* ── Dual-panel row ──────────────────────────────────────────────────────── */
+
+.tre-panels {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-4, 1rem);
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .tre-panels {
+    flex-direction: column;
+  }
+}
+
+/* ── Individual panel ─────────────────────────────────────────────────────── */
+
+.tre-panel {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.tre-panel-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--color-neutral-muted, #555555);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* ── SVG panel containers ─────────────────────────────────────────────────── */
+
+.tre-svg-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 6px;
+  background: var(--color-neutral-surface, #ffffff);
+  overflow: hidden;
+}
+
+.tre-svg {
+  display: block;
+  width: 100%;
+  height: 340px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Point cloud SVG elements ─────────────────────────────────────────────── */
+
+.tre-point {
+  fill: var(--color-tda-teal, #1a5f6a);
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.tre-point--highlighted {
+  fill: var(--color-viz-6, #d55e00);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.tre-edge {
+  stroke: var(--color-tda-teal, #1a5f6a);
+  stroke-opacity: 0.6;
+  stroke-width: 1.5;
+}
+
+.tre-edge--highlighted {
+  stroke: var(--color-viz-6, #d55e00);
+  stroke-opacity: 0.9;
+  stroke-width: 2.5;
+}
+
+.tre-triangle {
+  fill: var(--color-tda-slate, #3d5a80);
+  fill-opacity: 0.12;
+  stroke: none;
+}
+
+.tre-radius-circle {
+  fill: none;
+  stroke: var(--color-tda-teal, #1a5f6a);
+  stroke-opacity: 0.1;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+/* ── Persistence diagram SVG elements ─────────────────────────────────────── */
+
+.tre-diag-line {
+  stroke: var(--color-neutral-border, #e5e7eb);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.tre-radius-line {
+  stroke: var(--color-tda-teal, #1a5f6a);
+  stroke-width: 1;
+  stroke-opacity: 0.4;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+
+.tre-axis-line {
+  stroke: var(--color-neutral-muted, #9ca3af);
+  stroke-width: 1;
+}
+
+.tre-axis-tick {
+  stroke: var(--color-neutral-muted, #9ca3af);
+  stroke-width: 1;
+}
+
+.tre-axis-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  fill: var(--color-neutral-muted, #6b7280);
+}
+
+.tre-axis-title {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 11px;
+  fill: var(--color-neutral-body, #1a1a1a);
+  font-weight: 500;
+}
+
+/* H₀ features — ochre */
+.tre-feature-h0 {
+  fill: var(--color-cl-ochre, #c07a2a);
+  stroke: #fff;
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: opacity 0.12s, r 0.12s;
+}
+
+/* H₁ features — teal */
+.tre-feature-h1 {
+  fill: var(--color-tda-teal, #1a5f6a);
+  stroke: #fff;
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: opacity 0.12s, r 0.12s;
+}
+
+.tre-feature--alive {
+  opacity: 1;
+}
+
+.tre-feature--dead {
+  opacity: 0.2;
+}
+
+.tre-feature--unborn {
+  opacity: 0.1;
+}
+
+.tre-feature--selected {
+  stroke: var(--color-viz-6, #d55e00);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 3px rgba(213, 94, 0, 0.5));
+}
+
+.tre-feature:focus-visible,
+.tre-feature-h0:focus-visible,
+.tre-feature-h1:focus-visible {
+  outline: 2px solid var(--color-tda-teal, #1a5f6a);
+  outline-offset: 2px;
+}
+
+/* ── Legend ──────────────────────────────────────────────────────────────── */
+
+.tre-legend-bg {
+  fill: var(--color-neutral-surface, #ffffff);
+  stroke: var(--color-neutral-border, #e5e7eb);
+  stroke-width: 1;
+  opacity: 0.92;
+}
+
+.tre-legend-text {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 10px;
+  fill: var(--color-neutral-body, #1a1a1a);
+  dominant-baseline: middle;
+}
+
+/* ── Controls strip ──────────────────────────────────────────────────────── */
+
+.tre-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background: var(--color-tda-warm-grey, #e8e6e0);
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 6px;
+}
+
+.tre-slider-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+}
+
+.tre-slider-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-mono, monospace);
+  color: var(--color-neutral-body, #1a1a1a);
+  min-width: 22ch;
+}
+
+.tre-slider {
+  flex: 1 1 180px;
+  accent-color: var(--color-tda-teal, #1a5f6a);
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.tre-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+}
+
+.tre-btn-reset {
+  padding: var(--space-1, 0.25rem) var(--space-4, 1rem);
+  border: 1px solid var(--color-tda-teal, #1a5f6a);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-tda-teal, #1a5f6a);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+
+.tre-btn-reset:hover,
+.tre-btn-reset:focus-visible {
+  background: var(--color-tda-teal, #1a5f6a);
+  color: #fff;
+}
+
+.tre-btn-reset:focus-visible {
+  outline: 2px solid var(--color-tda-teal, #1a5f6a);
+  outline-offset: 2px;
+}
+
+.tre-preset-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.tre-preset-select {
+  padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem);
+  border: 1px solid var(--color-neutral-border, #d1d5db);
+  border-radius: 4px;
+  background: var(--color-neutral-surface, #ffffff);
+  color: var(--color-neutral-body, #1a1a1a);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  cursor: pointer;
+}
+
+.tre-preset-select:focus-visible {
+  outline: 2px solid var(--color-tda-teal, #1a5f6a);
+  outline-offset: 2px;
+}
