@@ -1,7 +1,7 @@
 # zktheory.org Research Portfolio Website – APM Implementation Plan
 
 **Memory Strategy:** Dynamic-MD
-**Last Modification:** ALL PHASE 3 TASKS COMPLETE. Task 3.7b delivered Persistence Diagram Builder (dual panels, filtration slider, play/pause, step-through, cross-highlighting, full a11y). Collateral fixes: TransitionsTimeline duplicate import, ch-12.mdx YAML corruption, ExpandableCard tests updated for inert pattern. ExpandableCard now uses `inert` (not aria-hidden) for collapsed panels — established codebase pattern. H₀ generator field is vertex ID only (not merging edge); H₁ cross-highlight works fully. Build clean, 124 tests, lint exit 0. Ready for Task 3.8 user review + escalation decisions. Prior: Task 3.6b complete. (1) `papers.key_findings` corrected from `z.array(z.string())` to `z.array(z.object({ claim, detail }))` — matches ExpandableCard interface; PaperLayout and paper-01-sample.mdx migrated; Task 2.7 schema note updated. (2) `essays`/`notes` `summary` field confirmed canonical (Task 2.5 agent added it; `description` retained on essays for SEO). (3) PostLayout `.container-prose` corrected to `.container-prose--wide` — same fix as ChapterLayout; resolves 476px main-column collapse on all writing posts. Prior: Task 2.2c: `chapters.threads` corrected to `z.array(z.string())`; Task 2.2b: `--color-neutral-subtle` token added; Task 2.1: `key_claims` object array, `papers` status enum, `data-justice` slug confirmed.
+**Last Modification:** Phase 5 started. Task 5.6 (Learn Module Dynamic Route) added to Phase 5 Batch 1 to resolve `/learn/{pathSlug}/{moduleNumber}` 404 gap (§4.3 of Phase 5 Handover). Tasks renumbered: old 5.6→5.7, 5.7→5.8 (deps updated), 5.8→5.9, 5.9→5.10. Phase 5 branch `phase-5/advanced-interactives` created from merged main (PR #2). Prior: Phase 4 complete — 140 tests, lint exit 0, 37-page Pagefind build. Phase 3 escalation decisions: Persistence Diagram Builder → WebGL (Task 5.1 only); all others keep SVG. Intentional `react-hooks/exhaustive-deps` warning at PovertySimulator.tsx:331 — do not fix. Module path enum `path` values: `topology-social-scientists`, `mathematics-of-poverty`, `data-justice`, `tda-practitioners`.
 **Project Overview:** Full build of zktheory.org — a research portfolio website for two interconnected research programmes (Counting Lives book + TDA research programme). Astro 6, Tailwind CSS 4, React 19, TypeScript. Features: dual-palette design system, 18 chapter pages, 10 paper pages, 4 learning paths (34 modules), 10+ interactive visualisations (D3/Three.js), Zotero bibliography integration, Pagefind search, Netlify deployment. Six-phase build from foundation through polish. Content-first approach with interactive escalation review gates.
 
 ## Phase 1: Foundation
@@ -518,28 +518,39 @@
 2. Build code runner UI component (React island): CodeMirror 6 editor panel (syntax-highlighted, editable Python), output panel (text + plot rendering via matplotlib→SVG or pre-computed image), run button, reset button, pre-populated code templates for TDA operations; styled to match design tokens
 3. Create integration demo: a working example running a basic persistence computation (per 5.5a recommended approach), displaying the persistence diagram; verify performance is acceptable for toy examples; add fallback for browsers without WASM or slow devices (pre-computed results display with note)
 
-### Task 5.6 – Path 4 MDX Stubs: TDA for Practitioners - Agent_Content
+### Task 5.6 – Learn Module Dynamic Route - Agent_Design_Templates
+
+**Objective:** Build the dynamic page route `/learn/[path]/[module]` so all learning module pages resolve instead of returning 404.
+**Output:** `src/pages/learn/[path]/[module].astro` with `getStaticPaths()` generating all path/module combinations, rendered via `ModuleLayout.astro`.
+**Guidance:** As of Phase 4, all `MarkCompleteButton`, `PathModuleList` CTA links, and progress tracking target `/learn/{pathSlug}/{moduleNumber}` and return 404. Module content MDX files are flat in `src/content/learn/` named `path1-module-{N}.mdx`, `path2-module-{N}.mdx`, etc. The path-to-file-prefix mapping must be derived from `src/data/learnPaths.ts`. Module identifier in the progress system is `String(module_number)`. **Depends on: Task 2.4 Output by Agent_Design_Templates, Task 4.2 Output by Agent_Schema_Platform**
+
+1. Read `src/data/learnPaths.ts` to understand the `LearnPath` and `LearnModule` types; map each path `slug` to its MDX filename prefix (e.g., `topology-social-scientists` → `path1-module-{N}`) and confirm module number range per path
+2. Create `src/pages/learn/[path]/[module].astro`: implement `getStaticPaths()` iterating all paths and modules from `learnPaths.ts`, generating one route entry per module with `params: { path: pathSlug, module: String(module_number) }` and passing the MDX content entry and path data as props
+3. Build the page body: query the correct MDX entry using path/module params, render using `ModuleLayout.astro` with full frontmatter; ensure `MarkCompleteButton` and `PathModuleList` navigation components receive the correct `pathSlug` and `moduleNumber` props
+4. Run `npm run build` to confirm all routes generate without errors; run `npm test` to verify the existing 140 tests still pass; spot-check at least two module URLs in the built output to confirm correct content renders
+
+### Task 5.7 – Path 4 MDX Stubs: TDA for Practitioners - Agent_Content
 
 **Objective:** Create 12 structurally complete module MDX files for Path 4 per PRD §2.4.1.
-**Output:** 12 MDX files in `src/content/learn/tda-practitioners/`.
-**Guidance:** Graduate-level content. PRD Path 4 table. ~1,200 words per module structured as: (a) hook/motivation, (b) core concept 600–800 words with LaTeX, (c) interactive/code runner context, (d) connections, (e) reflection questions. Include Python code block placeholders with `{/* Pyodide code runner slot */}` comments — actual Pyodide integration happens in Task 5.7, not here. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.4 Output by Agent_Design_Templates**
+**Output:** 12 MDX files in `src/content/learn/` named `path4-module-{N}.mdx` (flat, not in a subdirectory).
+**Guidance:** Graduate-level content. PRD Path 4 table. ~1,200 words per module structured as: (a) hook/motivation, (b) core concept 600–800 words with LaTeX, (c) interactive/code runner context, (d) connections, (e) reflection questions. Include Python code block placeholders with `{/* Pyodide code runner slot */}` comments — actual Pyodide integration happens in Task 5.8, not here. `path` field must be `'tda-practitioners'`. **Depends on: Task 2.1 Output by Agent_Schema_Platform, Task 2.4 Output by Agent_Design_Templates**
 
 - Create modules 1–3 (Setup and first computation, Point cloud preprocessing, VR persistent homology): frontmatter, prose placeholder ~1,200 words each, Python code blocks referencing Pyodide integration, interactive slots for code runner and step-through filtration
 - Create modules 4–6 (Reading persistence diagrams, Null models/hypothesis testing, Mapper): reference Persistence Diagram Builder and Mapper Parameter Lab interactives, statistical interpretation focus, connections to papers 1–2
 - Create modules 7–9 (Zigzag persistence, Multi-parameter persistence, Wasserstein/landscape distances): advanced TDA methods, LaTeX for formal definitions, connections to papers 3–4, interactive slots for bifiltration explorer and distance calculator
 - Create modules 10–12 (TDA to deep learning, Fairness and topology, Designing your own TDA study): connect to papers 7–10, topological deep learning placeholders, fairness audit pipeline reference, checklist generator interactive slot
 
-### Task 5.7 – Embed Advanced Interactives in Paths & Content - Agent_Interactive_Advanced
+### Task 5.8 – Embed Advanced Interactives in Paths & Content - Agent_Interactive_Advanced
 
 **Objective:** Integrate Phase 5 interactives into relevant learning modules and content pages.
 **Output:** All Phase 5 interactives properly embedded in appropriate pages.
-**Guidance:** Match interactive to content per PRD tables. **Depends on: Task 5.2, 5.3, 5.4, 5.5b Output, Task 5.6 Output by Agent_Content**
+**Guidance:** Match interactive to content per PRD tables. Module pages must exist before embedding (Task 5.6). **Depends on: Task 5.2, 5.3, 5.4, 5.5b Output, Task 5.6 Output, Task 5.7 Output by Agent_Content**
 
 - Embed Mapper Parameter Lab in Path 4 Module 6 and TDA methods/mapper page; embed Filtration Playground in Path 1 Module 3 and Path 4 Module 3
 - Embed Benefit Taper Calculator in Path 2 Module 4 and relevant Counting Lives chapter pages; embed Pyodide code runner in Path 4 modules 1–12 where code execution is specified
 - Verify all embeddings render correctly; test responsive and a11y within page context
 
-### Task 5.8 – Playwright Integration Testing Setup - Agent_Infra
+### Task 5.9 – Playwright Integration Testing Setup - Agent_Infra
 
 **Objective:** Set up Playwright for end-to-end testing of interactives and page flows.
 **Output:** Playwright configured, integration tests for key interactives and progress tracking.
@@ -549,13 +560,13 @@
 2. Write integration tests for key interactives: test Normal Distribution Explorer drag interaction, test Persistence Diagram Builder point-to-diagram flow, test Research Pipeline Graph click-through, test progress tracking persistence across page navigation
 3. Verify all tests pass; integrate into CI-ready scripts (even if CI not yet configured); document Playwright testing patterns in `CONTRIBUTING.md`
 
-### Task 5.9 – User Review Checkpoint: Phase 5 - User
+### Task 5.10 – User Review Checkpoint: Phase 5 - User
 
-**Objective:** Review advanced interactives, Pyodide, TDA practitioners path, integration tests.
+**Objective:** Review advanced interactives, Pyodide, TDA practitioners path, module routes, integration tests.
 **Output:** User approval or change requests for Phase 5 deliverables.
-**Guidance:** Key areas: advanced interactive quality, Pyodide performance, Path 4 structure, test coverage. **Depends on: All Phase 5 tasks**
+**Guidance:** Key areas: advanced interactive quality, Pyodide performance, Path 4 structure, module route functionality, test coverage. **Depends on: All Phase 5 tasks**
 
-1. Compile review artefacts: demonstrate Mapper Parameter Lab, Filtration Playground, Benefit Taper Calculator, Pyodide code runner, any escalated interactive upgrades, TDA Practitioners path modules, Playwright test results
+1. Compile review artefacts: demonstrate module route (click a module link from a path landing page, verify it loads), Mapper Parameter Lab, Filtration Playground, Benefit Taper Calculator, Pyodide code runner, any escalated interactive upgrades, TDA Practitioners path modules, Playwright test results
 2. User reviews: advanced interactive quality, Pyodide performance (acceptable for toy examples?), Path 4 module structure, integration test coverage
 3. Incorporate feedback; confirm Phase 5 approval before proceeding to Phase 6
 
