@@ -1,0 +1,42 @@
+/*
+ * PathProgressBar.css — Task 4.2 — Agent_Schema_Platform
+ *
+ * Styles for the PathProgressBar React island.
+ * Mirrors the .path-card__progress* classes from src/pages/learn/index.astro
+ * using globally-scoped (un-prefixed) names so they match when the island is
+ * rendered inside a .path-card article.
+ *
+ * Fill colour is applied inline via the `style` prop because the palette
+ * variant (--color-tda-teal vs --color-cl-red) is data-driven.
+ */
+
+.ppb-wrapper {
+  margin-top: auto;
+}
+
+.ppb-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-neutral-muted);
+  margin-bottom: var(--space-2);
+}
+
+.ppb-pct {
+  font-weight: 600;
+}
+
+.ppb-bar {
+  height: 6px;
+  background: var(--color-neutral-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.ppb-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}

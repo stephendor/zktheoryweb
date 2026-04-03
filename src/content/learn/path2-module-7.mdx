@@ -1,0 +1,63 @@
+---
+title: 'The Black Box'
+path: 'mathematics-of-poverty'
+module_number: 7
+core_concept: 'Neural networks in welfare administration operate without interpretable features — the right to explanation meets the limits of adversarial auditing'
+connections:
+  chapters: [14, 15]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What makes a neural network a "black box" in a way that logistic regression is not?'
+    answer: 'In logistic regression, each feature has a single coefficient whose magnitude and sign can be directly interpreted: a one-unit increase in feature $x_j$ changes the log-odds of the outcome by $\beta_j$. In a deep neural network, the relationship between inputs and output is mediated by multiple layers of nonlinear transformations, and no single weight corresponds to an interpretable feature contribution. Techniques such as SHAP values and LIME attempt to construct local approximations — explaining why the model scored this particular individual highly — but these approximations are unstable, can be manipulated, and do not reflect the model''s global decision logic.'
+  - question: 'What is the right to explanation under UK GDPR, and what does "meaningful information about the logic involved" require?'
+    answer: 'Article 22 of the UK GDPR gives individuals the right not to be subject to solely automated decisions that have significant legal or similarly significant effects. Where such decisions are made, individuals have the right to obtain a meaningful explanation of the logic involved. The Information Commissioner''s guidance specifies that this means more than a description of the system''s general purpose — it requires information about the specific factors that led to the decision in the individual''s case. For deep neural networks, producing such an explanation is technically extremely difficult; the "explanation" that can be generated from SHAP values or similar post-hoc methods may not accurately reflect the model''s actual decision process.'
+  - question: 'What is adversarial auditing, and what are its limitations in the welfare context?'
+    answer: 'Adversarial auditing is the practice of probing a deployed algorithmic system — typically by constructing test inputs or submitting structured queries — to detect discriminatory patterns, accuracy disparities across groups, or systematic errors, without full access to the model''s internals. Its limitations in welfare contexts are threefold: first, the auditor must know what to test for and which subgroups to probe, but discriminatory effects may manifest along dimensions not hypothesised in advance; second, the deployed system may behave differently in test conditions than in production; third, system operators have legal and commercial incentives to limit auditors'' access and to contest findings, creating an asymmetric evidential burden that typically falls on the claimant challenging a decision.'
+status: 'drafting'
+---
+
+## The Explanation That Cannot Be Given
+
+In 2019, a 47-year-old man in Birmingham received a letter from a local housing authority informing him that his application for social housing had been deprioritised by an automated system. Under Article 22 of the UK GDPR, he had the right to request a meaningful explanation of the automated decision. He exercised that right. The authority's response described the general categories of data used by the system — credit history, tenancy record, employment status — and stated that the model had assessed his application as lower priority than others in the queue.
+
+It did not explain the specific basis for his deprioritisation. It could not: the neural network at the core of the system had been trained on historical allocation decisions, and while its aggregate accuracy on held-out test data was documented, the specific learned representations driving any individual prediction were not accessible to the authority's administrators, let alone to the applicant. The right to explanation encountered the limits of the model's interpretability.
+
+## How Neural Networks Learn
+
+A **feedforward neural network** learns a function $f: \mathbb{R}^p \to \mathbb{R}$ by composing multiple layers of parameterised transformations. With $L$ hidden layers, the computation is:
+
+$$
+\mathbf{h}^{(1)} = \phi\!\left(W^{(1)} \mathbf{x} + \mathbf{b}^{(1)}\right), \quad \mathbf{h}^{(\ell)} = \phi\!\left(W^{(\ell)} \mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\right), \quad \hat{y} = W^{(L+1)} \mathbf{h}^{(L)} + b^{(L+1)}
+$$
+
+where $\phi$ is a nonlinear activation function (commonly ReLU: $\phi(z) = \max(0, z)$), and $W^{(\ell)}, \mathbf{b}^{(\ell)}$ are the learned weight matrices and bias vectors at layer $\ell$. The network is trained by minimising a loss function $\mathcal{L}(\hat{y}, y)$ using gradient descent, iteratively adjusting all weights to reduce prediction error on the training data.
+
+The interpretability problem arises from the composition of nonlinear functions. In logistic regression, the mapping from inputs to output is linear in the log-odds, and each feature's contribution can be stated as a single number with clear units. In a deep network, a feature's influence is distributed nonlinearly across all layers — its effect depends on the values of all other features, changes across different input regions, and cannot be summarised as a single coefficient. There is no equivalent of the $\boldsymbol{\beta}$ vector.
+
+## Post-Hoc Explanation Methods and Their Limits
+
+The most widely deployed explanation technique in welfare systems is **SHAP** (SHapley Additive exPlanations), which estimates each feature's marginal contribution to a specific prediction by averaging the contribution of that feature across all possible orderings of the feature set. For a prediction $\hat{f}(\mathbf{x})$, the SHAP value for feature $j$ is:
+
+$$
+\phi_j = \sum_{S \subseteq \mathcal{F} \setminus \{j\}} \frac{|S|!\,(|\mathcal{F}|-|S|-1)!}{|\mathcal{F}|!} \bigl[\hat{f}(S \cup \{j\}) - \hat{f}(S)\bigr]
+$$
+
+where $\mathcal{F}$ is the full feature set and the sum is over all subsets $S$ not containing $j$. The SHAP values are guaranteed to sum to the prediction: $\sum_j \phi_j = \hat{f}(\mathbf{x}) - E[\hat{f}]$. This property is appealing for regulatory compliance — each feature "accounts for" a measurable portion of the score.
+
+The practical limitations are severe. SHAP values are **local approximations**: they explain why the model gave this individual a particular score, but they do not describe any global logic that applies across cases. Two individuals with similar SHAP explanations may have arrived at the same score through entirely different internal representations. The values are also computationally expensive for large feature sets, leading practitioners to approximate them — and the approximations are known to be unstable under small perturbations of the input. A claimant whose score sits near the decision threshold may receive a different SHAP explanation after a trivial change in their reported circumstances, even if their score does not change.
+
+## Adversarial Auditing and Its Structural Limits
+
+Without access to model weights, training data, or deployment code, external auditors must probe algorithmic systems from the outside — constructing test queries, submitting structured applications, or analysing population-level outcome data. Several civil society organisations in the UK have developed adversarial audit methodologies for this purpose.
+
+The structural problem is asymmetric access. The auditor must hypothesise which demographic dimensions to probe, construct test inputs that isolate the variable of interest, and demonstrate a systematic pattern rather than individual cases. System operators can contest audit methodologies, claim that test conditions do not reflect production behaviour, and invoke commercial confidentiality over deployment details. The legal burden of proof in discrimination claims under the Equality Act 2010 requires the claimant to establish a prima facie case before the burden shifts to the defendant — a standard difficult to meet from the outside of a black-box system.
+
+## A Notional Tool for Explanation Instability
+
+No interactive is embedded in this module. A useful companion exercise would be a tool that trains a small neural network on synthetic welfare data and then demonstrates SHAP value instability: showing how the explanation for a near-threshold individual changes as their features are perturbed slightly, while the predicted score remains approximately constant. The exercise would make viscerally clear that SHAP explanations are properties of the local approximation algorithm, not of the model's internal representations — and therefore cannot fulfil the legal and ethical function that regulators have assigned to them.
+
+## How This Module Connects
+
+**Chapter 14** of *Counting Lives* provides a detailed reconstruction of how neural network tools were introduced into UK public sector procurement without adequate interpretability requirements, drawing on internal DWP documentation and academic advisory processes. **Chapter 15** examines the confrontation between the right to explanation under UK GDPR and the practical limits of post-hoc explanation methods, and analyses the emerging case law in which individuals have challenged automated benefit decisions — documents that reveal both the legal system's incomplete grasp of the technical limitations and the technical community's incomplete grasp of the legal requirements.

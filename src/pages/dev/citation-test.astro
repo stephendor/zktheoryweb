@@ -9,9 +9,12 @@
  * Access at: /dev/citation-test/
  * Not linked from any production navigation.
  */
-
 import { getCollection } from 'astro:content';
 import PostLayout from '@layouts/PostLayout.astro';
+
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
 
 const essays = await getCollection('essays');
 const entry = essays.find((e) => e.id === 'citation-test');

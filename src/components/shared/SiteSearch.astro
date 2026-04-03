@@ -4,7 +4,7 @@
 //
 // NOTE: Search requires a production build. Results will NOT appear when running
 // `npm run dev` because Pagefind indexes built HTML output. To test search,
-// run `npm run build && npm run preview` instead.
+// run `npm run build && npx serve dist --listen 4321` instead.
 ---
 
 <button
@@ -40,6 +40,17 @@
 
     var pagefindInitialised = false;
 
+    function showSearchUnavailable() {
+      var container = document.getElementById('search-container');
+      if (container) {
+        container.innerHTML =
+          '<p class="search-unavailable">' +
+          'Search is only available in the production build. ' +
+          'Run <code>npm run build &amp;&amp; npx serve dist --listen 4321</code> to test.' +
+          '</p>';
+      }
+    }
+
     function openSearch() {
       if (!dialog) return;
       dialog.showModal();
@@ -53,28 +64,22 @@
         link.href = '/pagefind/pagefind-ui.css';
         document.head.appendChild(link);
 
-        // Dynamic import of the Pagefind UI script. Because this script runs
-        // as is:inline, Vite never processes it and the path resolves correctly
-        // against the built output at runtime.
-        import('/pagefind/pagefind-ui.js')
-          .then(function (mod) {
-            new mod.PagefindUI({ element: '#search-container', showImages: false });
-          })
-          .catch(function (err) {
-            console.warn(
-              '[SiteSearch] Pagefind UI unavailable. ' +
-              'Run `npm run build && npm run preview` to enable search.',
-              err
-            );
-            var container = document.getElementById('search-container');
-            if (container) {
-              container.innerHTML =
-                '<p class="search-unavailable">' +
-                'Search is only available in the production build. ' +
-                'Run <code>npm run build &amp;&amp; npm run preview</code> to test.' +
-                '</p>';
-            }
-          });
+        // Load Pagefind UI script via a <script> tag. pagefind-ui.js is an
+        // IIFE that sets window.PagefindUI — it has no ES module exports, so
+        // dynamic import() cannot be used.
+        var script = document.createElement('script');
+        script.src = '/pagefind/pagefind-ui.js';
+        script.onload = function () {
+          if (window.PagefindUI) {
+            new window.PagefindUI({ element: '#search-container', showImages: false });
+          } else {
+            showSearchUnavailable();
+          }
+        };
+        script.onerror = function () {
+          showSearchUnavailable();
+        };
+        document.head.appendChild(script);
       }
     }
 

@@ -1,0 +1,677 @@
+---
+/**
+ * src/pages/learn/glossary/index.astro — Task 4.6 — Agent_Integration
+ *
+ * Searchable, filterable glossary page at /learn/glossary/.
+ * Data sourced from src/data/glossary.ts (static file, not a content
+ * collection). Client-side search and domain filter via vanilla JS.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { glossaryEntries } from '@data/glossary';
+import type { GlossaryEntry } from '@data/glossary';
+
+// ── Prepare data at build time ──────────────────────────────────────────────
+
+// Sort alphabetically, treating "L'homme moyen" as starting with L
+const sorted = [...glossaryEntries].sort((a, b) =>
+  a.term.localeCompare(b.term, 'en', { sensitivity: 'base' }),
+);
+
+// Group by uppercased first letter
+const groupMap = new Map<string, GlossaryEntry[]>();
+for (const entry of sorted) {
+  const letter = entry.term.replace(/^[^A-Za-z]*/, '')[0]?.toUpperCase() ?? '#';
+  if (!groupMap.has(letter)) groupMap.set(letter, []);
+  groupMap.get(letter)!.push(entry);
+}
+const letterGroups = [...groupMap.entries()].sort(([a], [b]) => a.localeCompare(b));
+const lettersPresent = letterGroups.map(([l]) => l);
+
+// Slug → display-term lookup for related-term links
+const termBySlug = Object.fromEntries(glossaryEntries.map(e => [e.slug, e.term]));
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+function domainBadgeClass(domain: string): string {
+  if (domain === 'TDA') return 'glossary-badge--tda';
+  if (domain === 'Counting Lives') return 'glossary-badge--cl';
+  return 'glossary-badge--shared';
+}
+
+function hasDomain(entry: GlossaryEntry, domain: 'TDA' | 'Counting Lives'): boolean {
+  return entry.definitions.some(
+    d => d.domain === domain || d.domain === 'Shared',
+  );
+}
+
+// Search text for each entry: term + all definition texts, lower-cased
+function searchText(entry: GlossaryEntry): string {
+  return [entry.term, ...entry.definitions.map(d => d.text)]
+    .join(' ')
+    .toLowerCase();
+}
+---
+
+<BaseLayout
+  title="Glossary"
+  description="A shared vocabulary spanning topological data analysis and the Counting Lives poverty measurement project — terms defined for both mathematical and political contexts."
+  section="learn"
+>
+  <div class="container-prose--wide glossary-page">
+
+    <!-- Page header -->
+    <header class="glossary-header">
+      <h1 class="glossary-title">Glossary</h1>
+      <p class="glossary-intro">
+        A shared vocabulary for two intertwined projects. Terms from topological
+        data analysis carry dual definitions: their precise mathematical meaning
+        and their resonance in the political history of poverty measurement.
+        The duality is intentional — this site's intellectual signature is that
+        the mathematics and the politics are the same problem, seen from different
+        angles.
+      </p>
+    </header>
+
+    <!-- Controls: search + domain filter -->
+    <div class="glossary-controls" role="search">
+      <input
+        type="search"
+        id="glossary-search"
+        class="glossary-search-input"
+        placeholder="Search terms and definitions…"
+        aria-label="Search glossary terms and definitions"
+        autocomplete="off"
+      />
+
+      <div class="glossary-filter" role="group" aria-label="Filter by domain">
+        <button
+          type="button"
+          class="glossary-filter-btn glossary-filter-btn--active"
+          data-filter="all"
+          aria-pressed="true"
+        >All</button>
+        <button
+          type="button"
+          class="glossary-filter-btn glossary-filter-btn--tda"
+          data-filter="tda"
+          aria-pressed="false"
+        >TDA</button>
+        <button
+          type="button"
+          class="glossary-filter-btn glossary-filter-btn--cl"
+          data-filter="cl"
+          aria-pressed="false"
+        >Counting Lives</button>
+      </div>
+    </div>
+
+    <!-- A–Z jump navigation -->
+    <nav class="glossary-az-nav" aria-label="Jump to letter">
+      {lettersPresent.map(letter => (
+        <a class="glossary-az-link" href={`#section-${letter}`}>{letter}</a>
+      ))}
+    </nav>
+
+    <!-- No-results message (hidden by default) -->
+    <p id="glossary-no-results" class="glossary-no-results" aria-live="polite" hidden>
+      No terms match your search.
+    </p>
+
+    <!-- Alphabetical entry listing -->
+    <div class="glossary-list" id="glossary-list">
+      {letterGroups.map(([letter, entries]) => (
+        <section
+          class="glossary-section"
+          data-letter={letter}
+          id={`section-${letter}`}
+          aria-label={`Terms starting with ${letter}`}
+        >
+          <h2 class="glossary-section-letter" aria-hidden="true">{letter}</h2>
+
+          {entries.map(entry => (
+            <article
+              class="glossary-entry"
+              data-slug={entry.slug}
+              data-has-tda={hasDomain(entry, 'TDA') ? 'true' : 'false'}
+              data-has-cl={hasDomain(entry, 'Counting Lives') ? 'true' : 'false'}
+              data-search={searchText(entry)}
+            >
+              <!-- Term heading with anchor -->
+              <h3 class="glossary-entry-term" id={entry.slug}>{entry.term}</h3>
+
+              <!-- Domain badge(s) -->
+              <div class="glossary-entry-badges" aria-label="Domain">
+                {entry.definitions.map(def => (
+                  <span class={`glossary-badge ${domainBadgeClass(def.domain)}`}>
+                    {def.domain}
+                  </span>
+                ))}
+              </div>
+
+              <!-- Definitions — side-by-side on desktop, stacked on mobile -->
+              <div class={`glossary-definitions glossary-definitions--${entry.definitions.length > 1 ? 'dual' : 'single'}`}>
+                {entry.definitions.map(def => (
+                  <div class="glossary-definition">
+                    <p class="glossary-definition-domain">{def.domain}</p>
+                    <p class="glossary-definition-text">{def.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Related terms -->
+              {entry.relatedTerms.length > 0 && (
+                <div class="glossary-entry-related">
+                  <span class="glossary-entry-related-label">Related:</span>
+                  {entry.relatedTerms.map((slug, i) => (
+                    <>
+                      <a
+                        href={`#${slug}`}
+                        class="glossary-entry-related-link"
+                        aria-label={`Go to glossary entry: ${termBySlug[slug] ?? slug}`}
+                      >
+                        {termBySlug[slug] ?? slug}
+                      </a>{i < entry.relatedTerms.length - 1 ? ',\u00a0' : ''}
+                    </>
+                  ))}
+                </div>
+              )}
+
+              <!-- Linked content pills -->
+              {(entry.linkedContent.chapters.length > 0 ||
+                entry.linkedContent.papers.length > 0 ||
+                entry.linkedContent.methods.length > 0) && (
+                <div class="glossary-entry-links" aria-label="Linked content">
+                  {entry.linkedContent.chapters.map(n => (
+                    <a
+                      href={`/counting-lives/chapters/ch-0${n}/`}
+                      class="glossary-pill glossary-pill--chapter"
+                    >
+                      Ch.&thinsp;{n}
+                    </a>
+                  ))}
+                  {entry.linkedContent.papers.map(n => (
+                    <a
+                      href={`/tda/papers/${n}/`}
+                      class="glossary-pill glossary-pill--paper"
+                    >
+                      Paper&thinsp;{n}
+                    </a>
+                  ))}
+                  {entry.linkedContent.methods.map(slug => (
+                    <a
+                      href={`/tda/methods/${slug}/`}
+                      class="glossary-pill glossary-pill--method"
+                    >
+                      {slug.replace(/-/g, '\u00a0')}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </article>
+          ))}
+        </section>
+      ))}
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── Page wrapper ──────────────────────────────────────────────────────── */
+  .glossary-page {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-14);
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────────────  */
+  .glossary-header {
+    margin-bottom: var(--space-9);
+  }
+
+  .glossary-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin: 0 0 var(--space-5) 0;
+  }
+
+  .glossary-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-muted);
+    max-width: 72ch;
+    margin: 0;
+  }
+
+  /* ── Controls: search + filter ──────────────────────────────────────────  */
+  .glossary-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .glossary-search-input {
+    flex: 1 1 260px;
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    color: var(--color-neutral-body);
+    background: var(--color-neutral-surface);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-sm, 4px);
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .glossary-search-input::placeholder {
+    color: var(--color-neutral-muted);
+  }
+
+  .glossary-search-input:focus-visible {
+    border-color: var(--color-tda-teal);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-tda-teal) 20%, transparent);
+  }
+
+  /* Domain filter button group */
+  .glossary-filter {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .glossary-filter-btn {
+    appearance: none;
+    border: 1px solid var(--color-neutral-border);
+    background: var(--color-neutral-surface);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-neutral-muted);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm, 4px);
+    cursor: pointer;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  }
+
+  .glossary-filter-btn:hover {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-body);
+  }
+
+  .glossary-filter-btn:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /* Active (aria-pressed=true) states */
+  .glossary-filter-btn--active[aria-pressed='true'],
+  .glossary-filter-btn[data-filter='all'][aria-pressed='true'] {
+    background: var(--color-neutral-body);
+    border-color: var(--color-neutral-body);
+    color: var(--color-neutral-surface);
+  }
+
+  .glossary-filter-btn--tda[aria-pressed='true'] {
+    background: var(--color-tda-teal);
+    border-color: var(--color-tda-teal);
+    color: var(--color-neutral-surface);
+  }
+
+  .glossary-filter-btn--cl[aria-pressed='true'] {
+    background: var(--color-cl-red);
+    border-color: var(--color-cl-red);
+    color: var(--color-neutral-surface);
+  }
+
+  /* ── A–Z jump nav ────────────────────────────────────────────────────────  */
+  .glossary-az-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  .glossary-az-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm, 4px);
+    transition: background 150ms ease, color 150ms ease;
+  }
+
+  .glossary-az-link:hover {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-body);
+  }
+
+  .glossary-az-link:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  /* ── No-results message ──────────────────────────────────────────────────  */
+  .glossary-no-results {
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    color: var(--color-neutral-muted);
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+
+  /* ── Letter sections ─────────────────────────────────────────────────────  */
+  .glossary-section {
+    margin-bottom: var(--space-10);
+  }
+
+  .glossary-section-letter {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-neutral-border);
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-neutral-border);
+    scroll-margin-top: var(--space-9);
+  }
+
+  /* ── Individual entries ──────────────────────────────────────────────────  */
+  .glossary-entry {
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--color-neutral-subtle);
+  }
+
+  .glossary-entry:last-child {
+    border-bottom: none;
+  }
+
+  .glossary-entry-term {
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-neutral-body);
+    margin: 0 0 var(--space-3) 0;
+    scroll-margin-top: var(--space-9);
+  }
+
+  /* ── Domain badges ───────────────────────────────────────────────────────  */
+  .glossary-entry-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .glossary-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+
+  .glossary-badge--tda {
+    background: color-mix(in srgb, var(--color-tda-teal) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-tda-teal) 30%, transparent);
+    color: var(--color-tda-teal);
+  }
+
+  .glossary-badge--cl {
+    background: color-mix(in srgb, var(--color-cl-red) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-cl-red) 25%, transparent);
+    color: var(--color-cl-red);
+  }
+
+  .glossary-badge--shared {
+    background: color-mix(in srgb, var(--color-accent-amber) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent-amber) 30%, transparent);
+    color: var(--color-accent-amber);
+  }
+
+  /* ── Definitions layout ──────────────────────────────────────────────────  */
+  .glossary-definitions {
+    margin-bottom: var(--space-4);
+  }
+
+  /* Two-column on desktop for dual-definition entries */
+  .glossary-definitions--dual {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .glossary-definitions--dual {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .glossary-definition {
+    padding: var(--space-4);
+    background: var(--color-neutral-subtle);
+    border-radius: var(--radius-sm, 4px);
+    border-left: 3px solid var(--color-neutral-border);
+  }
+
+  .glossary-definitions--dual .glossary-definition:first-child {
+    border-left-color: var(--color-tda-teal);
+  }
+
+  .glossary-definitions--dual .glossary-definition:last-child {
+    border-left-color: var(--color-cl-red);
+  }
+
+  .glossary-definition-domain {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .glossary-definition-text {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-body);
+    margin: 0;
+  }
+
+  /* ── Related terms ───────────────────────────────────────────────────────  */
+  .glossary-entry-related {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .glossary-entry-related-label {
+    font-weight: 600;
+    margin-right: var(--space-1);
+  }
+
+  .glossary-entry-related-link {
+    color: var(--color-tda-teal);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+  }
+
+  .glossary-entry-related-link:hover {
+    text-decoration-style: solid;
+  }
+
+  .glossary-entry-related-link:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* ── Linked content pills ────────────────────────────────────────────────  */
+  .glossary-entry-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .glossary-pill {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background 150ms ease;
+  }
+
+  .glossary-pill:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+
+  .glossary-pill--chapter {
+    background: color-mix(in srgb, var(--color-cl-ochre) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-cl-ochre) 30%, transparent);
+    color: var(--color-cl-ochre);
+  }
+
+  .glossary-pill--chapter:hover {
+    background: color-mix(in srgb, var(--color-cl-ochre) 20%, transparent);
+  }
+
+  .glossary-pill--paper {
+    background: color-mix(in srgb, var(--color-tda-teal) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-tda-teal) 30%, transparent);
+    color: var(--color-tda-teal);
+  }
+
+  .glossary-pill--paper:hover {
+    background: color-mix(in srgb, var(--color-tda-teal) 20%, transparent);
+  }
+
+  .glossary-pill--method {
+    background: color-mix(in srgb, var(--color-tda-slate) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-tda-slate) 30%, transparent);
+    color: var(--color-tda-slate);
+  }
+
+  .glossary-pill--method:hover {
+    background: color-mix(in srgb, var(--color-tda-slate) 20%, transparent);
+  }
+
+  /* ── Hidden state (filter/search JS) ────────────────────────────────────  */
+  .glossary-entry[hidden],
+  .glossary-section[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  /**
+   * Glossary client-side filter and search.
+   *
+   * DOM contract:
+   *   - .glossary-filter-btn[data-filter]  — "all" | "tda" | "cl"
+   *   - .glossary-entry[data-has-tda][data-has-cl][data-search]
+   *   - .glossary-section[data-letter]
+   *   - #glossary-search — search <input>
+   *   - #glossary-no-results — <p> with hidden attr
+   */
+
+  type FilterValue = 'all' | 'tda' | 'cl';
+
+  const searchInput  = document.getElementById('glossary-search') as HTMLInputElement | null;
+  const noResults    = document.getElementById('glossary-no-results') as HTMLParagraphElement | null;
+  const filterBtns   = document.querySelectorAll<HTMLButtonElement>('.glossary-filter-btn');
+  const allEntries   = document.querySelectorAll<HTMLElement>('.glossary-entry');
+  const allSections  = document.querySelectorAll<HTMLElement>('.glossary-section');
+
+  let activeFilter: FilterValue = 'all';
+  let searchQuery = '';
+
+  // ── Apply current filter + search state ──────────────────────────────────
+
+  function applyFilters(): void {
+    let visibleCount = 0;
+
+    allEntries.forEach(entry => {
+      const hasTda = entry.dataset.hasTda === 'true';
+      const hasCl  = entry.dataset.hasCl  === 'true';
+      const text   = entry.dataset.search ?? '';
+
+      // Domain filter
+      const passesFilter =
+        activeFilter === 'all' ||
+        (activeFilter === 'tda' && hasTda) ||
+        (activeFilter === 'cl'  && hasCl);
+
+      // Search filter
+      const passesSearch =
+        searchQuery === '' ||
+        text.includes(searchQuery);
+
+      const visible = passesFilter && passesSearch;
+      entry.hidden = !visible;
+      if (visible) visibleCount++;
+    });
+
+    // Hide letter sections that have no visible entries
+    allSections.forEach(section => {
+      const anyVisible = [...section.querySelectorAll<HTMLElement>('.glossary-entry')]
+        .some(e => !e.hidden);
+      section.hidden = !anyVisible;
+    });
+
+    // Show/hide no-results message
+    if (noResults) noResults.hidden = visibleCount > 0;
+  }
+
+  // ── Filter button clicks ──────────────────────────────────────────────────
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = (btn.dataset.filter ?? 'all') as FilterValue;
+
+      filterBtns.forEach(b => {
+        const pressed = b === btn;
+        b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+        b.classList.toggle('glossary-filter-btn--active', pressed);
+      });
+
+      applyFilters();
+    });
+  });
+
+  // ── Search input ──────────────────────────────────────────────────────────
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value.toLowerCase().trim();
+      applyFilters();
+    });
+  }
+</script>

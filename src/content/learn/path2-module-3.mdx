@@ -1,0 +1,63 @@
+---
+title: 'Counting What Counts'
+path: 'mathematics-of-poverty'
+module_number: 3
+core_concept: 'The choice of what to include in the poverty basket encodes a theory of human need and desert'
+connections:
+  chapters: [3, 4]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What is the "basket" approach to poverty measurement, and what are its two fundamental political choices?'
+    answer: 'The basket approach defines poverty by comparing household expenditure against a priced list of necessities — the basket. The two inescapable political choices are: first, which goods and services belong in the basket at all (the inclusion decision); second, in what quantities and qualities each item should be present (the specification decision). Both choices embed a theory of human need, and both have historically reflected the political and cultural assumptions of the people making them rather than the expressed preferences of the people being measured.'
+  - question: 'How does Amartya Sen''s capabilities framework challenge the basket approach?'
+    answer: 'Sen argues that welfare should be measured in terms of what people are able to do and be — their "functionings" — rather than in terms of the goods they possess. A basket of commodities translates into different capabilities for different people: a ramp and a set of stairs cost the same to build, but their value to a wheelchair user differs radically from their value to an ambulatory person. Basket-based poverty measures miss this heterogeneity and cannot capture whether the items in the basket actually enable the functionings they are supposed to support.'
+  - question: 'What did the Townsend Deprivation Index of 1979 add to poverty measurement that Rowntree''s basket lacked?'
+    answer: 'Townsend''s index measured deprivation relative to prevailing social standards rather than biological minima. It asked whether households lacked items or activities that the majority of the population considered normal — a TV, a cooked meal once a day, a week''s holiday not staying with relatives. This made the poverty concept relative and participatory rather than expert-determined, but it also introduced a new political question: whose view of "normal" counted when constructing the list?'
+status: 'drafting'
+---
+
+## What Counts as a Necessity?
+
+In the autumn of 2010, officials at the Department for Work and Pensions were reviewing the components of the Minimum Income Standard — the reference basket used to set benefit uprating targets. The question before them was whether broadband internet access should be added to the basket as a necessity rather than a luxury. Proponents argued that job applications, Universal Credit claims, school homework, and NHS appointment booking all increasingly required internet access. Opponents argued that internet access was a consumption good, that libraries remained available, and that including it would inflate the poverty count unacceptably.
+
+The internet question was decided, eventually, in favour of inclusion. But the decision exposed something that basket approaches have always concealed: there is no algorithm for determining what belongs. Every item in the poverty basket is there because of a decision made by a person with a theory about what human beings need and what the state is obliged to provide.
+
+## From Basket to Theory of Need
+
+Seebohm Rowntree's 1899 York basket was constructed from the bottom up: he priced the cheapest available food that could sustain physiological functioning, the cheapest adequate housing, and basic fuel. Clothing and household maintenance were added in subsequent surveys. The basket could be calculated with apparent precision, and that precision gave poverty measurement its scientific aura. What it could not do was explain why the items were chosen in those quantities and not others.
+
+By the 1950s, British poverty researchers were beginning to notice that Rowntree's basket had aged badly. Standards of living had risen; the diet he specified would have been considered inadequate by contemporary nutritional science; and the complete exclusion of any spending on leisure, culture, or social participation struck a new generation of researchers as morally untenable.
+
+Peter Townsend's methodological response, culminating in his 1979 survey *Poverty in the United Kingdom*, proposed a radically different framework. Instead of an expert-determined basket, Townsend constructed a **deprivation index**: a list of items and activities that the majority of the population considered normal and necessary, from which low-income households were excluded. The index score $D$ for a household was:
+
+$$
+D = \sum_{j=1}^{n} d_j
+$$
+
+where $d_j = 1$ if the household lacks item $j$ (and lacks it involuntarily, not by choice) and $d_j = 0$ otherwise. Townsend then identified a poverty threshold as the income level at which deprivation scores increased sharply — a discontinuity he argued revealed the point at which households began making involuntary sacrifices.
+
+Townsend's contribution was to make the content of the basket empirically answerable rather than expert-stipulated: the items in his index were those the population said mattered. But it introduced a new problem. The deprivation index reflects prevailing social norms, which are themselves shaped by income levels. If the majority of the population cannot afford foreign holidays, foreign holidays are not a deprivation. If the majority own smartphones, not owning one becomes a deprivation. The basket expands and contracts with the income distribution, encoding the judgements of the non-poor about what the poor need.
+
+## Sen and the Limits of Commodities
+
+Amartya Sen's capabilities approach, developed through the 1980s and 1990s, offers the most fundamental critique of basket-based measurement. Sen argues that poverty is ultimately a failure of **capabilities**: the substantive freedoms to live the kind of life one has reason to value. Commodities — including the items in any poverty basket — are merely inputs to capabilities; the conversion rate depends on personal characteristics, social arrangements, and the physical environment.
+
+The practical implication is severe: a poverty basket can only measure whether a household possesses certain goods. It cannot measure whether those goods actually enable the person to function. Two households with identical baskets may have radically different capability profiles if one member has a disability that makes certain goods irrelevant and certain absences catastrophic.
+
+The Alkire-Foster methodology, adopted by the UN Development Programme for the Multidimensional Poverty Index, partially addresses this by measuring poverty across multiple dimensions simultaneously. A household is counted as poor if it is deprived in $k$ or more of $d$ weighted dimensions:
+
+$$
+c_i = \sum_{j=1}^{d} w_j \cdot d_{ij}, \qquad P_0 = \frac{1}{n} \sum_{i=1}^{n} \mathbf{1}[c_i \geq k]
+$$
+
+where $w_j$ is the weight assigned to dimension $j$, $d_{ij}$ is a deprivation indicator, and $k$ is the chosen threshold. This permits poverty to be multidimensional, but the choices of dimensions, weights, and $k$ remain contested and political — the basket problem recursively re-emerges at each level.
+
+## A Notional Tool for Basket Exploration
+
+No interactive is embedded in this module, but the poverty basket question maps naturally onto a structured exercise. Imagine a tool that displays the current UK Minimum Income Standard basket alongside Rowntree's 1899 basket and an income-relative deprivation index. Users could add or remove items from each basket and observe how the poverty headcount responds. The exercise would reveal not only sensitivity to inclusion decisions but also conflict between the baskets: items that Rowntree excluded (television, telephone, internet) are now considered necessities by a clear majority of the population. What Rowntree's basket excluded was not luxury — it was participation in society.
+
+## How This Module Connects
+
+The political history of the poverty basket — from Rowntree's minimum diet through Townsend's deprivation index to the Minimum Income Standard — is traced in detail in **Chapter 3** of *Counting Lives*, which shows how each revision of the basket encoded a new theory of what the poor deserved. **Chapter 4** examines how the shift from Rowntree's biological minimum to Townsend's relative deprivation approach transformed the political argument about poverty in the 1970s, and how that transformation was resisted by governments that preferred the apparent objectivity of the older standard.

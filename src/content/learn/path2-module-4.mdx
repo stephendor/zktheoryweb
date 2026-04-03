@@ -1,0 +1,81 @@
+---
+title: 'The Welfare Formula'
+path: 'mathematics-of-poverty'
+module_number: 4
+core_concept: 'Equivalisation scales translate household composition into a single income denominator — and each formula embeds a theory of economies of scale'
+connections:
+  chapters: [5, 6]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What problem does equivalisation solve, and why is the solution necessarily a political act?'
+    answer: 'Without equivalisation, a lone adult earning £15,000 appears in the same poverty category as a couple with three children earning £15,000, even though their material circumstances differ vastly. Equivalisation converts both incomes to a per-adult-equivalent figure using a household size formula, enabling comparison. The political act lies in choosing the formula: different scales assign different weights to additional adults and children, embedding different assumptions about household economies of scale, the relative cost of children, and whether "needs" scale linearly or sub-linearly with household size.'
+  - question: 'What is the difference between the original OECD scale and the Modified OECD scale, and what did the change assume about children?'
+    answer: 'The original OECD scale assigns a weight of 1.0 to the first adult, 0.7 to each additional adult, and 0.5 to each child. The Modified OECD scale (used by Eurostat and UK DWP since 2005) assigns 1.0, 0.5, and 0.3 respectively. The reduction in the child weight from 0.5 to 0.3 implies that children cost less relative to adults than the original scale assumed — a claim that is contested, with evidence that child-related costs (childcare, education, clothing, activities) have risen substantially relative to adult costs over the period since the Modified scale was adopted.'
+  - question: 'How can two families with identical income and household composition but different benefit entitlements appear at different positions on the poverty distribution?'
+    answer: 'Equivalised income measures cash income rather than effective consumption, so it does not account for in-kind transfers (free school meals, social housing, health services) or for childcare subsidies. Two families with identically equivalised incomes may have radically different effective living standards if one receives subsidised housing and the other pays market rent. The equivalisation formula says nothing about these differences, systematically understating consumption-based living standards for households heavily dependent on in-kind provision.'
+status: 'drafting'
+---
+
+## Same Income, Different Lives
+
+Consider two households, each reporting annual income of £24,000. The first is a lone adult renting a one-bedroom flat in Leeds. The second is a couple with two school-age children renting a three-bedroom house in the same city. Both households appear identically in any analysis that uses cash income without adjustment. Both occupy the same position on the income distribution. Both are equally far from the 60%-of-median poverty line.
+
+Neither observation is useful for understanding either household's material circumstances. The couple's £24,000 must cover rent for a larger property, food for four, clothing for growing children, school transport, and childcare. The lone adult's £24,000 covers none of these additional costs. To compare their living standards, income must be converted to a common denominator that reflects how purchasing power is distributed across different-sized households. This conversion is equivalisation, and the formula used to perform it embeds a complete — if largely unstated — theory of domestic economics.
+
+## The Equivalisation Formula
+
+The basic structure of an equivalisation scale is simple. Households are assigned an **equivalence factor** $S$ based on their composition, and the household's actual income $y$ is divided by this factor to produce equivalised income $y_e$:
+
+$$
+y_e = \frac{y}{S(n_a, n_c)}
+$$
+
+where $n_a$ is the number of adults and $n_c$ is the number of children. Different scales assign different values to the function $S$.
+
+The **original OECD scale**, introduced in the 1980s and used extensively in cross-national comparison, assigns:
+
+$$
+S = 1.0 + 0.7(n_a - 1) + 0.5 \cdot n_c
+$$
+
+A couple with no children has $S = 1.7$; a couple with two children has $S = 2.7$. This means the couple with children needs 2.7 times the income of a lone adult to achieve the same living standard.
+
+The **Modified OECD scale** — adopted by Eurostat and by the UK's Households Below Average Income series in 2005 — revises downward the weights for both additional adults and children:
+
+$$
+S = 1.0 + 0.5(n_a - 1) + 0.3 \cdot n_c
+$$
+
+Under this scale the same couple with two children has $S = 2.1$, not 2.7. The same £24,000 household income produces a higher equivalised figure, placing the family further from the poverty threshold. The change in scale moved hundreds of thousands of children out of official poverty in the UK without altering a single household's actual income — purely by revising the assumed weight of a child from 0.5 to 0.3.
+
+## The McClements Scale and Political History
+
+Before the Modified OECD scale, the UK used the **McClements scale**, developed by D.J. McClements for the DHSS in 1977 from UK Family Expenditure Survey data. McClements assigned weights separately for children by age, on the grounds that older children consume more than younger ones:
+
+| Household member | McClements weight |
+|---|---|
+| First adult | 1.00 |
+| Spouse | 0.57 |
+| Child aged 0–1 | 0.09 |
+| Child aged 5–7 | 0.21 |
+| Child aged 13–15 | 0.36 |
+
+The granularity appeared precise and empirically grounded. In practice, the weights reflected 1970s patterns of household expenditure that aged rapidly: they were based on what households *did* spend, not what they *needed* to spend, and they were derived from a period before the expansion of formal childcare, before the internet, and before the sharp rise in children's clothing and activity costs.
+
+The McClements scale's replacement with the Modified OECD scale in 2005 was a decision made by statisticians in consultation with the DWP, not a parliamentary vote. Yet it reclassified millions of households. The shift illustrates the central point of this module: equivalisation scales are not technical corrections to the data. They are policy decisions that determine who is counted as poor.
+
+## Economies of Scale and Hidden Assumptions
+
+The sub-linear structure of all equivalisation scales — where the equivalence factor grows less than proportionally with household size — reflects the assumption of **economies of scale** in household consumption. Larger households share fixed costs: accommodation, heating, appliances, and shared food preparation are assumed to cost less per person in a larger group than in a smaller one.
+
+This assumption is empirically contested. Families with young children face significant fixed costs — nappies, pushchairs, car seats, childcare — that do not exhibit economies of scale. Families in poverty have less capacity to realise economies of scale because they lack the capital to buy in bulk or invest in energy-efficient equipment. The sub-linear assumption systematically flatters the equivalised incomes of larger households, most of whom are families, at the expense of measuring their true material circumstances.
+
+## A Notional Tool for Scale Comparison
+
+No interactive is embedded in this module. A useful analytic exercise would be a tool that applies the three major scales — original OECD, Modified OECD, and McClements — to the same household income distribution and displays the resulting poverty rates side by side. The visual divergence — particularly for households with children — would make explicit that poverty statistics are not measurements of a fixed quantity but functions of the scale selected. Selecting a different scale is not cheating: it is an acknowledgement that the original selection was itself a choice.
+
+## How This Module Connects
+
+The political history of equivalisation — from McClements through Modified OECD — and its consequences for official poverty statistics are examined in **Chapter 5** of *Counting Lives*, which reconstructs the bureaucratic decisions behind each scale revision and shows how they interacted with the political imperatives of successive governments. **Chapter 6** analyses the specific consequences of the 2005 switch to the Modified OECD scale, demonstrating that the timing of the revision — mid-way through New Labour's child poverty reduction programme — was not coincidental: the new scale produced more favourable headline statistics at the cost of understating the deprivation of larger families.

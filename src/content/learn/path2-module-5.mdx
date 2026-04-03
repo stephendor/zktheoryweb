@@ -1,0 +1,57 @@
+---
+title: 'Optimisation and Control'
+path: 'mathematics-of-poverty'
+module_number: 5
+core_concept: 'Welfare reform uses optimisation logic — minimising fiscal cost subject to work-incentive constraints — that treats the poor as a variable to be managed'
+connections:
+  chapters: [5, 7]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What is a constrained optimisation problem, and how does it map onto the design of Universal Credit?'
+    answer: 'A constrained optimisation problem seeks to maximise or minimise an objective function subject to one or more constraints. Universal Credit''s design can be read as minimising fiscal expenditure subject to a constraint that the benefit schedule maintains a positive marginal return to work at all income levels. The taper rate — the rate at which benefits are withdrawn as earnings rise — is the solution variable: it must be set high enough to reduce cost but not so high as to create marginal tax rates that discourage participation. The political choice of the taper rate and the work allowance defines whose optimisation problem is actually being solved.'
+  - question: 'What does it mean to say that welfare conditionality treats the poor as an endogenous variable?'
+    answer: 'In optimisation models of welfare, labour supply is treated as an endogenous variable: it responds to incentives embedded in the benefit structure. Conditionality — requirements to seek work, attend appointments, or demonstrate job-search activity under threat of sanctions — treats the poor''s behaviour as something to be optimised by adjusting the constraint set. This framing presupposes that non-employment is primarily a choice response to incentive structures rather than a structural outcome of labour market conditions, geographical mismatch, or disability. When the model''s endogeneity assumption is wrong, the conditionality regime punishes constraint rather than choice.'
+  - question: 'What is the Laffer curve, and why has it been controversial in the welfare context?'
+    answer: 'The Laffer curve in tax theory proposes that revenue is zero at both a 0% and a 100% tax rate, with a maximum revenue point between them. Applied to welfare taper rates, an analogous argument holds that both a 0% taper (maximum disincentive, full benefit retained regardless of earnings) and a 100% taper (complete clawback, full work disincentive) produce suboptimal outcomes from a fiscal perspective. The controversy is that "optimal" in this framework is defined by the government''s revenue and participation targets, not by the living standards of claimants — decisions about the taper rate have direct consequences for how much income claimants receive during the earnings phaseout zone, and the optimisation literature rarely weights claimant welfare symmetrically with fiscal cost.'
+status: 'drafting'
+---
+
+## The Geometry of the Taper
+
+In 2023, a warehouse operative in Swindon earning £1,100 per month received a Universal Credit award calculated after applying a 55 per cent taper to her earnings above the work allowance. For every additional pound she earned, she kept 45 pence and lost 55 pence in benefit. Her effective marginal tax rate, incorporating National Insurance and income tax, was above 70 per cent across a wide range of her potential earnings. She was working the maximum hours available to her and found that an additional shift generated almost no increase in her net weekly income.
+
+The taper rate of 55 per cent — reduced from 63 per cent in 2021 — was the product of a constrained optimisation exercise. The Treasury sought to minimise the cost of the Universal Credit caseload subject to the constraint that work always paid more than non-employment. That optimisation problem had a solution. What it did not have was a mechanism for weighting the operative's effective marginal tax rate against the fiscal savings it generated.
+
+## Welfare as an Optimisation Problem
+
+Modern welfare economics models the relationship between poverty policy and labour supply as a constrained optimisation problem. The state chooses a benefit schedule $B(y)$ — the amount of benefit paid as a function of earned income $y$ — to maximise a social welfare function subject to a budget constraint and incentive compatibility conditions.
+
+The standard formulation is:
+
+$$
+\max_{B(\cdot)} \int_0^{\infty} v\bigl(c(y), l(y)\bigr) \, f(y) \, dy \quad \text{subject to} \quad \int_0^{\infty} B(y) \, f(y) \, dy \leq E
+$$
+
+where $v(c, l)$ is the utility function over consumption $c$ and leisure $l$, $f(y)$ is the distribution of earned income across the population, and $E$ is the total expenditure envelope. The taper rate $\tau$ — the rate at which $B$ is withdrawn as $y$ increases — is the key design parameter: a higher $\tau$ reduces fiscal cost but increases the effective marginal tax rate faced by claimants in the phaseout range.
+
+The intellectual lineage of this approach runs from Mirrlees's optimal income tax theory in 1971 through the Diamond-Saez synthesis of the 2000s to the Treasury modelling that underpins each benefit reform. It is a sophisticated framework, and within its own terms it is mathematically coherent. Its limitations lie not in the algebra but in the objective function: the social welfare function $v$ is chosen by the modeller, and its precise specification determines whose interests are maximised.
+
+In practice, Treasury optimisation models for Universal Credit have been calibrated principally against fiscal cost and labour supply participation, with claimant welfare measured indirectly through consumption and participation proxies. The direct welfare cost of operating under a high taper rate — stress, time poverty, inability to plan — does not appear in the objective function because it cannot readily be monetised and entered into the integral.
+
+## Conditionality as Constraint Manipulation
+
+Benefit conditionality — sanctions, work-search requirements, mandatory appointments — is the operational complement to the optimisation model. If the taper rate represents the incentive structure of the benefit schedule, conditionality represents an additional constraint: the threat of sanction shifts the effective value of non-participation downward, tightening the binding constraint on labour supply.
+
+The logic is explicitly drawn from principal-agent theory. The state (principal) cannot perfectly observe the claimant's (agent's) effort. Conditionality is a monitoring and enforcement mechanism designed to reduce shirking under information asymmetry. The DWP's sanctions regime has been explicitly modelled on this framework in academic reviews commissioned by the department.
+
+The model's fragility appears when the asymmetric information assumption is wrong. If non-participation is driven by disability, caring responsibilities, labour market conditions, or mental illness rather than observable effort-shirking, then conditionality punishes structural constraint as though it were choice. The optimisation calculus continues to generate formal solutions, but those solutions systematically misidentify where the welfare-maximising intervention lies.
+
+## A Notional Tool for Taper Analysis
+
+No interactive is embedded in this module. A useful companion exercise would be a tool that displays the Universal Credit budget constraint as a function of earnings, allowing users to adjust the taper rate and work allowance and observe the resulting effective marginal tax rate across the income distribution. The exercise would show that the "optimal" taper rate is deeply sensitive to the weights placed on fiscal cost versus claimant welfare — formally: that the objective function has many possible specifications, each producing a different optimum, and the policy choice is not technical but political. It would also reveal the poverty trap dynamics that different taper rates generate near the standard allowance floor.
+
+## How This Module Connects
+
+The political economy of welfare optimisation — how Treasury modelling frameworks came to dominate benefit design at the expense of welfare economics — is traced in **Chapter 5** of *Counting Lives*, which reconstructs the policy process behind Universal Credit's architecture. **Chapter 7** examines how conditionality was justified through the principal-agent framework and documents the empirical gap between the model's assumptions about labour supply and the administrative consequences of the sanctions regime when applied to claimants whose circumstances the model could not represent.

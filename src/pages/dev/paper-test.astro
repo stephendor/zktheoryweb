@@ -7,6 +7,10 @@
 import { getCollection } from 'astro:content';
 import PaperLayout from '@layouts/PaperLayout.astro';
 
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
 const papers = await getCollection('papers');
 const entry = papers.find((p) => p.id === 'paper-01-sample');
 

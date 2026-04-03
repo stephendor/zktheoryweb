@@ -1,0 +1,60 @@
+---
+title: 'The Average Person'
+path: 'mathematics-of-poverty'
+module_number: 2
+core_concept: 'Statistical normality has always encoded political normality — Quetelet''s l''homme moyen carries ideological weight'
+interactive_slug: 'normal-distribution-explorer'
+connections:
+  chapters: [1, 4]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What did Quetelet mean by l''homme moyen, and why is the concept ideologically loaded?'
+    answer: 'L''homme moyen ("the average man") was Quetelet''s proposal that statistical averages across a population described an ideal type — the physically and morally normative person from whom deviations were errors. This conflated a statistical summary with a normative standard: being average became being correct, and being non-average became pathological. Applied to poverty, it framed households that could not achieve average consumption as defective rather than as structurally excluded.'
+  - question: 'How does the normal distribution''s symmetry assumption distort the measurement of low-income populations?'
+    answer: 'The normal distribution is symmetric around its mean and extends infinitely in both directions. Real household income distributions are right-skewed — there is a hard floor near zero but no ceiling on wealth — and the lower tail is compressed by benefits, in-kind transfers, and debt. Fitting a normal distribution to poverty data understates the density of households near the threshold, overestimates the proportion in extreme deprivation, and misrepresents the way households cluster near cliff edges created by means-tested benefits.'
+  - question: 'What is the ecological fallacy, and why is it a particular hazard in poverty measurement?'
+    answer: 'The ecological fallacy is the error of applying aggregate-level statistical relationships to individuals. In poverty measurement, it arises when average household characteristics for a postcode or ward are used to infer the circumstances of specific households within it. Universal Credit''s area-level eligibility rules and DWP''s predictive analytics tools both risk this error: a ward with average deprivation scores that trigger certain interventions may contain many non-deprived households that are incorrectly treated as at-risk.'
+status: 'drafting'
+---
+
+## The Analyst and the Bell Curve
+
+In 2019, analysts at the Department for Work and Pensions were building a statistical model to identify Universal Credit claimants at risk of falling into debt. The model was trained on aggregated administrative data. Its core assumption — inherited unreflectively from a century of applied statistics — was that claimants could be usefully characterised by their distance from a mean. Clusters near the average were "normal"; those far from it were anomalous. The bell curve shaped not just the mathematics of the model but the bureaucratic imagination behind it: the "typical" claimant was the central reference point, and everyone else was a deviation to be managed.
+
+This is Adolphe Quetelet's legacy, and it entered poverty measurement in 1835. Understanding its influence requires understanding where the normal distribution comes from and what ideological content it carries.
+
+## L'Homme Moyen: The Average Man as Ideal
+
+Adolphe Quetelet was a Belgian astronomer and statistician who noticed that the distribution of measurement errors in observational astronomy — scatter around the "true" value of a celestial position — followed a bell-shaped curve. He had encountered the Gaussian distribution, formalised by Carl Friedrich Gauss for exactly this purpose: describing random measurement error around a fixed unknown truth. Quetelet's decisive move was to apply this framework not to errors around a true value, but to variation in human beings around a mean.
+
+The result was his concept of **l'homme moyen** — the average man. For any measurable human characteristic, Quetelet argued, the distribution across a population followed a normal curve, with the mean representing the normative, ideal type:
+
+$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+$$
+
+Here $\mu$ is the population mean and $\sigma$ is the standard deviation. The expression $\frac{(x - \mu)^2}{2\sigma^2}$ measures an individual's squared distance from the mean: the further from the centre, the smaller the density $f(x)$, and the more "abnormal" the individual.
+
+The ideological move is contained in what this framing suppresses. In astronomy, deviations from the mean are measurement errors — noise in the instrument. When applied to human physical and social characteristics, Quetelet transferred this logic: deviations from the human average were implicitly errors, pathologies, or deficiencies. Being average became being correct. Being non-average became a problem to be explained — and, in social policy, a condition to be managed.
+
+Francis Galton extended Quetelet's framework in the 1860s, explicitly connecting deviation from the mean with concepts of fitness and degeneracy. Galton invented the concept of regression — specifically to study how extreme parents tend to produce less extreme offspring, "regressing to the mean" — and his social interpretation was that the mean was the healthy centre from which deviation indicated inferiority. This eugenic undertone, often forgotten in textbook accounts, was fully explicit in Galton's own work and shaped the social applications of statistical normality well into the twentieth century.
+
+## Normality in the Welfare State
+
+The practical consequences of importing the normal curve into poverty measurement are subtle but pervasive. The standard error-based model of statistical inference treats extreme observations as unlikely rather than structurally generated — an assumption that misrepresents the dynamics of poverty, where households can be locked into conditions far below the mean by institutional barriers rather than random variation.
+
+More directly, Universal Credit's standard allowance is designed for a "typical" claimant: a single working-age adult with certain average expenditure patterns. Households that deviate substantially from this type — with multiple disabilities, complex housing needs, or irregular income patterns — receive the same standard award, forcing their circumstances to fit a template derived from average assumptions. The normal curve has been administratively enacted.
+
+The histogram of UK household incomes is emphatically not normal. It is right-skewed, with most households clustered near the median but a long thin tail extending far to the right, and a compressed left tail where incomes are floored by benefit entitlements. Fitting poverty analysis to normal-distribution assumptions produces systematic errors: it underestimates the proportion of households clustered just above means-tested benefit thresholds, overestimates the tails, and misses the discontinuities introduced by cliff edges in the benefit system.
+
+## Exploring Normality in the Interactive
+
+The embedded normal distribution explorer lets you adjust the mean $\mu$ and standard deviation $\sigma$ and observe the proportion of the distribution below any chosen threshold. The key exercise is to compare a normal-distribution model of poverty with the actual skewed household income distribution: move the threshold and compare how many households each model places in poverty. The divergence — which can be substantial near the median — illustrates exactly where the normal-curve assumption distorts the headline count.
+
+The interactive also lets you overlay the actual UK income distribution, making visible the discontinuities and clustering effects that the smooth bell curve cannot represent. These features, invisible in the normal-distribution framework, are legible in topological analysis: they appear as persistent clusters and sharp density gradients in the point-cloud representation of the data.
+
+## How This Module Connects
+
+The statistical tradition that Quetelet inaugurated is the direct subject of **Chapter 1** of *Counting Lives*, which traces how the concept of the "normal" poor — the modal, typical, average claimant — became embedded in the bureaucratic imagination of the British welfare state. **Chapter 4** examines how these assumptions were operationalised in twentieth-century poverty surveys, showing how the normal distribution's symmetry assumption produced systematically misleading pictures of the left tail of the income distribution — exactly the region that matters most for poverty policy.

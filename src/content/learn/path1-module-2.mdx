@@ -1,0 +1,68 @@
+---
+title: 'Point Clouds and Distance'
+path: 'topology-social-scientists'
+module_number: 2
+core_concept: 'A point cloud is a finite metric space; distance defines what it means for points to be ''near'''
+interactive_slug: 'normal-distribution-explorer'
+connections:
+  chapters: [2]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What four properties must a distance function satisfy to qualify as a metric?'
+    answer: 'A metric $d$ on a set $X$ must satisfy: (1) non-negativity — $d(x,y) \geq 0$ for all $x, y$; (2) identity of indiscernibles — $d(x,y) = 0$ if and only if $x = y$; (3) symmetry — $d(x,y) = d(y,x)$; and (4) the triangle inequality — $d(x,z) \leq d(x,y) + d(y,z)$. Together these axioms capture our intuition that distance is non-negative, two identical points are at zero distance, distance is direction-independent, and a direct path is never longer than a detour.'
+  - question: 'Why does the choice of distance function matter when constructing a point cloud from survey data?'
+    answer: 'Different metrics assign different neighbourhood structure to the same set of points, which changes which points are considered "near" and ultimately which clusters and topological features are detected. Euclidean distance treats all variables symmetrically and is sensitive to scale, so an income variable measured in thousands of pounds can dominate a health score measured on a 0–10 scale. Choosing a metric — and normalising variables appropriately — is therefore a substantive methodological decision, not a technicality.'
+  - question: 'What distinguishes a finite metric space from a continuous topological space, and why does this distinction matter computationally?'
+    answer: 'A continuous topological space contains uncountably many points; many fundamental operations — integration, limits — require this density. A finite metric space contains only finitely many points, so all distances can be stored in a matrix and all constructions (simplicial complexes, filtrations) reduce to finite combinatorial operations. This is why point clouds, despite being impoverished approximations of continuous distributions, are the practical substrate for all computational TDA.'
+status: 'drafting'
+---
+
+## How Similar Are These Two Households?
+
+You are studying economic deprivation across 800 local authorities in England using six variables: unemployment rate, median household income, proportion of households in fuel poverty, child benefit claimant rate, average years of education among adults, and access to green space. You want to identify which authorities face structurally similar patterns of disadvantage — not just similar on one axis, but similar across the whole profile. To do that, you need to define formally what it means for two authorities to be *near* each other in this six-dimensional space. The choice is not obvious, and it is not arbitrary. The metric you choose will determine which clusters the analysis finds, which loops it detects, and ultimately which policy conclusions you draw.
+
+## What a Metric Space Is
+
+A **metric space** is a set $X$ equipped with a **distance function** $d: X \times X \to \mathbb{R}$ satisfying four axioms. For all points $x$, $y$, $z$ in $X$:
+
+$$
+d(x,y) \geq 0, \quad d(x,y) = 0 \iff x = y, \quad d(x,y) = d(y,x), \quad d(x,z) \leq d(x,y) + d(y,z).
+$$
+
+The four lines encode, respectively: distances are non-negative; two points are at zero distance only if they are the same point; distance is symmetric; and no detour is shorter than a direct path (the triangle inequality). These four axioms are the minimal conditions under which "nearness" has a consistent meaning.
+
+Notice that the axioms do not fix a single formula for $d$. Many different distance functions satisfy them. The **Euclidean distance** $d_2(x,y) = \sqrt{\sum_i (x_i - y_i)^2}$ is the most familiar: it treats all coordinates symmetrically and corresponds to the straight-line distance in ordinary space. The **Manhattan distance** $d_1(x,y) = \sum_i |x_i - y_i|$ sums absolute differences along each axis — more robust to outliers in individual variables, because a single extreme coordinate cannot dominate the sum through squaring. The **Chebyshev distance** $d_\infty(x,y) = \max_i |x_i - y_i|$ cares only about the single worst-performing axis. Each of these is a valid metric; each will produce a different point cloud geometry from the same data.
+
+## Point Clouds
+
+A **point cloud** is simply a finite collection of points in some metric space $(\mathbb{R}^n, d)$. Each point represents one observation — one household, one local authority, one time-period — and its coordinates are the values of the measured variables. The cloud as a whole is a finite metric space: a set with a well-defined pairwise distance between every pair of points.
+
+The jump from a continuous probability distribution to a finite point cloud involves real information loss. A distribution over $\mathbb{R}^n$ specifies the probability of every possible combination of variable values; a point cloud records only the $N$ instances that were actually observed. But for TDA, this is sufficient: the *shape* of the cloud — how it clusters, loops, and voids at different scales — carries the structural information we care about, even from a finite sample.
+
+## Scale and Normalisation
+
+One practical complication in constructing a point cloud from social data is that variables are measured on radically different scales. Income in thousands of pounds, years of education in single digits, and proportions between zero and one will not combine sensibly into a Euclidean distance without standardisation. When income varies between £15,000 and £85,000 and education between 7 and 16 years, the squared income difference will numerically swamp the education difference even if both matter equally for deprivation. Standard approaches include **z-score normalisation** (subtracting the mean and dividing by the standard deviation, so each variable has mean zero and variance one) and **min-max normalisation** (rescaling each variable to the interval $[0, 1]$). The right choice depends on domain knowledge: if income truly matters more than green-space access, you might *want* it to dominate the metric.
+
+## Neighbourhoods and $\varepsilon$-Balls
+
+Once a metric is fixed, we can define the **$\varepsilon$-ball** around a point $x$:
+
+$$
+B(x, \varepsilon) = \{ y \in X : d(x, y) < \varepsilon \}.
+$$
+
+This is the set of all points within distance $\varepsilon$ of $x$. The $\varepsilon$-ball is the primitive notion of neighbourhood: as $\varepsilon$ varies from zero to infinity, the ball expands from containing only $x$ itself to containing the entire point cloud. Systematically expanding $\varepsilon$ and recording what happens — which points enter a neighbourhood, which pairs of points become connected — is the foundation of the Vietoris–Rips filtration introduced in Module 3.
+
+## From Individual Points to Global Structure
+
+The power of metric-space thinking becomes visible only when we look at the global arrangement of many points simultaneously. A single point tells you nothing; ten points with a clear gap between two clusters tells you something about the population's structure; hundreds of points that form a loop in two-dimensional projection tells you that there are two distinct pathways through the deprivation landscape and that they are cyclically connected. None of these conclusions are accessible from summary statistics — they require reasoning about the collective geometry of the point cloud.
+
+## Using the Interactive: Normal Distribution Explorer
+
+The **Normal Distribution Explorer** paired with this module lets you adjust the mean and standard deviation of a normal distribution and observe how the resulting sample of points is distributed in one and two dimensions. This is relevant to point clouds in two ways. First, it makes concrete the idea that changing a distribution parameter changes the spatial spread of the points — their pairwise distances. A high-variance distribution produces a point cloud that is geometrically "stretched out"; a low-variance distribution produces one that is "compressed". Second, by toggling between one and two variables, you can observe how adding a second axis creates angle and orientation in the cloud — a foretaste of the high-dimensional geometry that TDA must navigate. As you explore, notice how the shape of the cluster changes: a cloud with equal variance on both axes forms a circle; one with unequal variances forms an ellipse. Both are topologically the same (no holes), but geometrically very different — a distinction that TDA preserves carefully.
+
+## How This Module Connects
+
+The formal treatment of distance and metric spaces draws directly on the mathematical framework introduced in **Chapter 2** of *Counting Lives*, which analyses how nineteenth-century poverty surveyors — Booth, Rowntree, Bowley — operationalised the notion of a household's "distance from sufficiency". The historical choices made about what variables to measure and how to aggregate them into a single deprivation score are, in retrospect, choices about metric structure: what it means for two households to be similarly deprived. The modern metric-space formalisation makes those choices explicit and auditable in a way that the original surveyors could not.

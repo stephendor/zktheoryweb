@@ -1,0 +1,434 @@
+---
+/**
+ * src/pages/learn/reading-lists/[slug].astro — Task 4.7 — Agent_Content
+ *
+ * Individual reading list page. For each entry:
+ *  - If zoteroKey is non-null, resolve via getCitationByKey() at build time
+ *    and format with formatCitation(); fall back to fallbackCitation if key
+ *    is not found in the library.
+ *  - If zoteroKey is null, use fallbackCitation directly.
+ *
+ * Entries are grouped by level (introductory → intermediate → advanced).
+ * Level filter buttons use a vanilla JS data-level toggle; no React island needed.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { readingLists } from '@data/readingLists';
+import type { ReadingListEntry } from '@data/readingLists';
+import { getBibliographyItems, formatCitation } from '@lib/bibliography';
+
+export function getStaticPaths() {
+  return readingLists.map((list) => ({
+    params: { slug: list.slug },
+    props:  { list },
+  }));
+}
+
+const { list } = Astro.props;
+
+// ── Resolve citations at build time ──────────────────────────────────────────
+const bibItems = getBibliographyItems();
+
+interface ResolvedEntry extends ReadingListEntry {
+  displayCitation: string;
+}
+
+function resolveCitation(entry: ReadingListEntry): string {
+  if (entry.zoteroKey !== null) {
+    const item = bibItems.find((i) => i.key === entry.zoteroKey);
+    if (item) return formatCitation(item);
+  }
+  return entry.fallbackCitation ?? 'Citation unavailable.';
+}
+
+const resolvedEntries: ResolvedEntry[] = list.entries.map((entry) => ({
+  ...entry,
+  displayCitation: resolveCitation(entry),
+}));
+
+// ── Group by level ────────────────────────────────────────────────────────────
+const levelOrder = ['introductory', 'intermediate', 'advanced'] as const;
+
+const grouped = levelOrder.map((level) => ({
+  level,
+  entries: resolvedEntries.filter((e) => e.level === level),
+})).filter((g) => g.entries.length > 0);
+
+// ── Level label helper ────────────────────────────────────────────────────────
+const levelLabel: Record<string, string> = {
+  introductory: 'Introductory',
+  intermediate: 'Intermediate',
+  advanced:     'Advanced',
+};
+
+// ── Topic badge helper ────────────────────────────────────────────────────────
+const topicLabels: Record<string, string> = {
+  topology:              'Topology',
+  'poverty-measurement': 'Poverty Measurement',
+  'data-justice':        'Data Justice',
+  'tda-methods':         'TDA Methods',
+};
+---
+
+<BaseLayout
+  title={list.title}
+  description={list.description}
+  section="learn"
+>
+  <div class="container-prose--wide rl-detail">
+
+    <!-- Page header -->
+    <header class="rl-detail__header">
+      <a href="/learn/reading-lists/" class="rl-detail__back">← Reading Lists</a>
+      <div class="rl-detail__meta">
+        <span class={`rl-badge rl-badge--${list.topic}`}>
+          {topicLabels[list.topic]}
+        </span>
+        <span class="rl-detail__count">{list.entries.length} entries</span>
+      </div>
+      <h1 class="rl-detail__title">{list.title}</h1>
+      <p class="rl-detail__desc">{list.description}</p>
+    </header>
+
+    <!-- Level filter -->
+    <nav aria-label="Filter by level" class="level-filter">
+      <button
+        class="level-filter__btn level-filter__btn--active"
+        data-level="all"
+        aria-pressed="true"
+      >All levels</button>
+      {levelOrder.map((lv) => (
+        grouped.some((g) => g.level === lv) && (
+          <button
+            class="level-filter__btn"
+            data-level={lv}
+            aria-pressed="false"
+          >{levelLabel[lv]}</button>
+        )
+      ))}
+    </nav>
+
+    <!-- Entry groups -->
+    {grouped.map((group) => (
+      <section
+        class="rl-group"
+        data-level-group={group.level}
+        aria-label={`${levelLabel[group.level]} entries`}
+      >
+        <h2 class="rl-group__heading">
+          <span class={`level-badge level-badge--${group.level}`}>
+            {levelLabel[group.level]}
+          </span>
+        </h2>
+
+        <ol class="rl-entry-list">
+          {group.entries.map((entry) => (
+            <li class="rl-entry" data-level={entry.level}>
+              <article class="rl-entry__article">
+
+                <header class="rl-entry__header">
+                  <p class="rl-entry__citation">{entry.displayCitation}</p>
+                  <span class={`level-badge level-badge--${entry.level} rl-entry__level-badge`}>
+                    {levelLabel[entry.level]}
+                  </span>
+                </header>
+
+                <p class="rl-entry__annotation">{entry.annotation}</p>
+
+                <!-- Connection pills -->
+                {(entry.connections.chapters.length > 0 ||
+                  entry.connections.papers.length > 0 ||
+                  entry.connections.paths.length > 0) && (
+                  <footer class="rl-entry__connections">
+                    <span class="rl-entry__connections-label">Connected to:</span>
+                    {entry.connections.chapters.map((ch) => (
+                      <span class="rl-pill rl-pill--chapter">Ch. {ch}</span>
+                    ))}
+                    {entry.connections.papers.map((pa) => (
+                      <span class="rl-pill rl-pill--paper">Paper {pa}</span>
+                    ))}
+                    {entry.connections.paths.map((path) => (
+                      <a
+                        href={`/learn/${path}/`}
+                        class="rl-pill rl-pill--path"
+                        aria-label={`Learning path: ${path}`}
+                      >{path.replace(/-/g, ' ')}</a>
+                    ))}
+                  </footer>
+                )}
+
+              </article>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+  </div>
+</BaseLayout>
+
+<script>
+  // ── Level filter — vanilla JS ──────────────────────────────────────────────
+  const levelBtns = document.querySelectorAll<HTMLButtonElement>('.level-filter__btn');
+  const groups    = document.querySelectorAll<HTMLElement>('[data-level-group]');
+
+  levelBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const level = btn.dataset.level ?? 'all';
+
+      levelBtns.forEach((b) => {
+        b.classList.toggle('level-filter__btn--active', b === btn);
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+
+      groups.forEach((group) => {
+        const match = level === 'all' || group.dataset.levelGroup === level;
+        group.hidden = !match;
+      });
+    });
+  });
+</script>
+
+<style>
+  /* ── Page layout ──────────────────────────────────────────────────────── */
+  .rl-detail {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-12);
+  }
+
+  /* ── Header ───────────────────────────────────────────────────────────── */
+  .rl-detail__back {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+
+  .rl-detail__back:hover {
+    color: var(--color-neutral-body);
+    text-decoration: underline;
+  }
+
+  .rl-detail__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .rl-detail__count {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  .rl-detail__title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin-bottom: var(--space-4);
+  }
+
+  .rl-detail__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-muted);
+    max-width: 60ch;
+    margin-bottom: var(--space-8);
+  }
+
+  /* ── Level filter ─────────────────────────────────────────────────────── */
+  .level-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+  }
+
+  .level-filter__btn {
+    font-family:  var(--font-ui);
+    font-size:    var(--text-sm);
+    font-weight:  500;
+    padding:      var(--space-2) var(--space-4);
+    border:       1px solid var(--color-neutral-border);
+    border-radius: 9999px;
+    background:   var(--color-neutral-surface);
+    color:        var(--color-neutral-muted);
+    cursor:       pointer;
+    transition:   background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .level-filter__btn:hover {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-body);
+  }
+
+  .level-filter__btn--active {
+    background:   var(--color-neutral-body);
+    color:        var(--color-neutral-surface);
+    border-color: var(--color-neutral-body);
+  }
+
+  /* ── Entry group ──────────────────────────────────────────────────────── */
+  .rl-group {
+    margin-bottom: var(--space-10);
+  }
+
+  .rl-group__heading {
+    margin-bottom: var(--space-5);
+  }
+
+  .rl-entry-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* ── Entry card ───────────────────────────────────────────────────────── */
+  .rl-entry__article {
+    padding: var(--space-6);
+    background: var(--color-neutral-surface);
+    border: 1px solid var(--color-neutral-border);
+    border-left: 3px solid var(--color-neutral-border);
+    border-radius: 0.375rem;
+  }
+
+  .rl-entry__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  .rl-entry__citation {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-neutral-body);
+    flex: 1;
+  }
+
+  .rl-entry__level-badge {
+    flex-shrink: 0;
+  }
+
+  .rl-entry__annotation {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-body);
+    margin-bottom: var(--space-4);
+  }
+
+  /* ── Connection pills ─────────────────────────────────────────────────── */
+  .rl-entry__connections {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .rl-entry__connections-label {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    color: var(--color-neutral-muted);
+    margin-right: var(--space-1);
+  }
+
+  .rl-pill {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: 0.15em 0.6em;
+    border-radius: 0.25rem;
+    text-decoration: none;
+  }
+
+  .rl-pill--chapter {
+    background: color-mix(in srgb, var(--color-tda-teal) 10%, transparent);
+    color: var(--color-tda-teal);
+  }
+
+  .rl-pill--paper {
+    background: color-mix(in srgb, var(--color-cl-red) 10%, transparent);
+    color: var(--color-cl-red);
+  }
+
+  .rl-pill--path {
+    background: color-mix(in srgb, var(--color-cl-ochre) 15%, transparent);
+    color: var(--color-cl-ochre);
+    text-transform: capitalize;
+  }
+
+  .rl-pill--path:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Topic badges (shared) ────────────────────────────────────────────── */
+  .rl-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.2em 0.65em;
+    border-radius: 0.25rem;
+  }
+
+  .rl-badge--topology {
+    background: color-mix(in srgb, var(--color-tda-teal) 12%, transparent);
+    color: var(--color-tda-teal);
+  }
+
+  .rl-badge--poverty-measurement {
+    background: color-mix(in srgb, var(--color-cl-red) 12%, transparent);
+    color: var(--color-cl-red);
+  }
+
+  .rl-badge--data-justice {
+    background: color-mix(in srgb, var(--color-cl-ochre) 15%, transparent);
+    color: var(--color-cl-ochre);
+  }
+
+  .rl-badge--tda-methods {
+    background: color-mix(in srgb, var(--color-tda-slate) 12%, transparent);
+    color: var(--color-tda-slate);
+  }
+
+  /* ── Level badges ─────────────────────────────────────────────────────── */
+  .level-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.2em 0.65em;
+    border-radius: 0.25rem;
+  }
+
+  .level-badge--introductory {
+    background: color-mix(in srgb, var(--color-viz-3) 15%, transparent);
+    color: color-mix(in srgb, var(--color-viz-3) 70%, var(--color-neutral-body));
+  }
+
+  .level-badge--intermediate {
+    background: color-mix(in srgb, var(--color-viz-2) 15%, transparent);
+    color: color-mix(in srgb, var(--color-viz-2) 70%, var(--color-neutral-body));
+  }
+
+  .level-badge--advanced {
+    background: color-mix(in srgb, var(--color-viz-5) 15%, transparent);
+    color: color-mix(in srgb, var(--color-viz-5) 70%, var(--color-neutral-body));
+  }
+</style>

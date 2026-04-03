@@ -4,11 +4,14 @@
  * Dev test route for ChapterLayout. Renders the ch-00-sample chapter entry.
  * Remove or gate behind a dev flag before production deployment.
  */
-import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 import ChapterLayout from '@layouts/ChapterLayout.astro';
 
-const chapters = await getCollection('chapters');
-const entry = chapters.find((c) => c.id === 'ch-00-sample');
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+const entry = await getEntry('chapters', 'ch-00-sample');
 
 if (!entry) {
   throw new Error(

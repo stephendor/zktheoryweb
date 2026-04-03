@@ -1,0 +1,65 @@
+---
+title: 'The Score'
+path: 'mathematics-of-poverty'
+module_number: 6
+core_concept: 'Algorithmic scoring assigns a poverty likelihood to individuals; logistic regression and its social consequences'
+connections:
+  chapters: [10, 11, 12]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What does a logistic regression model output, and why is a probability not the same as a prediction?'
+    answer: 'Logistic regression outputs a probability between 0 and 1, estimated from a linear combination of input features passed through the sigmoid function. Converting that probability to a binary prediction requires a decision threshold — typically 0.5, but this choice is arbitrary and consequential. A threshold of 0.3 generates more true positives (correctly identified high-risk individuals) but also more false positives (low-risk individuals wrongly flagged). A threshold of 0.7 reduces false positives but misses more genuinely high-risk cases. The welfare consequences of false positives and false negatives are asymmetric — being wrongly flagged can trigger intrusive intervention, while being wrongly cleared can mean missed support — but the threshold choice rarely reflects this asymmetry.'
+  - question: 'What is feature selection, and how does it embed discrimination even when protected characteristics are excluded?'
+    answer: 'Feature selection is the process of choosing which input variables to include in a predictive model. Excluding a protected characteristic — race, disability status, religion — does not prevent a model from discriminating on that basis if other included features are sufficiently correlated with the excluded characteristic. Postcode correlates with ethnicity; employment history correlates with disability; certain benefit types correlate with immigration status. A model that includes these variables can reproduce prohibited discrimination without explicitly encoding it — a phenomenon known as proxy discrimination or indirect discrimination under the Equality Act 2010.'
+  - question: 'What is the difference between model accuracy and model fairness, and why can they conflict?'
+    answer: 'Model accuracy measures how well the model''s predictions match actual outcomes across the full population. Fairness measures ask whether the model''s error rates are equitable across subgroups: does it produce more false positives for group A than for group B? A model can be globally accurate while systematically miscategorising a minority subgroup — because the subgroup is small, its errors have minimal impact on the aggregate accuracy metric. In welfare contexts, the groups most likely to be disproportionately miscategorised — disabled claimants, those with complex needs, those with non-standard employment histories — are precisely the groups for whom accurate classification matters most.'
+status: 'drafting'
+---
+
+## A Number Arrives Before the Person
+
+In 2021, the Welsh Government commissioned a predictive analytics tool to identify children at risk of adverse outcomes in early childhood. The system assigned each newborn a score derived from administrative data held by health, social services, and the benefits system. Before a social worker had met a family, before a health visitor had completed an assessment, a number had been generated. That number would shape how services were allocated, how intensively families were visited, and — in some configurations — whether further assessment was triggered automatically.
+
+The Welsh system was subsequently paused after concerns about data governance. But the logic it embodied is now pervasive in welfare administration across the United Kingdom. Local authorities use algorithmic scores to prioritise housing waiting lists. DWP uses behavioural predictors to identify claimants at risk of fraud. Predictive policing tools score individuals' arrest likelihood before any offence has occurred. A score precedes, and increasingly determines, the human encounter.
+
+## Logistic Regression and the Poverty Score
+
+The most common technical foundation for welfare prediction models is **logistic regression**: a generalised linear model that estimates the probability of a binary outcome (benefit fraud, child maltreatment, long-term unemployment) as a function of a set of input features. Given a feature vector $\mathbf{x} = (x_1, x_2, \ldots, x_p)$, the model estimates:
+
+$$
+\hat{p} = \sigma(\boldsymbol{\beta}^\top \mathbf{x} + \beta_0) = \frac{1}{1 + e^{-(\boldsymbol{\beta}^\top \mathbf{x} + \beta_0)}}
+$$
+
+where $\sigma(\cdot)$ is the **sigmoid function**, $\boldsymbol{\beta}$ is the vector of learned coefficients, and $\beta_0$ is the intercept. Each coefficient $\beta_j$ represents the change in log-odds of the outcome per unit increase in $x_j$, holding all other features constant.
+
+The log-odds formulation makes the model's underlying structure explicit:
+
+$$
+\log\!\frac{\hat{p}}{1 - \hat{p}} = \boldsymbol{\beta}^\top \mathbf{x} + \beta_0
+$$
+
+This is a linear model of the log-odds, which means that the contribution of each feature to the final score is additive and proportional. A claimant's predicted poverty risk is, literally, a weighted sum of their administrative characteristics — and the weights $\boldsymbol{\beta}$ are learned from historical data in which the outcomes were shaped by the same institutional choices that are now being modelled as natural facts.
+
+## The Training Data Problem
+
+Logistic regression, and all supervised learning methods, learn from data in which both the features $\mathbf{x}$ and the outcomes $y$ have been observed. In welfare applications, the outcome variable is typically an administrative classification: previously identified fraud, previous social care intervention, previous long-term unemployment. These classifications are not direct observations of underlying facts — they are the products of prior decisions by investigators, case workers, and adjudicators who were themselves subject to bias, resource constraints, and institutional priorities.
+
+A model trained on previous fraud classifications learns the pattern of who was previously investigated and found fraudulent. It does not learn the pattern of who committed fraud. If investigators disproportionately audited claimants in certain postcodes, the model will score claimants in those postcodes more highly — not because they are more likely to be fraudulent, but because they are more likely to have been investigated. The model encodes the investigatory bias as though it were a property of the claimants.
+
+This feedback loop — sometimes called **label bias** or **measurement bias** — is particularly acute in welfare contexts because the populations most intensively surveilled by welfare administration are precisely the marginalised groups whose circumstances are most poorly represented in the training data.
+
+## The Decision Threshold as Policy
+
+Converting a predicted probability $\hat{p}$ to an actionable classification requires a decision threshold $\tau$: the claimant is flagged if $\hat{p} \geq \tau$. The choice of $\tau$ determines the false positive rate (proportion of low-risk claimants wrongly flagged) and the false negative rate (proportion of high-risk claimants wrongly cleared). These two error rates trade off against each other as $\tau$ varies.
+
+In welfare fraud detection, a low $\tau$ minimises missed cases but flags large numbers of legitimate claimants for intrusive investigation. A high $\tau$ reduces intrusive false positives but misses more genuine cases. The welfare consequences of each error type are asymmetric: false positives impose investigation costs on innocent claimants; false negatives represent financial loss to the DWP. Routinely, $\tau$ is set to minimise the latter at the expense of the former — a policy choice embedded in a technical parameter, largely invisible to public scrutiny.
+
+## A Notional Tool for Score Anatomy
+
+No interactive is embedded in this module. A productive companion exercise would be a tool that presents a simplified logistic regression model trained on synthetic welfare data, allowing users to adjust both the feature set and the decision threshold $\tau$, and to observe the resulting false positive and false negative rates across demographic sub-groups. The key observation is that a globally accurate model can simultaneously be a systematically unfair one — and that selecting $\tau$ is a distributive policy decision, not a statistical one. The tool would make visible that the same model, with the same $\hat{p}$ outputs, produces radically different social consequences depending on where the decision threshold is drawn.
+
+## How This Module Connects
+
+The administrative history of predictive scoring in UK welfare — from the DWP's risk-based compliance tools to local authority safeguarding algorithms — is documented in **Chapter 10** of *Counting Lives*, which reconstructs the procurement and deployment history of the systems in use. **Chapter 11** analyses the legal framework governing automated decision-making under the UK GDPR and the Equality Act, identifying the gap between what the law requires and what procurement practice delivers. **Chapter 12** examines the empirical accuracy record of deployed welfare prediction models, drawing on Freedom of Information disclosures that post-date their original commissioning.

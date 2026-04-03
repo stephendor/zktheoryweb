@@ -1,0 +1,277 @@
+---
+/**
+ * src/pages/learn/reading-lists/index.astro — Task 4.7 — Agent_Content
+ *
+ * Reading lists index: 2-column card grid of curated reading lists with
+ * topic filter buttons (vanilla JS). Each card shows title, topic badge,
+ * entry count, description, and a "View list →" link.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { readingLists } from '@data/readingLists';
+
+const topicLabels: Record<string, string> = {
+  topology:            'Topology',
+  'poverty-measurement': 'Poverty Measurement',
+  'data-justice':      'Data Justice',
+  'tda-methods':       'TDA Methods',
+};
+---
+
+<BaseLayout
+  title="Reading Lists"
+  description="Curated reading lists on topological data analysis, poverty measurement, data justice, and the history of statistics."
+  section="learn"
+>
+  <div class="container-prose--wide reading-lists-index">
+
+    <header class="rl-index__header">
+      <h1 class="rl-index__title">Reading Lists</h1>
+      <p class="rl-index__lead">
+        Curated lists of key texts, each entry annotated with its relevance to
+        the <em>Counting Lives</em> and <em>TDA</em> strands of this project.
+        Lists are organised by topic and graded by level.
+      </p>
+    </header>
+
+    <!-- Topic filter -->
+    <nav aria-label="Filter reading lists by topic" class="rl-filter">
+      <button
+        class="rl-filter__btn rl-filter__btn--active"
+        data-topic="all"
+        aria-pressed="true"
+      >All</button>
+      {Object.entries(topicLabels).map(([key, label]) => (
+        <button
+          class="rl-filter__btn"
+          data-topic={key}
+          aria-pressed="false"
+        >{label}</button>
+      ))}
+    </nav>
+
+    <!-- Card grid -->
+    <ul class="rl-grid" aria-label="Reading lists">
+      {readingLists.map((list) => (
+        <li class="rl-card" data-topic={list.topic}>
+          <article>
+            <div class="rl-card__header">
+              <span class={`rl-badge rl-badge--${list.topic}`}>
+                {topicLabels[list.topic]}
+              </span>
+              <span class="rl-card__count" aria-label={`${list.entries.length} entries`}>
+                {list.entries.length} entries
+              </span>
+            </div>
+            <h2 class="rl-card__title">
+              <a href={`/learn/reading-lists/${list.slug}/`} class="rl-card__link">
+                {list.title}
+              </a>
+            </h2>
+            <p class="rl-card__desc">{list.description}</p>
+            <a
+              href={`/learn/reading-lists/${list.slug}/`}
+              class="rl-card__cta"
+              aria-label={`View ${list.title} reading list`}
+            >View list →</a>
+          </article>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</BaseLayout>
+
+<script>
+  // ── Topic filter — vanilla JS ──────────────────────────────────────────────
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.rl-filter__btn');
+  const cards = document.querySelectorAll<HTMLElement>('.rl-card');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const topic = btn.dataset.topic ?? 'all';
+
+      // Update button states
+      buttons.forEach((b) => {
+        b.classList.toggle('rl-filter__btn--active', b === btn);
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+
+      // Show/hide cards
+      cards.forEach((card) => {
+        const match = topic === 'all' || card.dataset.topic === topic;
+        card.hidden = !match;
+      });
+    });
+  });
+</script>
+
+<style>
+  /* ── Page layout ──────────────────────────────────────────────────────── */
+  .reading-lists-index {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-12);
+  }
+
+  /* ── Header ───────────────────────────────────────────────────────────── */
+  .rl-index__header {
+    margin-bottom: var(--space-8);
+  }
+
+  .rl-index__title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin-bottom: var(--space-4);
+  }
+
+  .rl-index__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-muted);
+    max-width: 60ch;
+  }
+
+  /* ── Filter bar ───────────────────────────────────────────────────────── */
+  .rl-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+  }
+
+  .rl-filter__btn {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: 9999px;
+    background: var(--color-neutral-surface);
+    color: var(--color-neutral-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .rl-filter__btn:hover {
+    background: var(--color-neutral-subtle);
+    color: var(--color-neutral-body);
+  }
+
+  .rl-filter__btn--active {
+    background: var(--color-neutral-body);
+    color: var(--color-neutral-surface);
+    border-color: var(--color-neutral-body);
+  }
+
+  /* ── Card grid ────────────────────────────────────────────────────────── */
+  .rl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-6);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ── Individual card ──────────────────────────────────────────────────── */
+  .rl-card article {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--space-6);
+    background: var(--color-neutral-surface);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: 0.5rem;
+    transition: box-shadow 0.15s;
+  }
+
+  .rl-card article:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .rl-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+  }
+
+  .rl-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-3);
+  }
+
+  .rl-card__link {
+    color: var(--color-neutral-body);
+    text-decoration: none;
+  }
+
+  .rl-card__link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  .rl-card__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-muted);
+    flex: 1;
+    margin-bottom: var(--space-5);
+  }
+
+  .rl-card__count {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    color: var(--color-neutral-muted);
+  }
+
+  .rl-card__cta {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-tda-teal);
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  .rl-card__cta:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Topic badges ─────────────────────────────────────────────────────── */
+  .rl-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.2em 0.65em;
+    border-radius: 0.25rem;
+  }
+
+  .rl-badge--topology {
+    background: color-mix(in srgb, var(--color-tda-teal) 12%, transparent);
+    color: var(--color-tda-teal);
+  }
+
+  .rl-badge--poverty-measurement {
+    background: color-mix(in srgb, var(--color-cl-red) 12%, transparent);
+    color: var(--color-cl-red);
+  }
+
+  .rl-badge--data-justice {
+    background: color-mix(in srgb, var(--color-cl-ochre) 15%, transparent);
+    color: var(--color-cl-ochre);
+  }
+
+  .rl-badge--tda-methods {
+    background: color-mix(in srgb, var(--color-tda-slate) 12%, transparent);
+    color: var(--color-tda-slate);
+  }
+</style>
