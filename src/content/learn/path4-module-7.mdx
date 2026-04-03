@@ -1,0 +1,81 @@
+---
+title: 'Zigzag Persistence'
+path: 'tda-practitioners'
+module_number: 7
+core_concept: 'Tracking topological features across time-indexed data with zigzag filtrations'
+connections:
+  chapters: []
+  papers: [3, 4]
+  modules: []
+  methods: ['zigzag-persistence']
+check_understanding:
+  - question: 'Why does standard Vietoris-Rips persistence fail to track topological features across time-varying data, and what specific structural property of zigzag filtrations resolves this limitation?'
+    answer: 'Standard VR persistence requires a nested filtration: every complex at time t must be a subcomplex of the complex at time t+1. For time-varying data this is violated: new observations enter the sample at each time step, and old observations depart, so no nesting relationship holds between consecutive-wave complexes. Computing VR persistence independently on each wave produces separate diagrams that cannot be compared without a distance measure — which tells you how much the topology changed, but not which specific features persisted across waves. Zigzag filtrations resolve this by permitting both forward (inclusion: add data) and backward (restriction: remove data) maps between consecutive wave complexes. The algebraic machinery of zigzag persistence extends the standard persistence structure theorem to this generalised setting, guaranteeing that a unique bar-code decomposes every zigzag module. This means a topological feature — a poverty cycle in wave 3, say — can be formally tracked whether it grew to include wave 4 data or shrank when wave 2 data was removed, producing a birth-death pair that spans multiple waves.'
+  - question: 'A zigzag bar-code for a longitudinal poverty panel shows one H₁ bar spanning waves 2 through 7 of a 10-wave study. Waves 1 and 8–10 contain no persistent H₁. What does this imply about the data and what follow-up analysis is warranted?'
+    answer: 'The bar spanning waves 2–7 means a closed-orbit structure in welfare trajectories appeared at wave 2, persisted through all intermediate waves, and dissolved at wave 8. It does not imply the same households were always present in the loop; the zigzag construction allows membership to change as households enter and leave the panel. Substantively, this describes a period when the poverty landscape had cyclical dynamics — households cycling between welfare states in a structured way — that was not present in the first wave and collapsed within three waves of persisting. The follow-up analysis should: (1) identify the representative H₁ cycle at the wave 4 or 5 midpoint, where membership is most stable; (2) examine what external conditions changed at wave 1 (before the loop appeared) and wave 8 (when it dissolved) — policy changes, economic shocks, survey redesign; (3) compare the representative-cycle household characteristics at wave 2 versus wave 7 to detect drift in which population the loop describes.'
+  - question: 'What is the key computational bottleneck of zigzag persistence relative to standard persistence, and what practical workarounds exist for large longitudinal welfare datasets?'
+    answer: 'Standard persistence uses matrix-reduction algorithms that operate on sparse boundary matrices over F₂, exploiting the filtration nesting to reduce computation to approximately O(n^2.37) in the number of simplices. Zigzag persistence requires a more complex algorithm — currently implemented via the diamond principle or via a sequence of standard persistence computations on "thickened" intervals — that does not benefit from the same sparsity structure and runs at O(n^3) in the worst case over the total number of simplices across all waves. For a 10-wave panel with 5,000 households per wave, the naive zigzag computation can run for hours. Practical workarounds: (1) apply maxmin landmark subsampling to each wave independently before constructing the zigzag, reducing effective n from 5,000 to 200–500 per wave; (2) limit the maximum homology dimension to H₁ (maxdim=1) to avoid the exponential simplex-count blowup in higher dimensions; (3) use the GUDHI zigzag persistence implementation with sparse distance matrix inputs rather than full n×n matrices per wave.'
+status: 'drafting'
+---
+
+## The Problem with Snapshots
+
+Standard Vietoris–Rips persistence is a snapshot technique. It computes the topology of a point cloud at one moment in time, across all scales simultaneously, but at a fixed population of data points. For welfare research based on cross-sectional surveys, this is appropriate: the survey captures a population at one point in time, and the persistence diagram characterises the topology of that cross-sectional cloud. But the most compelling poverty-research questions are longitudinal: do households cycle through welfare states? Does the topological structure of poverty change in response to a policy reform? Are the same households responsible for the cyclical dynamics in wave 3 and in wave 8, or has the cycle's composition shifted entirely?
+
+These questions require tracking topological features through time. Standard persistence cannot do this: computing separate VR diagrams for each survey wave produces a sequence of diagrams with no formal connection between them. You can measure the bottleneck distance between consecutive diagrams (as Module 9 addresses), but this tells you only how much the topology changed, not whether a specific feature — a particular poverty cycle — survived, died, and was replaced, or continuously evolved. **Zigzag persistence** resolves this by extending persistent homology to filtrations where the maps between consecutive complexes need not be inclusions.
+
+## Zigzag Filtrations: Theory
+
+A standard filtration is a nested sequence $K_0 \subseteq K_1 \subseteq \cdots \subseteq K_n$ where every map is an inclusion. A **zigzag filtration** replaces this with a sequence where maps alternate in direction:
+
+$$M: \mathbb{F}^{n_1} \xleftarrow{f_1} \mathbb{F}^{n_2} \xrightarrow{f_2} \mathbb{F}^{n_3} \xleftarrow{f_3} \cdots$$
+
+Each arrow can point forward (inclusion: the complex grows) or backward (restriction: the complex shrinks). The algebraic object associated with a zigzag filtration is a **zigzag module** — a sequence of vector spaces and linear maps as above. The fundamental theorem of persistent homology generalises to this setting: every zigzag module over a field $\mathbb{F}$ decomposes uniquely into interval modules, each corresponding to a bar $[i, j]$ meaning a feature was "alive" across the indices from $i$ to $j$ in the sequence.
+
+For time-indexed data with $T$ survey waves, the natural zigzag construction inserts **union complexes** between consecutive waves. Between wave $t$ and wave $t+1$, form the union complex $K_t \cup K_{t+1}$ — the simplicial complex that includes all simplices from both waves simultaneously. The zigzag sequence then reads:
+
+$$K_1 \hookrightarrow K_1 \cup K_2 \hookleftarrow K_2 \hookrightarrow K_2 \cup K_3 \hookleftarrow K_3 \hookrightarrow \cdots$$
+
+The forward arrows ($\hookrightarrow$) are inclusions of each wave complex into the union; the backward arrows ($\hookleftarrow$) are inclusions of the next wave complex into the union. This doubling construction is the standard approach for longitudinal data and is implemented in the GUDHI library under `SimplexTree.compute_zigzag_persistence`.
+
+## Applications to Poverty Trajectories
+
+The motivating application for zigzag persistence in this research programme is tracking poverty-cycle dynamics across the waves of a longitudinal household panel (e.g., the UK Household Longitudinal Study, UKHLS). Households enter the panel, are observed for some waves, and then leave — either by attrition, emigration, or panel redesign. The population at each wave is therefore not nested inside the population at the next wave: new households enter, and others exit. Standard persistent homology treats each wave independently. Zigzag persistence treats the sequence of waves as a single coherent object and asks: which H₁ features (poverty cycles) persist across multiple waves?
+
+A zigzag H₁ bar spanning waves 3 through 7 means: a one-dimensional cycle appeared in the welfare-trajectory data during wave 3 (when the corresponding union complex first contained a non-trivial H₁ class), remained visible through all intermediate unions, and was filled in during the wave-7 transition. This is a formal statement about a persistent structural feature of the time-varying data — not the statement that the same households were cycling throughout, but that cyclical dynamics were detectable and robust across that five-wave window.
+
+## Using GUDHI
+
+The GUDHI Python library provides the most feature-complete implementation of zigzag persistence currently available. Unlike `ripser`, which is optimised purely for Vietoris–Rips H₁, GUDHI supports multiple complex types and arbitrary homology dimensions:
+
+```python
+# GUDHI zigzag persistence — conceptual outline
+# import gudhi
+# from gudhi.point_cloud.timedelay import TimeDelayEmbedding
+
+# Construct a SimplexTree for each wave
+# trees = []
+# for wave_data in waves:
+#     st = gudhi.RipsComplex(points=wave_data, max_edge_length=0.8).create_simplex_tree(max_dimension=2)
+#     trees.append(st)
+
+# Construct the zigzag filtration (union-based)
+# See gudhi.ZigzagPersistence for current API (version ≥ 3.9)
+# zz = gudhi.ZigzagPersistence()
+# for t, (st_t, st_next) in enumerate(zip(trees, trees[1:])):
+#     zz.add_simplex_tree(st_t)
+#     zz.add_simplex_tree(st_next)
+
+# Retrieve bars: list of (dimension, birth_index, death_index)
+# bars = zz.get_persistence()
+```
+
+Computational cost scales with the total number of simplices across all waves and their unions. For a 10-wave panel with 500 landmarks per wave, the simplex count at each union complex is approximately $2 \times \binom{500}{2} \approx 250{,}000$ edges, making each union step tractable. Without landmark subsampling, the computation is infeasible for typical social-science dataset sizes.
+
+## Comparing Zigzag Bars Across Studies
+
+The bar-code produced by zigzag persistence is indexed by position in the filtration sequence, not by a continuous scale parameter. This introduces an alignment challenge when comparing results across two studies with different wave counts or different panel compositions. The appropriate comparison metric is still a variant of bottleneck or Wasserstein distance, but now computed over the space of zigzag bar-codes rather than standard persistence diagrams. This is an active area of TDA theory development — stable metrics for zigzag persistence are established in dimension zero but remain an open question in full generality for H₁. For applied work, the pragmatic approach is to report the bar spans qualitatively (which index ranges show persistent features) and to complement with standard VR persistence on a pooled cross-wave snapshot for comparison.
+
+## How This Module Connects
+
+Zigzag persistence is the theoretical foundation for the dynamical analysis in **Papers 3 and 4** of the research portfolio. Paper 3 applies the zigzag construction to UKHLS poverty panel data to test whether cyclical dynamics identified in cross-sectional analyses (Paper 1) survive a formal longitudinal tracking procedure. Paper 4 extends this to multi-parameter settings (Module 8) where both wave index and a welfare score are used as simultaneous filtration parameters, providing a joint handle on when cycles occur and at what severity threshold they first appear. The methodological foundations for comparing zigzag bar-codes across stratified populations — needed for the fairness analysis in Module 11 — also depend on the zigzag stability theory introduced in this module.

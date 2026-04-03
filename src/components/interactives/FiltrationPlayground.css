@@ -171,7 +171,11 @@
   white-space: nowrap;
 }
 
-.fp-btn:hover:not(:disabled),
+.fp-btn:hover:not(:disabled) {
+  background: var(--color-tda-teal, #2a7d8f);
+  color: #fff;
+}
+
 .fp-btn:focus-visible:not(:disabled) {
   background: var(--color-tda-teal, #2a7d8f);
   color: #fff;
@@ -305,7 +309,10 @@
   transition: border-color 0.12s;
 }
 
-.fp-module-link:hover,
+.fp-module-link:hover {
+  border-bottom-color: var(--color-tda-teal, #2a7d8f);
+}
+
 .fp-module-link:focus-visible {
   border-bottom-color: var(--color-tda-teal, #2a7d8f);
   outline: 2px solid var(--color-tda-teal, #2a7d8f);

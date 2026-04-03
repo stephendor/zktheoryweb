@@ -1,0 +1,75 @@
+---
+title: 'Fairness and Topology'
+path: 'tda-practitioners'
+module_number: 11
+core_concept: 'Using TDA to detect and audit structural bias in algorithmic welfare systems'
+connections:
+  chapters: [14, 15, 16]
+  papers: [9, 10]
+  modules: []
+  methods: ['persistent-homology', 'mapper']
+check_understanding:
+  - question: 'A Mapper graph of Universal Credit claimants coloured by ethnicity shows that non-white claimants cluster at the periphery of the graph, in nodes with few edges and low local density, while white claimants occupy the dense, highly-connected interior. What topological claim does this encode, and why is it stronger than saying "there is a correlation between ethnicity and benefit outcome"?'
+    answer: 'The topological claim is that non-white claimants occupy a structurally isolated region of the welfare-state topology — they are in sparsely connected graph nodes that have few pathways to the highly-connected core of the system. Structural isolation in the Mapper sense means: their welfare trajectories do not interleave with the trajectories of white claimants across a range of filtration scales, they are topologically separated at the neighbourhood level, and the separation is robust to changes in the Mapper parameters (confirmed by running the parameter sensitivity check from Module 6). This is stronger than a correlation because: (1) it is parameter-robust — the separation persists across a range of resolution and gain settings, not just at one ad hoc clustering cutoff; (2) it is structural — structural isolation in the graph implies poor connectivity to benefit pathways and transition routes that the core population accesses, which a correlation coefficient cannot express; (3) it identifies the geometric mechanism of disparate impact, not merely its aggregate magnitude. The topological finding motivates a specific intervention: reducing the boundary resistance between the peripheral and core nodes, rather than simply adjusting a mean prediction.'
+  - question: 'Explain how the persistent homology of an algorithmic decision boundary can serve as a fairness audit, and what finding would constitute evidence of structural algorithmic bias against a protected group.'
+    answer: 'An algorithmic decision boundary is a set in the input space — the locus of points where the algorithm transitions from one decision to another (e.g., from benefit-recommended to benefit-denied). Its topology can be characterised by persistent homology: treat the boundary as a zero-level set of the score function, extract a sample of points near the boundary, and compute the persistence diagram of that sample. The resulting diagram characterises how the boundary is structured: are there loops in the boundary (cyclical structures that trap households near the threshold)? Are there connected components (multiple isolated boundary segments)? A finding of persistent H₁ features in the boundary near a protected group constitutes evidence of structural algorithmic bias: a loop in the boundary implies there exist closed regions in the input space where households near the protected group are systematically enclosed within the high-denial region in a way that cannot be escaped by small movements in any individual variable. This is the topological analogue of the legal concept of a "class boundary" — not a continuous gradient from access to denial, but a closed loop that captures populations regardless of marginal improvements in their welfare scores.'
+  - question: 'The CARE principles (Collective benefit, Authority to control, Responsibility, Ethics) were developed by Kukutai and colleagues for Indigenous data governance. In what sense might a topologically faithful poverty-scoring system still violate the CARE principles, and what limitations does TDA face as a fairness tool?'
+    answer: 'A topologically faithful system — one that preserves cycle structure, avoids collapsing population trajectories, and has a Mapper graph showing connected rather than segregated communities — could still violate CARE in several ways. Collective benefit requires that data use demonstrably benefits the communities providing it, not merely avoids harming them; a system that accurately characterises structural poverty without directing resources to affected communities satisfies neither topological fidelity nor collective benefit. Authority to control requires that communities govern how their data is used; TDA offers no mechanism for community data governance — it is an analytical tool applied by researchers, not a participatory governance structure. Responsibility requires accountability for harm; topology can identify structural harm but the accountability mechanism is political, not mathematical. Ethics requires an overall commitment to the wellbeing of the communities analysed. These limits are not defects of TDA specifically but of any purely technical fairness tool: topology can describe structural injustice with precision, but description is not intervention, and intervention requires political will that goes beyond what any mathematical framework can compel.'
+status: 'drafting'
+---
+
+## The Shape of Injustice
+
+The welfare state is not a neutral distribution mechanism. It is a structured system that embeds decisions — about who qualifies for what benefit, at what income threshold, subject to which conditionality — into algorithms, databases, and assessment protocols. When these structures produce systematically worse outcomes for particular populations — by protected characteristic, by geography, by employment history — that disparity has a geometrical form. Certain groups of people are located in regions of welfare space that are topologically separated from the pathways to support; their trajectories form closed loops within zones of persistent deprivation; the decision boundaries of algorithmic assessment tools enclose them in ways that are structurally resistant to individual improvement. This is the argument of **Counting Lives**, Chapters 14–16, translated into the language of TDA: discrimination and deprivation are partly topological phenomena, and understanding their structure requires tools that can describe topology.
+
+This module develops the operational TDA techniques for structural bias detection and algorithmic fairness auditing. It connects the technical methods of Modules 3–9 to the political and ethical concerns of the research programme, and it names both the power and the limits of TDA as a fairness tool.
+
+## Mapper as a Structural Bias Detector
+
+The Mapper graph (Module 6) is the most directly interpretable TDA tool for detecting structural separation of protected groups. The procedure:
+
+1. Construct a Mapper graph from welfare-trajectory data using a filter function that does not include the protected characteristic (e.g., benefit-receipt history, income trajectory — not ethnicity or disability status).
+2. Colour each node of the graph by the proportion of protected-group members it contains.
+3. Examine whether protected-group nodes cluster at the periphery of the graph (sparse nodes with few edges) or are distributed throughout the interior (well-connected nodes).
+
+Peripheral clustering in the Mapper graph encodes a precise topological claim: protected-group members are located in welfare-state positions that are structurally isolated from the pathways available to the majority population. Structural isolation is distinguishable from simple clustering (having different mean welfare outcomes) because it captures connectivity: an isolated node is not merely lower on some welfare scale, it has fewer routes to adjacent welfare states, fewer cross-group connections, and fewer recovery pathways.
+
+Run a Mapper parameter sensitivity analysis (Module 6, Mapper Parameter Lab) to confirm that the peripheral clustering is robust: it should persist across a range of resolution (15–35) and gain (20–45%) settings. A peripheral cluster that appears only at one specific parameter combination is not a robust finding.
+
+## Persistent Homology of Decision Boundaries
+
+Algorithmic welfare systems — Universal Credit assessments, predictive child-welfare scoring, housing benefit calculations — produce decision boundaries: the locus in input space where the algorithm transitions from one decision (grant, deny, refer) to another. The topology of these boundaries carries fairness information that summary statistics cannot capture.
+
+For a trained scoring model $f: \mathbb{R}^d \to \mathbb{R}$ (where $f(x) > 0.5$ triggers a benefit denial), the decision boundary is the level set $f^{-1}(0.5)$. To analyse its topology:
+
+1. Sample data points $x_1, \ldots, x_n$ with $|f(x_i) - 0.5| < \epsilon$ for small $\epsilon$ (the near-boundary population).
+2. Restrict to the sub-population defined by a protected group (e.g., households with a disability indicator).
+3. Compute the VR persistence diagram of this restricted near-boundary sample.
+4. Compute the same diagram for the majority population.
+5. Compare diagrams via Wasserstein distance (Module 9). A large Wasserstein distance indicates structurally different boundary geometries for the two groups.
+
+A persistent H₁ feature in the protected-group boundary diagram — but not in the majority diagram — indicates a loop in the decision boundary near the protected group: a topological trap where the boundary encloses a region from which households cannot escape through incremental improvements in any single welfare variable. This is the topological signature of a "ceiling" effect in algorithmic scoring: not a gradient but a structural enclosure.
+
+## Connecting to Counting Lives: Chapters 14–16
+
+**Chapter 14** of *Counting Lives* documents the structural geography of poverty in post-devolution Scotland, arguing that deprivation is not randomly distributed but forms topological patterns — islands of concentrated poverty separated from recovery pathways by structural barriers. The persistent H₀ features in welfare data from Scottish local authorities provide the formal evidence: isolated components in the Mapper graph of welfare trajectories correspond directly to the historically persistent deprivation areas identified in Chapter 14.
+
+**Chapter 15** analyses how algorithmic benefit assessment — specifically the Universal Credit migration from legacy benefits in the UK — restructured the topology of welfare access. Pre-migration, the benefit system had smoother topological structure: continuous pathways between income levels and benefit states. Post-migration, the Mapper graph of claimant trajectories shows a bifurcated structure: a well-connected core population transitioning smoothly through the system and a peripheral population locked into a cyclical pattern of conditionality compliance, sanctioning, and crisis payments. The persistent H₁ feature in the post-migration data — the poverty loop — is the mathematical object at the centre of the chapter's argument.
+
+**Chapter 16** addresses the ethics and politics of topological knowledge: knowing the shape of injustice does not automatically produce the will to change it. The chapter draws on the CARE principles developed by Kukutai and colleagues for Indigenous data governance — Collective benefit, Authority to control, Responsibility, Ethics — and asks whether TDA-based poverty analysis can satisfy these principles or whether it risks producing another layer of expert-produced knowledge that communities cannot govern or act on.
+
+## When Topology Is Not Enough
+
+TDA provides a language and a set of tools for describing structural injustice with precision. It does not provide the political, legal, or institutional mechanisms to intervene. A Mapper graph showing structural separation of protected groups from benefit pathways is a powerful exhibit in a policy argument; it is not, by itself, a policy instrument.
+
+The limits of TDA as a fairness tool are:
+
+**Description without prescription.** Topological analysis identifies what structure exists but does not specify what change would dissolve it. A persistent loop in benefit-denial trajectories can be identified and measured; which policy lever would remove it — sanctioning reform, assessment methodology change, conditionality removal — is a political question.
+
+**Scale without causality.** TDA characterises the global geometry of outcomes but does not identify the causal mechanisms producing it. Two systems with superficially different rules can produce topologically identical separation; two systems with identical rules can produce topologically different separations depending on implementation context.
+
+**Analysis without participation.** The most sophisticated topological fairness audit is still an analysis *of* communities rather than *by* them. The CARE principles — particularly Authority to Control and Collective Benefit — require governance structures that TDA does not provide and that researchers using TDA must build through separate, non-mathematical means.
+
+## How This Module Connects
+
+This module positions the technical work of Path 4 within the political and ethical frame of **Papers 9 and 10** and of *Counting Lives* as a whole. Paper 9 develops the Mapper-based structural bias audit for UK algorithmic welfare systems. Paper 10 addresses the normative interpretation of topological fairness findings: under what conditions is a topological finding of structural separation an actionable claim of injustice, and what institutional responses does it warrant? Both papers are explicitly in dialogue with the arguments of Chapters 14–16, treating TDA not as neutral mathematics but as a mode of claim-making about social structure that carries both analytical power and political responsibility.

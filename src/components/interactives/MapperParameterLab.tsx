@@ -661,11 +661,18 @@ export function MapperParameterLab({ className }: MapperParameterLabProps) {
     return points.map(fn);
   }, [filterFnName, points]);
 
+  // ── Memoised connected-component count ──────────────────────────────────
+
+  const componentCount = useMemo(
+    () => (mapperGraph ? countConnectedComponents(mapperGraph) : 0),
+    [mapperGraph],
+  );
+
   // ── Text description for TextDescriptionToggle ────────────────────────────
 
   const textDescription = useMemo(() => {
     if (!mapperGraph) return 'No graph computed yet.';
-    const components = countConnectedComponents(mapperGraph);
+    const components = componentCount;
     return (
       `Mapper graph using ${filterLabel(filterFnName)} filter with ${resolution} cover ` +
       `intervals, ${(overlap * 100).toFixed(0)}% overlap, and clustering threshold ` +
@@ -673,7 +680,7 @@ export function MapperParameterLab({ className }: MapperParameterLabProps) {
       `Result: ${mapperGraph.nodes.length} nodes, ${mapperGraph.edges.length} edges, ` +
       `${components} connected component${components !== 1 ? 's' : ''}.`
     );
-  }, [mapperGraph, filterFnName, resolution, overlap, clusterThreshold]);
+  }, [mapperGraph, filterFnName, resolution, overlap, clusterThreshold, componentCount]);
 
   // ── Hover handler (passed down to panels) ────────────────────────────────
 
@@ -822,8 +829,8 @@ export function MapperParameterLab({ className }: MapperParameterLabProps) {
         {mapperGraph && (
           <p className="mpl-graph-stats" aria-live="off">
             {mapperGraph.nodes.length} nodes · {mapperGraph.edges.length} edges ·{' '}
-            {countConnectedComponents(mapperGraph)} component
-            {countConnectedComponents(mapperGraph) !== 1 ? 's' : ''}
+            {componentCount} component
+            {componentCount !== 1 ? 's' : ''}
           </p>
         )}
       </div>

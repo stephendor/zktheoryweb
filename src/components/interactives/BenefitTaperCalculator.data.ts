@@ -104,6 +104,8 @@ export function computeUCSchedule(
   hasHousingElement: boolean,
   steps: number,
 ): UCResult[] {
+  if (steps <= 0) return [];
+
   const { taperRate, standardAllowance } = params;
 
   // Select the applicable work allowance based on housing element.

@@ -70,8 +70,7 @@ X = circle + np.random.normal(0, 0.15, (n, 2))
 # plt.savefig('persistence_diagram.png', dpi=150)
 ```
 
-Running this on the noisy circle should produce one conspicuous point in `dgms[1]` far from the diagonal — the persistent loop — and all other H₁ points clustered near it. The `plot_diagrams` call from `persim` renders H₀ features as blue dots and H₁ features as orange dots, with the diagonal drawn for reference.
-
+Running this on the noisy circle should produce one conspicuous point in `dgms[1]` far from the diagonal — the persistent loop — and all other H₁ points clustered near the diagonal.
 ## The Elder Rule
 
 When the filtration adds simplices in unambiguous order — one at a time, each at a distinct scale — the birth–death pairing is uniquely determined. In practice, however, floating-point distance matrices often produce ties: many pairs of points at exactly the same distance, or many triples forming triangles simultaneously. A tie-breaking rule is required to decide which homology class dies and which survives when two components merge at the same scale. The **elder rule** resolves the ambiguity by always killing the younger feature: when components $A$ (born at $r_A$) and $B$ (born at $r_B > r_A$) merge at scale $r_\text{merge}$, component $B$ (the younger one) dies and $A$ (the elder) persists.

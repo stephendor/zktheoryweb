@@ -107,3 +107,84 @@ describe('MyComponent', () => {
 - Reference the relevant task ID in the PR description (e.g., `Task 1.2`).
 - Ensure `npm run lint`, `npm run format:check`, and `npm run check` all pass before
   opening a PR.
+
+## End-to-End Testing
+
+Playwright E2E tests live in `e2e/` (separate from Vitest unit tests in `src/`).
+
+### Framework
+
+| Tool | Role |
+|---|---|
+| [Playwright](https://playwright.dev/) 1.x | Browser automation — Chromium, Firefox, WebKit |
+| `e2e/*.spec.ts` | Test files (separate from Vitest `*.test.ts` files) |
+
+### Running E2E tests
+
+```bash
+npm run test:e2e          # build then run all E2E tests (all three browsers)
+npm run test:e2e:ui       # interactive Playwright UI mode (no pre-build required)
+npm run test:e2e:report   # view the last HTML report
+```
+
+### Build requirement
+
+`npm run test:e2e` automatically runs `npm run build` before executing tests. The
+E2E tests are served from the compiled `dist/` output via `npx serve dist --listen
+4321`. **Do not use `npm run preview`** — the `@astrojs/netlify` adapter does not
+support Astro's built-in preview server. Always use `npx serve dist` instead.
+
+### Local development workflow
+
+When running `npm run test:e2e:ui` (or `npx playwright test` directly), if a server
+is already serving `dist/` on port 4321, Playwright reuses it (`reuseExistingServer:
+true`). Start a server manually with:
+
+```bash
+npx serve dist --listen 4321
+```
+
+Then run `npm run test:e2e:ui` in another terminal for faster iteration (skips the
+build step).
+
+### Browser targets
+
+Tests run against **Chromium**, **Firefox**, and **WebKit**. All three browsers must
+pass for a test run to be considered green.
+
+#### WebKit and 3D WebGL
+
+The `PersistenceDiagramBuilder` uses a Three.js/R3F WebGL canvas when WebGL2 is
+available. On WebKit in Playwright's E2E environment, WebGL support can be
+unreliable, causing timeout failures during the Play animation assertion. That
+specific assertion is conditionally skipped on WebKit:
+
+```typescript
+test.skip(
+  browserName === 'webkit',
+  'WebGL PersistenceDiagramBuilder3D may cause Play animation timeout on WebKit E2E',
+);
+```
+
+The structural assertions (slider present, both panels visible, preset button) still
+run on WebKit.
+
+### client:visible hydration
+
+All interactive components use Astro's `client:visible` directive, which defers React
+hydration until the island scrolls into view. Tests must wait for the
+React-rendered element to appear rather than relying on the initial static HTML:
+
+```typescript
+// Wait for React island to hydrate before asserting
+const slider = page.getByRole('slider', { name: 'Filtration radius' });
+await slider.waitFor({ state: 'visible', timeout: 10_000 });
+```
+
+### Locator conventions
+
+- Use ARIA role + accessible name: `getByRole('button', { name: /Mark as complete/ })`
+- Use `aria-label` attribute locators for elements without semantic roles:
+  `page.locator('[aria-label*="point cloud"]')`
+- No CSS class selectors, no `nth-child` queries
+

@@ -619,7 +619,7 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
 
           {reducedMotion && (
             <p className="fp-reduced-motion-note">
-              Animation controls hidden. Use the step slider or Back/Forward buttons.
+              Animation controls hidden. Use the step slider to explore the filtration.
             </p>
           )}
         </div>

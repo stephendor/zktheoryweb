@@ -195,6 +195,7 @@ function PointCloudPanel({
   // ── Highlighted edges for selected H₁ feature ──────────────────────────
   // Use birth radius as proxy: edges that appeared at birth radius
   const highlightedEdgeSet = new Set<string>();
+  const highlightedPointSet = new Set<number>();
   if (selectedFeatureIdx !== null) {
     const h1Feature = diagrams.H1[selectedFeatureIdx];
     if (h1Feature) {
@@ -204,6 +205,8 @@ function PointCloudPanel({
           const d = euclidean(point_cloud[i], point_cloud[j]);
           if (d <= birthR) {
             highlightedEdgeSet.add(`${i}-${j}`);
+            highlightedPointSet.add(i);
+            highlightedPointSet.add(j);
           }
         }
       }
@@ -262,7 +265,7 @@ function PointCloudPanel({
         {point_cloud.map((pt, i) => (
           <circle
             key={`pt-${i}`}
-            className={`tre-point${selectedFeatureIdx !== null ? ' tre-point--highlighted' : ''}`}
+            className={`tre-point${highlightedPointSet.has(i) ? ' tre-point--highlighted' : ''}`}
             cx={xScale(pt[0])}
             cy={yScale(pt[1])}
             r={4}
@@ -536,6 +539,13 @@ export function TDAResultsExplorer({
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => setLiveMsg(msg), ARIA_DEBOUNCE_MS);
   }, [activePresetId]);
+
+  // Clear any pending debounce on unmount to avoid setState after unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   const handleRadiusChange = useCallback(
     (val: number) => {

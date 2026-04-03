@@ -29,16 +29,17 @@ Three libraries form the essential practitioner stack. **`ripser`** is the prima
 Install the core stack:
 
 ```bash
-pip install scikit-tda persim
+pip install scikit-tda
 ```
+
+> `scikit-tda` already bundles `persim` as a dependency, so a separate install is not needed. If you require a specific version of `persim` (for example to reproduce results from a particular paper), pin it explicitly *after* the umbrella install: `pip install persim==0.3.7`.
 
 For reproducible research environments, always work in a dedicated conda environment:
 
 ```bash
 conda create -n tda python=3.11
 conda activate tda
-pip install scikit-tda persim jupyter
-```
+pip install scikit-tda jupyter```
 
 Pin library versions in `requirements.txt` — `ripser==0.6.9` and `persim==0.3.7` reflect the contemporary stable API used throughout this path. The Ripser backend is written in C++ and wrapped via pybind11. If installation fails with a compilation error on Linux, ensure `build-essential` is installed. On Windows, use the Windows Subsystem for Linux or install via conda-forge, where pre-compiled wheels are maintained for most platforms. On macOS, Xcode Command Line Tools (`xcode-select --install`) provide the required compiler toolchain.
 

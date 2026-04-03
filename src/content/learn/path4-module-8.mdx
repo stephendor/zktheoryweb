@@ -1,0 +1,65 @@
+---
+title: 'Multi-Parameter Persistence'
+path: 'tda-practitioners'
+module_number: 8
+core_concept: 'Filtering a complex by two parameters simultaneously to capture density and scale together'
+connections:
+  chapters: []
+  papers: [3, 4]
+  modules: []
+  methods: ['multi-parameter-persistence']
+check_understanding:
+  - question: 'Why does the standard structure theorem fail for modules over ℤ², and what does this mean practically for a researcher who wants to summarise a bifiltration with a single number?'
+    answer: 'The structure theorem for one-parameter persistence modules states that every finitely generated persistence module over a field decomposes uniquely into a direct sum of interval modules, each parameterised by a birth-death pair. The proof relies on the classification of finitely generated modules over a principal ideal domain — in this case the polynomial ring k[t]. For two-parameter persistence modules, the ring of coefficients becomes k[r, ρ] (the polynomial ring in two variables), which is not a principal ideal domain. The classification theorem fails: indecomposable two-parameter modules can take infinitely many non-isomorphic forms, and no finite combinatorial object like a bar-code can encode them all. Practically, this means no single number — not a persistence value, not a bar-code length — faithfully summarises the bifiltration. Researchers must instead work with invariants: the Hilbert function gives the dimension of the module at each parameter pair (r, ρ) as a non-negative integer, providing a 2D grid of values; the rank invariant gives the rank of the map between parameter pairs; fibered bar-codes give the bar-code of each one-parameter slice. These are complementary partial summaries, not a complete replacement for the missing bar-code.'
+  - question: 'In a bifiltration of welfare data by scale r and density ρ, you observe that a specific (r, ρ) cell has rank invariant value 1 while all adjacent cells have rank invariant 0. What does this isolated non-zero cell tell you about the data?'
+    answer: 'A rank invariant value of 1 at (r₀, ρ₀) with zeros at all adjacent parameter pairs means there exists exactly one H₁ class that is simultaneously born and dies within the narrow parameter window around (r₀, ρ₀) — it is visible only at that precise combination of scale and density. It does not persist to larger r (the triangulation kills it before r grows) and does not persist to higher ρ (the density threshold kills it before ρ increases). This is a sharp localisation in parameter space: the loop structure only exists at a very specific combination of inter-household distance and local data density. Substantively, this could indicate a marginal population that forms a tight loop (small r, moderate density) but is dissolved by including more sparse outlier households (large r) or by raising the density threshold to exclude them (high ρ). The finding warrants examining which households constitute that cell and whether the (r₀, ρ₀) combination corresponds to any interpretable welfare threshold.'
+  - question: 'RIVET displays the Hilbert function of a bifiltration as a 2D heatmap. Describe what a "ridge" of elevated Hilbert-function values running diagonally from low-(r, low-ρ) to high-(r, high-ρ) tells you, versus a "plateau" that is elevated across a broad region of the parameter space.'
+    answer: 'A diagonal ridge from (r_low, ρ_low) to (r_high, ρ_high) indicates a family of homological classes that require a coordinated increase in both scale and density to be born and to survive — each additional class in the ridge exists at a slightly larger scale only if density is also slightly higher. This is the signature of scale-density coupling: the loop structure in the data is geometrically distributed across multiple sub-populations of varying density, each requiring the matching scale to become visible. A plateau of elevated Hilbert values across a broad region means the module is dense in that region — many classes exist simultaneously across a wide range of (r, ρ) combinations — indicating pervasive topological structure that is not tied to any specific scale or density threshold. For welfare data, a plateau covering moderate (r, ρ) values suggests robust cyclical dynamics present in the main body of the distribution, not just in outlier sub-populations or at extreme scales.'
+status: 'drafting'
+---
+
+## The Density Confound
+
+Standard Vietoris–Rips persistence has a well-documented limitation when applied to data with heterogeneous density: it conflates scale effects with density effects. Consider a welfare dataset with two sub-populations — a large dense cluster of working-age households near the poverty line and a small sparse cluster of households with chronic severe deprivation. In a single-parameter VR filtration, the dense cluster generates many short-lived H₀ features at small scales (components quickly merging) and perhaps a persistent loop as the cluster forms a rough ring in variable space. The sparse cluster generates long-lived H₀ features (its components merge only at large scales because the households are far apart) and suppresses any H₁ analysis because sparse regions require large scales before triangulation is possible.
+
+The scale parameter $r$ is simultaneously doing two jobs: capturing the geometric scale of features and compensating for the density variation of the point cloud. Increasing $r$ to reach the sparse cluster simultaneously over-triangulates the dense cluster, destroying topological features in the dense region before the sparse region is even connected. The solution — computing separate VR diagrams for each cluster after density-based stratification — is ad hoc and introduces arbitrary thresholding. **Multi-parameter persistence** provides the principled alternative: filter by both $r$ and a density threshold $\rho$ simultaneously, producing a two-dimensional parameter space where scale and density are genuinely independent.
+
+## The Bifiltration
+
+Given a point cloud $X$ and a density estimator $\hat{\rho}: X \to \mathbb{R}$ (the kernel density estimate at each point), the **bifiltration** $K_{(r, \rho)}$ is the simplicial complex that includes all simplices whose vertices are (a) within distance $r$ of each other and (b) have density estimate at least $\rho$:
+
+$$K_{(r, \rho)} \subseteq K_{(r', \rho')} \quad \text{for } (r, \rho) \leq (r', \rho') \text{ component-wise}$$
+
+That is, $r' \geq r$ (scale grows) and $\rho' \leq \rho$ (density threshold is lowered, admitting sparser points). The nesting condition is satisfied: increasing $r$ adds new edges and simplices; decreasing $\rho$ admits new low-density vertices with their incident edges. The result is a two-parameter family of nested complexes — a functor from the poset $\mathbb{R} \times \mathbb{R}^{\text{op}}$ to the category of simplicial complexes.
+
+The **two-parameter persistence module** associated with this bifiltration is the functor $H_k(K_{(r, \rho)})$ assigning to each parameter pair $(r, \rho)$ the $k$-th homology vector space of the corresponding complex, with maps induced by inclusions.
+
+## The Failure of the Structure Theorem
+
+For one-parameter persistence modules over a field $\mathbb{F}$, the structure theorem guarantees a unique bar-code decomposition. This theorem rests on the classification of graded modules over the polynomial ring $\mathbb{F}[t]$, which is a principal ideal domain (PID). Every finitely generated module over a PID decomposes as a direct sum of cyclic modules — the bar-code intervals.
+
+The two-parameter ring $\mathbb{F}[r, \rho]$ is not a PID. Graded modules over $\mathbb{F}[r, \rho]$ do not admit a complete discrete decomposition: the category of finitely presented $\mathbb{F}[r, \rho]$-modules contains indecomposables of arbitrarily complex structure, and there exists no finite combinatorial invariant that fully classifies them. The bar-code, which was the complete invariant for one-parameter persistence, has no direct analogue in the two-parameter setting.
+
+This is not merely a theoretical inconvenience. Applied TDA researchers who expect multi-parameter persistence to produce "a bar-code with two axes" will be disappointed — that object does not exist in the theory, and any tool claiming to produce it is either restricting to a special sub-class of modules or producing an approximation with known error.
+
+## Invariants That Do Exist
+
+Three classes of invariants are practically useful for two-parameter persistence:
+
+**The Hilbert function** $H(r, \rho) = \dim_\mathbb{F} H_k(K_{(r, \rho)})$ assigns to each parameter pair the dimension of the homology vector space — the total count of independent $k$-cycles present at that parameter value. It is a non-negative integer for each $(r, \rho)$ in the discretised parameter grid. A 2D heatmap of the Hilbert function visualises where homological features are present; ridges of elevated values in the heatmap indicate regions of parameter space where the data has consistent loop structure.
+
+**The rank invariant** $\rho(p, q) = \text{rank}(H_k(K_p) \to H_k(K_q))$ for $p \leq q$ in the poset gives the number of $k$-cycles at parameter $p$ that persist to parameter $q$. For a grid of parameter pairs, the rank invariant forms a 4D tensor, but it is typically examined as a family of 2D slices fixing two of the four parameters.
+
+**Fibered bar-codes** decompose the bifiltration into a family of one-parameter restrictions — essentially projecting the 2D parameter space onto one-parameter lines and computing a standard bar-code for each line. The collection of bar-codes across all lines (or a representative sample) characterises the global structure without requiring a single summary.
+
+## RIVET: Interactive Bipersistence Visualisation
+
+The **RIVET** software (Rivet Interprets Virtually Everything in Topology) is the primary interactive tool for two-parameter persistence analysis. RIVET takes a bifiltration as input and computes the minimal free resolution of the two-parameter module, from which the Hilbert function and rank invariant can be queried for any parameter pair in real time.
+
+RIVET's interface displays the bifiltration's 2D parameter space with the Hilbert function overlaid as a heatmap, and a "line query" tool that computes the fibered bar-code for any one-parameter line through the space. Moving the line query interactively reveals how the topological summary changes as you sweep through different combinations of scale emphasis and density threshold — the single most powerful diagnostic for understanding whether a topological feature is genuinely independent of density, or merely a density artefact visible at particular scale–density combinations.
+
+RIVET is available as a standalone executable and as a Python interface via `pyrivet`. For welfare-data applications, the typical workflow is: compute the bifiltration in Python (using a custom distance-matrix and kernel-density-estimate pipeline), export to RIVET's input format, and use RIVET's GUI for interactive exploration before extracting specific numerical invariants for reporting.
+
+## How This Module Connects
+
+Multi-parameter persistence is the methodological innovation at the centre of **Papers 3 and 4**. Paper 3 develops a bifiltration framework for UKHLS welfare panel data that simultaneously filters by normalised welfare distance and by local density (estimated from the kernel density of the welfare variable distribution), providing the first formal test of whether detected poverty-cycle topology is density-independent. Paper 4 extends this to a three-parameter setting (adding survey wave as a temporal parameter), connecting multi-parameter persistence to the zigzag constructions from Module 7. Together, these two papers represent the frontier of applied two-parameter TDA in social science and constitute the principal technical contribution of the research programme to TDA methodology itself.

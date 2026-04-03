@@ -75,11 +75,13 @@
 /* Point cloud scatter */
 .mpl-point {
   cursor: pointer;
-  transition: r 0.15s ease;
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: transform 0.15s ease;
 }
 
 .mpl-point:hover {
-  r: 6;
+  transform: scale(1.4);
 }
 
 /* Axis text */

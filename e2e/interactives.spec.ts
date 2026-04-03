@@ -49,6 +49,7 @@ test.describe('Normal Distribution Explorer', () => {
     // Interact via keyboard: ArrowRight on the toolbar increases μ.
     // The SVG aria-label includes the current μ value, so it changes.
     const initialLabel = await chart.getAttribute('aria-label');
+    expect(initialLabel).not.toBeNull();
     await toolbar.focus();
     await toolbar.press('ArrowRight');
 
@@ -71,22 +72,26 @@ test.describe('Persistence Diagram Builder', () => {
     // Filtration radius slider is present.
     await expect(slider).toBeVisible();
 
-    // Play / Pause toggle is enabled before animation starts.
-    const playBtn = page.getByRole('button', { name: 'Play filtration animation' });
-    await expect(playBtn).toBeEnabled();
+    // Left panel: either the 2D SVG canvas (role="img", WebKit/no-WebGL fallback)
+    // or the 3D R3F application wrapper (role="application", Chromium/Firefox with WebGL2).
+    const leftPanel = page
+      .getByRole('img', { name: /Point cloud canvas/ })
+      .or(page.getByRole('application', { name: /3D point cloud editor/ }));
+    await expect(leftPanel).toBeVisible();
 
-    // Left panel: point cloud canvas (PointCloudEditor SVG).
-    const pointCloudSvg = page.getByRole('img', { name: /Point cloud canvas/ });
-    await expect(pointCloudSvg).toBeVisible();
-
-    // Right panel: persistence diagram SVG.
+    // Right panel: persistence diagram SVG (same in both 2D and 3D versions).
     const persistenceSvg = page.getByRole('img', { name: /Persistence diagram/ });
     await expect(persistenceSvg).toBeVisible();
 
-    // Click "Circle (8 pts)" preset so there is a defined point cloud.
+    // Click "Circle (8 pts)" preset to load ≥2 points into the cloud.
+    // The Play button is disabled when points.length < 2 (initial empty state).
     const circlePreset = page.getByRole('button', { name: 'Circle (8 pts)' });
     await expect(circlePreset).toBeVisible();
     await circlePreset.click();
+
+    // Play / Pause toggle is now enabled (requires ≥2 points in the cloud).
+    const playBtn = page.getByRole('button', { name: 'Play filtration animation' });
+    await expect(playBtn).toBeEnabled();
 
     // Skip the animation assertion on WebKit — the 3D WebGL canvas swap may
     // cause a timeout in WebKit E2E; the SVG fallback is verified above.

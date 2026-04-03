@@ -108,8 +108,7 @@ The topological conclusion: the H₁ structure of welfare trajectories differs s
 #     return dgm[np.isfinite(dgm[:, 1])]
 
 # W1_distance = wasserstein(finite_only(dgm_A), finite_only(dgm_B), matching=False)
-# BN_distance = bottleneck(finite_only(dgm_A), finite_only(dgm_B), e=0.0)
-# print(f'Wasserstein-1: {W1_distance:.4f}')
+# BN_distance = bottleneck(finite_only(dgm_A), finite_only(dgm_B))# print(f'Wasserstein-1: {W1_distance:.4f}')
 # print(f'Bottleneck: {BN_distance:.4f}')
 ```
 

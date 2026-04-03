@@ -20,7 +20,11 @@ export function DefaultCalculator() {
   );
 }
 
-/** With housing element: lower £404 work allowance applied. */
+/**
+ * Housing element story — renders the default interactive state.
+ * Toggle the "Has housing element" checkbox inside the calculator to apply
+ * the lower £404 work allowance; no prop controls that initial state.
+ */
 export function WithHousingElement() {
   return (
     <div style={{ width: '100%', maxWidth: 860, padding: '1rem' }}>
@@ -29,7 +33,11 @@ export function WithHousingElement() {
   );
 }
 
-/** Comparison mode wrapper — comparison toggle is interaction-only, rendered here at default. */
+/**
+ * Comparison mode story — renders the default interactive state.
+ * Toggle the "Show comparison" control inside the calculator to enable the
+ * overlay; comparison mode is interaction-only and has no initialising prop.
+ */
 export function WithComparison() {
   return (
     <div style={{ width: '100%', maxWidth: 860, padding: '1rem' }}>

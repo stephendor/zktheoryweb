@@ -343,6 +343,42 @@ function ComplexScene({
   tdaTealColor,
   tdaSlateColor,
 }: ComplexSceneProps) {
+  // Memoize BufferGeometry objects so they are only recreated when the
+  // triangle topology or point positions change (not on every render).
+  const triangleGeometries = useMemo(() => {
+    if (points.length === 0) return [];
+    const pts2D: Point2D[] = points.map((p) => ({ x: p.x, y: p.y, id: p.id }));
+    const simplices = buildComplex(pts2D, currentRadius);
+    const triangles = simplices
+      .filter((s) => s.dimension === 2)
+      .map((s) => [s.vertices[0], s.vertices[1], s.vertices[2]] as [string, string, string]);
+    const pointMap = new Map(points.map((p) => [p.id, p]));
+    return triangles.map(([a, b, c]) => {
+      const pa = pointMap.get(a);
+      const pb = pointMap.get(b);
+      const pc = pointMap.get(c);
+      if (!pa || !pb || !pc) return null;
+      const wa = toWorld(pa);
+      const wb = toWorld(pb);
+      const wc = toWorld(pc);
+      const verts = new Float32Array([
+        wa.x, wa.y, wa.z,
+        wb.x, wb.y, wb.z,
+        wc.x, wc.y, wc.z,
+      ]);
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+      return { key: `tri-${a}-${b}-${c}`, geom };
+    });
+  }, [points, currentRadius]);
+
+  // Dispose GPU resources when the memoized geometries are replaced.
+  useEffect(() => {
+    return () => {
+      triangleGeometries.forEach((entry) => entry?.geom.dispose());
+    };
+  }, [triangleGeometries]);
+
   if (points.length === 0) return null;
 
   // Build complex using 2D projection
@@ -352,10 +388,6 @@ function ComplexScene({
   const edges = simplices
     .filter((s) => s.dimension === 1)
     .map((s) => [s.vertices[0], s.vertices[1]] as [string, string]);
-
-  const triangles = simplices
-    .filter((s) => s.dimension === 2)
-    .map((s) => [s.vertices[0], s.vertices[1], s.vertices[2]] as [string, string, string]);
 
   const highlightSet = new Set(highlightIds);
   const pointMap = new Map(points.map((p) => [p.id, p]));
@@ -384,23 +416,10 @@ function ComplexScene({
       })}
 
       {/* Triangles */}
-      {triangles.map(([a, b, c]) => {
-        const pa = pointMap.get(a);
-        const pb = pointMap.get(b);
-        const pc = pointMap.get(c);
-        if (!pa || !pb || !pc) return null;
-        const wa = toWorld(pa);
-        const wb = toWorld(pb);
-        const wc = toWorld(pc);
-        const verts = new Float32Array([
-          wa.x, wa.y, wa.z,
-          wb.x, wb.y, wb.z,
-          wc.x, wc.y, wc.z,
-        ]);
-        const geom = new THREE.BufferGeometry();
-        geom.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+      {triangleGeometries.map((entry) => {
+        if (!entry) return null;
         return (
-          <mesh key={`tri-${a}-${b}-${c}`} geometry={geom}>
+          <mesh key={entry.key} geometry={entry.geom}>
             <meshBasicMaterial
               color={tdaTealColor}
               opacity={0.18}
@@ -504,6 +523,18 @@ function PointCloudEditor3D({
   // Keyboard delete for selected point
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      const active = document.activeElement;
+      if (active) {
+        const tag = (active as HTMLElement).tagName;
+        if (
+          tag === 'INPUT' ||
+          tag === 'TEXTAREA' ||
+          tag === 'SELECT' ||
+          (active as HTMLElement).isContentEditable
+        ) {
+          return;
+        }
+      }
       if ((e.key === 'Delete' || e.key === 'Backspace') && selectedPointId) {
         onPointsChange(points.filter((p) => p.id !== selectedPointId));
         onSelectPoint(null);
@@ -1007,7 +1038,7 @@ export function PersistenceDiagramBuilder3D({
         </div>
 
         {/* Controls row */}
-        <div className="pdb-controls" aria-label="Filtration controls">
+        <div className="pdb-controls" role="group" aria-label="Filtration controls">
           <div className="pdb-slider-row">
             <label htmlFor="pdb3d-slider" className="pdb-control-label">Radius</label>
             <input

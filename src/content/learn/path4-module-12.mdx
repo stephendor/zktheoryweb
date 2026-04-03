@@ -1,0 +1,124 @@
+---
+title: 'Designing Your Own TDA Study'
+path: 'tda-practitioners'
+module_number: 12
+core_concept: 'A structured checklist for scoping, executing, and reporting a TDA analysis in social research'
+connections:
+  chapters: []
+  papers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  modules: []
+  methods: ['persistent-homology', 'mapper', 'zigzag-persistence']
+check_understanding:
+  - question: 'You want to apply TDA to a cross-sectional survey of 3,200 households measured on eight welfare variables (income, employment status, housing quality, health, food security, social connectedness, digital access, and educational attainment). Walk through checklist items 1–4 as applied to this study, making explicit choices at each step and justifying them.'
+    answer: 'Item 1 (Research question framing): The topological claim is that welfare deprivation is multi-dimensionally structured — that households are not scattered randomly across the eight-dimensional welfare space but form identifiable clusters and possibly cyclical structures corresponding to typologies of deprivation. The specific testable claim is: the data contains at least one H₁ feature with persistence exceeding the 95th percentile of a bootstrap null distribution, indicating a genuine loop in the joint distribution of welfare variables. Item 2 (Preprocessing): Normalise all eight variables by z-score — they are theoretically commensurable as welfare dimensions. Use Euclidean distance in the normalised space as the default, with cosine-distance sensitivity analysis to test whether profile-type or magnitude drives results. Apply maxmin landmark subsampling at 400 landmarks (approximately 12.5% of 3,200) to reduce computation time. Item 3 (Algorithm selection): Standard Vietoris-Rips persistent homology with ripser at maxdim=1 (H₀ and H₁ only — higher dimensions are unlikely to be interpretable with cross-sectional data). This is a single-parameter analysis, appropriate for cross-sectional data where there is no temporal index needed for zigzag. Item 4 (Parameter sensitivity): Compute diagrams at five landmark counts (200, 300, 400, 500, full dataset on a sample of 500) and compare bottleneck distances between consecutive pairs. A bottleneck distance below 10% of the maximum persistence across all five runs indicates converged topological resolution. Also vary the maximum filtration distance from 0.5× to 2× the median pairwise distance to confirm that the primary features are visible across a range of filtration extents.'
+  - question: 'Your TDA study finds one significant H₁ feature (persistence 0.71, p=0.03 from bootstrap test) in a welfare dataset. A reviewer asks: "What is the loop? Which households form it, and what social mechanism closes it?" Describe how you would answer this question using the tools from Path 4, and what you cannot answer with TDA alone.'
+    answer: 'To identify which households form the loop: run ripser with cocycles=True to obtain a representative cocycle for the H₁ feature. The cocycle is a 1-cochain whose coboundary is zero in the persistence diagram cohomology — its support identifies which edges (pairs of households) carry the persistent cycle. Extract the household indices from these edges and examine their welfare profiles. These are the households whose pairwise proximity at scale b (birth parameter 0.71 in this case) constitutes the geometrical loop. To understand what closes the loop: examine the filtration at scale d (death parameter), find the triangle that fills the cycle, and identify the three households forming that triangle — these are the households whose mutual proximity at scale d triangulates the void. The social mechanism is then interpretable: which welfare-variable combination makes these three households mutually close, and why does that configuration close the cycle? What TDA cannot answer: why the loop exists, what causes it, whether it will persist under policy changes, and whether any individual household position in the loop is causal rather than correlational. TDA establishes the geometric structure; the causal story requires qualitative research, administrative data linkage, and longitudinal follow-up that the persistence diagram does not contain.'
+  - question: 'You are writing up a TDA analysis of poverty data for a social policy journal whose reviewers are not TDA specialists. Checklist item 8 calls for reporting standards including diagrams, parameter choices, null model results, and interpretation guard-rails. What are the three most important elements to include, and what is the single most common TDA reporting error you should avoid?'
+    answer: 'The three most important elements: (1) The persistence diagram itself, with the diagonal clearly drawn, H₀ and H₁ clearly distinguished by colour or symbol, and the bootstrap-derived significance threshold annotated as a horizontal or vertical line distinguishing the signal zone from the noise zone. Without the actual diagram, reviewers cannot evaluate the finding. (2) The null-model test result: which test was run (bootstrap or permutation), how many iterations, what the null distribution looks like, and the precise p-value. A claim of "significant persistent topology" without a null-model test is not publishable in a journal with quantitative standards. (3) The preprocessing specification: normalisation method, distance metric, landmark count if subsampling was used, and the maximum filtration distance parameter. These determine what topology could in principle be detected and what was ruled out by design. The single most common TDA reporting error is the missing negative result: reporting only the significant features and omitting the noise-zone features, or failing to report that H₀ was examined and found to show N connected components. TDA findings must be reported in full — what was present, at what persistence, against what null distribution, and what was absent.'
+status: 'drafting'
+---
+
+## The Study You Will Design
+
+Every module in Path 4 has developed one piece of the TDA practitioner toolkit: computing persistence (Modules 1–3), interpreting diagrams (Module 4), testing statistical significance (Module 5), applying Mapper (Module 6), tracking features through time with zigzag (Module 7), handling multi-parameter complexity (Module 8), vectorising for downstream analysis (Module 9), integrating with deep learning (Module 10), and auditing algorithmic fairness (Module 11). This final module asks you to assemble all of it into a coherent study design. Not a tutorial exercise, but a real study — the kind you will actually run on welfare data, submit to a social policy journal, and defend to reviewers who may include both TDA specialists and empirical social scientists with no prior exposure to computational topology.
+
+The checklist below does not provide a recipe. It provides a structured set of decisions that every TDA study must make explicitly, with enough reasoning to explain each choice to a non-specialist and to reviewers in revision. The checklist is organised in the order decisions must be made, from the initial framing of the topological claim through to the final reporting standard.
+
+## 1. Research Question Framing
+
+**What topological claim are you making?**
+
+Every TDA study rests on an implicit or explicit topological claim: the data has a particular global structure — clusters, loops, voids, branching — that is not adequately described by mean values or correlations. Before computing anything, state the claim precisely.
+
+A well-formed topological claim has three parts: (a) a specified homology dimension (H₀ for clustering, H₁ for loops, H₂ for voids); (b) a persistence threshold (the minimum persistence that constitutes a finding rather than noise); and (c) a substantive interpretation that is falsified if the topological structure is absent. Example: "We claim that the joint welfare trajectory data contains a persistent H₁ feature — indicating cyclical poverty dynamics — with persistence exceeding the 95th percentile of the bootstrap null distribution. Absence of this feature would falsify the poverty-trap hypothesis as stated."
+
+Stating the claim up front disciplines the entire analysis. It forces a decision about which homology dimension matters, prevents post-hoc adjustment of the significance threshold, and makes the substantive interpretation testable rather than vague.
+
+## 2. Data Preprocessing Decisions
+
+**Which normalisation, which distance, which subsampling?**
+
+Each of these decisions is a theoretical commitment about what kind of variation matters (Module 2):
+
+- **Normalisation choice**: z-score treats all variables as theoretically commensurable; domain-normalisation (e.g., dividing by median income) preserves economic interpretation. State the choice and justify it in one sentence referencing the research question.
+- **Distance metric**: Euclidean is the default; cosine is appropriate when welfare profile type matters more than welfare level; precomputed matrices allow custom metrics. If your distance choice changes the finding, report both results and discuss the discrepancy.
+- **Subsampling**: If $n > 5{,}000$, use maxmin landmark subsampling (Module 2). Report the landmark count and the convergence evidence — that increasing landmarks does not substantially change the diagram.
+
+Document these choices in a dedicated "Computational Methods" subsection of your paper. Reviewers from TDA backgrounds will check these first; reviewers from social science backgrounds will check whether the choices are theoretically motivated.
+
+## 3. Algorithm Selection
+
+**VR vs Čech vs alpha complex; standard vs zigzag vs multi-parameter.**
+
+Select the filtration algorithm based on the data structure, not computational convenience:
+
+- **Standard VR (ripser)**: for cross-sectional data or single time-point data. Default choice unless a principled reason exists for alternatives.
+- **Alpha complex**: for point clouds in low-dimensional Euclidean space (typically $d \leq 4$) where a geometrically tighter complex is desired. Not appropriate for high-dimensional welfare data.
+- **Zigzag**: for longitudinal data where the panel composition changes across waves (Module 7). Required when tracking features through time rather than comparing diagrams.
+- **Multi-parameter**: when density and scale are theoretically independent concerns and you need to separate their effects (Module 8). Requires RIVET and substantially more interpretation effort.
+
+Justify the choice in one sentence. If you use standard VR on longitudinal data when zigzag would be more appropriate, that is a methodological limitation to be acknowledged.
+
+## 4. Parameter Sensitivity
+
+**Have you swept the filtration parameter? Tested multiple cover settings?**
+
+No TDA finding is credible if it depends on a single parameter setting. The minimum sensitivity analysis:
+
+- Vary the maximum filtration distance (or the `thresh` parameter in `ripser`) from half to twice the default value. Report whether the primary features are visible across this range.
+- If using Mapper: vary resolution from 15 to 40 and gain from 20% to 45%. Report the parameter region where the claimed graph structure (loop, flare, bifurcation) is stable.
+- If using landmark subsampling: vary the landmark count from 200 to the minimum feasible full-sample size and report the bottleneck distance between consecutive diagrams as the landmark count increases. A decreasing bottleneck distance demonstrates convergence.
+
+A parameter sweep is not optional. It is the minimum evidence that the finding is a property of the data rather than of a particular algorithmic configuration.
+
+## 5. Statistical Validation
+
+**Do your features survive a bootstrap test?**
+
+Run the bootstrap significance test (Module 5) with $B \geq 1{,}000$ iterations for any H₁ feature you intend to report as a finding. The p-value should be reported with two significant figures (p = 0.031, not p < 0.05). If you are comparing diagrams across groups, run the permutation test (Module 5) as well.
+
+Report the full null distribution — not just the p-value — as a histogram in supplementary materials. This allows reviewers to assess whether the null distribution is well-behaved and whether the observed feature is a clear outlier or a marginal exceedance.
+
+## 6. Vectorisation for Downstream Analysis
+
+**Which vectorisation for which downstream task?**
+
+If the study includes regression, classification, or clustering over multiple diagrams (e.g., comparing persistence across geographic areas or demographic groups), choose and justify the vectorisation method (Module 9):
+
+- **Persistence landscape**: use for interpretable comparison and statistical testing (landscape averages are well-defined).
+- **Persistence image**: use for supervised machine learning tasks where compact fixed-dimensional vectors are needed.
+- **Wasserstein distance matrix**: use for distance-based clustering (hierarchical clustering, UMAP projection) of diagram collections.
+
+Report the vectorisation hyperparameters (grid resolution, bandwidth, number of landscape levels) and justify their choice.
+
+## 7. Interpretation Guard-Rails
+
+**What can topology claim versus what it cannot?**
+
+TDA establishes the existence and robustness of geometric structure. It does not establish:
+
+- **Causality**: a persistent loop does not identify the mechanism that creates it.
+- **Individual membership**: which specific households are in a loop is a post-hoc analysis; the H₁ feature does not come with a pre-attached list of members.
+- **Prediction**: the presence of a loop in the current data does not predict how long it will persist or what would dissolve it.
+- **Policy prescription**: a topological finding is evidence for a structural argument; the argument must be made with additional tools.
+
+Include a one-paragraph "Interpretation Limits" section in every TDA paper. It demonstrates methodological honesty and pre-empts the most predictable reviewer complaints.
+
+## 8. Reporting Standards
+
+**Include diagrams, parameter choices, null model results, and interpretation guard-rails.**
+
+A complete TDA replication package includes:
+
+1. The persistence diagram(s) as publication-quality figures, with diagonal drawn and significance threshold annotated.
+2. All preprocessing parameters (normalisation, distance metric, landmark count, maximum filtration distance).
+3. The bootstrap or permutation null distribution as a histogram.
+4. The full Mapper graph (if used) with parameter settings documented.
+5. Code to reproduce all computations from the preprocessed data matrix.
+6. The "Interpretation Limits" paragraph discussed in item 7.
+
+The single most common TDA reporting error is reporting only findings. A credible TDA paper reports what topology was found, what topology was absent, at what parameter settings, against what null model, and with what limitations.
+
+## Path 4 Retrospect
+
+This path has taken you from installation to frontier methodology. The gradient has been: computation (Modules 1–3) → interpretation (Modules 4–5) → advanced tools (Modules 6–9) → applications (Modules 10–11) → design (Module 12). The methods are now a toolkit; the research programme represented by Papers 1–10 is the context in which that toolkit has been deployed and tested. Designing your own study means making explicit choices that, in the papers, appear as settled conventions — but which were each the result of exactly this kind of principled decision procedure, documented here so that the next generation of TDA welfare researchers does not have to reconstruct it from first principles.

@@ -116,11 +116,22 @@ test('progress bar reflects completion of multiple modules', async ({ page }) =>
   // Fall back to any progressbar if the label doesn't include the slug.
   // PathProgressBar label is "{N} of {total} modules complete".
   const anyProgressBar = page.getByRole('progressbar').first();
-  await anyProgressBar.waitFor({ state: 'visible', timeout: 10_000 });
 
-  // aria-valuenow must be > 0 (i.e., at least one module counted).
-  const valuenow = await anyProgressBar.getAttribute('aria-valuenow');
-  expect(Number(valuenow)).toBeGreaterThan(0);
+  // Prefer the labeled progressbar; fall back to the generic one if not visible.
+  let chosenBar = progressBar;
+  try {
+    await progressBar.waitFor({ state: 'visible', timeout: 5_000 });
+  } catch {
+    chosenBar = anyProgressBar;
+    await anyProgressBar.waitFor({ state: 'visible', timeout: 10_000 });
+  }
+
+  // aria-valuenow must be > 0. PathProgressBar reads localStorage in a
+  // useEffect after mount, so we wait for the value to reflect the writes
+  // made on previous pages before asserting.
+  await expect(chosenBar).not.toHaveAttribute('aria-valuenow', '0', {
+    timeout: 8_000,
+  });
 });
 
 // ─── Test 3: Module navigation links (prev / next) ───────────────────────────

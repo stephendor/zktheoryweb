@@ -80,6 +80,7 @@ function BenefitTaperChart({
   showComparison,
   highlightedEarnings,
   reducedMotion,
+  onHighlight,
   onHover,
 }: BenefitTaperChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -243,10 +244,10 @@ function BenefitTaperChart({
     // UC exhaustion (first point where ucAmount = 0)
     const exhaustionIdx = currentSchedule.findIndex((d) => d.ucAmount === 0);
     const exhaustionEarnings =
-      exhaustionIdx > 0 ? currentSchedule[exhaustionIdx].grossEarnings : MAX_EARNINGS;
+      exhaustionIdx !== -1 ? currentSchedule[exhaustionIdx].grossEarnings : MAX_EARNINGS;
     const exhaustionX = xScale(exhaustionEarnings);
     const exhaustionNetIncome =
-      exhaustionIdx > 0 ? currentSchedule[exhaustionIdx].netIncome : MAX_EARNINGS;
+      exhaustionIdx !== -1 ? currentSchedule[exhaustionIdx].netIncome : MAX_EARNINGS;
 
     // ── Work allowance vertical dashed line ───────────────────────────────────
 
@@ -274,7 +275,7 @@ function BenefitTaperChart({
     const exLineG = svg.select<SVGGElement>('.btc-exhaustion-marker');
     exLineG.selectAll('*').remove();
 
-    if (exhaustionIdx > 0) {
+    if (exhaustionIdx !== -1) {
       exLineG
         .append('line')
         .attr('x1', exhaustionX)
@@ -420,24 +421,13 @@ function BenefitTaperChart({
         onHover(
           `Gross earnings £${nearest.grossEarnings.toFixed(0)}, UC £${nearest.ucAmount.toFixed(2)}, net income £${nearest.netIncome.toFixed(2)}, effective marginal rate ${nearest.effectiveMarginalRate} percent`,
         );
+        onHighlight(nearest.grossEarnings);
       })
       .on('pointerleave', () => {
         const tt = tooltipRef.current;
         if (tt) hideTooltip(tt);
+        onHighlight(null);
       });
-
-    // Announce ARIA on spotlight change from slider
-    if (highlightedEarnings !== null) {
-      const nearest = currentSchedule.reduce((prev, curr) =>
-        Math.abs(curr.grossEarnings - highlightedEarnings) <
-        Math.abs(prev.grossEarnings - highlightedEarnings)
-          ? curr
-          : prev,
-      );
-      onHover(
-        `Spotlight: £${nearest.grossEarnings.toFixed(0)} gross earnings, UC £${nearest.ucAmount.toFixed(2)}, net income £${nearest.netIncome.toFixed(2)}, effective marginal rate ${nearest.effectiveMarginalRate} percent`,
-      );
-    }
 
     // Suppress transitions when reduced-motion is requested.
     // (No animated transitions used in this chart; placeholder for future use.)
@@ -458,8 +448,24 @@ function BenefitTaperChart({
     showComparison,
     highlightedEarnings,
     reducedMotion,
+    onHighlight,
     onHover,
   ]);
+
+  // ── ARIA spotlight announcement (slider-driven) ────────────────────────────
+
+  useEffect(() => {
+    if (highlightedEarnings === null) return;
+    const nearest = currentSchedule.reduce((prev, curr) =>
+      Math.abs(curr.grossEarnings - highlightedEarnings) <
+      Math.abs(prev.grossEarnings - highlightedEarnings)
+        ? curr
+        : prev,
+    );
+    onHover(
+      `Spotlight: £${nearest.grossEarnings.toFixed(0)} gross earnings, UC £${nearest.ucAmount.toFixed(2)}, net income £${nearest.netIncome.toFixed(2)}, effective marginal rate ${nearest.effectiveMarginalRate} percent`,
+    );
+  }, [highlightedEarnings, currentSchedule, onHover]);
 
   // ── Tooltip cleanup on unmount ─────────────────────────────────────────────
 

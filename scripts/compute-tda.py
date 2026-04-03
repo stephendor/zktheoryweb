@@ -73,9 +73,9 @@ def compute_and_save(filename: str, points: np.ndarray) -> None:
             # Cap any infinite death values (last H0 component, essential H1 loops)
             if not math.isfinite(d):
                 d = cap
-            # Skip degenerate features (birth == death at cap == ∞ replacement)
-            if b > cap:
-                b = cap
+            # Skip degenerate features where birth >= cap (zero or negative persistence after capping)
+            if b >= cap:
+                continue
             result.append({"birth": round(b, 6), "death": round(d, 6)})
         return result
 
