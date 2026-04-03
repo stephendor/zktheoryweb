@@ -1,0 +1,81 @@
+---
+/**
+ * src/pages/learn/[path]/[module].astro — Task 5.6 — Agent_Design_Templates
+ *
+ * Dynamic route for individual learning module pages.
+ * Generates one static route per existing learn-modules MDX entry.
+ * URL: /learn/{pathSlug}/{moduleNumber}
+ *
+ * getStaticPaths() discovers all entries via getCollection('learn-modules') so
+ * routes are automatically generated for any path that has MDX content — no
+ * hardcoded path list is used.
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import ModuleLayout from '@layouts/ModuleLayout.astro';
+
+export async function getStaticPaths() {
+  const allModules = await getCollection('learn-modules');
+
+  // Group entries by path slug, then sort each group by module_number.
+  const byPath = new Map<string, CollectionEntry<'learn-modules'>[]>();
+  for (const entry of allModules) {
+    const slug = entry.data.path;
+    if (!byPath.has(slug)) byPath.set(slug, []);
+    byPath.get(slug)!.push(entry);
+  }
+  for (const entries of byPath.values()) {
+    entries.sort((a, b) => a.data.module_number - b.data.module_number);
+  }
+
+  return allModules.map((entry) => {
+    const pathSlug = entry.data.path;
+    const moduleNum = entry.data.module_number;
+    const pathEntries = byPath.get(pathSlug)!;
+
+    // pathModules: ordered list of all modules in this path for the progress strip.
+    const pathModules = pathEntries.map((e) => ({
+      slug: e.id,
+      title: e.data.title,
+      status: e.data.status,
+    }));
+
+    // prevModule / nextModule: adjacent entries in the same path.
+    const prevEntry = pathEntries.find(
+      (e) => e.data.module_number === moduleNum - 1,
+    );
+    const nextEntry = pathEntries.find(
+      (e) => e.data.module_number === moduleNum + 1,
+    );
+
+    const prevModule = prevEntry
+      ? { slug: prevEntry.id, title: prevEntry.data.title }
+      : undefined;
+    const nextModule = nextEntry
+      ? { slug: nextEntry.id, title: nextEntry.data.title }
+      : undefined;
+
+    return {
+      params: { path: pathSlug, module: String(moduleNum) },
+      props: { entry, pathModules, prevModule, nextModule },
+    };
+  });
+}
+
+interface Props {
+  entry: CollectionEntry<'learn-modules'>;
+  pathModules: Array<{ slug: string; title: string; status: string }>;
+  prevModule?: { slug: string; title: string };
+  nextModule?: { slug: string; title: string };
+}
+
+const { entry, pathModules, prevModule, nextModule } = Astro.props;
+---
+
+<ModuleLayout
+  entry={entry}
+  pathModules={pathModules}
+  prevModule={prevModule}
+  nextModule={nextModule}
+/>
