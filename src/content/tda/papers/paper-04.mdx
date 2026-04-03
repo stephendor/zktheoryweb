@@ -4,8 +4,8 @@ paper_number: 4
 stage: 2
 status: 'planned'
 target_journal: 'Journal of the American Statistical Association'
-depends_on: [1]
-enables: []
+depends_on: [2, 3]
+enables: [7, 8]
 methods:
   - 'multi-parameter-ph'
   - 'persistent-homology'
@@ -17,16 +17,16 @@ compute:
   runtime: 'Hours'
   cloud: true
 key_findings:
-  - claim: 'Two-parameter persistence modules distinguish genuine poverty trap topology from transient poverty with balanced classification accuracy above 85% on held-out validation data.'
-    detail: 'A support vector classifier trained on MPH feature vectors achieves 87% balanced accuracy versus 61% for a single-parameter baseline, validated on a 20% holdout. Poverty trap topology is characterised by persistent H₀ features in the income–time parameter plane, corresponding to isolated connected components that survive across both dimensions of the filtration.'
-  - claim: 'Poverty trap topology is geographically concentrated in former mining and manufacturing regions of the UK.'
-    detail: 'Spatial disaggregation of MPH-derived trap probability scores by NUTS-2 region shows a factor-of-3 variation, with the highest trap concentrations in South Yorkshire, Tyne and Wear, and South Wales — regions with persistent post-deindustrialisation structural disadvantage.'
-  - claim: 'Single-parameter persistent homology substantially under-counts poverty trap configurations relative to the two-parameter method.'
-    detail: 'A systematic comparison shows that single-parameter PH applied to income alone misses approximately 40% of cases identified as poverty traps by MPH, primarily because it cannot simultaneously condition on both income level and temporal persistence — the two-dimensional signature that distinguishes genuine trapping from extended-but-recoverable hardship.'
+  - claim: 'The paper aims to test whether two-parameter persistence modules can distinguish genuine poverty trap topology from transient poverty using a supervised classification framework.'
+    detail: 'A support vector classifier will be trained on MPH feature vectors and compared against a single-parameter baseline, validated on a held-out test set. The hypothesis is that poverty trap topology will be characterised by persistent H₀ features in the income–time parameter plane, corresponding to isolated connected components surviving across both filtration dimensions.'
+  - claim: 'The paper aims to assess whether poverty trap topology is geographically concentrated in former mining and manufacturing regions of the UK.'
+    detail: 'Spatial disaggregation of MPH-derived trap probability scores by NUTS-2 region will be used to test whether trap concentrations are higher in regions with persistent post-deindustrialisation structural disadvantage, such as South Yorkshire, Tyne and Wear, and South Wales.'
+  - claim: 'The paper aims to quantify the extent to which single-parameter persistent homology under-counts poverty trap configurations relative to the two-parameter method.'
+    detail: 'A systematic comparison will assess how many cases identified as poverty traps by MPH are missed by single-parameter PH applied to income alone, testing the hypothesis that the two-dimensional signature — conditioning simultaneously on income level and temporal persistence — is necessary to distinguish genuine trapping from extended-but-recoverable hardship.'
 abstract: >
-  Poverty traps — states from which exit is structurally impeded — represent a central concern of welfare research. Single-parameter persistent homology cannot distinguish trapping configurations from transient low-income spells. This paper introduces a multi-parameter persistent homology (MPH) framework that simultaneously filters employment trajectory space by income level and time, yielding a two-parameter persistence module. Applied to Understanding Society data, MPH identifies topological invariants associated with poverty trap configurations, distinguishing them from transient poverty. GPU computation enables practical estimation across large panels. We show that poverty trap topology is concentrated in specific regional and household-type sub-populations, with implications for targeted policy design.
+  Poverty traps — states from which exit is structurally impeded — represent a central concern of welfare research. Single-parameter persistent homology cannot distinguish trapping configurations from transient low-income spells. This paper will introduce a multi-parameter persistent homology (MPH) framework that simultaneously filters employment trajectory space by income level and time, yielding a two-parameter persistence module. When applied to Understanding Society data, MPH will be used to identify topological invariants associated with poverty trap configurations, distinguishing them from transient poverty. GPU computation will enable practical estimation across large panels. We aim to show that poverty trap topology is concentrated in specific regional and household-type sub-populations, with implications for targeted policy design.
 plain_summary: >
-  Not all periods of low income are equal. Some people experience temporary financial hardship and recover; others are structurally trapped in persistent poverty. Standard statistics struggle to tell these apart. This paper uses a two-dimensional version of topological data analysis — scanning both income level and time simultaneously — to detect the mathematical signature of being trapped. This signature looks different from temporary hardship. We identify which groups are most likely to be in genuine poverty traps, and which regions of Britain show the highest concentration of trap-topology households.
+  Not all periods of low income are equal. Some people experience temporary financial hardship and recover; others are structurally trapped in persistent poverty. Standard statistics struggle to tell these apart. This paper will use a two-dimensional version of topological data analysis — scanning both income level and time simultaneously — to detect the mathematical signature of being trapped. The aim is to test whether this signature looks different from temporary hardship, and to identify which groups are most likely to be in genuine poverty traps and which regions of Britain show the highest concentration of trap-topology households.
 ---
 
 ## Introduction
@@ -65,7 +65,7 @@ MPH-derived trap probability scores vary by a factor of three across UK NUTS-2 r
 
 ## Discussion
 
-MPH provides a geometry-respecting operationalisation of poverty traps that resolves the ambiguity between sustained transient poverty and structural trapping. The GPU computation pipeline developed for this paper is released as a replication package and is used by Papers 8 and 9 in the research programme.
+MPH provides a geometry-respecting operationalisation of poverty traps that resolves the ambiguity between sustained transient poverty and structural trapping. The GPU computation pipeline developed for this paper will be released as a replication package and is expected to be used by Papers 8 and 9 in the research programme.
 
 ## Conclusion
 

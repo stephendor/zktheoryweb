@@ -1,0 +1,149 @@
+---
+/**
+ * src/pages/learn/interactives/[slug].astro — Task 3.2 — Agent_Interactive_Core
+ *
+ * Dynamic route that serves every interactive at:
+ *   /learn/interactives/<slug>
+ *
+ * Build-time: getStaticPaths() queries the 'interactives' content collection
+ * and generates one route per entry. Each entry's `slug` field (from its
+ * frontmatter) is used as the path segment.
+ *
+ * Rendering: a simple BaseLayout wraps the interactive component. Components
+ * are mapped by slug in the COMPONENT_MAP below. The `client:visible`
+ * directive is used so hydration is deferred until the interactive scrolls
+ * into view, which is the project convention for below-fold interactives
+ * (as documented in src/lib/viz/types.ts).
+ *
+ * To add a new interactive:
+ *   1. Create src/content/interactives/<slug>.mdx with required frontmatter.
+ *   2. Add the React component to the COMPONENT_MAP below.
+ */
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
+import { PovertySimulator } from '@components/interactives/PovertySimulator';
+import { PersistenceDiagramBuilder } from '@components/interactives/PersistenceDiagramBuilder';
+
+// ─── Component map ────────────────────────────────────────────────────────────
+// Maps each interactive slug to its React island component.
+// Extend this map as new interactives are added.
+
+const COMPONENT_MAP: Record<string, { component: unknown; label: string }> = {
+  'normal-distribution-explorer': {
+    component: NormalDistExplorer,
+    label: 'Normal Distribution Explorer',
+  },
+  'poverty-threshold-simulator': {
+    component: PovertySimulator,
+    label: 'Poverty Threshold Simulator',
+  },
+  'persistence-diagram-builder': {
+    component: PersistenceDiagramBuilder,
+    label: 'Persistence Diagram Builder',
+  },
+};
+
+// ─── Static paths ─────────────────────────────────────────────────────────────
+
+export async function getStaticPaths() {
+  const interactives = await getCollection('interactives');
+  return interactives.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'interactives'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, slug } = entry.data;
+
+const mapped = COMPONENT_MAP[slug];
+---
+
+<BaseLayout title={title} description={description} section="learn">
+  <main class="interactive-page">
+    <header class="interactive-page__header">
+      <nav aria-label="Breadcrumb" class="interactive-page__breadcrumb">
+        <a href="/learn">Learn</a>
+        <span aria-hidden="true"> / </span>
+        <span aria-current="page">{title}</span>
+      </nav>
+      <h1 class="interactive-page__title">{title}</h1>
+      {description && <p class="interactive-page__desc">{description}</p>}
+    </header>
+
+    <section class="interactive-page__body" aria-label={title}>
+      {slug === 'normal-distribution-explorer' ? (
+        <NormalDistExplorer client:visible />
+      ) : slug === 'poverty-threshold-simulator' ? (
+        <PovertySimulator client:visible />
+      ) : slug === 'persistence-diagram-builder' ? (
+        <PersistenceDiagramBuilder client:visible />
+      ) : (
+        <p class="interactive-page__missing">
+          Interactive <code>{slug}</code> is not yet implemented.
+        </p>
+      )}
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .interactive-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .interactive-page__header {
+    margin-bottom: var(--space-6);
+  }
+
+  .interactive-page__breadcrumb {
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .interactive-page__breadcrumb a {
+    color: var(--color-tda-teal);
+    text-decoration: none;
+  }
+
+  .interactive-page__breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .interactive-page__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-3xl);
+    margin: 0 0 var(--space-3);
+    color: var(--color-neutral-text);
+  }
+
+  .interactive-page__desc {
+    font-size: var(--text-base);
+    color: var(--color-neutral-muted);
+    margin: 0;
+    max-width: 65ch;
+    line-height: 1.6;
+  }
+
+  .interactive-page__body {
+    width: 100%;
+  }
+
+  .interactive-page__missing {
+    color: var(--color-neutral-muted);
+    font-style: italic;
+  }
+</style>

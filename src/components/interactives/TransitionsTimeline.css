@@ -1,0 +1,393 @@
+/**
+ * TransitionsTimeline.css — Task 3.6b — Agent_Interactive_Core
+ *
+ * Styles for the Five Transitions Timeline component.
+ *
+ * Layout strategy:
+ *   ≥768 px — outer wrapper fills container; inner scroll container enables
+ *             horizontal scrolling; SVG has a fixed minimum width.
+ *   <768 px  — vertical stacked card list replaces the SVG entirely.
+ *              No layout jump: the horizontal layout is the SSR default and
+ *              the mobile path renders after hydration via JS windowWidth state.
+ */
+
+/* ── Outer wrapper ────────────────────────────────────────────────────────── */
+
+.tt-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+
+/* ── Scroll container ─────────────────────────────────────────────────────── */
+
+.tt-scroll {
+  width: 100%;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  /* Cosmetic scrollbar styling — degrades gracefully in unsupported browsers. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-cl-red, #8B2E2E) transparent;
+}
+
+.tt-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tt-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tt-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--color-cl-red, #8B2E2E);
+  border-radius: 3px;
+}
+
+/* ── SVG canvas ───────────────────────────────────────────────────────────── */
+
+.tt-svg {
+  display: block;
+  /* Minimum width ensures Dec tick labels never overlap on small screens.
+     ResponsiveContainer may supply a larger width — we take the max. */
+  min-width: 1200px;
+}
+
+/* ── Transition band rectangles ──────────────────────────────────────────── */
+
+.tt-band {
+  /* cursor pointer is set inline on <a> wrappers; this is the fallback rect */
+  transition: opacity 120ms ease;
+}
+
+.tt-band:hover {
+  opacity: 0.85;
+}
+
+/* ── Band access link (wraps rect + label group) ─────────────────────────── */
+
+.tt-band-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tt-band-link:focus-visible rect {
+  outline: 3px solid var(--color-focus, #0072B2);
+  outline-offset: 2px;
+}
+
+.tt-band-link--active rect {
+  opacity: 0.88;
+  filter: brightness(1.08);
+}
+
+/* ── Chapter dot links ───────────────────────────────────────────────────── */
+
+.tt-dot-link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.tt-dot-link:focus-visible circle {
+  outline: 2px solid var(--color-focus, #0072B2);
+  outline-offset: 2px;
+}
+
+.tt-dot-link:hover circle {
+  opacity: 0.8;
+}
+
+/* ── Band labels ─────────────────────────────────────────────────────────── */
+
+.tt-band-label {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  pointer-events: none;
+  dominant-baseline: middle;
+  text-anchor: middle;
+}
+
+.tt-band-label__number {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.tt-band-label__title {
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+/* ── X-axis ───────────────────────────────────────────────────────────────── */
+
+.tt-axis text {
+  font-size: 0.72rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: currentColor;
+}
+
+.tt-axis .domain {
+  stroke: currentColor;
+  opacity: 0.4;
+}
+
+.tt-axis .tick line {
+  stroke: currentColor;
+  opacity: 0.25;
+}
+
+/* Decade tick lines extended up through the band area as a subtle grid. */
+.tt-decade-grid line {
+  stroke: currentColor;
+  opacity: 0.08;
+}
+
+/* ── Thread strands (rendered in Step 3, classes reserved here) ─────────── */
+
+.tt-thread-strand {
+  /* Group wrapper; no direct styles needed */
+}
+
+.tt-thread-label {
+  font-size: 0.68rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-weight: 500;
+}
+
+.tt-thread-label--muted {
+  opacity: 0.5;
+}
+
+.tt-thread-line {
+  fill: none;
+  stroke-width: 2;
+}
+
+.tt-thread-line--dashed {
+  stroke-dasharray: 6 4;
+  opacity: 0.5;
+}
+
+.tt-thread-dot {
+  cursor: default;
+}
+
+.tt-thread-dot:hover {
+  opacity: 0.8;
+}
+
+/* ── Legend ───────────────────────────────────────────────────────────────── */
+
+.tt-legend {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  padding-left: 0.5rem;
+  color: var(--color-text-muted, inherit);
+}
+
+.tt-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tt-legend__swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Per-transition swatch colours — avoids inline styles */
+.tt-legend__swatch[data-transition="1"] { background-color: var(--color-cl-red); }
+.tt-legend__swatch[data-transition="2"] { background-color: var(--color-cl-ochre); }
+.tt-legend__swatch[data-transition="3"] { background-color: var(--color-viz-3); }
+.tt-legend__swatch[data-transition="4"] { background-color: var(--color-viz-5); }
+.tt-legend__swatch[data-transition="5"] { background-color: var(--color-viz-6); }
+
+/* ── Annotation panel ────────────────────────────────────────────────────── */
+
+.tt-annotation {
+  min-height: 5rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  border-left: 3px solid var(--color-cl-red, #8B2E2E);
+  background: var(--color-surface-raised, rgba(0,0,0,0.03));
+  border-radius: 0 4px 4px 0;
+
+  /* Hidden by default: opacity 0, no pointer events */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+.tt-annotation--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Reduced-motion: skip transition, snap instantly */
+.tt-annotation--instant {
+  transition: none;
+}
+
+.tt-annotation__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.tt-annotation__number {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+.tt-annotation__title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tt-annotation__dates {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  margin-left: auto;
+}
+
+.tt-annotation__claim {
+  margin: 0 0 0.35rem 0;
+  padding: 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-text-muted, inherit);
+  border: none;
+}
+
+.tt-annotation__note {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* ── Mobile vertical layout (<768 px) ────────────────────────────────────── */
+
+.tt-mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tt-mobile-card {
+  border-left: 4px solid transparent;
+  background: var(--color-surface-raised, rgba(0,0,0,0.03));
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  /* Transition border-color and background for hover state */
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+/* Per-transition left-border colours */
+.tt-mobile-card[data-transition="1"] { border-left-color: var(--color-cl-red); }
+.tt-mobile-card[data-transition="2"] { border-left-color: var(--color-cl-ochre); }
+.tt-mobile-card[data-transition="3"] { border-left-color: var(--color-viz-3); }
+.tt-mobile-card[data-transition="4"] { border-left-color: var(--color-viz-5); }
+.tt-mobile-card[data-transition="5"] { border-left-color: var(--color-viz-6); }
+
+.tt-mobile-card--active {
+  background: var(--color-surface-sunken, rgba(0,0,0,0.06));
+}
+
+/* Reduced-motion: skip transition */
+.tt-mobile-card--instant {
+  transition: none;
+}
+
+.tt-mobile-card__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.tt-mobile-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tt-mobile-card__number {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.tt-mobile-card__title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tt-mobile-card__dates {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.tt-mobile-card__threads {
+  list-style: none;
+  margin: 0 0 0.4rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tt-mobile-card__thread {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.tt-mobile-card__thread-link {
+  color: var(--thread-colour, var(--color-cl-red));
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.tt-mobile-card__thread-link:hover {
+  text-decoration: underline;
+}
+
+.tt-mobile-card__thread-count {
+  font-size: 0.72rem;
+  opacity: 0.65;
+}
+
+.tt-mobile-card__no-threads {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.75rem;
+  opacity: 0.55;
+  font-style: italic;
+}
+
+.tt-mobile-card__chapter-count {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}

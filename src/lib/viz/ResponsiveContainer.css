@@ -1,0 +1,13 @@
+/* ResponsiveContainer.css — Task 3.1 — Agent_Interactive_Core */
+
+.rc-wrapper {
+  width: 100%;
+  /* min-height is supplied as a CSS custom property from React when unmeasured.
+     Once measured (data-measured attribute present), the min-height is cleared
+     so the container collapses to its natural height. */
+  min-height: var(--rc-min-height, 300px);
+}
+
+.rc-wrapper[data-measured] {
+  min-height: unset;
+}

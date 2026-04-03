@@ -5,7 +5,7 @@ stage: 1
 status: 'planned'
 target_journal: 'Sociological Methods & Research'
 depends_on: [1]
-enables: []
+enables: [4, 6]
 methods:
   - 'zigzag-persistence'
   - 'persistent-homology'
@@ -21,8 +21,8 @@ key_findings:
     detail: 'Zigzag persistence barcodes measured in five-year rolling windows show a doubling of mean H₁ barcode count from the window 2005–2009 to the window 2009–2013, with bootstrap confidence intervals non-overlapping. The topological signal precedes the official OECD unemployment peak by approximately one quarter.'
   - claim: 'Topological transitions in employment trajectory space lead official unemployment rate changes by approximately two quarters.'
     detail: 'Cross-correlation analysis between a zigzag-derived topological complexity index and the seasonally-adjusted OECD UK unemployment series reveals a consistent 2-quarter lead structure, suggesting that the shape of career trajectories begins to change before aggregate statistics register the shift.'
-  - claim: 'Gender differences in topological response to business cycles are substantial and asymmetric.'
-    detail: 'Women''s employment trajectories show amplified topological transitions at recession onset but faster recovery of pre-recession topology than men''s, consistent with the differential sectoral composition of female employment and faster cyclical reabsorption into part-time service work.'
+  - claim: 'The paper aims to test whether gender differences in topological response to business cycles are substantial and asymmetric.'
+    detail: 'The analysis will disaggregate the topological complexity index by gender to test whether women''s and men''s employment trajectories exhibit different topological responses at recession onset and during recovery, consistent with differential sectoral composition and cyclical reabsorption patterns.'
 abstract: >
   Standard persistent homology analyses a single filtration. Zigzag persistence extends this to sequences of spaces and maps, enabling the tracking of topological features as they appear and disappear through time. This paper applies zigzag persistence to the BHPS and Understanding Society panels to measure how the topological structure of employment trajectory space shifts across macroeconomic cycles, including the early 1990s recession, the 2008 financial crisis, and the subsequent austerity period. We find that business cycle downturns are associated with measurable topological transitions in trajectory space, particularly an increase in H₁ loop structures corresponding to cyclical unemployment patterns.
 plain_summary: >
@@ -65,9 +65,13 @@ H₁ loop count in the employment trajectory topology rises sharply during the w
 
 Cross-correlation with the OECD unemployment rate reveals a 2-quarter lead structure in the topological index. This suggests that career trajectories begin to exhibit cyclical loop patterns before the aggregate rate rises, potentially because topology captures behavioural responses in advance of official labour market statistics.
 
+### Gender Disaggregation
+
+The analysis will disaggregate the topological complexity index and H\u2081 barcode counts by gender to test whether women\u2019s and men\u2019s employment trajectories exhibit differential topological responses at recession onset and during recovery phases. The hypothesis is that differential sectoral composition \u2014 higher female representation in part-time service employment \u2014 and faster cyclical reabsorption patterns would produce asymmetric topological signatures across the macroeconomic cycle.
+
 ## Discussion
 
-Zigzag persistence provides a mathematically rigorous method for tracking employment topology across macroeconomic time. The leading indicator result is exploratory and requires replication in other national contexts (see Paper 5), but is consistent with the hypothesis that topological methods capture structural labour market change earlier than rate-based measures.
+Zigzag persistence provides a mathematically rigorous method for tracking employment topology across macroeconomic time. The leading indicator result is exploratory and requires replication in other national contexts (see Paper 5), but is consistent with the hypothesis that topological methods capture structural labour market change earlier than rate-based measures. The gender disaggregation analysis will test whether asymmetric topological responses reflect the differential sectoral and contractual composition of female and male employment documented in the sociological literature.
 
 ## Conclusion
 

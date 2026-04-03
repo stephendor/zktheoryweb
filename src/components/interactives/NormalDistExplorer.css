@@ -1,0 +1,299 @@
+/**
+ * NormalDistExplorer.css — Task 3.2 — Agent_Interactive_Core
+ *
+ * Styles for the Normal Distribution Explorer interactive component.
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.nde-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+
+/* ── Parameter readout above the chart ─────────────────────────────────────── */
+
+.nde-readout {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--color-neutral-text, #1a1a1a);
+}
+
+.nde-readout__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nde-readout__label {
+  font-weight: 600;
+  font-family: var(--font-serif, Georgia, serif);
+}
+
+.nde-readout__value {
+  font-variant-numeric: tabular-nums;
+  min-width: 4ch;
+  font-family: var(--font-mono, monospace);
+}
+
+/* ── Reduced-motion static inputs ──────────────────────────────────────────── */
+
+.nde-static-inputs {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.nde-static-inputs label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-neutral-text, #1a1a1a);
+}
+
+.nde-static-inputs input[type='number'] {
+  width: 8rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--color-neutral-border, #ccc);
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+  background: var(--color-neutral-bg, #fff);
+  color: var(--color-neutral-text, #1a1a1a);
+}
+
+.nde-static-inputs input[type='number']:focus {
+  outline: 2px solid var(--color-tda-teal, #1a8a8a);
+  outline-offset: 2px;
+}
+
+/* ── SVG chart container ────────────────────────────────────────────────────── */
+
+.nde-chart-container {
+  width: 100%;
+  min-height: 300px;
+  position: relative; /* For tooltip positioning */
+}
+
+.nde-svg {
+  display: block;
+  overflow: visible; /* allow axis labels outside viewBox */
+}
+
+/* ── D3 axis labels ─────────────────────────────────────────────────────────── */
+
+.nde-svg .axis-label {
+  font-size: 12px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-neutral-muted, #666);
+}
+
+.nde-svg .tick text {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #666);
+}
+
+.nde-svg .domain,
+.nde-svg .tick line {
+  stroke: var(--color-neutral-border, #ccc);
+}
+
+/* ── Primary PDF curve fill and stroke ──────────────────────────────────────── */
+
+.nde-area {
+  fill: var(--color-tda-teal, #1a8a8a);
+  fill-opacity: 0.18;
+}
+
+.nde-curve {
+  fill: none;
+  stroke: var(--color-tda-teal, #1a8a8a);
+  stroke-width: 2.5px;
+}
+
+/* ── Draggable mean handle (vertical line) ──────────────────────────────────── */
+
+.nde-mean-handle {
+  stroke: var(--color-viz-2, #e69f00);
+  stroke-width: 2px;
+  stroke-dasharray: 5 3;
+  cursor: ew-resize;
+}
+
+.nde-mean-handle-grab {
+  fill: var(--color-viz-2, #e69f00);
+  fill-opacity: 0.15;
+  cursor: ew-resize;
+}
+
+.nde-mean-handle-dot {
+  fill: var(--color-viz-2, #e69f00);
+  stroke: white;
+  stroke-width: 1.5px;
+  cursor: ew-resize;
+}
+
+.nde-mean-handle-dot:hover,
+.nde-mean-handle-dot:focus {
+  fill-opacity: 0.8;
+  outline: none;
+}
+
+.nde-mean-handle-dot:focus-visible {
+  stroke: var(--color-tda-teal, #1a8a8a);
+  stroke-width: 3px;
+}
+
+/* ── Sigma bracket / shaded region ─────────────────────────────────────────── */
+
+.nde-sigma-band {
+  fill: var(--color-viz-3, #cc79a7);
+  fill-opacity: 0.08;
+  cursor: ew-resize;
+}
+
+.nde-sigma-line {
+  stroke: var(--color-viz-3, #cc79a7);
+  stroke-width: 1.5px;
+  stroke-dasharray: 4 4;
+}
+
+.nde-sigma-handle-dot {
+  fill: var(--color-viz-3, #cc79a7);
+  stroke: white;
+  stroke-width: 1.5px;
+  cursor: ew-resize;
+}
+
+.nde-sigma-handle-dot:hover,
+.nde-sigma-handle-dot:focus {
+  fill-opacity: 0.8;
+  outline: none;
+}
+
+.nde-sigma-handle-dot:focus-visible {
+  stroke: var(--color-tda-teal, #1a8a8a);
+  stroke-width: 3px;
+}
+
+/* ── Drag hint text ─────────────────────────────────────────────────────────── */
+
+.nde-drag-hint {
+  font-size: 0.8rem;
+  color: var(--color-neutral-muted, #666);
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.nde-drag-hint kbd {
+  display: inline-block;
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--color-neutral-border, #ccc);
+  border-radius: 3px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+  background: var(--color-neutral-bg-subtle, #f5f5f5);
+  line-height: 1.3;
+}
+
+/* ── Transparent hover overlay ──────────────────────────────────────────────── */
+
+.nde-hover-rect {
+  cursor: crosshair;
+}
+
+/* ── Historical overlay toggles ────────────────────────────────────────────── */
+
+.nde-overlays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.nde-overlay-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: var(--color-neutral-text, #1a1a1a);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.nde-overlay-toggle input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--color-tda-teal, #1a8a8a);
+}
+
+.nde-overlay-toggle input[type='checkbox']:focus-visible {
+  outline: 2px solid var(--color-tda-teal, #1a8a8a);
+  outline-offset: 2px;
+}
+
+.nde-overlay-swatch {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+  border: 1px solid rgb(0 0 0 / 0.12);
+}
+
+/* ── Annotation panel ────────────────────────────────────────────────────────── */
+
+.nde-annotations {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--color-tda-teal, #1a8a8a);
+  background: var(--color-neutral-bg-subtle, #f7f7f7);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.9rem;
+}
+
+.nde-annotation__title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: var(--color-neutral-text, #1a1a1a);
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+
+.nde-annotation__note {
+  margin: 0;
+  color: var(--color-neutral-muted, #555);
+  line-height: 1.5;
+}
+
+/* ── Tooltip (uses shared viz-tooltip class set by tooltip.ts) ──────────────── */
+
+.viz-tooltip {
+  position: absolute;
+  display: none;
+  background: var(--color-neutral-bg-raised, #fff);
+  border: 1px solid var(--color-neutral-border, #ddd);
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.82rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+  white-space: nowrap;
+  z-index: 10;
+  color: var(--color-neutral-text, #1a1a1a);
+}

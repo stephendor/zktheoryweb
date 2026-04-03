@@ -26,7 +26,7 @@ $$
 M = \left(\{C_{ij}\},\; \{\{C_{ij}, C_{kl}\} : C_{ij} \cap C_{kl} \neq \emptyset\}\right)
 $$
 
-The choice of lens function $f$ determines what structure Mapper highlights. In this programme, $f$ is typically kernel density estimation on the trajectory space, revealing density-based topological structure.
+The choice of lens function $f$ determines what structure Mapper highlights. In this programme, $f$ is the 2nd-nearest-neighbour distance lens (`projection="knn_distance_2"`), which maps each point to its distance to its second closest neighbour and thereby highlights low-density regions and topological bridges in the trajectory space.
 
 ## Python Code Stub
 
@@ -35,18 +35,24 @@ import kmapper as km
 import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import MinMaxScaler
+from typing import Any, Dict
 
 def run_mapper(
     X: np.ndarray,
     n_cubes: int = 15,
     overlap: float = 0.5,
-) -> km.KeplerMapper:
-    """Apply Mapper to a feature matrix X."""
+) -> Dict[str, Any]:
+    """Apply Mapper to a feature matrix X.
+
+    Returns the graph dictionary produced by km.KeplerMapper.map(),
+    with keys 'nodes' (dict of node_id -> list of point indices) and
+    'links' (dict of node_id -> list of connected node_ids).
+    """
     mapper = km.KeplerMapper(verbose=0)
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Lens: kernel density estimate projected to 1D
+    # Lens: 2nd nearest-neighbour distance (knn_distance_2), highlighting low-density bridges
     lens = mapper.fit_transform(X_scaled, projection="knn_distance_2")
 
     # Cover with n_cubes intervals and given overlap
@@ -57,7 +63,7 @@ def run_mapper(
         lens,
         X_scaled,
         cover=cover,
-        clusterer=AgglomerativeClustering(n_clusters=None, distance_threshold=0.5),
+        clusterer=AgglomerativeClustering(n_clusters=None, linkage='single', distance_threshold=0.5),
     )
     return graph
 ```

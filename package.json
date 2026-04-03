@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
-    "fetch:zotero": "npx tsx src/lib/zotero.ts"
+    "fetch:zotero": "npx tsx src/lib/zotero.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
@@ -27,6 +29,7 @@
     "agentic-pm": "^0.5.4",
     "astro": "^6.1.3",
     "astro-pagefind": "^1.8.6",
+    "d3": "^7.9.0",
     "dotenv": "^17.4.0",
     "katex": "^0.16.44",
     "react": "^19.2.4",
@@ -38,18 +41,22 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@storybook/react-vite": "^10.3.4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@types/d3": "^7.4.3",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "happy-dom": "^20.8.9",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
+    "storybook": "^10.3.4",
     "tsx": "^4.21.0",
     "vitest": "^4.1.2"
   }

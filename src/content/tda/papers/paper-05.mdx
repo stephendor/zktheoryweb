@@ -4,11 +4,10 @@ paper_number: 5
 stage: 2
 status: 'planned'
 target_journal: 'American Journal of Sociology'
-depends_on: [1]
-enables: []
+depends_on: [2]
+enables: [9]
 methods:
   - 'persistent-homology'
-  - 'mapper'
 datasets:
   - 'cross-national-welfare'
 compute:
@@ -16,16 +15,16 @@ compute:
   runtime: 'Hours'
   cloud: false
 key_findings:
-  - claim: 'Welfare state regime type is a significant predictor of employment trajectory topology, explaining 34% of cross-national topological variance.'
-    detail: 'A linear model regressing the first principal component of country-level persistence diagrams on Esping-Andersen regime classification yields R² = 0.34, p < 0.01, with Scandinavian regimes showing lower topological complexity and Southern European regimes showing higher H₁ persistence entropy.'
-  - claim: 'Southern European countries exhibit significantly higher H₁ persistence entropy than Nordic countries.'
-    detail: 'Permutation tests comparing H₁ persistence entropy distributions across regime types return p < 0.001 for the Nordic–Southern contrast, robust to three alternative operationalisations of trajectory distance. The entropy difference corresponds to approximately twice as many cyclical employment loops in Southern European trajectories.'
-  - claim: 'UK employment trajectory topology sits between the liberal and coordinated-market economy clusters, consistent with its mixed welfare state character.'
-    detail: 'Multidimensional scaling of country-level topology distances places the UK equidistant (in topology space) from the USA–Australia liberal cluster and the German–Dutch coordinated cluster. This topological positioning is stable across bootstrap samples and provides micro-level confirmation of macro-level welfare state typologies.'
+  - claim: 'The paper aims to test whether welfare state regime type systematically predicts the topology of employment trajectories across countries.'
+    detail: 'A linear model will regress the first principal component of country-level persistence diagrams on a four-category regime classification (social-democratic, conservative-corporatist, liberal, Southern European) to assess how much cross-national topological variance is explained by regime type.'
+  - claim: 'The paper aims to test whether Southern European countries exhibit higher H₁ persistence entropy than Nordic countries, consistent with greater cyclical volatility in employment histories.'
+    detail: 'Permutation tests will compare H₁ persistence entropy distributions across regime types, with robustness checks across at least three alternative operationalisations of trajectory distance.'
+  - claim: 'The paper aims to determine where UK employment trajectory topology falls relative to liberal and coordinated-market economy clusters using multidimensional scaling.'
+    detail: 'Multidimensional scaling of country-level topology distances will be used to map the UK relative to the USA–Australia liberal cluster and the German–Dutch coordinated cluster, testing whether the topology reflects the UK mixed welfare state character.'
 abstract: >
-  Welfare state typologies — from Esping-Andersen's three worlds to more recent taxonomies — have been constructed using cluster analysis on aggregate indicators. This paper takes a topological approach, applying persistent homology to employment trajectory microdata from multiple countries in the EU-SILC panel to characterise national welfare state topologies directly from individual-level career data. We find that topological signatures of employment trajectory spaces differ systematically across welfare state regimes, that the Scandinavian countries form a distinct topological cluster, and that Southern European countries exhibit significantly higher H₁ complexity, consistent with greater cyclical volatility in employment histories.
+  Welfare state typologies — from Esping-Andersen's three worlds to more recent taxonomies — have been constructed using cluster analysis on aggregate indicators. This paper takes a topological approach, applying persistent homology to employment trajectory microdata from multiple countries in the EU-SILC panel to characterise national welfare state topologies directly from individual-level career data. We aim to test whether topological signatures of employment trajectory spaces differ systematically across welfare state regimes, whether Scandinavian countries form a distinct topological cluster, and whether Southern European countries exhibit higher H₁ complexity consistent with greater cyclical volatility in employment histories.
 plain_summary: >
-  Different countries organise their welfare states differently — Scandinavian countries provide generous universal support; Southern European ones rely more on family networks; the UK sits somewhere between liberal and social-democratic models. These differences should leave traces in the shape of individual employment histories. This paper tests whether they do, using topological data analysis on employment records from multiple European countries. We find that national welfare state type is strongly associated with the topological shape of employment trajectories, providing micro-level confirmation of macro-level typologies.
+  Different countries organise their welfare states differently — Scandinavian countries provide generous universal support; Southern European ones rely more on family networks; the UK sits somewhere between liberal and social-democratic models. These differences should leave traces in the shape of individual employment histories. This paper tests whether they do, using topological data analysis on employment records from multiple European countries. The aim is to determine whether national welfare state type is associated with the topological shape of employment trajectories, which would provide micro-level confirmation of macro-level typologies.
 ---
 
 ## Introduction
@@ -46,7 +45,15 @@ To compare topology across countries, this paper follows the framework developed
 
 ## Methods
 
-Country-level employment trajectory datasets are constructed from EU-SILC longitudinal microdata for 16 European countries. Harmonised monthly activity sequences are constructed following the ISCO coding rules. For each country, persistent homology is computed for H₀ and H₁. Cross-national comparison uses persistence diagram distances and enters a reduced-form regression model.
+Country-level employment trajectory datasets will be constructed from EU-SILC longitudinal microdata for 16 European countries. Harmonised monthly activity sequences will be coded into a five-state schema (employed full-time, employed part-time, unemployed, inactive, and in education/training) following the EU-SILC activity variable definitions. Trajectories will be restricted to individuals aged 25–55 observed for a minimum of 10 annual waves and weighted using the EU-SILC cross-sectional sampling weights to account for complex survey design.
+
+**Trajectory distance metric.** Pairwise distances between individual trajectories will be computed using optimal matching (OM) distance with a substitution cost matrix derived from observed transition rates in each country, and an indel cost of 1.5. To ensure comparability across countries with different activity-state distributions, substitution costs will be re-estimated separately per country and trajectories will be length-normalised before distance computation. Sensitivity analyses will be conducted using Dynamic Time Warping (DTW) and Hamming distances as alternative metrics.
+
+**Rips complex and persistent homology.** For each country, a Vietoris–Rips complex will be built over the pairwise OM distance matrix of individual trajectories. Persistent homology will be computed for H₀ (connected components, capturing employment state clustering) and H₁ (one-cycles, capturing cyclical employment patterns) using the Ripser library. The filtration range will be determined by the 95th percentile of pairwise distances to avoid noise from outlying trajectories.
+
+**Persistence diagram comparison.** Country-level persistence diagrams will be compared using the 2-Wasserstein distance (W₂), which balances sensitivity to persistent features against robustness to topological noise. W₂ distances will also be used to construct the country-level distance matrix entering the multidimensional scaling. Summary statistics (H₁ persistence entropy and total barcode length) will serve as scalar representations for regression analyses.
+
+**Regression model.** The reduced-form regression will use the first principal component of the country-level W₂ distance matrix as the dependent variable. The key independent variable is the four-category welfare state regime classification (social-democratic, conservative-corporatist, liberal, Southern European) entered as dummy variables. Controls will include: country-level GDP per capita (log), aggregate unemployment rate, female labour force participation share, mean educational attainment (ISCED), age distribution (share aged 25–34 and 45–55), and survey year. Given the small number of countries (N ≈ 16), heteroskedasticity-robust standard errors will be reported alongside a non-parametric permutation test of regime-group differences as the primary inference procedure.
 
 ## Data
 
@@ -56,11 +63,11 @@ EU-SILC longitudinal microdata (2004–2020) provides harmonised employment, inc
 
 ### Topological Welfare State Clusters
 
-Multidimensional scaling of the country-level persistence diagram distance matrix recovers a topology that broadly mirrors the Esping-Andersen typology. Nordic countries cluster tightly with low H₁ entropy; Southern European countries (Spain, Italy, Greece, Portugal) form a separate cluster with high H₁ entropy; the UK and Ireland occupy an intermediate liberal position.
+Multidimensional scaling of country-level persistence diagram distances will be used to test whether an extended four-category welfare state typology is recoverable from topology alone. The analysis will examine whether Nordic, conservative-corporatist (Germany, France, Netherlands), Southern European (Spain, Italy, Greece, Portugal), and liberal (UK, Ireland) countries occupy distinct regions of topology space, and whether H₁ entropy tracks expected regime differences.
 
 ### Regression Analysis
 
-A regression of the first principal component of country topology (explaining 47% of variance) on regime type dummy variables returns significant coefficients for all three Esping-Andersen categories, with R² = 0.34.
+A regression of the first principal component of country topology on regime type dummy variables for all four categories (social-democratic, conservative-corporatist, liberal, and Southern European) will quantify how much cross-national topological variance is explained by regime classification.
 
 ## Discussion
 
@@ -68,4 +75,4 @@ The topological approach to welfare state comparison is complementary to existin
 
 ## Conclusion
 
-Employment trajectory topology varies systematically across welfare state regimes. This finding validates topological methods for comparative welfare state research and motivates the intergenerational extension in Paper 6.
+This paper will test whether employment trajectory topology varies systematically across welfare state regimes. A positive result would validate topological methods for comparative welfare state research and motivate the intergenerational extension in Paper 6.

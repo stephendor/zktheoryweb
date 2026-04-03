@@ -25,11 +25,11 @@ In welfare and credit applications, the features $\mathbf{x}$ typically include 
 
 #### Formal
 
-The Maximum Likelihood Estimator $\hat{\mathbf{w}}$ for logistic regression maximises the log-likelihood:
+The Maximum Likelihood Estimator $(\hat{\mathbf{w}}, \hat{b})$ for logistic regression maximises the log-likelihood:
 
-$$\ell(\mathbf{w}) = \sum_{i=1}^n \left[ y_i \log \sigma(\mathbf{w}^\top \mathbf{x}_i) + (1-y_i) \log(1 - \sigma(\mathbf{w}^\top \mathbf{x}_i)) \right]$$
+$$\ell(\mathbf{w}, b) = \sum_{i=1}^n \left[ y_i \log \sigma(\mathbf{w}^\top \mathbf{x}_i + b) + (1-y_i) \log(1 - \sigma(\mathbf{w}^\top \mathbf{x}_i + b)) \right]$$
 
-This is a concave function, so gradient descent (or Newton's method) converges to the global maximum. Unlike linear regression, there is no closed-form solution.
+where $b$ is the bias term introduced above. This is a concave function, so gradient descent (or Newton's method) converges to the global maximum. Unlike linear regression, there is no closed-form solution.
 
 The Mapper algorithm (examined in the TDA methods section) addresses a fundamental limitation of logistic classifiers. Mapper preserves the topological shape of the data distribution — its clusters, branches, and transition zones — instead of partitioning it with a single hyperplane. When applied to populations at risk of welfare sanctions or credit denial, Mapper can reveal that the "high-risk" category is not a coherent cluster at all but a diffuse, topologically disconnected region of the feature space — a finding with direct policy implications: interventions designed for a homogeneous "high-risk" population will fail if that population is in fact topologically fragmented.
 

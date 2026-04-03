@@ -55,11 +55,30 @@ def mml_score(
     rng = rng or np.random.default_rng()
     observed = compute_persistence_sum(trajectory)
 
+    # Build empirical transition matrix from the observed trajectory
+    states = sorted(set(trajectory))
+    state_index = {s: i for i, s in enumerate(states)}
+    n_states = len(states)
+    counts = np.zeros((n_states, n_states), dtype=float)
+    for from_s, to_s in zip(trajectory[:-1], trajectory[1:]):
+        counts[state_index[from_s], state_index[to_s]] += 1
+
+    # Row-normalise to get transition probabilities; rows with no outgoing
+    # transitions fall back to the empirical marginal distribution
+    row_sums = counts.sum(axis=1, keepdims=True)
+    marginal = counts.sum(axis=0)
+    marginal /= marginal.sum()
+    trans_probs = np.where(row_sums > 0, counts / np.maximum(row_sums, 1), marginal)
+
     null_scores = []
-    transitions = list(zip(trajectory[:-1], trajectory[1:]))
+    seq_len = len(trajectory)
     for _ in range(n_permutations):
-        rng.shuffle(transitions)
-        null_seq = [trajectory[0]] + [b for _, b in transitions]
+        # Sample a Markov-1 sequence of the same length starting from trajectory[0]
+        null_seq = [trajectory[0]]
+        current = state_index[trajectory[0]]
+        for _ in range(seq_len - 1):
+            current = rng.choice(n_states, p=trans_probs[current])
+            null_seq.append(states[current])
         null_scores.append(compute_persistence_sum(null_seq))
 
     mean_null = np.mean(null_scores)

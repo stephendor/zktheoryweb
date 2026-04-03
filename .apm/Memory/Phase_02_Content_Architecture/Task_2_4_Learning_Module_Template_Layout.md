@@ -11,8 +11,7 @@ important_findings: false
 
 ## Summary
 
-Built the full learning module page experience (`ModuleLayout.astro`) and updated the `learnModules` schema's `check_understanding` field from `z.array(z.string())` to `z.array(z.object({ question, answer }))`. All four steps completed in two exchanges; `npm run lint` and `npm run build` pass with 0 errors.
-
+Built the full learning module page experience (`ModuleLayout.astro`) and updated the `learnModules` schema's `check_understanding` field from `z.array(z.string())` to `z.array(z.object({ question, answer }))`. All five steps completed in two exchanges; `npm run lint` and `npm run build` pass with 0 errors.
 ## Details
 
 **Pre-Step A — Schema update (`src/content.config.ts`)**

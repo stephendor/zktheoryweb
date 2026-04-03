@@ -39,23 +39,45 @@ import gudhi
 
 def compute_zigzag_persistence(
     rips_complex_sequence: list,
-    max_dimension: int = 2,
-) -> list:
+) -> list[tuple[int, tuple[float, float]]]:
     """
     Compute zigzag persistence from a time-ordered list of precomputed Rips complexes.
     Each element is a Gudhi SimplexTree for a time window.
     Returns a list of (dimension, (birth, death)) pairs.
-    """
-    # Gudhi zigzag API (as of Gudhi 3.9):
-    # gudhi.zigzag_persistence.compute_zigzag_persistence(zigzag_filtration)
-    # Build the zigzag filtration from the sequence of simplex trees
-    filtration = []
-    for i, st in enumerate(rips_complex_sequence):
-        for simplex, _ in st.get_filtration():
-            filtration.append((simplex, i, i + 1))  # present in window i
 
-    zz = gudhi.zigzag_persistence.compute_zigzag_persistence(filtration)
-    return zz.persistence()
+    The zigzag sequence encodes the alternating inclusions:
+      X_0 -> X_0 u X_1 <- X_1 -> X_1 u X_2 <- X_2 -> ...
+
+    This is built as an arrow filtration — a sequence of (simplex, is_addition)
+    pairs — where is_addition=True adds a simplex (forward arrow) and
+    is_addition=False removes one (backward arrow).
+
+    Gudhi 3.9 API: compute_zigzag_persistence(arrow_filtration) returns a list
+    of [dimension, birth, death] triples directly (not a ZigzagPersistence object).
+    """
+    # Step 1: seed with all simplices from the first complex (all forward arrows)
+    prev_simplices: set[tuple[int, ...]] = set()
+    first_simplices = {tuple(s) for s, _ in rips_complex_sequence[0].get_filtration()}
+    arrow_filtration: list[tuple[list[int], bool]] = [
+        (list(s), True) for s in first_simplices
+    ]
+    prev_simplices = first_simplices
+
+    # Step 2: for each consecutive pair, forward-add new simplices then
+    # backward-remove departed simplices to traverse X_i -> X_i u X_{i+1} <- X_{i+1}
+    for st in rips_complex_sequence[1:]:
+        next_simplices = {tuple(s) for s, _ in st.get_filtration()}
+        # Forward arrows: add simplices present in next but not prev (X_i -> X_i u X_{i+1})
+        for s in next_simplices - prev_simplices:
+            arrow_filtration.append((list(s), True))
+        # Backward arrows: remove simplices present in prev but not next (X_i u X_{i+1} <- X_{i+1})
+        for s in prev_simplices - next_simplices:
+            arrow_filtration.append((list(s), False))
+        prev_simplices = next_simplices
+
+    # compute_zigzag_persistence returns list of [dim, birth, death] triples
+    raw = gudhi.zigzag_persistence.compute_zigzag_persistence(arrow_filtration)
+    return [(dim, (birth, death)) for dim, birth, death in raw]
 ```
 
 ## Application to the Research Programme

@@ -1,0 +1,46 @@
+/* TextDescriptionToggle.css — Task 3.1 — Agent_Interactive_Core */
+
+.tdt-wrapper {
+  /* Establishes a containing block so absolute children are scoped here. */
+  position: relative;
+}
+
+/* The visualisation is always visible; the text description is shown
+   additively below it when the toggle is open. */
+.tdt-viz {
+  /* no special rules needed — always shown */
+}
+
+.tdt-details {
+  margin-top: var(--space-3);
+}
+
+.tdt-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  /* Underline on focus/hover to signal interactivity */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tdt-summary:focus-visible {
+  outline: 2px solid var(--color-tda-teal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.tdt-description {
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-neutral-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-neutral-body);
+}
