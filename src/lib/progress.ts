@@ -79,6 +79,7 @@ function storageKey(pathSlug: string): string {
  *   - no entry exists for the key
  *   - the stored JSON is malformed or cannot be parsed
  *   - the stored object's `version` does not equal CURRENT_VERSION
+ *   - `completedModules` is not an array or `updatedAt` is not a string
  */
 export function loadProgress(pathSlug: string): ProgressData {
   if (typeof window === 'undefined') return defaultProgressData();
@@ -95,6 +96,15 @@ export function loadProgress(pathSlug: string): ProgressData {
       parsed === null ||
       Array.isArray(parsed) ||
       (parsed as Record<string, unknown>)['version'] !== CURRENT_VERSION
+    ) {
+      return defaultProgressData();
+    }
+
+    // Validate the required fields have the correct runtime types.
+    const obj = parsed as Record<string, unknown>;
+    if (
+      !Array.isArray(obj['completedModules']) ||
+      typeof obj['updatedAt'] !== 'string'
     ) {
       return defaultProgressData();
     }

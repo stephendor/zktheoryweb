@@ -102,6 +102,27 @@ describe('loadProgress', () => {
     expect(result.completedModules).toEqual([]);
   });
 
+  it('returns default when completedModules is not an array', () => {
+    const badShape = { version: 1, completedModules: '1,2', lastVisited: null, updatedAt: '2026-01-01T00:00:00.000Z' };
+    mockStorage.setItem(`zktheory:progress:${PATH_SLUG}`, JSON.stringify(badShape));
+    const result = loadProgress(PATH_SLUG);
+    expect(result.completedModules).toEqual([]);
+  });
+
+  it('returns default when completedModules is missing entirely', () => {
+    const missingModules = { version: 1, lastVisited: null, updatedAt: '2026-01-01T00:00:00.000Z' };
+    mockStorage.setItem(`zktheory:progress:${PATH_SLUG}`, JSON.stringify(missingModules));
+    const result = loadProgress(PATH_SLUG);
+    expect(result.completedModules).toEqual([]);
+  });
+
+  it('returns default when updatedAt is not a string', () => {
+    const badUpdatedAt = { version: 1, completedModules: ['1'], lastVisited: null, updatedAt: 12345 };
+    mockStorage.setItem(`zktheory:progress:${PATH_SLUG}`, JSON.stringify(badUpdatedAt));
+    const result = loadProgress(PATH_SLUG);
+    expect(result.completedModules).toEqual([]);
+  });
+
   it('returns default when window is undefined (SSR guard)', () => {
     vi.stubGlobal('window', undefined);
     const result = loadProgress(PATH_SLUG);
