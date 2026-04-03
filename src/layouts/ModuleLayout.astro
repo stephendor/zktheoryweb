@@ -76,6 +76,24 @@ const pathLabel = toPathLabel(path);
 
 /* ── Stable title id for aria-labelledby ── */
 const titleId = 'module-title';
+
+/* ── Convert a content-collection entry ID (e.g. 'path1-module-3') to the
+   canonical module URL (/learn/topology-social-scientists/3/). Used for
+   connections.modules sidebar links whose values come from MDX frontmatter.
+   Falls back to /learn/ for any unrecognised pattern. ── */
+const _pathNumberToSlug: Record<string, string> = {
+  path1: 'topology-social-scientists',
+  path2: 'mathematics-of-poverty',
+  path3: 'data-justice',
+  path4: 'tda-practitioners',
+};
+function moduleEntryIdToHref(entryId: string): string {
+  const m = entryId.match(/^(path\d+)-module-(\d+)$/);
+  if (!m) return '/learn/';
+  const pathSlug = _pathNumberToSlug[m[1]];
+  if (!pathSlug) return '/learn/';
+  return `/learn/${pathSlug}/${m[2]}/`;
+}
 ---
 
 <BaseLayout title={title} description={core_concept} section="learn">
@@ -108,7 +126,7 @@ const titleId = 'module-title';
           return (
             <li class="progress-node-item">
               <a
-                href={`/learn/modules/${mod.slug}/`}
+                href={`/learn/${path}/${num}/`}
                 class:list={['progress-node', isCurrent && 'progress-node--current']}
                 aria-current={isCurrent ? 'true' : undefined}
                 title={mod.title}
@@ -267,7 +285,7 @@ const titleId = 'module-title';
                     {connections.modules.map((slug) => (
                       <li>
                         <a
-                          href={`/learn/modules/${slug}/`}
+                          href={moduleEntryIdToHref(slug)}
                           class="connections-link"
                         >
                           {slug}
@@ -294,7 +312,7 @@ const titleId = 'module-title';
       <div class="module-nav-inner">
 
         {prevModule ? (
-          <a href={`/learn/modules/${prevModule.slug}/`} class="module-nav-link module-nav-prev">
+          <a href={`/learn/${path}/${module_number - 1}/`} class="module-nav-link module-nav-prev">
             <span class="nav-direction" aria-hidden="true">←</span>
             <span class="nav-meta">Previous module</span>
             <span class="nav-title">{prevModule.title}</span>
@@ -304,7 +322,7 @@ const titleId = 'module-title';
         )}
 
         {nextModule ? (
-          <a href={`/learn/modules/${nextModule.slug}/`} class="module-nav-link module-nav-next">
+          <a href={`/learn/${path}/${module_number + 1}/`} class="module-nav-link module-nav-next">
             <span class="nav-direction" aria-hidden="true">→</span>
             <span class="nav-meta">Next module</span>
             <span class="nav-title">{nextModule.title}</span>
