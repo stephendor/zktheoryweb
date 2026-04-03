@@ -5,6 +5,10 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import katex from 'katex';
 
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
 const mathInline = katex.renderToString('f(x) = \\mu + \\sigma z', { throwOnError: false, output: 'htmlAndMathml' });
 const mathDisplay = katex.renderToString('\\sum_{i=1}^{n} x_i = n\\bar{x}', { throwOnError: false, output: 'htmlAndMathml', displayMode: true });
 ---

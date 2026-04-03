@@ -1,0 +1,294 @@
+---
+/**
+ * src/pages/learn/interactives/index.astro — Task 4.1 — Agent_Design_Templates
+ *
+ * Interactives gallery: queries the 'interactives' content collection and
+ * renders a responsive card grid. Each card links to /learn/interactives/<slug>.
+ *
+ * Note: does NOT modify [slug].astro — this is the gallery index only.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const interactives = await getCollection('interactives');
+
+// Sort: complete items first, then by title alphabetically
+const sorted = [...interactives].sort((a, b) => {
+  if (a.data.status === 'complete' && b.data.status !== 'complete') return -1;
+  if (b.data.status === 'complete' && a.data.status !== 'complete') return 1;
+  return a.data.title.localeCompare(b.data.title);
+});
+
+const complexityLabel: Record<string, string> = {
+  basic: 'Basic',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
+};
+---
+
+<BaseLayout
+  title="Interactive Tools"
+  description="Standalone interactive visualisations exploring topological data analysis and poverty measurement. No learning path required."
+  section="learn"
+>
+  <div class="container-prose--wide interactives-gallery">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="interactives-gallery__breadcrumb">
+      <a href="/learn">Learning Paths</a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">Interactive Tools</span>
+    </nav>
+
+    <!-- Page header -->
+    <header class="interactives-gallery__header">
+      <h1 class="interactives-gallery__title">Interactive Tools</h1>
+      <p class="interactives-gallery__intro">
+        These standalone tools let you explore the mathematics and politics of poverty
+        measurement at your own pace — no path or prior reading required. Drag
+        parameters, build point clouds, and compare how different assumptions
+        change who counts as poor.
+      </p>
+    </header>
+
+    <!-- Gallery grid -->
+    <section aria-label="Available interactive tools" class="interactives-gallery__section">
+      <ul class="interactive-grid">
+        {sorted.map((item) => {
+          const { title, slug, description, complexity } = item.data;
+          const href = `/learn/interactives/${slug}`;
+          return (
+            <li>
+              <article class="interactive-card" aria-label={title}>
+                <div class="interactive-card__body">
+                  <div class="interactive-card__meta">
+                    {complexity && (
+                      <span
+                        class={`interactive-card__complexity interactive-card__complexity--${complexity}`}
+                        aria-label={`Complexity: ${complexityLabel[complexity]}`}
+                      >
+                        {complexityLabel[complexity]}
+                      </span>
+                    )}
+                  </div>
+                  <h2 class="interactive-card__title">
+                    <a href={href} class="interactive-card__link">{title}</a>
+                  </h2>
+                  <p class="interactive-card__desc">{description}</p>
+                </div>
+                <footer class="interactive-card__footer">
+                  <a
+                    href={href}
+                    class="interactive-card__launch"
+                    aria-label={`Launch ${title}`}
+                  >
+                    Launch <span aria-hidden="true">→</span>
+                  </a>
+                </footer>
+              </article>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── Page layout ────────────────────────────────────────────────────────── */
+  .interactives-gallery {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-12);
+  }
+
+  /* ── Breadcrumb ─────────────────────────────────────────────────────────── */
+  .interactives-gallery__breadcrumb {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-7);
+  }
+
+  .interactives-gallery__breadcrumb a {
+    color: var(--color-tda-teal);
+    text-decoration: none;
+  }
+
+  .interactives-gallery__breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .interactives-gallery__breadcrumb a:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────────────── */
+  .interactives-gallery__header {
+    margin-bottom: var(--space-9);
+  }
+
+  .interactives-gallery__title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-body);
+    margin: 0 0 var(--space-5);
+  }
+
+  .interactives-gallery__intro {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-neutral-muted);
+    max-width: 70ch;
+    margin: 0;
+  }
+
+  /* ── Grid ────────────────────────────────────────────────────────────────── */
+  .interactive-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: var(--space-6);
+  }
+
+  /* ── Card ────────────────────────────────────────────────────────────────── */
+  .interactive-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-neutral-surface);
+    border: 1px solid var(--color-neutral-border);
+    border-top: 4px solid var(--color-tda-slate);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .interactive-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  /* ── Card body ───────────────────────────────────────────────────────────── */
+  .interactive-card__body {
+    flex: 1;
+  }
+
+  .interactive-card__meta {
+    margin-bottom: var(--space-3);
+    min-height: 1.5rem; /* reserve space even when no badge present */
+  }
+
+  /* ── Complexity badge ────────────────────────────────────────────────────── */
+  .interactive-card__complexity {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    border-radius: var(--radius-full);
+    padding: 2px var(--space-3);
+  }
+
+  .interactive-card__complexity--basic {
+    color: var(--color-tda-teal);
+    background: var(--color-tda-warm-grey);
+  }
+
+  .interactive-card__complexity--intermediate {
+    color: var(--color-cl-ochre);
+    background: var(--color-cl-cream);
+  }
+
+  .interactive-card__complexity--advanced {
+    color: var(--color-cl-red);
+    background: var(--color-cl-cream);
+  }
+
+  /* ── Card title ──────────────────────────────────────────────────────────── */
+  .interactive-card__title {
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-neutral-body);
+    margin: 0 0 var(--space-3);
+  }
+
+  .interactive-card__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Full-card click target */
+  .interactive-card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .interactive-card__link:focus-visible {
+    outline: none;
+  }
+
+  .interactive-card:focus-within .interactive-card__link:focus-visible::after {
+    outline: 2px solid var(--color-tda-slate);
+    outline-offset: 2px;
+  }
+
+  /* ── Description ─────────────────────────────────────────────────────────── */
+  .interactive-card__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  /* ── Card footer / launch link ───────────────────────────────────────────── */
+  .interactive-card__footer {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .interactive-card__launch {
+    position: relative; /* sit above the ::after full-card overlay */
+    z-index: 1;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-tda-slate);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    transition: color 0.15s ease;
+  }
+
+  .interactive-card__launch:hover {
+    color: var(--color-tda-teal);
+  }
+
+  .interactive-card__launch:focus-visible {
+    outline: 2px solid var(--color-tda-slate);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Responsive adjustments ─────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .interactives-gallery__title {
+      font-size: var(--text-3xl);
+    }
+  }
+</style>
