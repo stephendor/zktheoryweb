@@ -29,6 +29,7 @@ import { render } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import StickyToC from '@components/shared/StickyToC.astro';
 import { ExpandableCard } from '@components/shared/ExpandableCard';
+import MarkCompleteButton from '@components/learn/MarkCompleteButton';
 
 interface ModuleRef {
   slug: string;
@@ -171,6 +172,15 @@ const titleId = 'module-title';
               ))}
             </section>
           )}
+
+          {/* ── Mark Complete button ── */}
+          <MarkCompleteButton
+            client:only="react"
+            pathSlug={path}
+            moduleSlug={String(module_number)}
+            nextModuleSlug={nextModule?.slug}
+            nextModuleHref={nextModule ? `/learn/modules/${nextModule.slug}/` : undefined}
+          />
 
         </article>
 

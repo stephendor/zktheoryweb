@@ -7,6 +7,7 @@
  * Progress bar state is visual-only; Task 4.2 will wire real data.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
+import PathProgressBar from '@components/learn/PathProgressBar';
 
 interface PathCard {
   slug: string;
@@ -112,22 +113,13 @@ const paths: PathCard[] = [
                     </div>
                   </dl>
                 </div>
-                <div class="path-card__progress" aria-label="Path progress">
-                  <div class="path-card__progress-label">
-                    <span>Progress</span>
-                    <span class="path-card__progress-pct">0%</span>
-                  </div>
-                  <div
-                    class="path-card__progress-bar"
-                    role="progressbar"
-                    aria-valuenow={0}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-label={`${path.title} completion: 0%`}
-                  >
-                    <div class="path-card__progress-fill" style="width: 0%"></div>
-                  </div>
-                </div>
+                {path.available && (
+                  <PathProgressBar
+                    client:only="react"
+                    pathSlug={path.slug}
+                    totalModules={path.moduleCount}
+                  />
+                )}
               </article>
             </li>
           );

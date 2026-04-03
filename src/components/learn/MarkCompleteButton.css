@@ -1,0 +1,112 @@
+/*
+ * MarkCompleteButton.css — Task 4.2 — Agent_Schema_Platform
+ *
+ * Styles for the MarkCompleteButton React island.
+ * Placed at the bottom of the module article column.
+ */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+.mcb-wrapper {
+  margin-top: var(--space-10);
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--color-neutral-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* ── Primary "Mark as complete" button ───────────────────────────────────── */
+.mcb-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-neutral-surface);
+  background: var(--color-tda-teal);
+  border: none;
+  padding: var(--space-3) var(--space-7);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  line-height: 1.5;
+}
+
+.mcb-btn-primary:hover {
+  background: var(--color-tda-teal-light);
+  box-shadow: var(--shadow-md);
+}
+
+.mcb-btn-primary:focus-visible {
+  outline: 2px solid var(--color-tda-teal);
+  outline-offset: 3px;
+}
+
+/* ── "Marked complete ✓" state ───────────────────────────────────────────── */
+.mcb-btn-success {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-neutral-surface);
+  background: #2e7d5e; /* accessible success green, distinct from teal */
+  border: none;
+  padding: var(--space-3) var(--space-7);
+  border-radius: var(--radius-md);
+  cursor: default;
+  line-height: 1.5;
+}
+
+/* ── "Undo" secondary link ───────────────────────────────────────────────── */
+.mcb-undo-btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mcb-undo-btn:hover {
+  color: var(--color-neutral-body);
+}
+
+.mcb-undo-btn:focus-visible {
+  outline: 2px solid var(--color-tda-teal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── "Next module →" link (revealed after marking complete) ─────────────── */
+.mcb-next-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-tda-teal);
+  text-decoration: none;
+  border: 2px solid var(--color-tda-teal);
+  padding: calc(var(--space-3) - 2px) calc(var(--space-7) - 2px);
+  border-radius: var(--radius-md);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mcb-next-link:hover {
+  background: var(--color-tda-teal);
+  color: var(--color-neutral-surface);
+}
+
+.mcb-next-link:focus-visible {
+  outline: 2px solid var(--color-tda-teal);
+  outline-offset: 3px;
+}

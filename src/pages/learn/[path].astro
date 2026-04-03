@@ -14,6 +14,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { learnPaths, availablePathSlugs } from '@data/learnPaths';
 import type { LearnPath } from '@data/learnPaths';
+import PathModuleList from '@components/learn/PathModuleList';
 
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
@@ -70,37 +71,12 @@ const accentClass = `path-page--${palette}`;
       </dl>
     </header>
 
-    <!-- Start / Continue button (placeholder — Task 4.2 wires real state) -->
-    <div class="path-page__cta">
-      <a href={`/learn/${pathData.slug}/${modules[0]!.moduleNumber}`} class="path-page__start-btn">
-        Start path
-      </a>
-    </div>
-
-    <!-- Module list -->
-    <section aria-label="Modules in this path" class="path-page__modules">
-      <h2 class="path-page__modules-heading">Modules</h2>
-      <ol class="module-list">
-        {modules.map((mod) => (
-          <li class="module-item">
-            <div class="module-item__number" aria-hidden="true">{mod.moduleNumber}</div>
-            <div class="module-item__content">
-              <div class="module-item__header">
-                <h3 class="module-item__title">{mod.title}</h3>
-                <span class="module-item__status" aria-label="Completion status: Not started">
-                  Not started
-                </span>
-              </div>
-              <p class="module-item__concept">{mod.coreConcept}</p>
-              <p class="module-item__time">
-                <span class="sr-only">Estimated reading time:</span>
-                ~{mod.estimatedMinutes} min
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </section>
+    <!-- PathModuleList island: CTA + module list with live progress state -->
+    <PathModuleList
+      client:only="react"
+      pathSlug={pathData.slug}
+      modules={modules}
+    />
 
   </div>
 </BaseLayout>
