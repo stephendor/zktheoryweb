@@ -33,6 +33,10 @@ import MarkCompleteButton from '@components/learn/MarkCompleteButton';
 import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
 import { PovertySimulator } from '@components/interactives/PovertySimulator';
 import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';
+import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
+import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
+import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
+import { TDAResultsExplorer } from '@components/interactives/TDAResultsExplorer';
 
 interface ModuleRef {
   slug: string;
@@ -59,6 +63,7 @@ const {
   module_number,
   core_concept,
   interactive_slug,
+  tda_preset_id,
   connections,
   check_understanding,
 } = entry.data;
@@ -177,8 +182,20 @@ function moduleEntryIdToHref(entryId: string): string {
               {interactive_slug === 'persistence-diagram-builder' && (
                 <PersistenceDiagramBuilderWrapper client:visible />
               )}
+              {interactive_slug === 'mapper-parameter-lab' && (
+                <MapperParameterLab client:visible />
+              )}
+              {interactive_slug === 'filtration-playground' && (
+                <FiltrationPlayground client:visible />
+              )}
+              {interactive_slug === 'benefit-taper-calculator' && (
+                <BenefitTaperCalculator client:visible />
+              )}
+              {interactive_slug === 'tda-results-explorer' && tda_preset_id && (
+                <TDAResultsExplorer presetId={tda_preset_id as any} client:visible />
+              )}
               {/* Fallback link for any interactive without a registered component */}
-              {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder'].includes(interactive_slug) && (
+              {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder', 'mapper-parameter-lab', 'filtration-playground', 'benefit-taper-calculator', 'tda-results-explorer'].includes(interactive_slug) && (
                 <a href={`/learn/interactives/${interactive_slug}/`} class="interactive-launch-link">
                   Launch interactive →
                 </a>

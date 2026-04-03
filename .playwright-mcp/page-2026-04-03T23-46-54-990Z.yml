@@ -1,0 +1,803 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation "Main navigation" [ref=e5]:
+        - generic [ref=e6]:
+          - link "zktheory.org — go to home page" [ref=e7] [cursor=pointer]:
+            - /url: /
+            - text: zktheory.org
+          - button "Search site" [ref=e8] [cursor=pointer]:
+            - generic [ref=e9]: ⌕
+            - generic [ref=e10]: Search
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - link "Home" [ref=e13] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e14]:
+              - link "Counting Lives" [ref=e15] [cursor=pointer]:
+                - /url: /counting-lives/
+            - listitem [ref=e16]:
+              - link "TDA" [ref=e17] [cursor=pointer]:
+                - /url: /tda/
+            - listitem [ref=e18]:
+              - link "Learn" [ref=e19] [cursor=pointer]:
+                - /url: /learn/
+            - listitem [ref=e20]:
+              - link "Writing" [ref=e21] [cursor=pointer]:
+                - /url: /writing/
+            - listitem [ref=e22]:
+              - link "About" [ref=e23] [cursor=pointer]:
+                - /url: /about/
+    - main [ref=e24]:
+      - navigation "Breadcrumb" [ref=e25]:
+        - list [ref=e26]:
+          - listitem [ref=e27]:
+            - link "Topology Social Scientists" [ref=e28] [cursor=pointer]:
+              - /url: /learn/
+            - text: /
+          - listitem [ref=e29]: Simplicial Complexes
+      - 'generic "Module progress: 3 of 8" [ref=e30]':
+        - list "Modules in this path" [ref=e31]:
+          - listitem [ref=e32]:
+            - link "What is a Shape?" [ref=e33] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/1/
+              - generic [ref=e34]: "1"
+              - generic [ref=e35]: What is a Shape?
+          - listitem [ref=e36]:
+            - link "Point Clouds and Distance" [ref=e37] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/2/
+              - generic [ref=e38]: "2"
+              - generic [ref=e39]: Point Clouds and Distance
+          - listitem [ref=e40]:
+            - link "Simplicial Complexes (current)" [ref=e41] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/3/
+              - generic [ref=e42]: "3"
+              - generic [ref=e43]: Simplicial Complexes (current)
+          - listitem [ref=e44]:
+            - 'link "Homology: Counting Holes" [ref=e45] [cursor=pointer]':
+              - /url: /learn/topology-social-scientists/4/
+              - generic [ref=e46]: "4"
+              - generic [ref=e47]: "Homology: Counting Holes"
+          - listitem [ref=e48]:
+            - link "Persistence Diagrams" [ref=e49] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/5/
+              - generic [ref=e50]: "5"
+              - generic [ref=e51]: Persistence Diagrams
+          - listitem [ref=e52]:
+            - link "From Diagrams to Statistics" [ref=e53] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/6/
+              - generic [ref=e54]: "6"
+              - generic [ref=e55]: From Diagrams to Statistics
+          - listitem [ref=e56]:
+            - link "The Markov Memory Ladder" [ref=e57] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/7/
+              - generic [ref=e58]: "7"
+              - generic [ref=e59]: The Markov Memory Ladder
+          - listitem [ref=e60]:
+            - link "Reading the Results" [ref=e61] [cursor=pointer]:
+              - /url: /learn/topology-social-scientists/8/
+              - generic [ref=e62]: "8"
+              - generic [ref=e63]: Reading the Results
+      - generic [ref=e66]:
+        - article "Simplicial Complexes" [ref=e67]:
+          - heading "Simplicial Complexes" [level=1] [ref=e68]
+          - paragraph [ref=e69]: A simplicial complex builds higher-dimensional structure from points, edges, and triangles
+          - generic "Interactive tool" [ref=e70]:
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - generic [ref=e76]:
+                    - heading "Point Cloud" [level=3] [ref=e77]
+                    - generic [ref=e78]:
+                      - toolbar "Point cloud controls" [ref=e79]:
+                        - generic [ref=e80]: "Presets:"
+                        - button "Circle (8 pts)" [ref=e81] [cursor=pointer]
+                        - button "Two Clusters (8 pts)" [ref=e82] [cursor=pointer]
+                        - button "Figure-8 (11 pts)" [ref=e83] [cursor=pointer]
+                        - button "Random (15 pts)" [ref=e84] [cursor=pointer]
+                        - generic [ref=e85]: 0/50 points
+                        - button "Clear all points" [disabled] [ref=e86]: Clear
+                      - generic "Point cloud canvas. Click to add points, drag to move, double-click to remove." [ref=e87]
+                      - paragraph [ref=e89]: Click to add · Drag to move · Double-click to remove
+                  - generic [ref=e90]:
+                    - heading "Topological Features" [level=3] [ref=e91]
+                    - generic [ref=e92]:
+                      - generic [ref=e93]:
+                        - 'generic "Beta zero: 0" [ref=e94]': "0"
+                        - generic [ref=e95]: Connected components (β₀)
+                      - generic [ref=e96]:
+                        - 'generic "Beta one: 0" [ref=e97]': "0"
+                        - generic [ref=e98]: Loops (β₁)
+                      - generic [ref=e99]:
+                        - 'generic "Beta two: 0" [ref=e100]': "0"
+                        - generic [ref=e101]: Voids (β₂)
+                    - log "Topological event log" [ref=e102]:
+                      - paragraph [ref=e103]: Recent events
+                      - paragraph [ref=e104]: Events will appear as the filtration grows.
+                    - generic [ref=e105]:
+                      - paragraph [ref=e106]: "Learn more:"
+                      - list [ref=e107]:
+                        - listitem [ref=e108]:
+                          - 'link "Path 1: Module 3 — Simplicial Complexes" [ref=e109] [cursor=pointer]':
+                            - /url: /learn/topology-social-scientists#module-3
+                        - listitem [ref=e110]:
+                          - 'link "Path 1: Module 4 — Homology: Counting Holes" [ref=e111] [cursor=pointer]':
+                            - /url: /learn/topology-social-scientists#module-4
+                - generic "Filtration controls" [ref=e112]:
+                  - generic [ref=e113]:
+                    - generic [ref=e114]: Step
+                    - slider "Filtration radius step" [ref=e115] [cursor=pointer]: "0"
+                    - generic [ref=e116]: r = 0.000
+                  - generic [ref=e117]:
+                    - button "Reset filtration to step 0" [disabled] [ref=e118]: ↺ Reset
+                    - button "Step back one filtration step" [disabled] [ref=e119]: ◀ Back
+                    - button "Play filtration animation" [disabled] [ref=e120]: ▶ Play
+                    - button "Step forward one filtration step" [ref=e121] [cursor=pointer]: Forward ▶
+                    - generic [ref=e122]: Speed
+                    - combobox "Animation speed multiplier" [ref=e123] [cursor=pointer]:
+                      - option "0.5×"
+                      - option "1×" [selected]
+                      - option "2×"
+              - group [ref=e124]:
+                - generic "Show text description" [ref=e125] [cursor=pointer]
+          - heading "Points Are Not Enough" [level=2] [ref=e127]
+          - paragraph [ref=e128]: A crowd of people tells you very little about the society they form. You need to know who knows whom, which groups share resources, which communities overlap, and which are isolated. Points — raw measurements of isolated individuals — carry the same limitation. A point cloud of 5,000 households, each plotted in six-dimensional space, is a set of isolated locations. Without any structure connecting them, you cannot ask whether the households cluster into recognisable groups, whether there are closed loops of mutual dependency, or whether some region of the distribution is topologically void — a gap in the landscape of lived experience. Simplicial complexes are the mathematical machinery that wires points together into higher-dimensional structure, making those questions answerable.
+          - 'heading "Simplices: The Building Blocks" [level=2] [ref=e129]'
+          - paragraph [ref=e130]:
+            - text: A
+            - strong [ref=e131]:
+              - generic [ref=e132]:
+                - math [ref=e134]:
+                  - generic [ref=e137]: k
+                - generic [ref=e139]: k
+              - text: "-simplex"
+            - text: is the simplest possible
+            - generic [ref=e140]:
+              - math [ref=e142]:
+                - generic [ref=e145]: k
+              - generic [ref=e147]: k
+            - text: "-dimensional geometric object spanned by"
+            - generic [ref=e148]:
+              - math [ref=e150]:
+                - generic [ref=e152]:
+                  - generic [ref=e153]: k
+                  - generic [ref=e154]: +
+                  - generic [ref=e155]: "1"
+              - generic [ref=e156]:
+                - generic [ref=e157]: k +
+                - generic [ref=e158]: "1"
+            - text: "points in general position (no three on a line, no four on a plane, and so on). Concretely:"
+          - list [ref=e159]:
+            - listitem [ref=e160]:
+              - text: A
+              - strong [ref=e161]: 0-simplex
+              - text: is a single point.
+            - listitem [ref=e162]:
+              - text: A
+              - strong [ref=e163]: 1-simplex
+              - text: is an edge connecting two points.
+            - listitem [ref=e164]:
+              - text: A
+              - strong [ref=e165]: 2-simplex
+              - text: is a filled triangle spanned by three points.
+            - listitem [ref=e166]:
+              - text: A
+              - strong [ref=e167]: 3-simplex
+              - text: is a solid tetrahedron spanned by four points.
+          - paragraph [ref=e168]:
+            - text: Each lower-dimensional face of a
+            - generic [ref=e169]:
+              - math [ref=e171]:
+                - generic [ref=e174]: k
+              - generic [ref=e176]: k
+            - text: "-simplex is itself a simplex: a triangle has three edges and three vertices; a tetrahedron has four triangular faces, six edges, and four vertices. These faces are called the"
+            - strong [ref=e177]: faces
+            - text: of the simplex.
+          - heading "Simplicial Complexes" [level=2] [ref=e178]
+          - paragraph [ref=e179]:
+            - text: A
+            - strong [ref=e180]: simplicial complex
+            - generic [ref=e181]:
+              - math [ref=e183]:
+                - generic [ref=e186]: K
+              - generic [ref=e188]: K
+            - text: "is a collection of simplices satisfying two rules:"
+          - generic [ref=e190]:
+            - math [ref=e192]:
+              - generic [ref=e194]:
+                - generic [ref=e195]: σ
+                - generic [ref=e196]: ∈
+                - generic [ref=e197]: K
+                - generic [ref=e198]: and
+                - generic [ref=e199]: τ
+                - generic [ref=e200]: ⊆
+                - generic [ref=e201]: σ
+                - generic [ref=e202]: ⟹
+                - generic [ref=e203]: τ
+                - generic [ref=e204]: ∈
+                - generic [ref=e205]: K
+                - generic [ref=e206]: ","
+                - generic [ref=e207]: and
+                - generic [ref=e208]: σ
+                - generic [ref=e209]: ","
+                - generic [ref=e210]: τ
+                - generic [ref=e211]: ∈
+                - generic [ref=e212]: K
+                - generic [ref=e213]: ⟹
+                - generic [ref=e214]: σ
+                - generic [ref=e215]: ∩
+                - generic [ref=e216]: τ
+                - generic [ref=e217]: ∈
+                - generic [ref=e218]: "{"
+                - generic [ref=e219]: ∅
+                - generic [ref=e220]: "}"
+                - generic [ref=e221]: ∪
+                - generic [ref=e222]: K
+                - generic [ref=e223]: .
+            - generic [ref=e224]:
+              - generic [ref=e225]: σ ∈
+              - generic [ref=e226]:
+                - text: K
+                - generic [ref=e227]: and
+                - text: τ ⊆
+              - generic [ref=e228]: σ ⟹
+              - generic [ref=e229]: τ ∈
+              - generic [ref=e230]:
+                - text: K,
+                - generic [ref=e231]: and
+                - text: σ, τ ∈
+              - generic [ref=e232]: K ⟹
+              - generic [ref=e233]: σ ∩
+              - generic [ref=e234]: τ ∈
+              - generic [ref=e235]: "{∅} ∪"
+              - generic [ref=e236]: K.
+          - paragraph [ref=e237]:
+            - text: "In plain language: every face of every simplex in"
+            - generic [ref=e238]:
+              - math [ref=e240]:
+                - generic [ref=e243]: K
+              - generic [ref=e245]: K
+            - text: must also belong to
+            - generic [ref=e246]:
+              - math [ref=e248]:
+                - generic [ref=e251]: K
+              - generic [ref=e253]: K
+            - text: ", and any two simplices either do not intersect at all or they intersect in a simplex that is itself already in"
+            - generic [ref=e254]:
+              - math [ref=e256]:
+                - generic [ref=e259]: K
+              - generic [ref=e261]: K
+            - text: . The first rule ensures completeness — you cannot have a triangle without its edges and vertices. The second ensures consistency — two triangles sharing an edge share exactly that edge, not an overlapping region.
+          - paragraph [ref=e262]: "A simplicial complex built on a finite point cloud is a combinatorial object: you can list all its simplices in a table, encode it as a sparse matrix, and manipulate it on a computer without approximation. This is what makes it the right data structure for computational topology."
+          - 'heading "Constructing Complexes from Data: Vietoris–Rips" [level=2] [ref=e263]'
+          - paragraph [ref=e264]:
+            - text: The most widely used construction in TDA is the
+            - strong [ref=e265]: Vietoris–Rips complex
+            - generic [ref=e266]:
+              - math [ref=e268]:
+                - generic [ref=e270]:
+                  - generic [ref=e271]: VR
+                  - generic [ref=e272]: (
+                  - generic [ref=e273]: X
+                  - generic [ref=e274]: ","
+                  - generic [ref=e275]: r
+                  - generic [ref=e276]: )
+              - generic [ref=e278]:
+                - generic [ref=e279]: VR
+                - text: (X, r)
+            - text: at scale
+            - generic [ref=e280]:
+              - math [ref=e282]:
+                - generic [ref=e285]: r
+              - generic [ref=e287]: r
+            - text: . Given a finite metric space
+            - generic [ref=e288]:
+              - math [ref=e290]:
+                - generic [ref=e292]:
+                  - generic [ref=e293]: (
+                  - generic [ref=e294]: X
+                  - generic [ref=e295]: ","
+                  - generic [ref=e296]: d
+                  - generic [ref=e297]: )
+              - generic [ref=e299]: (X, d)
+            - text: ":"
+          - paragraph [ref=e300]:
+            - text: A subset
+            - generic [ref=e301]:
+              - math [ref=e303]:
+                - generic [ref=e305]:
+                  - generic [ref=e306]: σ
+                  - generic [ref=e307]: ⊆
+                  - generic [ref=e308]: X
+              - generic [ref=e309]:
+                - generic [ref=e310]: σ ⊆
+                - generic [ref=e311]: X
+            - text: of
+            - generic [ref=e312]:
+              - math [ref=e314]:
+                - generic [ref=e316]:
+                  - generic [ref=e317]: k
+                  - generic [ref=e318]: +
+                  - generic [ref=e319]: "1"
+              - generic [ref=e320]:
+                - generic [ref=e321]: k +
+                - generic [ref=e322]: "1"
+            - text: points is a
+            - generic [ref=e323]:
+              - math [ref=e325]:
+                - generic [ref=e328]: k
+              - generic [ref=e330]: k
+            - text: "-simplex in"
+            - generic [ref=e331]:
+              - math [ref=e333]:
+                - generic [ref=e335]:
+                  - generic [ref=e336]: VR
+                  - generic [ref=e337]: (
+                  - generic [ref=e338]: X
+                  - generic [ref=e339]: ","
+                  - generic [ref=e340]: r
+                  - generic [ref=e341]: )
+              - generic [ref=e343]:
+                - generic [ref=e344]: VR
+                - text: (X, r)
+            - text: if and only if every pair of points in
+            - generic [ref=e345]:
+              - math [ref=e347]:
+                - generic [ref=e350]: σ
+              - generic [ref=e352]: σ
+            - text: is within distance
+            - generic [ref=e353]:
+              - math [ref=e355]:
+                - generic [ref=e358]: r
+              - generic [ref=e360]: r
+            - text: ":"
+          - generic [ref=e362]:
+            - math [ref=e364]:
+              - generic [ref=e366]:
+                - generic [ref=e367]: σ
+                - generic [ref=e368]: ∈
+                - generic [ref=e369]: VR
+                - generic [ref=e370]: (
+                - generic [ref=e371]: X
+                - generic [ref=e372]: ","
+                - generic [ref=e373]: r
+                - generic [ref=e374]: )
+                - generic [ref=e375]: ⟺
+                - generic [ref=e376]:
+                  - generic [ref=e377]:
+                    - generic [ref=e378]: max
+                    - generic: ⁡
+                  - generic [ref=e379]:
+                    - generic [ref=e380]: x
+                    - generic [ref=e381]: ","
+                    - generic [ref=e382]: "y"
+                    - generic [ref=e383]: ∈
+                    - generic [ref=e384]: σ
+                - generic [ref=e385]: d
+                - generic [ref=e386]: (
+                - generic [ref=e387]: x
+                - generic [ref=e388]: ","
+                - generic [ref=e389]: "y"
+                - generic [ref=e390]: )
+                - generic [ref=e391]: ≤
+                - generic [ref=e392]: r
+                - generic [ref=e393]: .
+            - generic [ref=e394]:
+              - generic [ref=e395]: σ ∈
+              - generic [ref=e396]:
+                - generic [ref=e397]: VR
+                - text: (X, r) ⟺
+              - generic [ref=e398]:
+                - generic [ref=e402]:
+                  - generic [ref=e404]: x,y∈σ
+                  - generic [ref=e405]: max
+                - text: d(x, y) ≤
+              - generic [ref=e409]: r.
+          - paragraph [ref=e410]:
+            - text: "The Vietoris–Rips condition is purely pairwise: to check whether a set of points forms a simplex, you only need to consult the pairwise distance matrix. There is no need to compute ball intersections or check geometric conditions in high-dimensional space. This makes"
+            - generic [ref=e411]:
+              - math [ref=e413]:
+                - generic [ref=e415]:
+                  - generic [ref=e416]: VR
+                  - generic [ref=e417]: (
+                  - generic [ref=e418]: X
+                  - generic [ref=e419]: ","
+                  - generic [ref=e420]: r
+                  - generic [ref=e421]: )
+              - generic [ref=e423]:
+                - generic [ref=e424]: VR
+                - text: (X, r)
+            - text: efficiently computable for datasets with hundreds of variables.
+          - paragraph [ref=e425]:
+            - text: As
+            - generic [ref=e426]:
+              - math [ref=e428]:
+                - generic [ref=e431]: r
+              - generic [ref=e433]: r
+            - text: "increases from zero to infinity, the Vietoris–Rips complex grows: at"
+            - generic [ref=e434]:
+              - math [ref=e436]:
+                - generic [ref=e438]:
+                  - generic [ref=e439]: r
+                  - generic [ref=e440]: =
+                  - generic [ref=e441]: "0"
+              - generic [ref=e442]:
+                - generic [ref=e443]: r =
+                - generic [ref=e444]: "0"
+            - text: ", only points (0-simplices); at small"
+            - generic [ref=e445]:
+              - math [ref=e447]:
+                - generic [ref=e450]: r
+              - generic [ref=e452]: r
+            - text: ", edges between nearby points; at moderate"
+            - generic [ref=e453]:
+              - math [ref=e455]:
+                - generic [ref=e458]: r
+              - generic [ref=e460]: r
+            - text: ", triangles and tetrahedra filling in; eventually, at large"
+            - generic [ref=e461]:
+              - math [ref=e463]:
+                - generic [ref=e466]: r
+              - generic [ref=e468]: r
+            - text: ", a fully connected simplex on all points. This growing sequence of complexes — one for each value of"
+            - generic [ref=e469]:
+              - math [ref=e471]:
+                - generic [ref=e474]: r
+              - generic [ref=e476]: r
+            - text: — is called a
+            - strong [ref=e477]: filtration
+            - text: and is the subject of Module 5.
+          - 'heading "Why Triangles Matter: Detecting Loops" [level=2] [ref=e478]'
+          - paragraph [ref=e479]:
+            - text: The topological significance of triangles is subtle. Consider three points
+            - generic [ref=e480]:
+              - math [ref=e482]:
+                - generic [ref=e485]: A
+              - generic [ref=e487]: A
+            - text: ","
+            - generic [ref=e488]:
+              - math [ref=e490]:
+                - generic [ref=e493]: B
+              - generic [ref=e495]: B
+            - text: ","
+            - generic [ref=e496]:
+              - math [ref=e498]:
+                - generic [ref=e501]: C
+              - generic [ref=e503]: C
+            - text: forming a triangle. If the complex contains all three edges (
+            - generic [ref=e504]:
+              - math [ref=e506]:
+                - generic [ref=e508]:
+                  - generic [ref=e509]: A
+                  - generic [ref=e510]: B
+              - generic [ref=e512]: AB
+            - text: ","
+            - generic [ref=e513]:
+              - math [ref=e515]:
+                - generic [ref=e517]:
+                  - generic [ref=e518]: B
+                  - generic [ref=e519]: C
+              - generic [ref=e521]: BC
+            - text: ","
+            - generic [ref=e522]:
+              - math [ref=e524]:
+                - generic [ref=e526]:
+                  - generic [ref=e527]: C
+                  - generic [ref=e528]: A
+              - generic [ref=e530]: CA
+            - text: ) but
+            - emphasis [ref=e531]: not
+            - text: the filled triangle
+            - generic [ref=e532]:
+              - math [ref=e534]:
+                - generic [ref=e536]:
+                  - generic [ref=e537]: A
+                  - generic [ref=e538]: B
+                  - generic [ref=e539]: C
+              - generic [ref=e541]: ABC
+            - text: ", then the three edges enclose an empty loop — a one-dimensional hole. If the filled triangle is included, the hole is “filled in” and disappears. This is the mechanism by which topology distinguishes a circle (a loop, no interior) from a disk (a loop with interior filled in)."
+          - paragraph [ref=e542]:
+            - text: "In poverty data, loops at the population level can represent closed circuits of disadvantage: a subset of households that are all pairwise near each other in deprivation-variable space, forming a cluster — but with a topological void at the centre. That void might indicate a bimodal distribution within the cluster, or a structural gap in a social programme’s coverage. The algebraic tool that detects and counts such loops is"
+            - strong [ref=e543]: homology
+            - text: ", covered in Module 4."
+          - 'heading "The Čech Complex: A Theoretical Companion" [level=2] [ref=e544]'
+          - paragraph [ref=e545]:
+            - text: The
+            - strong [ref=e546]: Čech complex
+            - generic [ref=e547]:
+              - math [ref=e549]:
+                - generic [ref=e551]:
+                  - generic [ref=e552]:
+                    - generic [ref=e553]:
+                      - generic [ref=e554]: C
+                      - generic [ref=e555]: ˇ
+                    - generic [ref=e556]: ech
+                  - generic [ref=e557]: (
+                  - generic [ref=e558]: X
+                  - generic [ref=e559]: ","
+                  - generic [ref=e560]: r
+                  - generic [ref=e561]: )
+              - generic [ref=e563]:
+                - generic [ref=e564]:
+                  - generic [ref=e568]:
+                    - generic [ref=e569]: C
+                    - text: ˇ
+                  - text: ech
+                - text: (X, r)
+            - text: is an alternative construction with stronger theoretical guarantees. A set
+            - generic [ref=e570]:
+              - math [ref=e572]:
+                - generic [ref=e575]: σ
+              - generic [ref=e577]: σ
+            - text: of points is a simplex in
+            - generic [ref=e578]:
+              - math [ref=e580]:
+                - generic [ref=e582]:
+                  - generic [ref=e583]:
+                    - generic [ref=e584]:
+                      - generic [ref=e585]: C
+                      - generic [ref=e586]: ˇ
+                    - generic [ref=e587]: ech
+                  - generic [ref=e588]: (
+                  - generic [ref=e589]: X
+                  - generic [ref=e590]: ","
+                  - generic [ref=e591]: r
+                  - generic [ref=e592]: )
+              - generic [ref=e594]:
+                - generic [ref=e595]:
+                  - generic [ref=e599]:
+                    - generic [ref=e600]: C
+                    - text: ˇ
+                  - text: ech
+                - text: (X, r)
+            - text: if and only if the balls
+            - generic [ref=e601]:
+              - math [ref=e603]:
+                - generic [ref=e605]:
+                  - generic [ref=e606]: B
+                  - generic [ref=e607]: (
+                  - generic [ref=e608]: x
+                  - generic [ref=e609]: ","
+                  - generic [ref=e610]: r
+                  - generic [ref=e611]: )
+              - generic [ref=e613]: B(x, r)
+            - text: "share a common intersection:"
+          - generic [ref=e615]:
+            - math [ref=e617]:
+              - generic [ref=e619]:
+                - generic [ref=e620]: σ
+                - generic [ref=e621]: ∈
+                - generic [ref=e622]:
+                  - generic [ref=e623]:
+                    - generic [ref=e624]: C
+                    - generic [ref=e625]: ˇ
+                  - generic [ref=e626]: ech
+                - generic [ref=e627]: (
+                - generic [ref=e628]: X
+                - generic [ref=e629]: ","
+                - generic [ref=e630]: r
+                - generic [ref=e631]: )
+                - generic [ref=e632]: ⟺
+                - generic [ref=e633]:
+                  - generic [ref=e634]: ⋂
+                  - generic [ref=e635]:
+                    - generic [ref=e636]: x
+                    - generic [ref=e637]: ∈
+                    - generic [ref=e638]: σ
+                - generic [ref=e639]: B
+                - generic [ref=e640]: (
+                - generic [ref=e641]: x
+                - generic [ref=e642]: ","
+                - generic [ref=e643]: r
+                - generic [ref=e644]: )
+                - generic [ref=e645]: ≠
+                - generic [ref=e646]: ∅
+                - generic [ref=e647]: .
+            - generic [ref=e648]:
+              - generic [ref=e649]: σ ∈
+              - generic [ref=e650]:
+                - generic [ref=e651]:
+                  - generic [ref=e655]:
+                    - generic [ref=e656]: C
+                    - text: ˇ
+                  - text: ech
+                - text: (X, r) ⟺
+              - generic [ref=e657]:
+                - generic [ref=e661]:
+                  - generic [ref=e663]: x∈σ
+                  - generic [ref=e664]: ⋂
+                - text: B(x, r)
+                - generic [ref=e668]:
+                  - generic [ref=e670]: 
+                  - text: =
+              - generic [ref=e671]: ∅.
+          - paragraph [ref=e672]:
+            - text: By the Nerve Lemma, the Čech complex is homotopy equivalent to the union of balls
+            - generic [ref=e673]:
+              - math [ref=e675]:
+                - generic [ref=e677]:
+                  - generic [ref=e678]:
+                    - generic [ref=e679]: ⋃
+                    - generic [ref=e680]:
+                      - generic [ref=e681]: x
+                      - generic [ref=e682]: ∈
+                      - generic [ref=e683]: X
+                  - generic [ref=e684]: B
+                  - generic [ref=e685]: (
+                  - generic [ref=e686]: x
+                  - generic [ref=e687]: ","
+                  - generic [ref=e688]: r
+                  - generic [ref=e689]: )
+              - generic [ref=e691]:
+                - generic [ref=e692]:
+                  - text: ⋃
+                  - generic [ref=e698]: x∈X
+                - text: B(x, r)
+            - text: ", so it captures the topology of the thickened point cloud exactly. However, checking ball intersections in high dimensions is computationally expensive. The Vietoris–Rips complex is a 2-approximation:"
+            - generic [ref=e702]:
+              - math [ref=e704]:
+                - generic [ref=e706]:
+                  - generic [ref=e707]: VR
+                  - generic [ref=e708]: (
+                  - generic [ref=e709]: X
+                  - generic [ref=e710]: ","
+                  - generic [ref=e711]: r
+                  - generic [ref=e712]: )
+                  - generic [ref=e713]: ⊆
+                  - generic [ref=e714]:
+                    - generic [ref=e715]:
+                      - generic [ref=e716]: C
+                      - generic [ref=e717]: ˇ
+                    - generic [ref=e718]: ech
+                  - generic [ref=e719]: (
+                  - generic [ref=e720]: X
+                  - generic [ref=e721]: ","
+                  - generic [ref=e722]: r
+                  - generic [ref=e724]: "2"
+                  - generic [ref=e725]: )
+                  - generic [ref=e726]: ⊆
+                  - generic [ref=e727]: VR
+                  - generic [ref=e728]: (
+                  - generic [ref=e729]: X
+                  - generic [ref=e730]: ","
+                  - generic [ref=e731]: r
+                  - generic [ref=e733]: "2"
+                  - generic [ref=e734]: )
+              - generic [ref=e735]:
+                - generic [ref=e736]:
+                  - generic [ref=e737]: VR
+                  - text: (X, r) ⊆
+                - generic [ref=e738]:
+                  - generic [ref=e739]:
+                    - generic [ref=e743]:
+                      - generic [ref=e744]: C
+                      - text: ˇ
+                    - text: ech
+                  - text: (X, r
+                  - generic [ref=e748]:
+                    - generic [ref=e749]: "2"
+                    - img [ref=e751]
+                  - text: ) ⊆
+                - generic [ref=e756]:
+                  - generic [ref=e757]: VR
+                  - text: (X, r
+                  - generic [ref=e761]:
+                    - generic [ref=e762]: "2"
+                    - img [ref=e764]
+                  - text: )
+            - text: . For most applications this approximation is tight enough, and Vietoris–Rips is the standard choice in practice.
+          - heading "A Notional Interactive" [level=2] [ref=e769]
+          - paragraph [ref=e770]:
+            - text: Though no interactive is paired directly with this module, imagine a tool that lets you place points on a canvas, set a distance threshold
+            - generic [ref=e771]:
+              - math [ref=e773]:
+                - generic [ref=e776]: r
+              - generic [ref=e778]: r
+            - text: with a slider, and watch the simplicial complex build in real time. At low
+            - generic [ref=e779]:
+              - math [ref=e781]:
+                - generic [ref=e784]: r
+              - generic [ref=e786]: r
+            - text: ", only isolated points; as"
+            - generic [ref=e787]:
+              - math [ref=e789]:
+                - generic [ref=e792]: r
+              - generic [ref=e794]: r
+            - text: rises, edges appear between near neighbours; at higher
+            - generic [ref=e795]:
+              - math [ref=e797]:
+                - generic [ref=e800]: r
+              - generic [ref=e802]: r
+            - text: ", triangles fill in between triples of mutually close points; eventually, at very high"
+            - generic [ref=e803]:
+              - math [ref=e805]:
+                - generic [ref=e808]: r
+              - generic [ref=e810]: r
+            - text: ", the entire canvas is covered by one giant filled simplex. Such a tool makes concrete the otherwise abstract claim that simplicial complexes are built incrementally by a distance threshold. The Persistence Diagram Builder in Module 5 is one step further along this pipeline."
+          - heading "How This Module Connects" [level=2] [ref=e811]
+          - paragraph [ref=e812]:
+            - text: The construction of simplicial complexes from point clouds is the technical core of both
+            - strong [ref=e813]: Paper 1
+            - text: and
+            - strong [ref=e814]: Paper 2
+            - text: in the research portfolio. Paper 1 applies the Vietoris–Rips filtration to longitudinal poverty panel data, arguing that the topology of the resulting complex encodes information about poverty trap dynamics not visible in transition matrices. Paper 2 develops a variant construction adapted to survey data with missing values, where the standard Vietoris–Rips condition must be relaxed. Both papers depend on the
+            - strong [ref=e815]: persistent-homology
+            - text: "method: the algebraic machinery that measures which topological features of a simplicial complex survive as the scale parameter"
+            - generic [ref=e816]:
+              - math [ref=e818]:
+                - generic [ref=e821]: r
+              - generic [ref=e823]: r
+            - text: increases.
+          - region "Check Your Understanding" [ref=e824]:
+            - heading "Check Your Understanding" [level=2] [ref=e825]
+            - button "What is the difference between a simplex and a simplicial complex?" [ref=e828] [cursor=pointer]:
+              - generic [ref=e829]: +
+              - generic [ref=e830]: What is the difference between a simplex and a simplicial complex?
+            - button "In the Vietoris–Rips construction, what determines whether three points form a filled triangle (2-simplex) rather than just three edges?" [ref=e833] [cursor=pointer]:
+              - generic [ref=e834]: +
+              - generic [ref=e835]: In the Vietoris–Rips construction, what determines whether three points form a filled triangle (2-simplex) rather than just three edges?
+            - button "Why is the Vietoris–Rips complex computationally preferred over the Čech complex despite the Čech complex having better theoretical properties?" [ref=e838] [cursor=pointer]:
+              - generic [ref=e839]: +
+              - generic [ref=e840]: Why is the Vietoris–Rips complex computationally preferred over the Čech complex despite the Čech complex having better theoretical properties?
+          - button "Mark this module as complete" [ref=e843] [cursor=pointer]: Mark as complete
+        - complementary "Module navigation sidebar" [ref=e844]:
+          - navigation "Table of contents" [ref=e845]:
+            - group [ref=e846]:
+              - generic "Contents ▾" [ref=e847] [cursor=pointer]
+          - generic [ref=e848]:
+            - separator [ref=e849]
+            - heading "Related" [level=2] [ref=e850]
+            - generic [ref=e851]:
+              - heading "Papers" [level=3] [ref=e852]
+              - list [ref=e853]:
+                - listitem [ref=e854]:
+                  - link "Paper 1" [ref=e855] [cursor=pointer]:
+                    - /url: /tda/papers/paper-1/
+                - listitem [ref=e856]:
+                  - link "Paper 2" [ref=e857] [cursor=pointer]:
+                    - /url: /tda/papers/paper-2/
+            - generic [ref=e858]:
+              - heading "Methods" [level=3] [ref=e859]
+              - list [ref=e860]:
+                - listitem [ref=e861]:
+                  - link "persistent-homology" [ref=e862] [cursor=pointer]:
+                    - /url: /tda/methods/persistent-homology/
+      - navigation "Module navigation" [ref=e863]:
+        - generic [ref=e864]:
+          - link "Previous module Point Clouds and Distance" [ref=e865] [cursor=pointer]:
+            - /url: /learn/topology-social-scientists/2/
+            - generic [ref=e866]: ←
+            - generic [ref=e867]: Previous module
+            - generic [ref=e868]: Point Clouds and Distance
+          - 'link "Next module Homology: Counting Holes" [ref=e869] [cursor=pointer]':
+            - /url: /learn/topology-social-scientists/4/
+            - generic [ref=e870]: →
+            - generic [ref=e871]: Next module
+            - generic [ref=e872]: "Homology: Counting Holes"
+        - link "↑ Back to Topology Social Scientists" [ref=e874] [cursor=pointer]:
+          - /url: /learn/
+    - contentinfo [ref=e875]:
+      - contentinfo [ref=e876]:
+        - generic [ref=e877]:
+          - generic [ref=e878]:
+            - paragraph [ref=e879]: © 2026 zktheory.org
+            - paragraph [ref=e880]: "[Institutional affiliation]"
+          - navigation "External profiles and contact" [ref=e881]:
+            - link "ORCID researcher profile (external site)" [ref=e882] [cursor=pointer]:
+              - /url: "#orcid-placeholder"
+              - text: ORCID
+            - link "GitHub repository (external site)" [ref=e883] [cursor=pointer]:
+              - /url: "#github-placeholder"
+              - text: GitHub
+            - link "Google Scholar profile (external site)" [ref=e884] [cursor=pointer]:
+              - /url: "#scholar-placeholder"
+              - text: Google Scholar
+            - link "Contact" [ref=e885] [cursor=pointer]:
+              - /url: "#contact-placeholder"
+          - paragraph [ref=e886]:
+            - text: Built with
+            - link "Astro web framework (external site)" [ref=e887] [cursor=pointer]:
+              - /url: https://astro.build
+              - text: Astro

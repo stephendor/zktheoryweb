@@ -1,0 +1,692 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation "Main navigation" [ref=e5]:
+        - generic [ref=e6]:
+          - link "zktheory.org — go to home page" [ref=e7] [cursor=pointer]:
+            - /url: /
+            - text: zktheory.org
+          - button "Search site" [ref=e8] [cursor=pointer]:
+            - generic [ref=e9]: ⌕
+            - generic [ref=e10]: Search
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - link "Home" [ref=e13] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e14]:
+              - link "Counting Lives" [ref=e15] [cursor=pointer]:
+                - /url: /counting-lives/
+            - listitem [ref=e16]:
+              - link "TDA" [ref=e17] [cursor=pointer]:
+                - /url: /tda/
+            - listitem [ref=e18]:
+              - link "Learn" [ref=e19] [cursor=pointer]:
+                - /url: /learn/
+            - listitem [ref=e20]:
+              - link "Writing" [ref=e21] [cursor=pointer]:
+                - /url: /writing/
+            - listitem [ref=e22]:
+              - link "About" [ref=e23] [cursor=pointer]:
+                - /url: /about/
+    - main [ref=e24]:
+      - navigation "Breadcrumb" [ref=e25]:
+        - list [ref=e26]:
+          - listitem [ref=e27]:
+            - link "Tda Practitioners" [ref=e28] [cursor=pointer]:
+              - /url: /learn/
+            - text: /
+          - listitem [ref=e29]: Multi-Parameter Persistence
+      - 'generic "Module progress: 8 of 12" [ref=e30]':
+        - list "Modules in this path" [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Setup and First Computation" [ref=e33] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/1/
+              - generic [ref=e34]: "1"
+              - generic [ref=e35]: Setup and First Computation
+          - listitem [ref=e36]:
+            - link "Point Cloud Preprocessing" [ref=e37] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/2/
+              - generic [ref=e38]: "2"
+              - generic [ref=e39]: Point Cloud Preprocessing
+          - listitem [ref=e40]:
+            - link "Vietoris-Rips Persistent Homology" [ref=e41] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/3/
+              - generic [ref=e42]: "3"
+              - generic [ref=e43]: Vietoris-Rips Persistent Homology
+          - listitem [ref=e44]:
+            - link "Reading Persistence Diagrams" [ref=e45] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/4/
+              - generic [ref=e46]: "4"
+              - generic [ref=e47]: Reading Persistence Diagrams
+          - listitem [ref=e48]:
+            - link "Null Models and Hypothesis Testing" [ref=e49] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/5/
+              - generic [ref=e50]: "5"
+              - generic [ref=e51]: Null Models and Hypothesis Testing
+          - listitem [ref=e52]:
+            - link "Mapper in Practice" [ref=e53] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/6/
+              - generic [ref=e54]: "6"
+              - generic [ref=e55]: Mapper in Practice
+          - listitem [ref=e56]:
+            - link "Zigzag Persistence" [ref=e57] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/7/
+              - generic [ref=e58]: "7"
+              - generic [ref=e59]: Zigzag Persistence
+          - listitem [ref=e60]:
+            - link "Multi-Parameter Persistence (current)" [ref=e61] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/8/
+              - generic [ref=e62]: "8"
+              - generic [ref=e63]: Multi-Parameter Persistence (current)
+          - listitem [ref=e64]:
+            - link "Wasserstein and Landscape Distances" [ref=e65] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/9/
+              - generic [ref=e66]: "9"
+              - generic [ref=e67]: Wasserstein and Landscape Distances
+          - listitem [ref=e68]:
+            - link "TDA and Deep Learning" [ref=e69] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/10/
+              - generic [ref=e70]: "10"
+              - generic [ref=e71]: TDA and Deep Learning
+          - listitem [ref=e72]:
+            - link "Fairness and Topology" [ref=e73] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/11/
+              - generic [ref=e74]: "11"
+              - generic [ref=e75]: Fairness and Topology
+          - listitem [ref=e76]:
+            - link "Designing Your Own TDA Study" [ref=e77] [cursor=pointer]:
+              - /url: /learn/tda-practitioners/12/
+              - generic [ref=e78]: "12"
+              - generic [ref=e79]: Designing Your Own TDA Study
+      - generic [ref=e82]:
+        - article "Multi-Parameter Persistence" [ref=e83]:
+          - heading "Multi-Parameter Persistence" [level=1] [ref=e84]
+          - paragraph [ref=e85]: Filtering a complex by two parameters simultaneously to capture density and scale together
+          - generic "Interactive tool" [ref=e86]:
+            - generic [ref=e88]:
+              - generic [ref=e90]:
+                - generic [ref=e91]:
+                  - generic [ref=e92]:
+                    - paragraph [ref=e93]: Point Cloud
+                    - img "Point cloud with 11 points at filtration radius 0.00" [ref=e96]:
+                      - generic [ref=e109]: "x ε range: 0.00 – 2.56"
+                  - generic [ref=e110]:
+                    - paragraph [ref=e111]: Persistence Diagram
+                    - 'img "Persistence diagram: 11 H₀ features, 2 H₁ features" [ref=e114]':
+                      - generic [ref=e115]:
+                        - generic [ref=e117]:
+                          - generic [ref=e119]: "0.00"
+                          - generic [ref=e121]: "0.50"
+                          - generic [ref=e123]: "1.00"
+                          - generic [ref=e125]: "1.50"
+                          - generic [ref=e127]: "2.00"
+                          - generic [ref=e129]: "2.50"
+                          - generic [ref=e130]: Birth (radius)
+                        - generic [ref=e131]:
+                          - generic [ref=e133]: "0.00"
+                          - generic [ref=e135]: "0.50"
+                          - generic [ref=e137]: "1.00"
+                          - generic [ref=e139]: "1.50"
+                          - generic [ref=e141]: "2.00"
+                          - generic [ref=e143]: "2.50"
+                          - generic [ref=e144]: Death (radius)
+                        - generic [ref=e147]: H₀ component
+                        - generic [ref=e149]: H₁ loop
+                        - 'button "H₁ loop: born 0.588, died 0.951, persistence 0.363" [ref=e161] [cursor=pointer]'
+                        - 'button "H₁ loop: born 0.588, died 0.951, persistence 0.363" [ref=e162] [cursor=pointer]'
+                - generic [ref=e163]:
+                  - generic [ref=e164]:
+                    - generic [ref=e165]: "Filtration radius: 0.00 / 2.56"
+                    - 'slider "Filtration radius: 0.00 of 2.56" [ref=e166] [cursor=pointer]': "0"
+                  - generic [ref=e168]: "Active: H₀ 11 / 11 · H₁ 0 / 2"
+                  - generic [ref=e169]:
+                    - button "Reset filtration radius to zero" [ref=e170] [cursor=pointer]: Reset
+                    - generic [ref=e171]: "Preset:"
+                    - combobox "Select point cloud preset" [ref=e172] [cursor=pointer]:
+                      - option "Circle (20 pts)"
+                      - option "Two Clusters (16 pts)"
+                      - option "Figure-Eight (11 pts)" [selected]
+                      - option "Random (30 pts)"
+              - group [ref=e174]:
+                - generic "Show text description" [ref=e175] [cursor=pointer]
+          - heading "The Density Confound" [level=2] [ref=e176]
+          - paragraph [ref=e177]: "Standard Vietoris–Rips persistence has a well-documented limitation when applied to data with heterogeneous density: it conflates scale effects with density effects. Consider a welfare dataset with two sub-populations — a large dense cluster of working-age households near the poverty line and a small sparse cluster of households with chronic severe deprivation. In a single-parameter VR filtration, the dense cluster generates many short-lived H₀ features at small scales (components quickly merging) and perhaps a persistent loop as the cluster forms a rough ring in variable space. The sparse cluster generates long-lived H₀ features (its components merge only at large scales because the households are far apart) and suppresses any H₁ analysis because sparse regions require large scales before triangulation is possible."
+          - paragraph [ref=e178]:
+            - text: The scale parameter
+            - generic [ref=e179]:
+              - math [ref=e181]:
+                - generic [ref=e184]: r
+              - generic [ref=e186]: r
+            - text: "is simultaneously doing two jobs: capturing the geometric scale of features and compensating for the density variation of the point cloud. Increasing"
+            - generic [ref=e187]:
+              - math [ref=e189]:
+                - generic [ref=e192]: r
+              - generic [ref=e194]: r
+            - text: to reach the sparse cluster simultaneously over-triangulates the dense cluster, destroying topological features in the dense region before the sparse region is even connected. The solution — computing separate VR diagrams for each cluster after density-based stratification — is ad hoc and introduces arbitrary thresholding.
+            - strong [ref=e195]: Multi-parameter persistence
+            - text: "provides the principled alternative: filter by both"
+            - generic [ref=e196]:
+              - math [ref=e198]:
+                - generic [ref=e201]: r
+              - generic [ref=e203]: r
+            - text: and a density threshold
+            - generic [ref=e204]:
+              - math [ref=e206]:
+                - generic [ref=e209]: ρ
+              - generic [ref=e211]: ρ
+            - text: simultaneously, producing a two-dimensional parameter space where scale and density are genuinely independent.
+          - heading "The Bifiltration" [level=2] [ref=e212]
+          - paragraph [ref=e213]:
+            - text: Given a point cloud
+            - generic [ref=e214]:
+              - math [ref=e216]:
+                - generic [ref=e219]: X
+              - generic [ref=e221]: X
+            - text: and a density estimator
+            - generic [ref=e222]:
+              - math [ref=e224]:
+                - generic [ref=e226]:
+                  - generic [ref=e227]:
+                    - generic [ref=e228]: ρ
+                    - generic [ref=e229]: ^
+                  - generic [ref=e230]: ":"
+                  - generic [ref=e231]: X
+                  - generic [ref=e232]: →
+                  - generic [ref=e233]: R
+              - generic [ref=e234]:
+                - generic [ref=e235]:
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: ρ
+                    - text: ^
+                  - text: ":"
+                - generic [ref=e244]: X →
+                - generic [ref=e245]: R
+            - text: (the kernel density estimate at each point), the
+            - strong [ref=e246]: bifiltration
+            - generic [ref=e247]:
+              - math [ref=e249]:
+                - generic [ref=e252]:
+                  - generic [ref=e253]: K
+                  - generic [ref=e254]:
+                    - generic [ref=e255]: (
+                    - generic [ref=e256]: r
+                    - generic [ref=e257]: ","
+                    - generic [ref=e258]: ρ
+                    - generic [ref=e259]: )
+              - generic [ref=e262]:
+                - text: K
+                - generic [ref=e268]: (r,ρ)
+            - text: is the simplicial complex that includes all simplices whose vertices are (a) within distance
+            - generic [ref=e272]:
+              - math [ref=e274]:
+                - generic [ref=e277]: r
+              - generic [ref=e279]: r
+            - text: of each other and (b) have density estimate at least
+            - generic [ref=e280]:
+              - math [ref=e282]:
+                - generic [ref=e285]: ρ
+              - generic [ref=e287]: ρ
+            - text: ":"
+          - paragraph [ref=e288]:
+            - generic [ref=e289]:
+              - math [ref=e291]:
+                - generic [ref=e293]:
+                  - generic [ref=e294]:
+                    - generic [ref=e295]: K
+                    - generic [ref=e296]:
+                      - generic [ref=e297]: (
+                      - generic [ref=e298]: r
+                      - generic [ref=e299]: ","
+                      - generic [ref=e300]: ρ
+                      - generic [ref=e301]: )
+                  - generic [ref=e302]: ⊆
+                  - generic [ref=e303]:
+                    - generic [ref=e304]: K
+                    - generic [ref=e305]:
+                      - generic [ref=e306]: (
+                      - generic [ref=e307]:
+                        - generic [ref=e308]: r
+                        - generic [ref=e309]: ′
+                      - generic [ref=e310]: ","
+                      - generic [ref=e311]:
+                        - generic [ref=e312]: ρ
+                        - generic [ref=e313]: ′
+                      - generic [ref=e314]: )
+                  - generic [ref=e315]: for
+                  - generic [ref=e316]: (
+                  - generic [ref=e317]: r
+                  - generic [ref=e318]: ","
+                  - generic [ref=e319]: ρ
+                  - generic [ref=e320]: )
+                  - generic [ref=e321]: ≤
+                  - generic [ref=e322]: (
+                  - generic [ref=e323]:
+                    - generic [ref=e324]: r
+                    - generic [ref=e325]: ′
+                  - generic [ref=e326]: ","
+                  - generic [ref=e327]:
+                    - generic [ref=e328]: ρ
+                    - generic [ref=e329]: ′
+                  - generic [ref=e330]: )
+                  - generic [ref=e331]: component-wise
+              - generic [ref=e332]:
+                - generic [ref=e333]:
+                  - generic [ref=e334]:
+                    - text: K
+                    - generic [ref=e340]: (r,ρ)
+                  - text: ⊆
+                - generic [ref=e344]:
+                  - generic [ref=e345]:
+                    - text: K
+                    - generic [ref=e351]:
+                      - text: (
+                      - generic [ref=e352]:
+                        - text: r
+                        - generic [ref=e358]: ′
+                      - text: ","
+                      - generic [ref=e359]:
+                        - text: ρ
+                        - generic [ref=e365]: ′
+                      - text: )
+                  - generic [ref=e369]: for
+                  - text: (r, ρ) ≤
+                - generic [ref=e370]:
+                  - text: (
+                  - generic [ref=e371]:
+                    - text: r
+                    - generic [ref=e377]: ′
+                  - text: ","
+                  - generic [ref=e378]:
+                    - text: ρ
+                    - generic [ref=e384]: ′
+                  - text: )
+                  - generic [ref=e385]: component-wise
+          - paragraph [ref=e386]:
+            - text: That is,
+            - generic [ref=e387]:
+              - math [ref=e389]:
+                - generic [ref=e391]:
+                  - generic [ref=e392]:
+                    - generic [ref=e393]: r
+                    - generic [ref=e394]: ′
+                  - generic [ref=e395]: ≥
+                  - generic [ref=e396]: r
+              - generic [ref=e397]:
+                - generic [ref=e398]:
+                  - generic [ref=e399]:
+                    - text: r
+                    - generic [ref=e405]: ′
+                  - text: ≥
+                - generic [ref=e406]: r
+            - text: (scale grows) and
+            - generic [ref=e407]:
+              - math [ref=e409]:
+                - generic [ref=e411]:
+                  - generic [ref=e412]:
+                    - generic [ref=e413]: ρ
+                    - generic [ref=e414]: ′
+                  - generic [ref=e415]: ≤
+                  - generic [ref=e416]: ρ
+              - generic [ref=e417]:
+                - generic [ref=e418]:
+                  - generic [ref=e419]:
+                    - text: ρ
+                    - generic [ref=e425]: ′
+                  - text: ≤
+                - generic [ref=e426]: ρ
+            - text: "(density threshold is lowered, admitting sparser points). The nesting condition is satisfied: increasing"
+            - generic [ref=e427]:
+              - math [ref=e429]:
+                - generic [ref=e432]: r
+              - generic [ref=e434]: r
+            - text: adds new edges and simplices; decreasing
+            - generic [ref=e435]:
+              - math [ref=e437]:
+                - generic [ref=e440]: ρ
+              - generic [ref=e442]: ρ
+            - text: admits new low-density vertices with their incident edges. The result is a two-parameter family of nested complexes — a functor from the poset
+            - generic [ref=e443]:
+              - math [ref=e445]:
+                - generic [ref=e447]:
+                  - generic [ref=e448]: R
+                  - generic [ref=e449]: ×
+                  - generic [ref=e450]:
+                    - generic [ref=e451]: R
+                    - generic [ref=e452]: op
+              - generic [ref=e453]:
+                - generic [ref=e454]: R ×
+                - generic [ref=e456]:
+                  - text: R
+                  - generic [ref=e463]: op
+            - text: to the category of simplicial complexes.
+          - paragraph [ref=e464]:
+            - text: The
+            - strong [ref=e465]: two-parameter persistence module
+            - text: associated with this bifiltration is the functor
+            - generic [ref=e466]:
+              - math [ref=e468]:
+                - generic [ref=e470]:
+                  - generic [ref=e471]:
+                    - generic [ref=e472]: H
+                    - generic [ref=e473]: k
+                  - generic [ref=e474]: (
+                  - generic [ref=e475]:
+                    - generic [ref=e476]: K
+                    - generic [ref=e477]:
+                      - generic [ref=e478]: (
+                      - generic [ref=e479]: r
+                      - generic [ref=e480]: ","
+                      - generic [ref=e481]: ρ
+                      - generic [ref=e482]: )
+                  - generic [ref=e483]: )
+              - generic [ref=e485]:
+                - generic [ref=e486]:
+                  - text: H
+                  - generic [ref=e491]: k
+                - text: (
+                - generic [ref=e495]:
+                  - text: K
+                  - generic [ref=e501]: (r,ρ)
+                - text: )
+            - text: assigning to each parameter pair
+            - generic [ref=e505]:
+              - math [ref=e507]:
+                - generic [ref=e509]:
+                  - generic [ref=e510]: (
+                  - generic [ref=e511]: r
+                  - generic [ref=e512]: ","
+                  - generic [ref=e513]: ρ
+                  - generic [ref=e514]: )
+              - generic [ref=e516]: (r, ρ)
+            - text: the
+            - generic [ref=e517]:
+              - math [ref=e519]:
+                - generic [ref=e522]: k
+              - generic [ref=e524]: k
+            - text: "-th homology vector space of the corresponding complex, with maps induced by inclusions."
+          - heading "The Failure of the Structure Theorem" [level=2] [ref=e525]
+          - paragraph [ref=e526]:
+            - text: For one-parameter persistence modules over a field
+            - generic [ref=e527]:
+              - math [ref=e529]:
+                - generic [ref=e532]: F
+              - generic [ref=e534]: F
+            - text: ", the structure theorem guarantees a unique bar-code decomposition. This theorem rests on the classification of graded modules over the polynomial ring"
+            - generic [ref=e535]:
+              - math [ref=e537]:
+                - generic [ref=e539]:
+                  - generic [ref=e540]: F
+                  - generic [ref=e541]: "["
+                  - generic [ref=e542]: t
+                  - generic [ref=e543]: "]"
+              - generic [ref=e545]: F[t]
+            - text: ", which is a principal ideal domain (PID). Every finitely generated module over a PID decomposes as a direct sum of cyclic modules — the bar-code intervals."
+          - paragraph [ref=e546]:
+            - text: The two-parameter ring
+            - generic [ref=e547]:
+              - math [ref=e549]:
+                - generic [ref=e551]:
+                  - generic [ref=e552]: F
+                  - generic [ref=e553]: "["
+                  - generic [ref=e554]: r
+                  - generic [ref=e555]: ","
+                  - generic [ref=e556]: ρ
+                  - generic [ref=e557]: "]"
+              - generic [ref=e559]: F[r, ρ]
+            - text: is not a PID. Graded modules over
+            - generic [ref=e560]:
+              - math [ref=e562]:
+                - generic [ref=e564]:
+                  - generic [ref=e565]: F
+                  - generic [ref=e566]: "["
+                  - generic [ref=e567]: r
+                  - generic [ref=e568]: ","
+                  - generic [ref=e569]: ρ
+                  - generic [ref=e570]: "]"
+              - generic [ref=e572]: F[r, ρ]
+            - text: "do not admit a complete discrete decomposition: the category of finitely presented"
+            - generic [ref=e573]:
+              - math [ref=e575]:
+                - generic [ref=e577]:
+                  - generic [ref=e578]: F
+                  - generic [ref=e579]: "["
+                  - generic [ref=e580]: r
+                  - generic [ref=e581]: ","
+                  - generic [ref=e582]: ρ
+                  - generic [ref=e583]: "]"
+              - generic [ref=e585]: F[r, ρ]
+            - text: "-modules contains indecomposables of arbitrarily complex structure, and there exists no finite combinatorial invariant that fully classifies them. The bar-code, which was the complete invariant for one-parameter persistence, has no direct analogue in the two-parameter setting."
+          - paragraph [ref=e586]: This is not merely a theoretical inconvenience. Applied TDA researchers who expect multi-parameter persistence to produce “a bar-code with two axes” will be disappointed — that object does not exist in the theory, and any tool claiming to produce it is either restricting to a special sub-class of modules or producing an approximation with known error.
+          - heading "Invariants That Do Exist" [level=2] [ref=e587]
+          - paragraph [ref=e588]: "Three classes of invariants are practically useful for two-parameter persistence:"
+          - paragraph [ref=e589]:
+            - strong [ref=e590]: The Hilbert function
+            - generic [ref=e591]:
+              - math [ref=e593]:
+                - generic [ref=e595]:
+                  - generic [ref=e596]: H
+                  - generic [ref=e597]: (
+                  - generic [ref=e598]: r
+                  - generic [ref=e599]: ","
+                  - generic [ref=e600]: ρ
+                  - generic [ref=e601]: )
+                  - generic [ref=e602]: =
+                  - generic [ref=e603]:
+                    - generic [ref=e604]:
+                      - generic [ref=e605]: dim
+                      - generic: ⁡
+                    - generic [ref=e606]: F
+                  - generic [ref=e607]:
+                    - generic [ref=e608]: H
+                    - generic [ref=e609]: k
+                  - generic [ref=e610]: (
+                  - generic [ref=e611]:
+                    - generic [ref=e612]: K
+                    - generic [ref=e613]:
+                      - generic [ref=e614]: (
+                      - generic [ref=e615]: r
+                      - generic [ref=e616]: ","
+                      - generic [ref=e617]: ρ
+                      - generic [ref=e618]: )
+                  - generic [ref=e619]: )
+              - generic [ref=e620]:
+                - generic [ref=e621]: H(r, ρ) =
+                - generic [ref=e622]:
+                  - generic [ref=e623]:
+                    - text: dim
+                    - generic [ref=e628]: F
+                  - generic [ref=e632]:
+                    - text: H
+                    - generic [ref=e637]: k
+                  - text: (
+                  - generic [ref=e641]:
+                    - text: K
+                    - generic [ref=e647]: (r,ρ)
+                  - text: )
+            - text: assigns to each parameter pair the dimension of the homology vector space — the total count of independent
+            - generic [ref=e651]:
+              - math [ref=e653]:
+                - generic [ref=e656]: k
+              - generic [ref=e658]: k
+            - text: "-cycles present at that parameter value. It is a non-negative integer for each"
+            - generic [ref=e659]:
+              - math [ref=e661]:
+                - generic [ref=e663]:
+                  - generic [ref=e664]: (
+                  - generic [ref=e665]: r
+                  - generic [ref=e666]: ","
+                  - generic [ref=e667]: ρ
+                  - generic [ref=e668]: )
+              - generic [ref=e670]: (r, ρ)
+            - text: in the discretised parameter grid. A 2D heatmap of the Hilbert function visualises where homological features are present; ridges of elevated values in the heatmap indicate regions of parameter space where the data has consistent loop structure.
+          - paragraph [ref=e671]:
+            - strong [ref=e672]: The rank invariant
+            - generic [ref=e673]:
+              - math [ref=e675]:
+                - generic [ref=e677]:
+                  - generic [ref=e678]: ρ
+                  - generic [ref=e679]: (
+                  - generic [ref=e680]: p
+                  - generic [ref=e681]: ","
+                  - generic [ref=e682]: q
+                  - generic [ref=e683]: )
+                  - generic [ref=e684]: =
+                  - generic [ref=e685]: rank
+                  - generic [ref=e686]: (
+                  - generic [ref=e687]:
+                    - generic [ref=e688]: H
+                    - generic [ref=e689]: k
+                  - generic [ref=e690]: (
+                  - generic [ref=e691]:
+                    - generic [ref=e692]: K
+                    - generic [ref=e693]: p
+                  - generic [ref=e694]: )
+                  - generic [ref=e695]: →
+                  - generic [ref=e696]:
+                    - generic [ref=e697]: H
+                    - generic [ref=e698]: k
+                  - generic [ref=e699]: (
+                  - generic [ref=e700]:
+                    - generic [ref=e701]: K
+                    - generic [ref=e702]: q
+                  - generic [ref=e703]: )
+                  - generic [ref=e704]: )
+              - generic [ref=e705]:
+                - generic [ref=e706]: ρ(p, q) =
+                - generic [ref=e707]:
+                  - generic [ref=e708]: rank
+                  - text: (
+                  - generic [ref=e709]:
+                    - text: H
+                    - generic [ref=e714]: k
+                  - text: (
+                  - generic [ref=e718]:
+                    - text: K
+                    - generic [ref=e723]: p
+                  - text: ) →
+                - generic [ref=e727]:
+                  - generic [ref=e728]:
+                    - text: H
+                    - generic [ref=e733]: k
+                  - text: (
+                  - generic [ref=e737]:
+                    - text: K
+                    - generic [ref=e742]: q
+                  - text: ))
+            - text: for
+            - generic [ref=e746]:
+              - math [ref=e748]:
+                - generic [ref=e750]:
+                  - generic [ref=e751]: p
+                  - generic [ref=e752]: ≤
+                  - generic [ref=e753]: q
+              - generic [ref=e754]:
+                - generic [ref=e755]: p ≤
+                - generic [ref=e756]: q
+            - text: in the poset gives the number of
+            - generic [ref=e757]:
+              - math [ref=e759]:
+                - generic [ref=e762]: k
+              - generic [ref=e764]: k
+            - text: "-cycles at parameter"
+            - generic [ref=e765]:
+              - math [ref=e767]:
+                - generic [ref=e770]: p
+              - generic [ref=e772]: p
+            - text: that persist to parameter
+            - generic [ref=e773]:
+              - math [ref=e775]:
+                - generic [ref=e778]: q
+              - generic [ref=e780]: q
+            - text: . For a grid of parameter pairs, the rank invariant forms a 4D tensor, but it is typically examined as a family of 2D slices fixing two of the four parameters.
+          - paragraph [ref=e781]:
+            - strong [ref=e782]: Fibered bar-codes
+            - text: decompose the bifiltration into a family of one-parameter restrictions — essentially projecting the 2D parameter space onto one-parameter lines and computing a standard bar-code for each line. The collection of bar-codes across all lines (or a representative sample) characterises the global structure without requiring a single summary.
+          - 'heading "RIVET: Interactive Bipersistence Visualisation" [level=2] [ref=e783]'
+          - paragraph [ref=e784]:
+            - text: The
+            - strong [ref=e785]: RIVET
+            - text: software (Rivet Interprets Virtually Everything in Topology) is the primary interactive tool for two-parameter persistence analysis. RIVET takes a bifiltration as input and computes the minimal free resolution of the two-parameter module, from which the Hilbert function and rank invariant can be queried for any parameter pair in real time.
+          - paragraph [ref=e786]: RIVET’s interface displays the bifiltration’s 2D parameter space with the Hilbert function overlaid as a heatmap, and a “line query” tool that computes the fibered bar-code for any one-parameter line through the space. Moving the line query interactively reveals how the topological summary changes as you sweep through different combinations of scale emphasis and density threshold — the single most powerful diagnostic for understanding whether a topological feature is genuinely independent of density, or merely a density artefact visible at particular scale–density combinations.
+          - paragraph [ref=e787]:
+            - text: RIVET is available as a standalone executable and as a Python interface via
+            - code [ref=e788]: pyrivet
+            - text: ". For welfare-data applications, the typical workflow is: compute the bifiltration in Python (using a custom distance-matrix and kernel-density-estimate pipeline), export to RIVET’s input format, and use RIVET’s GUI for interactive exploration before extracting specific numerical invariants for reporting."
+          - heading "How This Module Connects" [level=2] [ref=e789]
+          - paragraph [ref=e790]:
+            - text: Multi-parameter persistence is the methodological innovation at the centre of
+            - strong [ref=e791]: Papers 3 and 4
+            - text: . Paper 3 develops a bifiltration framework for UKHLS welfare panel data that simultaneously filters by normalised welfare distance and by local density (estimated from the kernel density of the welfare variable distribution), providing the first formal test of whether detected poverty-cycle topology is density-independent. Paper 4 extends this to a three-parameter setting (adding survey wave as a temporal parameter), connecting multi-parameter persistence to the zigzag constructions from Module 7. Together, these two papers represent the frontier of applied two-parameter TDA in social science and constitute the principal technical contribution of the research programme to TDA methodology itself.
+          - region "Check Your Understanding" [ref=e792]:
+            - heading "Check Your Understanding" [level=2] [ref=e793]
+            - button "Why does the standard structure theorem fail for modules over ℤ², and what does this mean practically for a researcher who wants to summarise a bifiltration with a single number?" [ref=e796] [cursor=pointer]:
+              - generic [ref=e797]: +
+              - generic [ref=e798]: Why does the standard structure theorem fail for modules over ℤ², and what does this mean practically for a researcher who wants to summarise a bifiltration with a single number?
+            - button "In a bifiltration of welfare data by scale r and density ρ, you observe that a specific (r, ρ) cell has rank invariant value 1 while all adjacent cells have rank invariant 0. What does this isolated non-zero cell tell you about the data?" [ref=e801] [cursor=pointer]:
+              - generic [ref=e802]: +
+              - generic [ref=e803]: In a bifiltration of welfare data by scale r and density ρ, you observe that a specific (r, ρ) cell has rank invariant value 1 while all adjacent cells have rank invariant 0. What does this isolated non-zero cell tell you about the data?
+            - button "RIVET displays the Hilbert function of a bifiltration as a 2D heatmap. Describe what a \"ridge\" of elevated Hilbert-function values running diagonally from low-(r, low-ρ) to high-(r, high-ρ) tells you, versus a \"plateau\" that is elevated across a broad region of the parameter space." [ref=e806] [cursor=pointer]:
+              - generic [ref=e807]: +
+              - generic [ref=e808]: RIVET displays the Hilbert function of a bifiltration as a 2D heatmap. Describe what a "ridge" of elevated Hilbert-function values running diagonally from low-(r, low-ρ) to high-(r, high-ρ) tells you, versus a "plateau" that is elevated across a broad region of the parameter space.
+          - button "Mark this module as complete" [ref=e811] [cursor=pointer]: Mark as complete
+        - complementary "Module navigation sidebar" [ref=e812]:
+          - navigation "Table of contents" [ref=e813]:
+            - group [ref=e814]:
+              - generic "Contents ▾" [ref=e815] [cursor=pointer]
+          - generic [ref=e816]:
+            - separator [ref=e817]
+            - heading "Related" [level=2] [ref=e818]
+            - generic [ref=e819]:
+              - heading "Papers" [level=3] [ref=e820]
+              - list [ref=e821]:
+                - listitem [ref=e822]:
+                  - link "Paper 3" [ref=e823] [cursor=pointer]:
+                    - /url: /tda/papers/paper-3/
+                - listitem [ref=e824]:
+                  - link "Paper 4" [ref=e825] [cursor=pointer]:
+                    - /url: /tda/papers/paper-4/
+            - generic [ref=e826]:
+              - heading "Methods" [level=3] [ref=e827]
+              - list [ref=e828]:
+                - listitem [ref=e829]:
+                  - link "multi-parameter-persistence" [ref=e830] [cursor=pointer]:
+                    - /url: /tda/methods/multi-parameter-persistence/
+      - navigation "Module navigation" [ref=e831]:
+        - generic [ref=e832]:
+          - link "Previous module Zigzag Persistence" [ref=e833] [cursor=pointer]:
+            - /url: /learn/tda-practitioners/7/
+            - generic [ref=e834]: ←
+            - generic [ref=e835]: Previous module
+            - generic [ref=e836]: Zigzag Persistence
+          - link "Next module Wasserstein and Landscape Distances" [ref=e837] [cursor=pointer]:
+            - /url: /learn/tda-practitioners/9/
+            - generic [ref=e838]: →
+            - generic [ref=e839]: Next module
+            - generic [ref=e840]: Wasserstein and Landscape Distances
+        - link "↑ Back to Tda Practitioners" [ref=e842] [cursor=pointer]:
+          - /url: /learn/
+    - contentinfo [ref=e843]:
+      - contentinfo [ref=e844]:
+        - generic [ref=e845]:
+          - generic [ref=e846]:
+            - paragraph [ref=e847]: © 2026 zktheory.org
+            - paragraph [ref=e848]: "[Institutional affiliation]"
+          - navigation "External profiles and contact" [ref=e849]:
+            - link "ORCID researcher profile (external site)" [ref=e850] [cursor=pointer]:
+              - /url: "#orcid-placeholder"
+              - text: ORCID
+            - link "GitHub repository (external site)" [ref=e851] [cursor=pointer]:
+              - /url: "#github-placeholder"
+              - text: GitHub
+            - link "Google Scholar profile (external site)" [ref=e852] [cursor=pointer]:
+              - /url: "#scholar-placeholder"
+              - text: Google Scholar
+            - link "Contact" [ref=e853] [cursor=pointer]:
+              - /url: "#contact-placeholder"
+          - paragraph [ref=e854]:
+            - text: Built with
+            - link "Astro web framework (external site)" [ref=e855] [cursor=pointer]:
+              - /url: https://astro.build
+              - text: Astro

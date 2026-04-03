@@ -5,10 +5,9 @@ module_number: 2
 core_concept: 'Normalisation, distance matrices, and subsampling strategies that affect TDA output'
 connections:
   chapters: []
-  chapters: []
   papers: [1, 2]
-  modules: [3]
-  methods: ['persistent-homology']  methods: ['persistent-homology']
+  modules: ['path4-module-3']
+  methods: ['persistent-homology']
 check_understanding:
   - question: 'Why does z-score normalisation give each variable equal influence on pairwise distances, and when might applying it be a substantive research error rather than a neutral correction?'
     answer: 'Z-score normalisation divides each column by its standard deviation, rescaling all variables so that one unit of distance corresponds to one standard deviation regardless of the original measurement scale. In Euclidean space, pairwise distances then reflect equal weighting across all dimensions. This is appropriate when the variables are theoretically commensurable — when the research question concerns how households differ jointly across all welfare dimensions. It becomes a substantive error when scale carries meaning: if the height of a poverty spike (magnitude of income shock) is theoretically more important than its breadth (duration), equalising income and duration in the distance metric prematurely discards that asymmetry. The choice of normalisation encodes a theoretical claim about what kind of variation matters.'

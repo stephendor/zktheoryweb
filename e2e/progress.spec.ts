@@ -126,10 +126,10 @@ test('progress bar reflects completion of multiple modules', async ({ page }) =>
     await anyProgressBar.waitFor({ state: 'visible', timeout: 10_000 });
   }
 
-  // aria-valuenow must be > 0. PathProgressBar reads localStorage in a
+  // aria-valuenow must be present and > 0. PathProgressBar reads localStorage in a
   // useEffect after mount, so we wait for the value to reflect the writes
   // made on previous pages before asserting.
-  await expect(chosenBar).not.toHaveAttribute('aria-valuenow', '0', {
+  await expect(chosenBar).toHaveAttribute('aria-valuenow', /^(?!0$)\d+$/, {
     timeout: 8_000,
   });
 });

@@ -1,0 +1,435 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation "Main navigation" [ref=e5]:
+        - generic [ref=e6]:
+          - link "zktheory.org — go to home page" [ref=e7] [cursor=pointer]:
+            - /url: /
+            - text: zktheory.org
+          - button "Search site" [ref=e8] [cursor=pointer]:
+            - generic [ref=e9]: ⌕
+            - generic [ref=e10]: Search
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - link "Home" [ref=e13] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e14]:
+              - link "Counting Lives" [ref=e15] [cursor=pointer]:
+                - /url: /counting-lives/
+            - listitem [ref=e16]:
+              - link "TDA" [ref=e17] [cursor=pointer]:
+                - /url: /tda/
+            - listitem [ref=e18]:
+              - link "Learn" [ref=e19] [cursor=pointer]:
+                - /url: /learn/
+            - listitem [ref=e20]:
+              - link "Writing" [ref=e21] [cursor=pointer]:
+                - /url: /writing/
+            - listitem [ref=e22]:
+              - link "About" [ref=e23] [cursor=pointer]:
+                - /url: /about/
+    - main [ref=e24]:
+      - navigation "Breadcrumb" [ref=e25]:
+        - list [ref=e26]:
+          - listitem [ref=e27]:
+            - link "Mathematics Of Poverty" [ref=e28] [cursor=pointer]:
+              - /url: /learn/
+            - text: /
+          - listitem [ref=e29]: The Welfare Formula
+      - 'generic "Module progress: 4 of 8" [ref=e30]':
+        - list "Modules in this path" [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Drawing the Line" [ref=e33] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/1/
+              - generic [ref=e34]: "1"
+              - generic [ref=e35]: Drawing the Line
+          - listitem [ref=e36]:
+            - link "The Average Person" [ref=e37] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/2/
+              - generic [ref=e38]: "2"
+              - generic [ref=e39]: The Average Person
+          - listitem [ref=e40]:
+            - link "Counting What Counts" [ref=e41] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/3/
+              - generic [ref=e42]: "3"
+              - generic [ref=e43]: Counting What Counts
+          - listitem [ref=e44]:
+            - link "The Welfare Formula (current)" [ref=e45] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/4/
+              - generic [ref=e46]: "4"
+              - generic [ref=e47]: The Welfare Formula (current)
+          - listitem [ref=e48]:
+            - link "Optimisation and Control" [ref=e49] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/5/
+              - generic [ref=e50]: "5"
+              - generic [ref=e51]: Optimisation and Control
+          - listitem [ref=e52]:
+            - link "The Score" [ref=e53] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/6/
+              - generic [ref=e54]: "6"
+              - generic [ref=e55]: The Score
+          - listitem [ref=e56]:
+            - link "The Black Box" [ref=e57] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/7/
+              - generic [ref=e58]: "7"
+              - generic [ref=e59]: The Black Box
+          - listitem [ref=e60]:
+            - link "Counter-Mathematics" [ref=e61] [cursor=pointer]:
+              - /url: /learn/mathematics-of-poverty/8/
+              - generic [ref=e62]: "8"
+              - generic [ref=e63]: Counter-Mathematics
+      - generic [ref=e66]:
+        - article "The Welfare Formula" [ref=e67]:
+          - heading "The Welfare Formula" [level=1] [ref=e68]
+          - paragraph [ref=e69]: Equivalisation scales translate household composition into a single income denominator — and each formula embeds a theory of economies of scale
+          - generic "Interactive tool" [ref=e70]:
+            - generic [ref=e72]:
+              - generic [ref=e74]:
+                - img "Benefit taper calculator chart showing UC amount and net income against gross monthly earnings" [ref=e77]
+                - group "Chart controls" [ref=e80]:
+                  - group "Household" [ref=e81]:
+                    - generic [ref=e82]: Household
+                    - generic [ref=e83] [cursor=pointer]:
+                      - 'radio "No housing element Work allowance: £673/mo" [checked] [ref=e84]'
+                      - text: No housing element
+                      - generic [ref=e85]: "Work allowance: £673/mo"
+                    - generic [ref=e86] [cursor=pointer]:
+                      - 'radio "With housing element Work allowance: £404/mo" [ref=e87]'
+                      - text: With housing element
+                      - generic [ref=e88]: "Work allowance: £404/mo"
+                  - group "Comparison" [ref=e89]:
+                    - generic [ref=e90]: Comparison
+                    - generic [ref=e91] [cursor=pointer]:
+                      - checkbox "Show pre-2021 (63% taper)" [ref=e92]
+                      - text: Show pre-2021 (63% taper)
+                  - generic [ref=e93]:
+                    - generic [ref=e94]: "Spotlight earnings: Off"
+                    - 'slider "Spotlight earnings: Off" [ref=e95] [cursor=pointer]': "0"
+                - generic [ref=e96]:
+                  - paragraph [ref=e97]: At the current 55% taper, you keep 45p of every £1 earned above the work allowance threshold.
+                  - paragraph [ref=e98]:
+                    - text: See
+                    - link "Ch. 16 — The Score" [ref=e99] [cursor=pointer]:
+                      - /url: /counting-lives/ch16-the-score
+                    - text: for how taper rates relate to algorithmic benefit design.
+                - generic [ref=e100]: "Work allowance: £673. UC exhausts at £1390 gross earnings. Net income at exhaustion: £1390.00."
+              - group [ref=e101]:
+                - generic "Show text description" [ref=e102] [cursor=pointer]
+          - heading "Same Income, Different Lives" [level=2] [ref=e103]
+          - paragraph [ref=e104]: Consider two households, each reporting annual income of £24,000. The first is a lone adult renting a one-bedroom flat in Leeds. The second is a couple with two school-age children renting a three-bedroom house in the same city. Both households appear identically in any analysis that uses cash income without adjustment. Both occupy the same position on the income distribution. Both are equally far from the 60%-of-median poverty line.
+          - paragraph [ref=e105]: Neither observation is useful for understanding either household’s material circumstances. The couple’s £24,000 must cover rent for a larger property, food for four, clothing for growing children, school transport, and childcare. The lone adult’s £24,000 covers none of these additional costs. To compare their living standards, income must be converted to a common denominator that reflects how purchasing power is distributed across different-sized households. This conversion is equivalisation, and the formula used to perform it embeds a complete — if largely unstated — theory of domestic economics.
+          - heading "The Equivalisation Formula" [level=2] [ref=e106]
+          - paragraph [ref=e107]:
+            - text: The basic structure of an equivalisation scale is simple. Households are assigned an
+            - strong [ref=e108]: equivalence factor
+            - generic [ref=e109]:
+              - math [ref=e111]:
+                - generic [ref=e114]: S
+              - generic [ref=e116]: S
+            - text: based on their composition, and the household’s actual income
+            - generic [ref=e117]:
+              - math [ref=e119]:
+                - generic [ref=e122]: "y"
+              - generic [ref=e124]: "y"
+            - text: is divided by this factor to produce equivalised income
+            - generic [ref=e125]:
+              - math [ref=e127]:
+                - generic [ref=e130]:
+                  - generic [ref=e131]: "y"
+                  - generic [ref=e132]: e
+              - generic [ref=e135]:
+                - text: "y"
+                - generic [ref=e140]: e
+            - text: ":"
+          - generic [ref=e145]:
+            - math [ref=e147]:
+              - generic [ref=e149]:
+                - generic [ref=e150]:
+                  - generic [ref=e151]: "y"
+                  - generic [ref=e152]: e
+                - generic [ref=e153]: =
+                - generic [ref=e154]:
+                  - generic [ref=e155]: "y"
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: S
+                    - generic [ref=e158]: (
+                    - generic [ref=e159]:
+                      - generic [ref=e160]: "n"
+                      - generic [ref=e161]: a
+                    - generic [ref=e162]: ","
+                    - generic [ref=e163]:
+                      - generic [ref=e164]: "n"
+                      - generic [ref=e165]: c
+                    - generic [ref=e166]: )
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169]:
+                  - text: "y"
+                  - generic [ref=e174]: e
+                - text: =
+              - generic [ref=e183]:
+                - generic [ref=e184]:
+                  - text: S(
+                  - generic [ref=e185]:
+                    - text: "n"
+                    - generic [ref=e190]: a
+                  - text: ","
+                  - generic [ref=e194]:
+                    - text: "n"
+                    - generic [ref=e199]: c
+                  - text: )
+                - generic [ref=e204]: "y"
+          - paragraph [ref=e208]:
+            - text: where
+            - generic [ref=e209]:
+              - math [ref=e211]:
+                - generic [ref=e214]:
+                  - generic [ref=e215]: "n"
+                  - generic [ref=e216]: a
+              - generic [ref=e219]:
+                - text: "n"
+                - generic [ref=e224]: a
+            - text: is the number of adults and
+            - generic [ref=e228]:
+              - math [ref=e230]:
+                - generic [ref=e233]:
+                  - generic [ref=e234]: "n"
+                  - generic [ref=e235]: c
+              - generic [ref=e238]:
+                - text: "n"
+                - generic [ref=e243]: c
+            - text: is the number of children. Different scales assign different values to the function
+            - generic [ref=e247]:
+              - math [ref=e249]:
+                - generic [ref=e252]: S
+              - generic [ref=e254]: S
+            - text: .
+          - paragraph [ref=e255]:
+            - text: The
+            - strong [ref=e256]: original OECD scale
+            - text: ", introduced in the 1980s and used extensively in cross-national comparison, assigns:"
+          - generic [ref=e258]:
+            - math [ref=e260]:
+              - generic [ref=e262]:
+                - generic [ref=e263]: S
+                - generic [ref=e264]: =
+                - generic [ref=e265]: "1.0"
+                - generic [ref=e266]: +
+                - generic [ref=e267]: "0.7"
+                - generic [ref=e268]: (
+                - generic [ref=e269]:
+                  - generic [ref=e270]: "n"
+                  - generic [ref=e271]: a
+                - generic [ref=e272]: −
+                - generic [ref=e273]: "1"
+                - generic [ref=e274]: )
+                - generic [ref=e275]: +
+                - generic [ref=e276]: "0.5"
+                - generic [ref=e277]: ⋅
+                - generic [ref=e278]:
+                  - generic [ref=e279]: "n"
+                  - generic [ref=e280]: c
+            - generic [ref=e281]:
+              - generic [ref=e282]: S =
+              - generic [ref=e283]: 1.0 +
+              - generic [ref=e284]:
+                - text: 0.7(
+                - generic [ref=e285]:
+                  - text: "n"
+                  - generic [ref=e290]: a
+                - text: −
+              - generic [ref=e294]: 1) +
+              - generic [ref=e295]: 0.5 ⋅
+              - generic [ref=e297]:
+                - text: "n"
+                - generic [ref=e302]: c
+          - paragraph [ref=e306]:
+            - text: A couple with no children has
+            - generic [ref=e307]:
+              - math [ref=e309]:
+                - generic [ref=e311]:
+                  - generic [ref=e312]: S
+                  - generic [ref=e313]: =
+                  - generic [ref=e314]: "1.7"
+              - generic [ref=e315]:
+                - generic [ref=e316]: S =
+                - generic [ref=e317]: "1.7"
+            - text: ; a couple with two children has
+            - generic [ref=e318]:
+              - math [ref=e320]:
+                - generic [ref=e322]:
+                  - generic [ref=e323]: S
+                  - generic [ref=e324]: =
+                  - generic [ref=e325]: "2.7"
+              - generic [ref=e326]:
+                - generic [ref=e327]: S =
+                - generic [ref=e328]: "2.7"
+            - text: . This means the couple with children needs 2.7 times the income of a lone adult to achieve the same living standard.
+          - paragraph [ref=e329]:
+            - text: The
+            - strong [ref=e330]: Modified OECD scale
+            - text: "— adopted by Eurostat and by the UK’s Households Below Average Income series in 2005 — revises downward the weights for both additional adults and children:"
+          - generic [ref=e332]:
+            - math [ref=e334]:
+              - generic [ref=e336]:
+                - generic [ref=e337]: S
+                - generic [ref=e338]: =
+                - generic [ref=e339]: "1.0"
+                - generic [ref=e340]: +
+                - generic [ref=e341]: "0.5"
+                - generic [ref=e342]: (
+                - generic [ref=e343]:
+                  - generic [ref=e344]: "n"
+                  - generic [ref=e345]: a
+                - generic [ref=e346]: −
+                - generic [ref=e347]: "1"
+                - generic [ref=e348]: )
+                - generic [ref=e349]: +
+                - generic [ref=e350]: "0.3"
+                - generic [ref=e351]: ⋅
+                - generic [ref=e352]:
+                  - generic [ref=e353]: "n"
+                  - generic [ref=e354]: c
+            - generic [ref=e355]:
+              - generic [ref=e356]: S =
+              - generic [ref=e357]: 1.0 +
+              - generic [ref=e358]:
+                - text: 0.5(
+                - generic [ref=e359]:
+                  - text: "n"
+                  - generic [ref=e364]: a
+                - text: −
+              - generic [ref=e368]: 1) +
+              - generic [ref=e369]: 0.3 ⋅
+              - generic [ref=e371]:
+                - text: "n"
+                - generic [ref=e376]: c
+          - paragraph [ref=e380]:
+            - text: Under this scale the same couple with two children has
+            - generic [ref=e381]:
+              - math [ref=e383]:
+                - generic [ref=e385]:
+                  - generic [ref=e386]: S
+                  - generic [ref=e387]: =
+                  - generic [ref=e388]: "2.1"
+              - generic [ref=e389]:
+                - generic [ref=e390]: S =
+                - generic [ref=e391]: "2.1"
+            - text: ", not 2.7. The same £24,000 household income produces a higher equivalised figure, placing the family further from the poverty threshold. The change in scale moved hundreds of thousands of children out of official poverty in the UK without altering a single household’s actual income — purely by revising the assumed weight of a child from 0.5 to 0.3."
+          - heading "The McClements Scale and Political History" [level=2] [ref=e392]
+          - paragraph [ref=e393]:
+            - text: Before the Modified OECD scale, the UK used the
+            - strong [ref=e394]: McClements scale
+            - text: ", developed by D.J. McClements for the DHSS in 1977 from UK Family Expenditure Survey data. McClements assigned weights separately for children by age, on the grounds that older children consume more than younger ones:"
+          - table [ref=e395]:
+            - rowgroup [ref=e396]:
+              - row "Household member McClements weight" [ref=e397]:
+                - columnheader "Household member" [ref=e398]
+                - columnheader "McClements weight" [ref=e399]
+            - rowgroup [ref=e400]:
+              - row "First adult 1.00" [ref=e401]:
+                - cell "First adult" [ref=e402]
+                - cell "1.00" [ref=e403]
+              - row "Spouse 0.57" [ref=e404]:
+                - cell "Spouse" [ref=e405]
+                - cell "0.57" [ref=e406]
+              - row "Child aged 0–1 0.09" [ref=e407]:
+                - cell "Child aged 0–1" [ref=e408]
+                - cell "0.09" [ref=e409]
+              - row "Child aged 5–7 0.21" [ref=e410]:
+                - cell "Child aged 5–7" [ref=e411]
+                - cell "0.21" [ref=e412]
+              - row "Child aged 13–15 0.36" [ref=e413]:
+                - cell "Child aged 13–15" [ref=e414]
+                - cell "0.36" [ref=e415]
+          - paragraph [ref=e416]:
+            - text: "The granularity appeared precise and empirically grounded. In practice, the weights reflected 1970s patterns of household expenditure that aged rapidly: they were based on what households"
+            - emphasis [ref=e417]: did
+            - text: spend, not what they
+            - emphasis [ref=e418]: needed
+            - text: to spend, and they were derived from a period before the expansion of formal childcare, before the internet, and before the sharp rise in children’s clothing and activity costs.
+          - paragraph [ref=e419]: "The McClements scale’s replacement with the Modified OECD scale in 2005 was a decision made by statisticians in consultation with the DWP, not a parliamentary vote. Yet it reclassified millions of households. The shift illustrates the central point of this module: equivalisation scales are not technical corrections to the data. They are policy decisions that determine who is counted as poor."
+          - heading "Economies of Scale and Hidden Assumptions" [level=2] [ref=e420]
+          - paragraph [ref=e421]:
+            - text: The sub-linear structure of all equivalisation scales — where the equivalence factor grows less than proportionally with household size — reflects the assumption of
+            - strong [ref=e422]: economies of scale
+            - text: "in household consumption. Larger households share fixed costs: accommodation, heating, appliances, and shared food preparation are assumed to cost less per person in a larger group than in a smaller one."
+          - paragraph [ref=e423]: This assumption is empirically contested. Families with young children face significant fixed costs — nappies, pushchairs, car seats, childcare — that do not exhibit economies of scale. Families in poverty have less capacity to realise economies of scale because they lack the capital to buy in bulk or invest in energy-efficient equipment. The sub-linear assumption systematically flatters the equivalised incomes of larger households, most of whom are families, at the expense of measuring their true material circumstances.
+          - heading "A Notional Tool for Scale Comparison" [level=2] [ref=e424]
+          - paragraph [ref=e425]: "No interactive is embedded in this module. A useful analytic exercise would be a tool that applies the three major scales — original OECD, Modified OECD, and McClements — to the same household income distribution and displays the resulting poverty rates side by side. The visual divergence — particularly for households with children — would make explicit that poverty statistics are not measurements of a fixed quantity but functions of the scale selected. Selecting a different scale is not cheating: it is an acknowledgement that the original selection was itself a choice."
+          - heading "How This Module Connects" [level=2] [ref=e426]
+          - paragraph [ref=e427]:
+            - text: The political history of equivalisation — from McClements through Modified OECD — and its consequences for official poverty statistics are examined in
+            - strong [ref=e428]: Chapter 5
+            - text: of
+            - emphasis [ref=e429]: Counting Lives
+            - text: ", which reconstructs the bureaucratic decisions behind each scale revision and shows how they interacted with the political imperatives of successive governments."
+            - strong [ref=e430]: Chapter 6
+            - text: "analyses the specific consequences of the 2005 switch to the Modified OECD scale, demonstrating that the timing of the revision — mid-way through New Labour’s child poverty reduction programme — was not coincidental: the new scale produced more favourable headline statistics at the cost of understating the deprivation of larger families."
+          - region "Check Your Understanding" [ref=e431]:
+            - heading "Check Your Understanding" [level=2] [ref=e432]
+            - button "What problem does equivalisation solve, and why is the solution necessarily a political act?" [ref=e435] [cursor=pointer]:
+              - generic [ref=e436]: +
+              - generic [ref=e437]: What problem does equivalisation solve, and why is the solution necessarily a political act?
+            - button "What is the difference between the original OECD scale and the Modified OECD scale, and what did the change assume about children?" [ref=e440] [cursor=pointer]:
+              - generic [ref=e441]: +
+              - generic [ref=e442]: What is the difference between the original OECD scale and the Modified OECD scale, and what did the change assume about children?
+            - button "How can two families with identical income and household composition but different benefit entitlements appear at different positions on the poverty distribution?" [ref=e445] [cursor=pointer]:
+              - generic [ref=e446]: +
+              - generic [ref=e447]: How can two families with identical income and household composition but different benefit entitlements appear at different positions on the poverty distribution?
+          - button "Mark this module as complete" [ref=e450] [cursor=pointer]: Mark as complete
+        - complementary "Module navigation sidebar" [ref=e451]:
+          - navigation "Table of contents" [ref=e452]:
+            - group [ref=e453]:
+              - generic "Contents ▾" [ref=e454] [cursor=pointer]
+          - generic [ref=e455]:
+            - separator [ref=e456]
+            - heading "Related" [level=2] [ref=e457]
+            - generic [ref=e458]:
+              - heading "Chapters" [level=3] [ref=e459]
+              - list [ref=e460]:
+                - listitem [ref=e461]:
+                  - link "Chapter 5" [ref=e462] [cursor=pointer]:
+                    - /url: /counting-lives/chapters/ch-05/
+                - listitem [ref=e463]:
+                  - link "Chapter 6" [ref=e464] [cursor=pointer]:
+                    - /url: /counting-lives/chapters/ch-06/
+      - navigation "Module navigation" [ref=e465]:
+        - generic [ref=e466]:
+          - link "Previous module Counting What Counts" [ref=e467] [cursor=pointer]:
+            - /url: /learn/mathematics-of-poverty/3/
+            - generic [ref=e468]: ←
+            - generic [ref=e469]: Previous module
+            - generic [ref=e470]: Counting What Counts
+          - link "Next module Optimisation and Control" [ref=e471] [cursor=pointer]:
+            - /url: /learn/mathematics-of-poverty/5/
+            - generic [ref=e472]: →
+            - generic [ref=e473]: Next module
+            - generic [ref=e474]: Optimisation and Control
+        - link "↑ Back to Mathematics Of Poverty" [ref=e476] [cursor=pointer]:
+          - /url: /learn/
+    - contentinfo [ref=e477]:
+      - contentinfo [ref=e478]:
+        - generic [ref=e479]:
+          - generic [ref=e480]:
+            - paragraph [ref=e481]: © 2026 zktheory.org
+            - paragraph [ref=e482]: "[Institutional affiliation]"
+          - navigation "External profiles and contact" [ref=e483]:
+            - link "ORCID researcher profile (external site)" [ref=e484] [cursor=pointer]:
+              - /url: "#orcid-placeholder"
+              - text: ORCID
+            - link "GitHub repository (external site)" [ref=e485] [cursor=pointer]:
+              - /url: "#github-placeholder"
+              - text: GitHub
+            - link "Google Scholar profile (external site)" [ref=e486] [cursor=pointer]:
+              - /url: "#scholar-placeholder"
+              - text: Google Scholar
+            - link "Contact" [ref=e487] [cursor=pointer]:
+              - /url: "#contact-placeholder"
+          - paragraph [ref=e488]:
+            - text: Built with
+            - link "Astro web framework (external site)" [ref=e489] [cursor=pointer]:
+              - /url: https://astro.build
+              - text: Astro

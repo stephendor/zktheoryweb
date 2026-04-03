@@ -86,6 +86,10 @@ function BenefitTaperChart({
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<TooltipHandle | null>(null);
+  // Tracks whether the last highlight change was driven by pointer hover or the
+  // slider. The spotlight useEffect skips announcing when source is 'hover'
+  // because the pointermove handler already called onHover directly.
+  const highlightSourceRef = useRef<'hover' | 'slider'>('slider');
 
   const innerW = width - MARGIN.left - MARGIN.right;
   const innerH = height - MARGIN.top - MARGIN.bottom;
@@ -421,11 +425,13 @@ function BenefitTaperChart({
         onHover(
           `Gross earnings £${nearest.grossEarnings.toFixed(0)}, UC £${nearest.ucAmount.toFixed(2)}, net income £${nearest.netIncome.toFixed(2)}, effective marginal rate ${nearest.effectiveMarginalRate} percent`,
         );
+        highlightSourceRef.current = 'hover';
         onHighlight(nearest.grossEarnings);
       })
       .on('pointerleave', () => {
         const tt = tooltipRef.current;
         if (tt) hideTooltip(tt);
+        highlightSourceRef.current = 'hover';
         onHighlight(null);
       });
 
@@ -455,6 +461,13 @@ function BenefitTaperChart({
   // ── ARIA spotlight announcement (slider-driven) ────────────────────────────
 
   useEffect(() => {
+    // Skip when the highlight was set by pointer hover — pointermove already
+    // called onHover directly. Reset source to 'slider' so the next slider
+    // interaction is announced.
+    if (highlightSourceRef.current === 'hover') {
+      highlightSourceRef.current = 'slider';
+      return;
+    }
     if (highlightedEarnings === null) return;
     const nearest = currentSchedule.reduce((prev, curr) =>
       Math.abs(curr.grossEarnings - highlightedEarnings) <
