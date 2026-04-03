@@ -27,3 +27,4 @@ storybook-static/
 # Playwright
 playwright-report/
 test-results/
+.playwright-mcp/
