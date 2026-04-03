@@ -1,0 +1,79 @@
+---
+title: 'Homology: Counting Holes'
+path: 'topology-social-scientists'
+module_number: 4
+core_concept: 'Homology groups count topological features — components, loops, voids — that persist across scales'
+connections:
+  chapters: []
+  papers: [1]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'What does the zeroth Betti number $\beta_0$ measure, and what would $\beta_0 = 3$ tell you about a poverty dataset?'
+    answer: '$\beta_0$ counts the number of connected components — separate, isolated clusters with no path between them. $\beta_0 = 3$ would indicate that the point cloud splits into three distinct groups with no intermediate households bridging them. In a poverty dataset, this could suggest three structurally separated segments of the population: for example, chronically poor households, transiently poor households, and never-poor households that form no continuum between them.'
+  - question: 'What is a boundary operator, and why is the equation $\partial \circ \partial = 0$ fundamental to homology?'
+    answer: 'The boundary operator $\partial_k$ maps a $k$-simplex to the formal sum of its $(k-1)$-dimensional faces. The equation $\partial_{k-1} \circ \partial_k = 0$ says that the boundary of a boundary is always empty — a triangle''s boundary (three edges) has boundary (the six endpoint vertices, each appearing twice and cancelling). This algebraic identity is what makes it possible to define cycles (chains whose boundary is zero) and boundaries (chains that are themselves boundaries of higher-dimensional chains), and to quotient one by the other to get homology.'
+  - question: 'How does homology differ from homotopy as a method of classifying topological spaces, and why is homology preferred computationally?'
+    answer: 'Homotopy classification uses homotopy groups $\pi_n$, which track how $n$-dimensional spheres can be continuously mapped into a space. These groups are generally very difficult to compute — even $\pi_3(S^2)$ (the third homotopy group of a sphere) is non-trivial. Homology groups $H_n$ are defined algebraically via chains and boundaries, reduce to linear algebra over a field, and can be computed efficiently using matrix reduction algorithms. For point-cloud data with thousands of points, homology computation is tractable; homotopy computation is not.'
+status: 'drafting'
+---
+
+## What Does a Hole in Data Mean?
+
+"There is a loop in the poverty data." What could that sentence possibly mean? Survey data on income and consumption trajectories does not obviously contain loops. Trajectories are sequences of states over time, not paths in geometric space. Yet when we represent those trajectories as a point cloud in high-dimensional variable space and examine the *shape* of the resulting cloud, we may find cycles — closed paths through the data that cannot be contracted to a point without leaving the data's support. These topological cycles mark structural features of the population: regions where households concentrated on two opposing sides of a threshold with almost nobody in between, or closed circuits of mutual deprivation reinforcement. Homology is the mathematical tool that counts and classifies these features precisely, and it turns out to give reproducible, computable answers.
+
+## Chains, Cycles, and Boundaries
+
+To count holes algebraically, we first need the language of **chains**. A **$k$-chain** is a formal linear combination of $k$-simplices with coefficients in some field (usually $\mathbb{Z}/2\mathbb{Z}$, which makes arithmetic simple: coefficients are 0 or 1, and addition is modulo 2). Concretely, a 1-chain is a formal sum of edges; a 2-chain is a formal sum of triangles.
+
+The **boundary operator** $\partial_k$ maps $k$-chains to $(k-1)$-chains: it sends a $k$-simplex $[v_0, v_1, \ldots, v_k]$ to the alternating sum of its faces:
+
+$$
+\partial_k [v_0, v_1, \ldots, v_k] = \sum_{i=0}^{k} (-1)^i [v_0, \ldots, \hat{v}_i, \ldots, v_k],
+$$
+
+where $\hat{v}_i$ means the vertex $v_i$ is omitted. For example, the boundary of a triangle $[A, B, C]$ is the chain $[B,C] - [A,C] + [A,B]$ — its three edges, with alternating signs. Working over $\mathbb{Z}/2\mathbb{Z}$ (where $-1 = 1$), this simplifies to $[A,B] + [B,C] + [A,C]$: just the three edges.
+
+The crucial fact is:
+
+$$
+\partial_{k-1} \circ \partial_k = 0.
+$$
+
+The boundary of a boundary is always zero. A triangle's boundary consists of three edges; each edge's boundary consists of two vertices; but in the sum, every vertex appears exactly twice and cancels. This algebraic identity is what makes it possible to define a meaningful notion of "hole".
+
+## Cycles, Boundaries, and Homology Groups
+
+We say a $k$-chain $c$ is a **$k$-cycle** if $\partial_k c = 0$ — its boundary is zero. Informally, cycles are chains that "close up": a loop of edges enclosing no filled triangle, or a closed surface enclosing no filled solid. We say $c$ is a **$k$-boundary** if there is some $(k+1)$-chain $d$ such that $c = \partial_{k+1} d$ — $c$ is the boundary of something higher-dimensional.
+
+Since $\partial \circ \partial = 0$, every boundary is a cycle. But not every cycle is a boundary: some cycles enclose genuine holes that are not filled by higher-dimensional simplices. The **$k$th homology group** captures exactly this distinction:
+
+$$
+H_k(K) = \ker(\partial_k) \,/\, \operatorname{im}(\partial_{k+1}).
+$$
+
+The kernel $\ker(\partial_k)$ is the group of $k$-cycles; the image $\operatorname{im}(\partial_{k+1})$ is the group of $k$-boundaries. The quotient assigns two cycles to the same homology class if and only if they differ only by a boundary — that is, if you can deform one into the other by adding the boundary of some filled region.
+
+## Betti Numbers
+
+The **$k$th Betti number** $\beta_k$ is the rank of the $k$th homology group — informally, the number of independent $k$-dimensional holes:
+
+$$
+\beta_0 = \text{number of connected components}, \quad \beta_1 = \text{number of independent loops}, \quad \beta_2 = \text{number of enclosed voids.}
+$$
+
+A point cloud with $\beta_0 = 1$, $\beta_1 = 0$ is a single connected blob with no loops — a simple cluster. A cloud with $\beta_0 = 1$, $\beta_1 = 1$ is connected but contains one loop: two distinguishable pathways between points that do not merge. A cloud with $\beta_1 = 2$ contains two independent loops — perhaps two distinct cyclical patterns within the population.
+
+These numbers are computable from the simplicial complex via **matrix reduction**: the boundary operator $\partial_k$ becomes a matrix, and Betti numbers are determined by the ranks of this matrix and its predecessor. The computation reduces to linear algebra over a finite field, which is efficient even for large datasets.
+
+## What Homology Does Not Tell You
+
+Homology is sensitive to topology, not geometry. It cannot tell you the *size* of a hole or how far apart the clusters are — only how many there are and their dimensional character. Two complexes with $\beta_1 = 1$ may have loops of very different scales: one might be a small local cycle within a cluster, the other a global loop connecting distant regions of the data. Persistent homology, introduced in Module 5, addresses this limitation by tracking how Betti numbers change as the scale parameter $r$ varies, associating each topological feature with a birth scale and a death scale.
+
+## A Notional Interactive
+
+A useful thought experiment for this module: take a simplicial complex with two clusters and one loop, as described above. Now remove one triangle from the complex. Has $\beta_0$ changed? Has $\beta_1$ changed? (Probably not, unless the triangle was the only face filling a cycle.) Now remove an edge. Under what conditions does removing that edge increase $\beta_1$ (exposing a new loop) versus increase $\beta_0$ (disconnecting a component) versus leave both unchanged? Working through these cases manually builds the intuition that homology tracks global structure, not local geometry. A future interactive will automate this exploration, allowing you to click to add or remove simplices and watch the Betti numbers update in real time.
+
+## How This Module Connects
+
+The homology groups and Betti numbers computed here are the primary topological invariants used throughout **Paper 1** of the research portfolio, which applies homological analysis to poverty panel data from the British Household Panel Survey and Understanding Society. Paper 1's central empirical claim is that the persistent $\beta_1 > 0$ observed in the poverty trajectory point cloud at moderate scales provides evidence for a structural poverty trap — a closed cycle in the space of household trajectories that standard Markov-chain analysis, which implicitly assumes $\beta_1 = 0$, cannot detect. The **persistent-homology** method is the algorithmic implementation of the theory introduced in this module, extended to track topological features across all scales simultaneously.

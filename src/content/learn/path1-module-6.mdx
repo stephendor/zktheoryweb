@@ -1,0 +1,82 @@
+---
+title: 'From Diagrams to Statistics'
+path: 'topology-social-scientists'
+module_number: 6
+core_concept: 'Persistence landscapes and Wasserstein distance turn diagrams into vectors amenable to statistics'
+connections:
+  chapters: []
+  papers: [2, 3]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'Why can you not compute a mean directly from a collection of persistence diagrams, and how does the persistence landscape solve this problem?'
+    answer: 'A persistence diagram is a multi-set of points — the number of points varies between diagrams (different numbers of topological features), and there is no natural coordinate system for averaging multi-sets of different sizes. Two diagrams with the same mean birth and mean death value could be topologically very different. The persistence landscape converts each diagram into a sequence of piecewise-linear functions defined on the same domain $[0, \infty)$, which can be added, averaged, and scaled like ordinary vectors. The mean landscape is a well-defined, computable object that summarises the central tendency of a collection of diagrams.'
+  - question: 'What does the Wasserstein distance between two persistence diagrams measure, and what does a large Wasserstein distance imply substantively in a poverty study?'
+    answer: 'The $p$-Wasserstein distance $W_p$ between two diagrams is the cost of the optimal transport plan that matches points in one diagram to points in the other (or sends them to the diagonal), where cost is the $\ell^\infty$ or $\ell^p$ distance between matched pairs. A large $W_p$ distance means a large structural difference in the topological features of the two datasets: the most prominent features in one diagram cannot be cheaply matched to features in the other. In a poverty study comparing pre- and post-reform cohorts, a large Wasserstein distance would indicate that the reform genuinely altered the topological structure of poverty trajectories — not just shifted a mean or changed a variance — in a way that cannot be explained by re-weighting existing features.'
+  - question: 'Describe one advantage and one disadvantage of vectorising persistence diagrams via persistence landscapes compared to using Wasserstein distance directly.'
+    answer: 'Advantage: persistence landscapes live in a Hilbert space (a function space with a well-defined inner product), enabling the full toolkit of classical statistics and machine learning — regression, principal component analysis, kernel methods, hypothesis testing with central-limit-theorem guarantees. Wasserstein distance is a metric but does not define a Hilbert-space geometry, so these tools do not directly apply. Disadvantage: the landscape vectorisation discards some information in the diagram — in particular, the multiplicity structure of near-diagonal points — and may not distinguish topologically different diagrams that produce similar landscape profiles. Wasserstein distance is more sensitive to certain structural differences that landscapes smooth over.'
+status: 'drafting'
+---
+
+## How Can You Statistically Compare the Shape of Two Populations?
+
+You have persistence diagrams for 400 local authorities before a welfare reform and 400 local authorities five years after. Each diagram is a scatter of points in the birth–death plane, recording the topological features of poverty trajectories in that authority. You want to know: has the reform changed the topology? Are the post-reform diagrams closer to each other (lower variance in shape) than the pre-reform ones? Does any region of the diagram — particular feature lifetimes — change systematically? These are statistical questions, requiring tools for averaging, comparing, and testing hypotheses about persistence diagrams. This module introduces two such tools: the Wasserstein distance for comparing diagrams directly, and the persistence landscape for converting diagrams into vectors that standard statistical methods can handle.
+
+## The Bottleneck and Wasserstein Distances
+
+The **bottleneck distance** $d_b$ between two persistence diagrams $\text{Dgm}$ and $\text{Dgm}'$ is defined as the minimum over all matchings $\eta$ of points (with unmatched points sent to the nearest point on the diagonal) of the maximum displacement:
+
+$$
+d_b(\text{Dgm}, \text{Dgm}') = \inf_{\eta} \sup_{p \in \text{Dgm}} \lVert p - \eta(p) \rVert_\infty.
+$$
+
+Here $\lVert \cdot \rVert_\infty = \max(|x_1 - y_1|, |x_2 - y_2|)$ is the coordinate-wise maximum distance. The bottleneck distance is determined by the single worst-matched pair; it is sensitive to large structural differences but can be dominated by outliers.
+
+The **$p$-Wasserstein distance** distributes the cost across all matched pairs:
+
+$$
+W_p(\text{Dgm}, \text{Dgm}') = \left(\inf_{\eta} \sum_{p \in \text{Dgm}} \lVert p - \eta(p) \rVert_\infty^p\right)^{1/p}.
+$$
+
+For $p = 2$, this is the squared-transport cost averaged over all features. The Wasserstein distance is more sensitive to global shifts in the diagram structure and less sensitive to single outliers. Both distances are computable in polynomial time via optimal transport algorithms.
+
+The limitation of both metrics is that they are not inner-product distances — you cannot compute a mean diagram or run a linear regression with them as the dependent variable. You can compare pairs of diagrams and build distance matrices, but you cannot embed the space of diagrams into a Euclidean vector space with these metrics alone.
+
+## Persistence Landscapes
+
+The **persistence landscape** of a diagram $\text{Dgm} = \{(b_i, d_i)\}$ converts each birth–death point into a piecewise-linear tent function and stacks them layer by layer. Define the tent function for each point $(b_i, d_i)$:
+
+$$
+f_i(t) = \begin{cases} t - b_i & \text{if } b_i \leq t \leq \frac{b_i + d_i}{2} \\ d_i - t & \text{if } \frac{b_i + d_i}{2} < t \leq d_i \\ 0 & \text{otherwise.} \end{cases}
+$$
+
+Each $f_i$ rises linearly from the birth time $b_i$ to the midpoint, then falls linearly to the death time $d_i$ — a triangle over the feature's lifetime. The landscape $\lambda: \mathbb{N} \times \mathbb{R} \to \mathbb{R}$ is formed by taking the $k$th-largest value among all $f_i(t)$ at each $t$:
+
+$$
+\lambda(k, t) = k\text{th largest value of } \{f_i(t)\}_{i=1}^{n}.
+$$
+
+The first landscape $\lambda(1, \cdot)$ traces the highest tent at each moment; the second traces the second-highest, and so on. The collection $\{\lambda(k, \cdot)\}_{k=1}^\infty$ (all but finitely many identically zero) is the full persistence landscape. Crucially, this is a sequence of real-valued functions defined on the same domain regardless of the original diagram's size — diagrams with different numbers of points all produce landscapes in the same function space.
+
+## Statistical Inference with Landscapes
+
+Because persistence landscapes live in a Banach function space (with $L^2$ norm $\lVert \lambda \rVert^2 = \sum_k \int \lambda(k,t)^2 \, dt$), we can:
+
+- **Average** a collection of landscapes: the sample mean $\bar{\lambda} = \frac{1}{n}\sum_{i=1}^n \lambda_i$ summarises the central topological tendency of a dataset.
+- **Compute variance**: $\text{Var}[\lambda] = \mathbb{E}[\lVert \lambda - \bar{\lambda} \rVert^2]$ measures spread in topological structure.
+- **Run hypothesis tests**: by a central limit theorem for Banach-valued random variables, $\sqrt{n}(\bar{\lambda} - \mu_\lambda)$ converges in distribution to a Gaussian, enabling $t$-tests and permutation tests on topological features.
+- **Apply PCA**: principal components of a collection of landscapes identify the main directions of topological variation across a sample.
+
+These are not merely analogies to classical statistics: the Banach-space structure is genuine, and the statistical guarantees transfer directly. This is what makes persistence landscapes the bridge from pure TDA to quantitative social science.
+
+## Vectorisation for Machine Learning
+
+An alternative to landscapes is **persistence images**: a persistence diagram is converted to a 2D image by placing a Gaussian kernel on each point and summing. The resulting pixel grid is a fixed-length vector, directly usable as input features in any machine learning pipeline — random forests, neural networks, gradient boosting. The tradeoff is loss of the algebraic landscape structure (persistence images are not elements of a Hilbert space with a canonical inner product), but the gain is compatibility with arbitrary predictive modelling frameworks.
+
+## A Notional Interactive
+
+While no interactive is paired with this module, a useful exercise is to take the collection of persistence diagrams you might generate from the Persistence Diagram Builder (Module 5) with different point-cloud configurations and compute their pairwise Wasserstein distances mentally. Which pair of configurations produces diagrams that are topologically far apart? Which appear different (different numbers of points, different positions) but are actually close in Wasserstein distance because unmatched points can be cheaply sent to the diagonal? Building this intuition prepares you for interpreting statistical comparisons of persistence diagrams in empirical analysis.
+
+## How This Module Connects
+
+The Wasserstein distance and persistence landscape framework are the core statistical tools developed in **Paper 2** and **Paper 3** of the research portfolio. Paper 2 uses Wasserstein distance to compare persistence diagrams across a panel of national poverty datasets, testing whether different measurement methodologies produce topologically equivalent representations of poverty. Paper 3 develops a regression framework with persistence landscapes as the dependent variable, estimating the effect of specific policy changes on the topological structure of poverty trajectories. Both papers depend on the **persistent-homology** method as the upstream computation that generates the diagrams these statistical techniques then analyse.

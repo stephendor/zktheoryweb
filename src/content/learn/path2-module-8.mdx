@@ -1,0 +1,61 @@
+---
+title: 'Counter-Mathematics'
+path: 'mathematics-of-poverty'
+module_number: 8
+core_concept: 'Participatory statistics and data justice propose that the measured should control the measurement'
+connections:
+  chapters: [15, 16, 17]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'What is the difference between participatory statistics and community-based data collection?'
+    answer: 'Community-based data collection uses communities as sources of information — researchers enter a community, collect data, and leave with it. Participatory statistics is a methodological framework in which the people being measured are involved in defining what is measured, how data are collected and stored, who can access it, and how it is used. The distinction is one of power: community-based data collection improves coverage; participatory statistics changes the governance structure so that the measured have meaningful control over the measurement. The latter includes concepts like Indigenous data sovereignty, the CARE principles (Collective Benefit, Authority to Control, Responsibility, Ethics), and community data trusts.'
+  - question: 'How can persistent homology be applied to a participatory dataset, and what does the topological structure reveal that conventional poverty maps cannot?'
+    answer: 'Persistent homology applied to participatory deprivation data — where households report their own assessments of need across multiple dimensions — can reveal the topological structure of locally defined poverty: which configurations of deprivation tend to cluster together, which households bridge otherwise disconnected groups, and which dimensions of need appear and disappear together as the analysis scale changes. Unlike postcode-level poverty maps, which average deprivation over areas and produce smooth gradients, topological analysis preserves the point-level structure and can detect the discrete boundaries and isolated clusters that mark the geography of structural exclusion within as well as between areas.'
+  - question: 'What is Goodhart''s Law, and how does it apply to poverty measurement targets?'
+    answer: 'Goodhart''s Law states that when a measure becomes a target, it ceases to be a good measure. In poverty policy, this dynamic is well documented: once a government adopts a specific poverty measure as its official target, political pressure to show metric improvement can substitute for actual improvement in living standards. New Labour''s child poverty target (reducing the 60%-of-median headcount by 2010) was partially met by benefit increases that moved households just above the threshold, while leaving those furthest below it largely unaffected — a pattern only visible when the metric is decomposed. Counter-mathematics proposes that communities should own and define the metrics of their own welfare precisely because externally imposed targets are structurally vulnerable to Goodhart dynamics.'
+status: 'drafting'
+---
+
+## The Survey That Talked Back
+
+In 2016, residents of a housing estate in East Manchester were invited to participate in a new kind of poverty survey. Rather than being asked to confirm or deny a predetermined list of deprivations designed by researchers, they were given blank data sheets and asked to describe, in their own terms, what a decent life in their neighbourhood required. Their answers — broadband internet, a safe walking route to the school, a GP appointment that could be had within a week — were aggregated and analysed by the community itself. The resulting dataset was owned by the residents' association, not the research institution. Before any external body could access it, they had to negotiate terms.
+
+The project was small. Its methodological claims were contested. But it represented a distinct break with the tradition of poverty measurement traced in the preceding seven modules: for the first time in the measurement encounter, the people being counted held the pen.
+
+## The Epistemology of Measurement Power
+
+Every poverty measurement system embeds a theory of knowledge: a set of assumptions about who knows what poverty is, whose definition should prevail, and who has the legitimate authority to act on the resulting data. The tradition from Rowntree through Universal Credit has been consistently expert-driven. Researchers, statisticians, and policymakers define the dimensions of poverty, specify the thresholds, collect the data, and publish analyses that determine how resources are allocated — with the measured population as passive subjects of an administrative process.
+
+Data justice scholarship — developed by Linnet Taylor, the Data Justice Lab at Cardiff, and community organisations in the Global South — argues that this structure is not a neutral technical choice. It is a power relation. Who controls the measurement controls the narrative of need, and the narrative of need determines the political conditions of possibility for redistribution.
+
+The formalisation of this critique has produced several distinct proposals. The **CARE principles** for Indigenous data governance specify that data collection should produce Collective Benefit for the community it represents; that communities have the Authority to Control their own data; that collectors bear Responsibility for the relationship; and that data use must follow Ethics defined by the community. The CARE principles do not reject statistical methodology — they propose that the governance structure around it should be democratised.
+
+The mathematical implications are significant. A poverty measure derived from participatory data is not merely a different dataset: it is a different measurement function. If we write a conventional poverty measure as $M: \mathcal{X} \to [0,1]$ where $\mathcal{X}$ is the space of household characteristics and $M$ maps them to a poverty score, participatory statistics changes the constitution of $\mathcal{X}$ itself — which dimensions are included, how they are scaled, and what the range of $M$ is held to represent. These are choices that the participatory framework places in the hands of the measured population.
+
+## Topological Tools for Counter-Measurement
+
+Persistent homology offers a particular promise for participatory statistics. Its primary output — the persistence diagram $\text{dgm}(X)$ of a point cloud $X$ — is **coordinate-free**: it depends only on the pairwise distances between points, not on any externally chosen coordinate system or weighting scheme. This means that if a participatory dataset assigns dimensions of deprivation according to community priorities rather than administrative categories, the topological analysis remains valid without requiring the researcher to specify how those dimensions should be aggregated.
+
+Formally, given a filtered simplicial complex $K_0 \subset K_1 \subset \cdots \subset K_n$ built from the participatory point cloud, the $k$-dimensional persistence module tracks the lifetimes of topological features:
+
+$$
+H_k(K_0) \to H_k(K_1) \to \cdots \to H_k(K_n)
+$$
+
+The resulting barcode, summarising which features are born at filtration step $\epsilon_i$ and die at $\epsilon_j$, encodes the multi-scale structure of deprivation in a form that is stable under small perturbations of the data and does not privilege any particular threshold or aggregation rule. The poverty boundaries revealed by persistent homology are intrinsic to the community's own experience of deprivation — not imposed by an external equivalisation formula or poverty line.
+
+## Goodhart's Law and the Politics of Metrics
+
+Any poverty measure that becomes a target will eventually cease to describe the thing it was designed to measure. This is Goodhart's Law, and it has been observed empirically in every major poverty reduction programme the UK has attempted. Child poverty fell by the official measure between 2003 and 2010 in part because benefit increases moved households just above the 60%-of-median threshold; households far below the threshold showed little improvement, but improvement in their position contributed minimally to progress on the headline metric.
+
+Counter-mathematics does not solve Goodhart's problem by finding a better metric. It proposes that the instability of any single metric under political pressure is an argument for distributing metric authority — for having multiple, community-controlled poverty measures that no single government can optimise its way through. The resulting landscape of measures is harder to navigate and resists simple international comparison. But it is far more robust against the dynamic by which any fixed measure eventually becomes a target and any target eventually becomes an obstacle to the reality it was once designed to illuminate.
+
+## A Notional Tool for Community Mapping
+
+No interactive is embedded in this module. A companion exercise could pair this module with the `persistence-diagram-builder` introduced in Module 1 of Path 1 (Topology for Social Scientists), using it to explore a synthetic participatory dataset constructed by a hypothetical community. The exercise would ask users to observe the persistence diagram produced when the dataset uses community-defined dimensions (e.g., sense of safety, access to green space, neighbourhood trust) rather than administrative categories, and to compare the topological structure with that of the same population described in official deprivation indices. The divergence between the two barcodes is the mathematical signature of the difference between being measured and being heard.
+
+## How This Module Connects
+
+**Chapter 15** of *Counting Lives* introduces the data justice framework and its intellectual lineage, situating participatory statistics within the broader critique of administrative measurement developed throughout the book. **Chapter 16** examines concrete UK experiments with community data governance — residents' associations, data trusts, and participatory budgeting processes — and assesses both their achievements and the structural obstacles they have encountered. **Chapter 17** closes the book by proposing a synthesis: that the mathematical tools of TDA and the political tools of data justice are not merely compatible but mutually necessary — topology provides the formal stability guarantees that make participatory data analytically tractable, while data justice provides the democratic legitimacy that gives the resulting analysis political force.

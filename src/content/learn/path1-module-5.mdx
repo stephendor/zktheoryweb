@@ -1,0 +1,70 @@
+---
+title: 'Persistence Diagrams'
+path: 'topology-social-scientists'
+module_number: 5
+core_concept: 'A persistence diagram records when topological features are born and die as a filtration grows'
+interactive_slug: 'persistence-diagram-builder'
+connections:
+  chapters: []
+  papers: [1, 2]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'What does it mean for a topological feature to have high persistence, and why does high persistence signal genuine structure rather than noise?'
+    answer: 'A topological feature has high persistence when it is born at a low scale parameter $r$ and dies at a high scale parameter — the gap between birth and death, measured as $\text{death} - \text{birth}$, is large. High persistence means the feature survives across a wide range of scales and is therefore visible regardless of how finely or coarsely you resolve the data. Noise-induced features, by contrast, are born and die within a narrow scale window: they appear when $r$ is just large enough to connect a few nearby points into a spurious cluster or loop, then immediately merge into larger structure. The diagonal of the persistence diagram is the noise region; points far from the diagonal are signal.'
+  - question: 'How does a filtration differ from a single simplicial complex, and why is the filtration the correct input to persistent homology?'
+    answer: 'A single simplicial complex is a fixed combinatorial object at a single scale. A filtration is a nested sequence of simplicial complexes $K_0 \subseteq K_1 \subseteq \cdots \subseteq K_n$ — every complex in the sequence is a sub-complex of all larger ones. Persistent homology tracks how homology classes are created (become non-trivial cycles) and destroyed (become boundaries) as one moves through this sequence. Without the nested structure, there is no notion of a feature persisting across scales, only a static snapshot at one resolution.'
+  - question: 'In the context of poverty data, what would a cluster of long-lived $H_1$ points near the diagonal tell you, versus one long-lived $H_1$ point far from it?'
+    answer: 'A cluster of short-lived $H_1$ points near the diagonal (low persistence) indicates many spurious one-dimensional loops arising from sampling noise or measurement error — no genuine cyclical structure in the deprivation trajectories. A single $H_1$ point far from the diagonal (high persistence) indicates one robust, large-scale loop in the data: a genuine closed circuit in the space of poverty trajectories that cannot be explained by noise. The first situation calls for caution about over-interpreting the topology; the second calls for a substantive explanation of what social mechanism creates and maintains the cycle.'
+status: 'drafting'
+---
+
+## When Do Households Return to Where They Started?
+
+Imagine tracking a cohort of 2,000 households across twelve years of annual surveys, recording income, employment status, housing security, and health. You arrange them as a point cloud in four-dimensional variable space and apply the Vietoris–Rips construction from Module 3, increasing the scale parameter $r$ from zero upward. At each value of $r$ you compute the Betti numbers from Module 4. You notice something: at scales between $r = 0.3$ and $r = 1.1$, the first Betti number $\beta_1 = 1$. A loop exists. At $r = 1.2$, a triangle fills in and the loop disappears. That loop was born at $r = 0.3$ and died at $r = 1.2$: its persistence is $1.2 - 0.3 = 0.9$. It persists across a wide range of scales — wider than most other features in the data. Is this a signal of genuine cyclical structure in poverty trajectories, or noise? The persistence diagram gives you the evidence to decide.
+
+## Filtrations: Shape Across Scales
+
+A **filtration** of a simplicial complex $K$ is a nested sequence of sub-complexes:
+
+$$
+\emptyset = K_0 \subseteq K_1 \subseteq K_2 \subseteq \cdots \subseteq K_n = K.
+$$
+
+For the Vietoris–Rips construction, the filtration is indexed by the scale parameter $r$: as $r$ increases from zero to the diameter of the point cloud, simplices are added one by one whenever their pairwise distances all become $\leq r$. Each step $K_i \hookrightarrow K_{i+1}$ is an inclusion of simplicial complexes — every simplex in $K_i$ remains in $K_{i+1}$, and some new simplices are added.
+
+The filtration encodes the *multi-scale* geometry of the data. There is no single "correct" scale at which to analyse a point cloud; different scales reveal different structural features. The persistence diagram captures all of them simultaneously.
+
+## Birth, Death, and Persistence
+
+As we move through the filtration, homology classes in each dimension $k$ are created and destroyed. A **birth** occurs at scale $r_b$ when a $k$-cycle appears that was not the boundary of any higher-dimensional chain in $K_{r_b}$ — a genuinely new hole opens. A **death** occurs at scale $r_d > r_b$ when that cycle becomes a boundary in $K_{r_d}$ — the hole is filled in by new simplices. The **persistence** of the feature is:
+
+$$
+\text{pers} = r_d - r_b.
+$$
+
+Features with $r_d = \infty$ are called **essential**: they never die and persist to the end of the filtration. In a connected point cloud filtered by Vietoris–Rips, exactly one 0-dimensional class (the entire connected component) is essential; all others die as the filtration merges components together.
+
+## The Persistence Diagram
+
+The **persistence diagram** $\text{Dgm}_k(K)$ is the multi-set of points $\{(r_b, r_d)\}$ in the extended plane $\mathbb{R}^2 \cup \{(r, \infty)\}$, one point for each $k$-dimensional topological feature created and destroyed in the filtration. The horizontal axis records birth time; the vertical axis records death time. Because death always occurs after birth, all points lie strictly above the diagonal $r_d = r_b$.
+
+The distance of a point from the diagonal is half its persistence: $\frac{1}{2}(r_d - r_b)$. Points close to the diagonal have low persistence and are typically attributed to noise; points far from the diagonal have high persistence and represent robust topological structure. The persistence diagram thus provides a principled, scale-free decomposition of the data's topology into signal and noise.
+
+## Stability: Why Diagrams Are Trustworthy
+
+A key theoretical guarantee is the **stability theorem**: small perturbations to the point cloud (resampling noise, measurement error) produce small perturbations to the persistence diagram, as measured by the **bottleneck distance** $d_b$. For two filtrations derived from point clouds $X$ and $X'$:
+
+$$
+d_b\!\left(\text{Dgm}(X),\, \text{Dgm}(X')\right) \leq d_H(X, X'),
+$$
+
+where $d_H$ is the Hausdorff distance between the two point clouds. This Lipschitz stability means that the diagram is a statistically consistent estimator of the underlying population topology: with enough data, the empirical persistence diagram converges to the persistence diagram of the population distribution.
+
+## Using the Interactive: Persistence Diagram Builder
+
+The **Persistence Diagram Builder** paired with this module lets you place points on a canvas, and watch the Vietoris–Rips filtration unfold in real time. As you drag the scale slider rightward, the interactive adds edges and fills triangles on the canvas, and simultaneously plots each topological feature as it is born and as it dies — you can see a point appear in the diagram and then move upward (its death value increasing) with each new simplex. Experiment with configurations that produce clear loops (a ring of points will generate one long-lived $H_1$ class) and those that produce no loops (a filled disk generates only a cluster in $H_0$). Notice that the diagonal accumulates many short-lived points regardless of the configuration — these are the noise features, born and immediately killed by nearby triangles. The one or two points far from the diagonal are the features worth interpreting.
+
+## How This Module Connects
+
+The persistence diagram is the primary output of all empirical analyses in **Paper 1** and **Paper 2** of the research portfolio. Paper 1 constructs persistence diagrams from panel poverty data and interprets the $H_1$ signal as evidence for poverty trap dynamics; the long-lived loop in the diagram is the paper's central exhibit. Paper 2 develops a persistence-diagram methodology for survey data with partial non-response, confronting the stability theorem's dependence on Hausdorff distance when observations are missing. Both papers rely on the **persistent-homology** pipeline — the algorithmic implementation of filtration, birth–death tracking, and diagram construction using matrix reduction algorithms over finite fields.

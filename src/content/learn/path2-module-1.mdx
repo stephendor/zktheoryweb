@@ -1,0 +1,66 @@
+---
+title: 'Drawing the Line'
+path: 'mathematics-of-poverty'
+module_number: 1
+core_concept: 'The poverty line is a political choice masquerading as a technical one'
+interactive_slug: 'poverty-threshold-simulator'
+connections:
+  chapters: [1, 3]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'Rowntree distinguished "primary" from "secondary" poverty in his 1899 York survey. What was the significance of that distinction?'
+    answer: 'Primary poverty meant income was genuinely insufficient to meet the calculated minimum. Secondary poverty meant income nominally exceeded the threshold but the household still experienced want — which Rowntree attributed to "wasteful" expenditure. The distinction embedded a moral judgement: secondary poverty was implicitly blamed on behaviour rather than structural inadequacy, a framing that persisted in British welfare discourse for most of the twentieth century.'
+  - question: 'What does it mean to say the UK''s 60%-of-median threshold measures inequality rather than deprivation?'
+    answer: 'Because the threshold moves with the median, any compression of the income distribution can reduce headline poverty without changing any household''s absolute living standard. After the 2008 financial crisis, median incomes fell faster than low incomes, so the poverty rate mechanically declined even as food bank use increased. The metric captured distributional position, not material need — a conflation that seriously distorted public understanding of post-recession hardship.'
+  - question: 'Orshansky multiplied the cheapest adequate food plan by three to derive the US poverty line. What hidden assumption makes this construction fragile?'
+    answer: 'The multiplier assumed food represents one-third of a low-income household''s total expenditure, based on a 1955 household expenditure survey. Food''s share of household spending fell to roughly one-fifth by the 1990s and has continued falling since. The frozen multiplier therefore progressively tightened the threshold in real terms, so the official US poverty line now sits far below what a genuine subsistence standard would require.'
+status: 'drafting'
+---
+
+## A Line in Someone's Life
+
+In the summer of 2018, a single mother in Middlesbrough received a letter confirming her Universal Credit award. A reassessment of her part-time earnings placed her household income £23 above the threshold used to determine eligibility for Free School Meals — an amount equivalent to one school lunch per day for her two children. She did not qualify. Had her employer cut her hours by two per week, her children would have eaten. The poverty line had not measured deprivation. It had manufactured an outcome from a number.
+
+This is not an exceptional case, and it is not an error. Every poverty threshold creates a cliff edge, and every cliff edge creates cases like this one. Where the cliff is placed, and what it is made of, reflects political judgements that technical language systematically conceals.
+
+## What the Threshold Actually Does
+
+A poverty line reduces the infinite complexity of a household's material circumstances to a single binary: in or out. That reduction requires a prior theory of what people need, what the state should provide, and how much the public purse will bear. Those theories have almost never been stated explicitly. They are instead compressed into numbers and then forgotten.
+
+Seebohm Rowntree, conducting his landmark survey of York in 1899, constructed the first modern poverty line by pricing a minimum diet sufficient for "merely physical efficiency" — enough calories for a labourer to continue working — and adding the cheapest available rents. He called this the **primary poverty** standard. The formula was:
+
+$$
+L = \sum_{i} p_i q_i
+$$
+
+where $p_i$ is the price of necessity good $i$ and $q_i$ is the quantity deemed physiologically sufficient. The political work happened entirely in the choice of the $q_i$ vector. Rowntree set it to exclude beer, tobacco, newspapers, postage, and virtually all vegetables. It was calibrated, as he acknowledged, to the minimum required to maintain the physical productivity of the labouring poor — not to sustain a dignified human life.
+
+William Beveridge inherited this minimalist framework in 1942 when designing the postwar welfare state. His **subsistence principle** added a small allowance for clothing depreciation and a token sum for personal sundries, but the basic logic — a floor defined by physiological necessity rather than social participation — remained intact. Beverage's scales underwrote the initial National Assistance rates and, through bureaucratic inertia, shaped UK benefit levels long after their philosophical foundations had been challenged and revised.
+
+Mollie Orshansky's approach for the United States, adopted in 1965, chose a different anchor. Observing that low-income families spent approximately one-third of their income on food, she multiplied the Department of Agriculture's cheapest adequate food plan by three:
+
+$$
+L_{\text{US}} = 3 \times C_{\text{food}}
+$$
+
+The threshold was explicitly provisional, but it was politically convenient to fix it and uprate it only for general inflation thereafter. By the 1990s, food represented roughly one-fifth of low-income expenditure, not one-third — meaning the threshold had quietly contracted in real terms without any legislative decision being taken.
+
+The United Kingdom's current measure, in use since 1988, defines poverty as household income below 60 per cent of the contemporary median, equivalised for household size:
+
+$$
+L_t = 0.60 \times \tilde{y}_t
+$$
+
+where $\tilde{y}_t$ is the median equivalised household income in year $t$. This **relative threshold** moves with median income, making it sensitive to distributional change. When median incomes rose sharply during the growth years of the 2000s, the poverty line rose too — and households whose real purchasing power had increased could still be recorded as poor. When median incomes fell after 2008, the rate mechanically fell with them, even as food bank referrals tripled. What the metric measured, in both cases, was position in the income distribution, not material hardship.
+
+## Working with the Simulator
+
+The embedded simulator lets you reposition the poverty threshold manually and observe the immediate effect on the headline poverty rate. Drag the threshold from 50 per cent to 70 per cent of median and watch the count shift by several million people. Switch from a relative measure to an anchored one — fixed in real terms to the 2010 median — and observe how the rate responds differently to the same period of wage stagnation.
+
+The exercise makes one thing viscerally clear: the poverty rate is not a fact waiting to be discovered in the data. It is an artefact of the threshold, and the threshold is not a technical product — it is a choice. Different choices produce incompatible headcounts from the same underlying data, and there is no neutral algorithm for selecting among them.
+
+## How This Module Connects
+
+The history of threshold construction is the direct subject of **Chapter 1** of *Counting Lives*, which traces how Rowntree's minimalist standard became embedded in the administrative machinery of the British welfare state. **Chapter 3** examines the political conflict that erupted when relative measures were proposed as replacements in the 1970s — a conflict that maps directly onto the competing theories of the $q_i$ vector and the median-percentage approach explored here. The question of what the threshold *includes* is taken up in the next module.

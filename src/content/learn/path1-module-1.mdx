@@ -1,0 +1,61 @@
+---
+title: 'What is a Shape?'
+path: 'topology-social-scientists'
+module_number: 1
+core_concept: 'Topology studies properties that persist under continuous deformation, not measurement'
+connections:
+  chapters: [1]
+  papers: []
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'A coffee mug and a donut are topologically equivalent. What shared property makes this true?'
+    answer: 'Both have exactly one hole. A coffee mug can be continuously deformed into a donut without tearing or gluing any part of the surface — the clay just needs to be reshaped. Topology counts holes, not centimetres, so size, curvature, and material are irrelevant.'
+  - question: 'Why is topology''s indifference to measurement an advantage rather than a limitation when analysing poverty data?'
+    answer: 'Poverty data is collected across different surveys, countries, and time periods using incompatible scales. A topological analysis reveals the shape of the data — clusters, loops, voids — that persists regardless of whether income is measured in pounds, purchasing-power-adjusted dollars, or arbitrary quintiles. The structural features survive the kinds of normalisation that would distort regression coefficients.'
+  - question: 'What is the difference between a continuous map and a homeomorphism?'
+    answer: 'A continuous map sends nearby points to nearby points, but it may collapse or fold the space. A homeomorphism is a continuous bijection whose inverse is also continuous — it is a topological equivalence that preserves the full neighbourhood structure in both directions. Homeomorphic spaces have the same topological properties: the same number of holes, the same connected components, the same loops.'
+status: 'drafting'
+---
+
+## Why Shape Matters Before Numbers Do
+
+Imagine you are a poverty researcher studying how households move between income bands over ten years. You have columns of numbers — income, consumption, education level, access to healthcare — and you want to know: is there a typical path through hardship? Are households scattered randomly, or do they cluster into recognisable trajectories? Before you can answer, you need a language for *shape*. Not the shape of a histogram or a scatter plot, but the underlying global structure of your data — features that survive across different scales, different thresholds, and different ways of coarsening the numbers into categories. Topology is that language, and it is far more applicable to social data than its abstract origins might suggest.
+
+## What Topology Studies
+
+Topology is the branch of mathematics concerned with the properties of space that do not change when you continuously deform it. Continuous deformation means stretching, bending, or twisting — but never tearing, cutting, or gluing edges together. The classic illustration is the coffee mug and the donut: if you imagine the mug made of soft clay, you can push the bowl inward, flatten it, and pull the handle into a ring until you hold a shape with one hole running through it, indistinguishable from a donut. Because no part of the surface was broken or joined during the transformation, topologists call these two objects *homeomorphic* — topologically identical.
+
+What topology does *not* study is measurement. It does not matter whether the mug is five centimetres or fifty, ceramic or cast iron, or whether the handle is round or square. Topology asks only: are there holes? How many? How are the pieces connected? This indifference to precise measurement is, at first, unsettling to quantitative social scientists trained to focus on means, variances, and regression coefficients. But it is precisely what makes topology useful when data are noisy, collected across incomparable surveys, or subject to arbitrary normalisation choices.
+
+## The Formal Language
+
+A **topological space** is a set $X$ together with a collection $\tau$ of subsets called open sets, satisfying three axioms:
+
+$$
+\emptyset \in \tau, \quad X \in \tau, \quad \text{and } \tau \text{ is closed under arbitrary unions and finite intersections.}
+$$
+
+Here $\emptyset$ is the empty set and $X$ is the whole space. The axioms encode our intuition about nearness: a point $x$ is *near* a subset $S$ if every open set containing $x$ also contains a point of $S$. Crucially, no number is involved — the topology $\tau$ alone determines which points are near which others.
+
+A **continuous map** between topological spaces is a function $f: X \to Y$ that preserves nearness: for every open set $U \subset Y$, the preimage $f^{-1}(U)$ is open in $X$. This captures the intuition that nearby inputs produce nearby outputs. When $f$ is a bijection and both $f$ and its inverse $f^{-1}$ are continuous, we call it a **homeomorphism** — the topological notion of equivalence. Two homeomorphic spaces are, from topology's perspective, the same object.
+
+## Topology Without Rulers: An Analogy
+
+Consider two maps of London Underground — one a geographically accurate street map and one the iconic Harry Beck diagram with its straight lines and even spacing. The two maps are not homeomorphic to an actual street layout, but the Beck diagram preserves exactly the topological property that matters for navigation: which stations are connected, and in what order along each line. Distances are distorted; connectivity is faithfully reproduced. London's transport network has a particular shape — one giant connected component, a handful of loops on the Overground, no isolated points — and that shape is readable from the stylised diagram as clearly as from the accurate one.
+
+Social data is similar. When you map 10,000 households into a high-dimensional space where each axis is a variable (income, years in poverty, health deprivation score) and each point is a household, the precise coordinates depend on your units and normalisation. The *shape* of the resulting cloud — how many clusters it forms, whether loops appear, where the isolated outliers sit — is far more stable and carries more structural information than any single coordinate.
+
+## From Continuous Spaces to Combinatorial Objects
+
+In practice, we cannot work with infinite topological spaces on a computer. Instead, we represent a dataset as a finite *point cloud* and build a **simplicial complex** on top of it: a combinatorial structure assembled from points, edges, triangles, and higher-dimensional generalisations. The precise method of construction (Vietoris–Rips, Čech, or alpha complexes) is covered in Module 3. For now, the key insight is that the shape of the point cloud — its connected components, loops, and enclosed voids — can be detected and counted using algebraic tools descended directly from the axioms above.
+
+This module has introduced the vocabulary. Future modules will build the machinery: distances in Module 2, complexes in Module 3, hole-counting in Module 4, and the full persistent homology pipeline in Modules 5–6.
+
+## A Notional Tool for Intuition
+
+Though no interactive is paired with this module, a productive exercise is to build one mentally. Imagine marking a dozen points on a whiteboard in some irregular pattern. Now expand a circle of radius $r$ around each point simultaneously, starting at $r = 0$. At each radius, connect any two points whose circles touch. As $r$ grows, what features appear first? When do they merge? When do they disappear? The answers — which features appear, how long they persist, and when they vanish — constitute the topological fingerprint of your arrangement. That thought experiment is, in essence, what persistent homology automates for datasets with thousands of points and hundreds of dimensions.
+
+## How This Module Connects
+
+The conceptual foundation laid here is the direct subject of **Chapter 1** of *Counting Lives*, which opens with the historical question of what it means to measure a human life and why standard metrics repeatedly fall short. Chapter 1 argues that poverty is partly a topological phenomenon — the spatial arrangement of deprivation and the shape of trajectories through economic distributions matter as much as summary statistics. The formal language introduced in this module reappears throughout the book as the mathematical underpinning of that broader argument.
