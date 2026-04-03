@@ -95,7 +95,7 @@ describe('buildTimelineData', () => {
     expect(t1?.chapters.map((c) => c.number)).toEqual([1, 2]);
   });
 
-  it('transition 4 has 3 chapters (ch-7, ch-8, ch-9, ch-16, ch-17)', () => {
+  it('transition 4 has 5 chapters (ch-7, ch-8, ch-9, ch-16, ch-17)', () => {
     const t4 = data.transitions.find((t) => t.number === 4);
     expect(t4?.chapters.map((c) => c.number)).toEqual([7, 8, 9, 16, 17]);
   });

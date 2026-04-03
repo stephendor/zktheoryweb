@@ -50,7 +50,7 @@ export function assertPaletteColor(color: string): void {
   if (!palette.has(normalised)) {
     console.warn(
       `[viz/paletteEnforcement] Colour "${color}" is not in the viz token palette. ` +
-        `Use –-color-viz-1 through --color-viz-8 via getPaletteColor() in scales.ts.`,
+        `Use --color-viz-1 through --color-viz-8 via getPaletteColor() in scales.ts.`,
     );
   }
 }

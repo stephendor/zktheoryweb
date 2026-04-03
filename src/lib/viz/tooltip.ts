@@ -13,7 +13,10 @@
  *
  *   // Inside a D3 mouseover/pointermove handler:
  *   selection.on('pointermove', (event, d) => {
- *     showTooltip(tt, event, `<strong>${d.name}</strong>: ${d.value}`);
+ *     // Plain text — safe for any string value:
+ *     showTooltip(tt, event, `${d.name}: ${d.value}`);
+ *     // Trusted authored HTML only — never pass user-supplied strings:
+ *     showTooltipHtml(tt, event, `<strong>${d.name}</strong>: ${d.value}`);
  *   });
  *   selection.on('pointerleave', () => hideTooltip(tt));
  *
@@ -56,7 +59,10 @@ export function createTooltip(container: HTMLElement): TooltipHandle {
  *
  * @param handle  - The tooltip handle returned by `createTooltip`.
  * @param event   - The native `PointerEvent` or `MouseEvent` from a D3 handler.
- * @param content - HTML string or plain text to render inside the tooltip.
+ * @param content - Plain-text content to render. Set via `textContent` so HTML
+ *   markup in the string is rendered as literal characters — safe for any
+ *   string value including data fetched from external sources. For trusted,
+ *   pre-authored HTML use `showTooltipHtml` instead.
  */
 export function showTooltip(
   handle: TooltipHandle,
@@ -65,12 +71,45 @@ export function showTooltip(
 ): void {
   const { el, container } = handle;
 
-  el.innerHTML = content;
+  el.textContent = content;
   el.setAttribute('aria-hidden', 'false');
   el.style.setProperty('display', 'block');
 
-  // Position relative to the container using offsetX/offsetY so we stay
-  // in the container's local coordinate space regardless of page scroll.
+  _positionTooltip(el, container, event);
+}
+
+/**
+ * Show the tooltip with a raw HTML string.
+ *
+ * Only use this for HTML that is entirely authored in source code — never
+ * pass user-supplied or externally-fetched strings directly (XSS risk).
+ * For plain text or dynamic data values use `showTooltip` instead.
+ *
+ * @param handle  - The tooltip handle returned by `createTooltip`.
+ * @param event   - The native `PointerEvent` or `MouseEvent` from a D3 handler.
+ * @param html    - Trusted HTML string authored in source code.
+ */
+export function showTooltipHtml(
+  handle: TooltipHandle,
+  event: PointerEvent | MouseEvent,
+  html: string,
+): void {
+  const { el, container } = handle;
+
+  el.innerHTML = html;
+  el.setAttribute('aria-hidden', 'false');
+  el.style.setProperty('display', 'block');
+
+  _positionTooltip(el, container, event);
+}
+
+/** Position the tooltip element relative to the cursor within its container. */
+function _positionTooltip(
+  el: HTMLDivElement,
+  container: HTMLElement,
+  event: PointerEvent | MouseEvent,
+): void {
+
   const containerRect = container.getBoundingClientRect();
   const mouseX = event.clientX - containerRect.left;
   const mouseY = event.clientY - containerRect.top;
@@ -104,10 +143,6 @@ export function showTooltip(
   el.style.setProperty('left', `${left}px`);
   el.style.setProperty('top', `${top}px`);
 }
-
-/**
- * Hide the tooltip without removing it from the DOM.
- */
 export function hideTooltip(handle: TooltipHandle): void {
   handle.el.setAttribute('aria-hidden', 'true');
   handle.el.style.setProperty('display', 'none');

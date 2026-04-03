@@ -10,14 +10,16 @@
  * frontmatter) is used as the path segment.
  *
  * Rendering: a simple BaseLayout wraps the interactive component. Components
- * are mapped by slug in the COMPONENT_MAP below. The `client:visible`
- * directive is used so hydration is deferred until the interactive scrolls
- * into view, which is the project convention for below-fold interactives
- * (as documented in src/lib/viz/types.ts).
+ * are rendered via explicit slug conditionals in the template below — Astro
+ * cannot statically analyse dynamic ComponentMap[slug] patterns so each
+ * component is guarded by an explicit `slug === '...'` check. The
+ * `client:visible` directive defers hydration until the interactive scrolls
+ * into view (project convention for below-fold interactives).
  *
  * To add a new interactive:
  *   1. Create src/content/interactives/<slug>.mdx with required frontmatter.
- *   2. Add the React component to the COMPONENT_MAP below.
+ *   2. Import the React component above and add an explicit slug conditional
+ *      in the template below (e.g. `{slug === 'my-slug' && <MyComponent client:visible />}`).
  */
 
 import { getCollection } from 'astro:content';
@@ -25,25 +27,6 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
 import { PovertySimulator } from '@components/interactives/PovertySimulator';
 import { PersistenceDiagramBuilder } from '@components/interactives/PersistenceDiagramBuilder';
-
-// ─── Component map ────────────────────────────────────────────────────────────
-// Maps each interactive slug to its React island component.
-// Extend this map as new interactives are added.
-
-const COMPONENT_MAP: Record<string, { component: unknown; label: string }> = {
-  'normal-distribution-explorer': {
-    component: NormalDistExplorer,
-    label: 'Normal Distribution Explorer',
-  },
-  'poverty-threshold-simulator': {
-    component: PovertySimulator,
-    label: 'Poverty Threshold Simulator',
-  },
-  'persistence-diagram-builder': {
-    component: PersistenceDiagramBuilder,
-    label: 'Persistence Diagram Builder',
-  },
-};
 
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
@@ -65,8 +48,6 @@ interface Props {
 
 const { entry } = Astro.props;
 const { title, description, slug } = entry.data;
-
-const mapped = COMPONENT_MAP[slug];
 ---
 
 <BaseLayout title={title} description={description} section="learn">

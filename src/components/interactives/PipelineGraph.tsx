@@ -24,7 +24,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import * as d3 from 'd3';
 
 import { ResponsiveContainer } from '@lib/viz/ResponsiveContainer';
-import { createTooltip, showTooltip, hideTooltip, destroyTooltip } from '@lib/viz/tooltip';
+import { createTooltip, showTooltipHtml, hideTooltip, destroyTooltip } from '@lib/viz/tooltip';
 import type { TooltipHandle } from '@lib/viz/tooltip';
 import type { VizProps } from '@lib/viz/types';
 import { AriaLiveRegion } from '@lib/viz/a11y/AriaLiveRegion';
@@ -498,7 +498,7 @@ function PipelineGraphInner({ nodes, edges, width, height }: InnerProps) {
           ? `<br><span class="pg-tt-cloud">\u2601 Cloud compute</span>`
           : '';
 
-      showTooltip(
+      showTooltipHtml(
         tt,
         event.nativeEvent,
         `<strong>Paper ${node.paper_number}</strong>: ${node.title}` +
