@@ -36,7 +36,7 @@ import { PersistenceDiagramBuilderWrapper } from '@components/interactives/Persi
 import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
 import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
 import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
-import { TDAResultsExplorer } from '@components/interactives/TDAResultsExplorer';
+import { TDAResultsExplorer, type PresetId } from '@components/interactives/TDAResultsExplorer';
 
 interface ModuleRef {
   slug: string;
@@ -191,8 +191,8 @@ function moduleEntryIdToHref(entryId: string): string {
               {interactive_slug === 'benefit-taper-calculator' && (
                 <BenefitTaperCalculator client:visible />
               )}
-              {interactive_slug === 'tda-results-explorer' && tda_preset_id && (
-                <TDAResultsExplorer presetId={tda_preset_id as any} client:visible />
+              {interactive_slug === 'tda-results-explorer' && (
+                <TDAResultsExplorer presetId={tda_preset_id as PresetId} client:visible />
               )}
               {/* Fallback link for any interactive without a registered component */}
               {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder', 'mapper-parameter-lab', 'filtration-playground', 'benefit-taper-calculator', 'tda-results-explorer'].includes(interactive_slug) && (
