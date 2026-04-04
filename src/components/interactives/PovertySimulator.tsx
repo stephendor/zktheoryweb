@@ -137,6 +137,8 @@ function ChartInner({
   const lineRef = useRef<d3.Selection<SVGLineElement, unknown, null, undefined> | null>(null);
   const shadeRef = useRef<d3.Selection<SVGPathElement, unknown, null, undefined> | null>(null);
   const xScaleRef = useRef<d3.ScaleLinear<number, number> | null>(null);
+  // Strip React's colon characters so the ID is safe in CSS selectors.
+  const id = useId().replace(/:/g, '');
 
   const chartW = dimensions.width - MARGIN.left - MARGIN.right;
   const chartH = dimensions.height - MARGIN.top - MARGIN.bottom;
@@ -201,7 +203,7 @@ function ChartInner({
 
     defs
       .append('clipPath')
-      .attr('id', 'ps-below-clip')
+      .attr('id', `${id}-ps-below-clip`)
       .append('rect')
       .attr('x', 0)
       .attr('y', 0)
@@ -210,7 +212,7 @@ function ChartInner({
 
     defs
       .append('clipPath')
-      .attr('id', 'ps-above-clip')
+      .attr('id', `${id}-ps-above-clip`)
       .append('rect')
       .attr('x', xScale(Math.min(threshold, X_MAX)))
       .attr('y', 0)
@@ -222,7 +224,7 @@ function ChartInner({
     g.append('path')
       .datum(densityCurve)
       .attr('class', 'ps-area-above')
-      .attr('clip-path', 'url(#ps-above-clip)')
+      .attr('clip-path', `url(#${id}-ps-above-clip)`)
       .attr('d', area)
       .attr('fill', 'var(--color-neutral-subtle)')
       .attr('opacity', 0.7);
@@ -232,7 +234,7 @@ function ChartInner({
       .append('path')
       .datum(densityCurve)
       .attr('class', 'ps-area-below')
-      .attr('clip-path', 'url(#ps-below-clip)')
+      .attr('clip-path', `url(#${id}-ps-below-clip)`)
       .attr('d', area)
       .attr('fill', clRedLight)
       .attr('opacity', 0.55);
@@ -372,14 +374,14 @@ function ChartInner({
 
     // Update clip paths
     d3.select(svgRef.current)
-      .select('#ps-below-clip rect')
+      .select(`#${id}-ps-below-clip rect`)
       .transition()
       .duration(duration)
       .ease(d3.easeCubicOut)
       .attr('width', newX);
 
     d3.select(svgRef.current)
-      .select('#ps-above-clip rect')
+      .select(`#${id}-ps-above-clip rect`)
       .transition()
       .duration(duration)
       .ease(d3.easeCubicOut)

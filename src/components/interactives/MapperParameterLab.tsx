@@ -556,10 +556,12 @@ function MapperGraphPanel({
         aria-label="Reset graph view"
         onClick={() => {
           if (svgRef.current && zoomRef.current) {
-            d3.select(svgRef.current)
-              .transition()
-              .duration(300)
-              .call(zoomRef.current.transform, d3.zoomIdentity);
+            const sel = d3.select(svgRef.current);
+            if (reducedMotion) {
+              sel.call(zoomRef.current.transform, d3.zoomIdentity);
+            } else {
+              sel.transition().duration(300).call(zoomRef.current.transform, d3.zoomIdentity);
+            }
           }
         }}
       >
