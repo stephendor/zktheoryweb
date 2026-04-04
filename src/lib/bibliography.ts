@@ -16,6 +16,8 @@ import libraryData from '@data/zotero-library.json';
 
 // Cast to access the shape we need; extra JSON fields are safely ignored.
 const cachedItems = (libraryData as unknown as { items: ZoteroItem[] }).items;
+// Collection key → name map populated by fetchZoteroLibrary. Empty until first fetch.
+const cachedCollections = (libraryData as unknown as { collections?: Record<string, string> }).collections ?? {};
 
 const SKIP_TYPES = new Set(['note', 'attachment']);
 
@@ -26,6 +28,35 @@ const SKIP_TYPES = new Set(['note', 'attachment']);
  */
 export function getBibliographyItems(): ZoteroItem[] {
   return cachedItems.filter(item => !SKIP_TYPES.has(item.itemType));
+}
+
+/**
+ * Returns items belonging to a named Zotero collection (e.g. 'Counting Lives',
+ * 'TDA-Research'). Falls back to the full library when the collections map is
+ * empty (i.e. before the first `fetchZoteroLibrary` run populates it).
+ *
+ * @param collectionName - The human-readable Zotero collection name.
+ */
+export function getBibliographyByCollection(collectionName: string): ZoteroItem[] {
+  if (Object.keys(cachedCollections).length === 0) {
+    // Collections map not yet populated — return full library as fallback.
+    return getBibliographyItems();
+  }
+
+  const matchingKeys = new Set(
+    Object.entries(cachedCollections)
+      .filter(([, name]) => name === collectionName)
+      .map(([key]) => key),
+  );
+
+  if (matchingKeys.size === 0) {
+    // Collection name not found — return full library as fallback.
+    return getBibliographyItems();
+  }
+
+  return getBibliographyItems().filter(item =>
+    item.collections.some(k => matchingKeys.has(k)),
+  );
 }
 
 /**

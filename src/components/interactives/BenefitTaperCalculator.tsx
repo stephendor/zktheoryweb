@@ -68,7 +68,7 @@ interface BenefitTaperChartProps {
   currentSchedule: UCResult[];
   comparisonSchedule: UCResult[] | null;
   hasHousingElement: boolean;
-  /** Whether to show the pre-2021 63% reference line. Toggled by the UI checkbox; defaults to true. */
+  /** Whether to show the pre-2021 63% reference line. Toggled by the UI checkbox; defaults to false. */
   showComparison: boolean;
   highlightedEarnings: number | null;
   reducedMotion: boolean;

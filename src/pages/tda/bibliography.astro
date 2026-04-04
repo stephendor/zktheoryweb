@@ -16,20 +16,12 @@
 
 import BaseLayout from '@layouts/BaseLayout.astro';
 import BibliographyList from '@components/shared/BibliographyList.astro';
-import { getBibliographyItems } from '@lib/bibliography';
+import { getBibliographyByCollection, getBibliographyItems } from '@lib/bibliography';
 
-const allItems = getBibliographyItems();
-
-// ── Tag filtering ─────────────────────────────────────────────────────────────
-// Update these tag strings when the Zotero library has project-specific tags.
-const TDA_TAGS = new Set(['tda-methods', 'topology', 'persistent-homology', 'topological-data-analysis']);
-const filteredItems = allItems.filter(item =>
-  item.tags?.some(t => TDA_TAGS.has(t.tag))
-);
-
-// Fall back to full list when no items match the target tags.
-const items = filteredItems.length > 0 ? filteredItems : allItems;
-const isFiltered = filteredItems.length > 0;
+// Filter by Zotero collection name. Falls back to full library until
+// 'fetchZoteroLibrary' populates the collections map in the JSON cache.
+const items = getBibliographyByCollection('TDA-Research');
+const isFiltered = items.length < getBibliographyItems().length;
 ---
 
 <BaseLayout

@@ -8,9 +8,9 @@ const chapters = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/counting-lives/chapters' }),
   schema: z.object({
     title: z.string(),
-    chapter_number: z.number().int().positive(),
+    chapter_number: z.number().int().nonnegative(),
     part: z.string().optional(),
-    part_number: z.number().int().positive().optional(),
+    part_number: z.number().int().nonnegative().optional(),
     transition: z.number().int().min(1).max(5).optional(),
     spine_role: z.string(),
     status: z.enum(['drafting', 'in-review', 'complete']).default('drafting'),

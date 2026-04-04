@@ -27,9 +27,17 @@ export type ZoteroItem = {
   collections: string[];
 };
 
+export type ZoteroCollection = {
+  key: string;
+  name: string;
+  parentCollection?: string | false;
+};
+
 export type ZoteroLibraryCache = {
   version: number;
   items: ZoteroItem[];
+  /** key → collection name map, populated by fetchZoteroLibrary */
+  collections: Record<string, string>;
   fetchedAt: string;
 };
 
@@ -70,6 +78,25 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
 
   const cache = readCache();
 
+  // ── Collection fetch helper ──────────────────────────────────────────────
+  async function fetchCollections(): Promise<Record<string, string>> {
+    console.log('[zotero] Fetching collections...');
+    const res = await fetch(
+      `${ZOTERO_API_BASE}/users/${userID}/collections?format=json&include=data&limit=100`,
+      { headers }
+    );
+    if (!res.ok) {
+      throw new Error(`Zotero collections API error: ${res.status} ${res.statusText}`);
+    }
+    const raw = (await res.json()) as Array<{ data: ZoteroCollection }>;
+    const map: Record<string, string> = {};
+    for (const { data } of raw) {
+      map[data.key] = data.name;
+    }
+    console.log(`[zotero] ${Object.keys(map).length} collection(s) fetched.`);
+    return map;
+  }
+
   try {
     // ── Incremental fetch ──────────────────────────────────────────────────
     if (cache && options?.force !== true) {
@@ -94,8 +121,17 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
         10
       );
 
+      // Always refresh collections on incremental fetch too (lightweight).
+      const collections = await fetchCollections();
+
       if (rawItems.length === 0) {
-        console.log('[zotero] No changes since last fetch. Returning cached data.');
+        console.log('[zotero] No item changes since last fetch. Updating collections only.');
+        const noChange: ZoteroLibraryCache = {
+          ...cache,
+          collections,
+          fetchedAt: new Date().toISOString(),
+        };
+        writeCache(noChange);
         return cache.items;
       }
 
@@ -108,6 +144,7 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
       const updated: ZoteroLibraryCache = {
         version: newVersion,
         items: Array.from(itemMap.values()),
+        collections,
         fetchedAt: new Date().toISOString(),
       };
       writeCache(updated);
@@ -147,9 +184,12 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
       allItems.push(...pageBatch.map(({ data }) => data));
     }
 
+    const collections = await fetchCollections();
+
     const fullCache: ZoteroLibraryCache = {
       version: lastVersion,
       items: allItems,
+      collections,
       fetchedAt: new Date().toISOString(),
     };
     writeCache(fullCache);
