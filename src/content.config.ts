@@ -58,6 +58,7 @@ const interludes = defineCollection({
   schema: z.object({
     title: z.string(),
     interlude_slug: z.string(),
+    type: z.enum(['mathematical-moment', 'uk-interlude']).default('mathematical-moment'),
     related_chapters: z.array(z.number().int()).default([]),
     related_tda_methods: z.array(z.string()).default([]),
     status: z.enum(['drafting', 'in-review', 'complete']).default('drafting'),

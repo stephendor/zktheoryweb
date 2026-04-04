@@ -1,0 +1,92 @@
+---
+title: "The Cost Function"
+interlude_slug: "mm35-the-cost-function"
+type: "mathematical-moment"
+related_chapters: [6, 10, 14]
+related_tda_methods: []
+status: drafting
+---
+
+import { LensSection } from '@components/shared/LensSection';
+
+<LensSection lens="politics">
+
+#### Governing by Formula
+
+There is a moment between prediction and classification that we have not yet named. Regression predicts a value. A threshold turns that value into a decision. But before either of those steps, someone has to answer a prior question: *what are we trying to minimise?*
+
+The answer to that question is the **objective function** — also called the cost function or loss function — and it is one of the most politically consequential mathematical choices in modern governance. Because whatever you choose to minimise, you will get less of. And whatever you choose not to measure, you will lose entirely.
+
+#### The RAND Moment
+
+Operations research brought this framework to public policy after the Second World War. RAND Corporation analysts applied it to problems — bomber routes, fire station locations, welfare caseloads — where the question was not "what is true?" but "what should we do to achieve the best outcome?"
+
+The power of the framework is also its danger: it forces you to define "best." In practice, RAND's welfare simulations chose objective functions like:
+
+$$J = \text{(total benefit expenditure)} + \lambda \cdot \text{(claimant caseload)}$$
+
+Minimise this and you design a system that reduces both spending and the number of people receiving help. The parameter $\lambda$ — the relative weight on caseload — is not a technical constant; it is a political choice about how much you want to deter claiming. Nobody votes on $\lambda$. It is set by modellers and approved by ministers who may not know it exists.
+
+Jay Forrester's *Urban Dynamics* (1969) is a striking example: a system dynamics model of cities used an objective function implicitly minimising "urban decay" (defined as low-income density). Its "optimal" policy recommendation was to demolish public housing — not because the data showed this worked, but because the model defined poor people as a cost variable.
+
+#### The Objective Function Is a Moral Statement
+
+Three examples show how the choice of objective function encodes political values:
+
+**Welfare administration**: if the objective function minimises "fraud loss," the system penalises all unusual patterns, including legitimate ones. If the objective function minimises "unmet need," it flags claimants who should receive more. Same data; opposite outcomes.
+
+**Sentencing**: COMPAS risk assessment minimises recidivism probability. But recidivism data reflects over-policed communities; the objective function treats the outcome of racist policing as a neutral fact of nature.
+
+**Public health**: QALYs (quality-adjusted life years) define the objective as "healthy life years gained per pound spent." Minimising cost per QALY systematically deprioritises interventions for the elderly, disabled, and chronically ill — not because they matter less, but because the objective function says so.
+
+In each case, the mathematics appears to be solving a technical problem. What it is actually doing is implementing a prior moral choice about whose interests count, disguised as a calculation.
+
+#### Why This Matters for What Follows
+
+Every system in Part III of this book has an objective function, whether or not its designers called it that:
+
+- UC's compliance scoring minimises "non-compliance events" — which means maximising sanctions, not maximising employment.
+- Palantir's welfare-police integration minimises "undetected risk" — which means maximising surveillance of already-marginalised populations.
+- Credit scoring minimises "default probability" — which means excluding the poor from credit rather than redesigning debt.
+
+The transition from welfare state to automated poorhouse is not primarily a technological story. It is a story about which objective functions were chosen, by whom, and with whose lives as the cost variable. Machine learning did not invent this. It inherited it — and then scaled it, accelerated it, and hid it inside layers of mathematics that make the original moral choice invisible.
+
+</LensSection>
+
+<LensSection lens="math">
+
+#### Formal Treatment
+
+An **objective function** $J(\theta)$ maps a set of system parameters $\theta$ to a single number representing how well or badly the system is performing. The goal of optimisation is to find the $\theta$ that minimises that number:
+
+$$\theta^* = \arg\min_\theta \, J(\theta)$$
+
+The simplest example: in linear regression, $J$ is mean squared error between predictions and reality:
+
+$$J(\theta) = \frac{1}{n} \sum_{i=1}^n \left( y_i - \hat{y}_i(\theta) \right)^2$$
+
+Minimise this and you find the best-fitting line. Change $J$ and you find a different "best" — one that might, for instance, penalise large errors less, or weight certain observations more heavily.
+
+**Constraints** add limits: minimise cost *subject to* a budget, a fairness requirement, or a legal threshold:
+
+$$\min_\theta J(\theta) \quad \text{subject to} \quad g(\theta) \leq c$$
+
+This is the mathematics of every welfare budget: minimise expenditure subject to (nominal) eligibility rules.
+
+#### Feedback Loops and the Dynamic System
+
+Static optimisation (find best $\theta$, apply once) is too simple for social systems. **Dynamic optimisation** updates parameters over time as the system responds.
+
+A **feedback loop** adjusts outputs based on measured difference from target:
+
+$$\theta_{t+1} = \theta_t - \alpha \cdot \frac{\partial J}{\partial \theta_t}$$
+
+This is **gradient descent** — the same algorithm that trains neural networks — applied to a social system. $\alpha$ is the learning rate: how aggressively the system corrects.
+
+**Positive feedback** amplifies: more sanctions → more non-compliance data → model raises sanction probability → more sanctions. This is not self-correction; it is self-reinforcement of existing bias.
+
+**Negative feedback** corrects: spending exceeds budget → eligibility threshold raised → caseload falls → spending corrects. UC's managed migration and benefit cap adjustments work this way — the state titrates austerity to hit spending targets.
+
+Norbert Wiener called this **cybernetics** — the science of control and communication in animals and machines. His insight was that governance *is* a feedback system. His warning — largely ignored — was that the choice of target variable determines everything.
+
+</LensSection>

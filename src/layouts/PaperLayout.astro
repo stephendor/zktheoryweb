@@ -27,9 +27,10 @@
  */
 
 import type { CollectionEntry } from 'astro:content';
-import { render } from 'astro:content';
+import { render, getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import StickyToC from '@components/shared/StickyToC.astro';
+import ConnectionsPanel from '@components/shared/ConnectionsPanel.astro';
 import { ExpandableCard } from '@components/shared/ExpandableCard';
 import { BibTexCopyButton } from '@components/tda/BibTexCopyButton';
 
@@ -88,6 +89,33 @@ const statusInfo = statusConfig[status] ?? { label: status, modifier: 'planned' 
 /* ── Dependency position strip: 10 papers ── */
 const TOTAL_PAPERS = 10;
 const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
+
+/* ── Cross-project connections ── */
+const allMethods = methods.length > 0 ? await getCollection('methods') : [];
+const allPapersForDeps =
+  (depends_on.length > 0 || enables.length > 0) ? await getCollection('papers') : [];
+
+// Method route does not exist yet — flag each card with data-todo
+const methodConnections = methods.map((slug) => {
+  const method = allMethods.find((m) => m.data.method_slug === slug);
+  return method
+    ? { href: '#', label: 'Method', title: method.data.title, palette: 'tda' as const, dataTodo: 'method-route-missing' }
+    : { href: '#', label: 'Method', title: slug, palette: 'tda' as const, dataTodo: 'method-route-missing' };
+});
+
+const dependsOnConnections = depends_on.map((n) => {
+  const paper = allPapersForDeps.find((p) => p.data.paper_number === n);
+  return paper
+    ? { href: `/tda/papers/${paper.id}`, label: `Dependency: Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
+    : { href: '#', label: `Dependency: Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
+});
+
+const enablesConnections = enables.map((n) => {
+  const paper = allPapersForDeps.find((p) => p.data.paper_number === n);
+  return paper
+    ? { href: `/tda/papers/${paper.id}`, label: `Enables: Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
+    : { href: '#', label: `Enables: Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
+});
 ---
 
 <BaseLayout title={title} description={abstract ?? plain_summary} section="tda">
@@ -321,6 +349,19 @@ const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
       </div>
     </div>
   </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      CROSS-PROJECT CONNECTIONS
+      ════════════════════════════════════════════════════════════════════ */}
+  {(methodConnections.length > 0 || dependsOnConnections.length > 0 || enablesConnections.length > 0) && (
+    <div class="paper-connections container-prose--wide">
+      <ConnectionsPanel heading="Methods Used" connections={methodConnections} />
+      <ConnectionsPanel
+        heading="Research Dependencies"
+        connections={[...dependsOnConnections, ...enablesConnections]}
+      />
+    </div>
+  )}
 
   {/* ════════════════════════════════════════════════════════════════════
       PAPER NAVIGATION — prev / next links
@@ -784,6 +825,12 @@ const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
 
   .bibtex-block {
     margin-top: var(--space-5);
+  }
+
+  /* ══ Cross-project connections wrapper ══════════════════════════════════ */
+  .paper-connections {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-6);
   }
 
   /* ══ Prev / Next navigation ══════════════════════════════════════════════ */

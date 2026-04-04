@@ -37,6 +37,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonicalURL} />
     {ogImage && <meta property="og:image" content={ogImage} />}
 
+    <!-- No-FOCT: resolves theme synchronously before CSS renders to prevent flash -->
+    <script is:inline>
+      (function () {
+        var s = localStorage.getItem('theme');
+        var t = (s === 'dark' || s === 'light')
+          ? s
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+
     <!-- Print stylesheet — loaded separately so browser defers it for non-print -->
     <link rel="stylesheet" media="print" href={printCssUrl} />
 

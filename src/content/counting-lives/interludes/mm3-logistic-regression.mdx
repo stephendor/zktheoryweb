@@ -7,11 +7,19 @@ related_tda_methods:
 status: drafting
 ---
 
+import { LensSection } from '@components/shared/LensSection';
+
+<LensSection lens="politics">
+
 #### Intuitive
 
 Linear regression predicts a number — income, test score, rent. But sometimes we want to predict a category: eligible or ineligible, likely-to-default or not, high-risk or low-risk. Logistic regression is the classical tool for this. Instead of drawing a straight line through a scatterplot, it draws an S-shaped curve that maps any input — however extreme — to a probability between 0 and 1. Above a threshold (say, 0.5), the model classifies you as belonging to one category; below it, the other.
 
 This sounds innocuous enough as a mathematical technique. But when it enters the world of welfare administration, the categories become consequential: eligible or sanctioned, likely to reoffend or not, high welfare dependency risk or low. The S-curve mediates the difference between receiving benefits and losing them. What determines where the curve sits, which inputs feed into it, and where the classification threshold is drawn are all choices — made by officials, vendors, and algorithm designers — but the logistic regression model presents the output as an objective probability score, not a policy decision.
+
+</LensSection>
+
+<LensSection lens="math">
 
 #### Intermediate
 
@@ -36,3 +44,5 @@ The Mapper algorithm (examined in the TDA methods section) addresses a fundament
 $$\text{Mapper}(X, f, \mathcal{U}, \mathcal{C}) = \text{nerve}\!\left(\big\{\mathcal{C}(f^{-1}(U) \cap X)\big\}_{U \in \mathcal{U}}\right)$$
 
 where $f$ is a filter function, $\mathcal{U}$ a cover of $f(X)$, and $\mathcal{C}$ a clustering algorithm applied to each pullback.
+
+</LensSection>

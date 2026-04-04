@@ -7,11 +7,19 @@ related_tda_methods:
 status: drafting
 ---
 
+import { LensSection } from '@components/shared/LensSection';
+
+<LensSection lens="politics">
+
 #### Intuitive
 
 Imagine you are measuring the heights of a thousand people chosen at random from a city street. Most cluster together near some middle value; a few are very short, a few very tall, and the pattern tapers symmetrically in both directions. If you drew a smooth curve over a bar chart of these heights, it would look like a bell — broad in the middle, narrow at the edges. This is the normal distribution, and it appears so reliably in nature that nineteenth-century scientists came to treat it as a kind of mathematical gravity: something that pulled all measurements, given enough of them, toward a symmetric, predictable shape.
 
 Quetelet noticed that the same bell-shaped pattern appeared not just in physical measurements but in social ones — average income, crime rates, educational attainment. He concluded that just as the bell described the scatter of artillery shells around a target, it described the scatter of human beings around a social ideal. The "average man" was the bull's-eye. The poor were statistical outliers — deviations from the norm — rather than products of political conditions. This move, from description to naturalisation, is the beginning of modern poverty measurement.
+
+</LensSection>
+
+<LensSection lens="math">
 
 #### Intermediate
 
@@ -30,3 +38,5 @@ The standard normal $\mathcal{N}(0,1)$ arises when $\mu = 0$ and $\sigma = 1$, a
 Quetelet used the normal distribution to identify the "average man" as the population mean across multiple measured traits. Galton later used the same distribution to analyse the regression of offspring measurements toward the population mean — his discovery that exceptional parents tend to have less exceptional children, which he called "regression to mediocrity." This finding, derived from normal-distribution theory, was subsequently misread as evidence that poverty would naturally self-correct over generations, providing a pseudo-statistical argument against structural intervention.
 
 The connection to persistent homology (a core TDA method explored elsewhere in this book) lies in the fact that topological methods can detect distributional structure — clusters, loops, voids — that the normal distribution's two-parameter summary systematically conceals. Where normal-distribution models ask "how far from the mean?", persistent homology asks "what shape does the data inhabit?" — a question that becomes decisive when poverty is not bell-shaped but multiply clustered and structurally persistent.
+
+</LensSection>

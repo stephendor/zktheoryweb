@@ -15,3 +15,11 @@
 
 /* ─── Prose styles (long-form reading; scoped to .prose) ────────────────────── */
 @import './prose.css';
+/* ─── Dark mode: KaTeX math rendering override ───────────────────────────── */
+/*
+ * KaTeX ships its own colours via katex.min.css (imported above).
+ * Override text colour in dark mode so math remains readable.
+ */
+[data-theme="dark"] .katex {
+  color: var(--color-neutral-body);
+}
