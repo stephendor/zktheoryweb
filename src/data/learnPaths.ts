@@ -155,3 +155,18 @@ export const learnPaths: Record<string, LearnPath> = {
 };
 
 export const availablePathSlugs = Object.keys(learnPaths) as Array<keyof typeof learnPaths>;
+
+/**
+ * Maps the path-number prefix used in content entry IDs (e.g. 'path1', 'path2')
+ * to the canonical URL slug for that learning path.
+ *
+ * This is the single source of truth for this mapping — import it wherever you need
+ * to convert an entry ID prefix to a path slug (e.g. ModuleLayout connection links).
+ * When a new path is added, update this map and the Zod enum in content.config.ts together.
+ */
+export const pathNumberToSlug: Record<string, string> = {
+  path1: 'topology-social-scientists',
+  path2: 'mathematics-of-poverty',
+  path3: 'data-justice',
+  path4: 'tda-practitioners',
+};

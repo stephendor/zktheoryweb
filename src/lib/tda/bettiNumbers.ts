@@ -7,7 +7,10 @@
  * β₀ = number of connected components (Union-Find over vertices and edges)
  * β₁ = E − V + β₀ − T  (simplicial Euler characteristic formula)
  *        where E = edge count, V = vertex count, T = triangle count
- * β₂ = 0  (always 0 for 2D Vietoris-Rips complexes; included for extensibility)
+ * β₂ = 0  (fixed to 0 in this helper — an intentional simplification for the
+ *           Filtration Playground UI where all point-clouds are 2-dimensional.
+ *           Arbitrary simplicial complexes or higher-dimensional VR complexes
+ *           can have non-zero β₂; extend this helper if 3-D data is added.)
  */
 
 import type { Simplex } from './vietorisRips';

@@ -102,6 +102,12 @@ const PRESET_IDS: PresetId[] = [
   'random-30pts',
 ];
 
+/** The preset used when no valid `presetId` prop is supplied. */
+export const DEFAULT_PRESET_ID: PresetId = 'circle-20pts';
+
+/** All valid preset IDs — use to validate external preset strings at runtime. */
+export const VALID_PRESET_IDS: readonly PresetId[] = PRESET_IDS as const;
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
