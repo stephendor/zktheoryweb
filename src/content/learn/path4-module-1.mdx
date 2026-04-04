@@ -1,0 +1,90 @@
+---
+title: 'Setup and First Computation'
+path: 'tda-practitioners'
+module_number: 1
+core_concept: 'Installing the TDA Python stack and computing your first persistence diagram from a point cloud'
+connections:
+  chapters: []
+  papers: [1]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'After calling ripser(points)[''dgms''], you receive a list of arrays. What does dgms[0] represent and what does dgms[1] represent, and how do you identify a persistent loop?'
+    answer: 'dgms[0] contains birth-death pairs for H₀ (connected components): each row [b, d] means a component was born at scale b and merged into an older component at scale d. The one row with d = inf is the final surviving component. dgms[1] contains H₁ (loop) birth-death pairs: each row [b, d] means a one-dimensional cycle appeared at scale b and was filled in at scale d. A persistent loop appears as a row in dgms[1] where the gap d - b is substantially larger than all other rows — the outlier in the persistence-value distribution. Near-diagonal rows (small d - b) are noise features; the outliers are the candidates for genuine cyclical structure in the data.'
+  - question: 'Why is the Vietoris-Rips complex the computationally practical default, and what is its key theoretical limitation relative to the Čech complex?'
+    answer: 'The Vietoris-Rips complex is determined entirely by pairwise distances: include any simplex whose vertices are all within distance r of each other. This means the full computation requires only an n×n distance matrix, with no need to solve geometric intersection problems in the ambient space. The Čech complex is theoretically tighter — it is homotopy equivalent to the union of balls and satisfies the nerve lemma exactly — but computing it requires determining when d-dimensional balls overlap, which becomes intractable for the dimensions typical of social-science datasets. With sparse approximations, ripser handles tens of thousands of points in seconds on a standard laptop.'
+  - question: 'You run ripser on a welfare dataset and find that dgms[1] contains fifty points all within 0.03 units of the diagonal. What does this tell you about the topology of the data, and is it a substantively useful finding?'
+    answer: 'It tells you the dataset has no persistent loop structure at any scale. All apparent H₁ cycles are born and die within a narrow parameter window — the signature of sampling noise rather than genuine cyclical geometry. The data is topologically simply connected: it may have multiple connected components visible in dgms[0], but no robust one-dimensional holes survive across a meaningful range of scales. This outcome is substantively informative rather than a null result: it implies that the welfare trajectories in this dataset do not form closed cycles, which rules out poverty-trap dynamics of the recurrent type. Reporting a clean absence of persistent topology is itself a valid TDA finding.'
+status: 'drafting'
+---
+
+## From Theory to Computation: Why Practitioners Need the Stack
+
+Persistent homology is no longer a purely theoretical subject. Since the release of `ripser` in 2016 — an implementation of the Ripser algorithm that reduced the practical runtime for computing H₁ over datasets of several thousand points from hours to seconds — TDA has become a live methodology in applied mathematics, computational biology, and increasingly in social science. But the gap between reading a TDA paper and running your first computation remains significant. The Python ecosystem for TDA is fragmented across several libraries with different APIs, the installation dependencies can conflict on standard academic computing environments, and interpreting the raw output of `ripser` requires knowing exactly what persistent homology computes. This module closes that gap. By the end, you will have installed a complete TDA stack, loaded a point cloud from a NumPy array, computed its H₀ and H₁ persistence diagrams, and interpreted the output with enough confidence to know whether you have found anything worth analysing further.
+
+## The TDA Python Stack
+
+Three libraries form the essential practitioner stack. **`ripser`** is the primary computational engine, implementing the Ripser algorithm — which is orders of magnitude faster than naive boundary-matrix reduction for Vietoris–Rips persistent homology. Its speed comes from exploiting the structure of the VR filtration to avoid explicit simplex enumeration: rather than building the full simplicial complex, Ripser computes the persistent cohomology using a compressed column-pivoting scheme over $\mathbb{F}_2$. **`persim`** (persistence images and metrics) provides diagram visualisation via `plot_diagrams`, distance computation (bottleneck and Wasserstein), and vectorisation utilities that convert persistence diagrams into fixed-length vectors usable in downstream machine-learning pipelines. **`scikit-tda`** is a convenience umbrella that installs a coordinated set of related libraries together, including `ripser`, `persim`, `tadasets` for synthetic benchmark datasets, and `cechmate` for Čech complex computation.
+
+Install the core stack:
+
+```bash
+pip install scikit-tda
+```
+
+> `scikit-tda` already bundles `persim` as a dependency, so a separate install is not needed. If you require a specific version of `persim` (for example to reproduce results from a particular paper), pin it explicitly *after* the umbrella install: `pip install persim==0.3.7`.
+
+For reproducible research environments, always work in a dedicated conda environment:
+
+```bash
+conda create -n tda python=3.11
+conda activate tda
+pip install scikit-tda jupyter```
+
+Pin library versions in `requirements.txt` — `ripser==0.6.9` and `persim==0.3.7` reflect the contemporary stable API used throughout this path. The Ripser backend is written in C++ and wrapped via pybind11. If installation fails with a compilation error on Linux, ensure `build-essential` is installed. On Windows, use the Windows Subsystem for Linux or install via conda-forge, where pre-compiled wheels are maintained for most platforms. On macOS, Xcode Command Line Tools (`xcode-select --install`) provide the required compiler toolchain.
+
+## The Vietoris–Rips Complex
+
+The mathematical object that `ripser` constructs is the **Vietoris–Rips complex**. Given a finite point cloud $X \subset \mathbb{R}^d$ and a scale parameter $r \geq 0$, the Vietoris–Rips complex is the simplicial complex containing every finite subset of $X$ whose pairwise distances are all at most $r$:
+
+$$VR(X, r) = \{ \sigma \subseteq X : d(x_i, x_j) \leq r \; \forall x_i, x_j \in \sigma \}$$
+
+As $r$ increases from zero, edges appear first between the closest pairs of points, then triangles fill in whenever three mutual edges exist, then tetrahedra when four mutual triangles appear, and so on through higher dimensions. The nested family $\{VR(X, r)\}_{r \geq 0}$ is the **filtration** over which persistent homology is computed — a sequence of nested simplicial complexes, one for each value of the scale parameter.
+
+Crucially, you do not fix $r$ in advance. `ripser` sweeps the full filtration from $r = 0$ up to a maximum diameter and returns birth–death pairs $(b, d)$ for every homological feature created and destroyed across all scales. The choice of analysis scale is replaced entirely by the act of inspecting the distribution of persistence values $d - b$ after the computation completes. Features with large $d - b$ are scale-robust; features with small $d - b$ are scale-sensitive noise. This replaces the arbitrary threshold problem endemic to distance-cutoff clustering.
+
+## Loading Data and Running the Computation
+
+The canonical input to `ripser` is an $n \times d$ NumPy array, where $n$ is the number of data points and $d$ is the dimensionality. For a poverty panel dataset you might have $n = 5{,}000$ household observations across $d = 6$ normalised variables: income decile, employment status, housing deprivation score, food insecurity index, tenure length in current postcode, and age of household head. Module 2 addresses normalisation in detail; for now, assume the data matrix is already z-score normalised so that every variable has zero mean and unit variance before distances are computed.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+# from ripser import ripser  # uncomment when Pyodide runner is active
+# from persim import plot_diagrams
+# import matplotlib.pyplot as plt
+
+# Noisy circle: a synthetic point cloud with one genuine H₁ loop
+np.random.seed(42)
+theta = np.random.uniform(0, 2 * np.pi, 200)
+circle = np.column_stack([np.cos(theta), np.sin(theta)])
+noisy_circle = circle + np.random.normal(0, 0.1, circle.shape)
+
+# result = ripser(noisy_circle)
+# dgms = result['dgms']
+# dgms[0]: birth-death pairs for H₀ (connected components)
+# dgms[1]: birth-death pairs for H₁ (loops)
+# plot_diagrams(dgms, show=True)
+```
+
+The return value `result['dgms']` is a Python list. `dgms[0]` is an $n_0 \times 2$ NumPy array of birth–death pairs for connected components. For a connected point cloud, all but one row will have finite death values, and the surviving row has `death = np.inf`. `dgms[1]` is an $n_1 \times 2$ array for H₁. For the noisy circle above, you should observe one row in `dgms[1]` with large persistence — approximately `[0.28, 1.15]`, meaning a loop appeared at scale 0.28 and was filled at scale 1.15, for a persistence of 0.87 units — and all remaining rows clustered near the diagonal with persistence below 0.1. That single outlier is the signal.
+
+## Interpreting the Output
+
+Reading a persistence diagram for the first time, the most common error is treating the near-diagonal cluster as the primary signal. It is the opposite: near-diagonal points are noise features, born and killed within a narrow scale range by local geometric accidents. The signal is whatever lies far from the diagonal. For a dataset with no genuine loops, `dgms[1]` will contain only near-diagonal points. For a dataset with genuine cyclical structure — poverty trajectories that form closed circuits in variable space — one or a few points will stand conspicuously away from the bulk.
+
+For `dgms[0]`, count the number of rows: this equals the number of data points $n$, since each point starts as its own connected component at scale 0. As $r$ grows, components merge and rows accumulate finite death values. Track how many rows have short death values (small isolated clusters that quickly merge) versus how many persist well into the filtration. A dataset with multiple long-lived H₀ features — a cluster of rows in `dgms[0]` far from the diagonal — indicates genuine stratification: two or more well-separated groups that remain disconnected even at coarse scales. In poverty data, this can signal a bimodal income distribution or a structural gap between employed and long-term unemployed populations.
+
+## How This Module Connects
+
+The workflow introduced here — install the stack, generate a NumPy array, call `ripser`, read `dgms` — is the computational foundation for every empirical analysis in **Paper 1** of the research portfolio. Paper 1 applies Vietoris–Rips persistent homology to longitudinal poverty panel data and interprets a persistent H₁ feature as evidence for poverty-trap dynamics: a loop in the data implies that households follow closed cycles through the variable space, returning to previous states rather than moving monotonically out of deprivation. All subsequent Path 4 modules extend this foundation: Module 2 addresses preprocessing decisions that shape diagram quality, Module 3 presents a complete end-to-end pipeline with visualisation, and Modules 4 and 5 develop interpretation and statistical testing for the results.

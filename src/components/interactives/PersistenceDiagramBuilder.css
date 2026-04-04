@@ -146,7 +146,9 @@
 
 /* Immortal feature (death = null, plotted at top) */
 .pdb-feature--immortal {
-  stroke-dasharray: 2 1;
+  stroke: #d97706;
+  stroke-width: 3;
+  stroke-dasharray: none;
 }
 
 /* Selected feature */

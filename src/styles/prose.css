@@ -211,6 +211,15 @@
   /* Shiki will inject colour tokens; we provide the base dark background */
 }
 
+/* On desktop, break code blocks out of the prose column to span the full
+   grid width (main + gap + sidenote), matching the module-interactive slot.
+   This gives Python/shell blocks ~916px instead of the cramped 65ch column. */
+@media (min-width: 1024px) {
+  .prose pre {
+    grid-column: main / sidenote-end;
+  }
+}
+
 .prose pre code {
   font-family: inherit;
   font-size: inherit;

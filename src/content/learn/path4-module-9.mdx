@@ -1,0 +1,111 @@
+---
+title: 'Wasserstein and Landscape Distances'
+path: 'tda-practitioners'
+module_number: 9
+core_concept: 'Computing stable distances between persistence diagrams for statistical pipelines'
+interactive_slug: 'tda-results-explorer'
+tda_preset_id: 'circle-20pts'
+connections:
+  chapters: []
+  papers: [2, 3]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'You have 200 welfare-survey persistence diagrams (one per geographic area) and want to run a k-means clustering analysis to group areas by topological similarity. Why can you not directly apply k-means to the persistence diagrams, and what vectorisation approach should you use?'
+    answer: 'k-means requires a well-defined notion of mean (centroid) over the input objects. The Fréchet mean of a set of persistence diagrams — the diagram minimising the sum of squared Wasserstein distances to all diagrams in the set — is known to exist and to be unique under mild conditions, but computing it requires an iterative algorithm (the Wasserstein barycenter) that is expensive and produces a diagram-valued output that cannot be directly compared in the k-means assignment step. More fundamentally, k-means operates in a vector space, and persistence diagrams are multi-sets in the extended plane with varying cardinality — not vectors. The correct approach is to first vectorise each diagram into a fixed-length vector using either persistence landscapes (which produce a function over the real line, discretised to a fixed grid) or persistence images (which produce a fixed-size 2D array). Once vectorised, the 200 diagrams become 200 fixed-length vectors, and k-means (or any other Euclidean-space algorithm) can be applied directly. Persistence landscapes preserve more of the stability guarantees from the original diagram; persistence images are more compact and typically produce better empirical performance in classification tasks.'
+  - question: 'Provide the intuition for why bottleneck distance is more sensitive to outlier points in the diagram than Wasserstein-2, and in what research context would you prefer bottleneck over Wasserstein-2?'
+    answer: 'Bottleneck distance is the L∞ norm over the optimal matching: it records the maximum displacement required in the best matching between two diagrams, where every unmatched point is matched to its diagonal projection. One outlier point that can only be matched to a diagonal projection at distance 0.9 contributes 0.9 to the bottleneck distance regardless of how well all other points are matched. Wasserstein-2 is the L² norm: it sums the squared displacements over all matched pairs and takes the square root, so one large displacement is diluted by many small ones. Bottleneck is therefore dominated by the single hardest-to-match feature. Prefer bottleneck in contexts where the primary question is: "does the most persistent feature change?" — for example, when testing whether a policy intervention eliminated the dominant poverty-cycle feature in a persistence diagram, where you care most about whether the one long-lived H₁ outlier moved, regardless of what happened to the noise-floor features. Prefer Wasserstein-2 when comparing the overall distribution of persistence values across diagrams, as in Module 5 permutation tests where the aggregate distributional difference is the object of interest.'
+  - question: 'The k-th persistence landscape function is defined as λₖ(t) = sup{m ≥ 0 : ∃(b,d) ∈ Dgm, b+m ≤ t ≤ d-m}. What does the first landscape function λ₁ encode about the persistence diagram, and why is it defined as a supremum rather than just the persistence of the most prominent feature?'
+    answer: 'λ₁(t) encodes the maximum "tent height" achievable at parameter-axis position t across all birth-death pairs in the diagram. Each (b, d) pair contributes a tent function peaked at (b+d)/2 with height (d-b)/2 and support [b, d]. λ₁(t) is the maximum of all tent values at position t — the height of the highest tent at that position. The supremum formulation is needed rather than simply using the maximum-persistence feature because multiple features may be active simultaneously at the same value of t: two loops, both born before t and dying after t, each contribute a tent height at t, and λ₁ takes the maximum of these simultaneous contributions. This means λ₁ at position t reflects the most persistent loop active at scale t, providing a profile of topological signal intensity across the filtration parameter. λ₂ takes the second-highest value at each t, and so forth. Together the landscape functions form a complete invariant: from the set {λ₁, λ₂, ...} the original persistence diagram can be reconstructed.'
+status: 'drafting'
+---
+
+## Beyond the Diagram: The Vectorisation Problem
+
+A persistence diagram is a mathematically precise object — a multi-set of points in the extended plane — but it is not a vector. This creates a fundamental obstacle for statistical analysis. Standard statistical tools (regression, clustering, hypothesis testing with parametric tests, neural networks, random forests) operate on fixed-dimensional vector spaces. A collection of $N$ persistence diagrams, each a multi-set of varying cardinality, cannot be passed to a scikit-learn pipeline without transformation. The problem is not merely computational; it reflects a genuine mathematical structure mismatch.
+
+Three approaches have been developed to close this gap. First, **diagram distances** (bottleneck and Wasserstein) allow non-parametric comparison of diagrams directly, supporting the permutation tests of Module 5 and the distance-based clustering of this module. Second, **persistence landscapes** convert each diagram to a function over the real line, which can then be discretised to a fixed-length vector. Third, **persistence images** project the diagram onto a fixed 2D grid via a Gaussian kernel, producing a compact array directly usable in image-processing pipelines. Each approach involves a stability trade-off: how much information from the original diagram is preserved, and how sensitive is the vectorisation to small perturbations in the point cloud?
+
+## Diagram Distances
+
+**Bottleneck distance** between diagrams $X$ and $Y$ is the $L^\infty$ norm over optimal matchings:
+
+$$d_B(X, Y) = \inf_\gamma \sup_{x \in \text{Dgm}(X)} \| x - \gamma(x) \|_\infty$$
+
+where the infimum is over all bijections $\gamma$ between $\text{Dgm}(X) \cup \Delta$ and $\text{Dgm}(Y) \cup \Delta$ (extending both diagrams with the diagonal $\Delta$ to handle cardinality mismatches). The bottleneck distance is determined by the single worst-matched point pair — the most displaceable feature in the optimal assignment. It is the most conservative metric and is directly bounded by the stability theorem.
+
+**Wasserstein-$p$ distance** generalises this to the $L^p$ norm:
+
+$$W_p(X, Y) = \left( \inf_\gamma \sum_{x \in \text{Dgm}(X)} \| x - \gamma(x) \|^p \right)^{1/p}$$
+
+With $p = 1$, the Wasserstein-1 distance sums absolute displacements and is robust to individual outliers — a few drastically mismatched noise features inflate it less than they inflate bottleneck. With $p = 2$, Wasserstein-2 emphasises large displacements quadratically. For statistical testing (Module 5), Wasserstein-1 is preferred; for applications where the strongest features should dominate the comparison, bottleneck or Wasserstein-$\infty$ is appropriate.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+# from persim import bottleneck, wasserstein
+
+# Remove infinite-death rows before distance computation
+# def finite_dgm(dgm):
+#     return dgm[np.isfinite(dgm[:, 1])]
+
+# dgm_A = ripser(X_A, maxdim=1)['dgms'][1]
+# dgm_B = ripser(X_B, maxdim=1)['dgms'][1]
+
+# d_bottleneck = bottleneck(finite_dgm(dgm_A), finite_dgm(dgm_B), e=0.0)
+# d_w1  = wasserstein(finite_dgm(dgm_A), finite_dgm(dgm_B), matching=False)
+# print(f'Bottleneck: {d_bottleneck:.4f}')
+# print(f'Wasserstein-1: {d_w1:.4f}')
+```
+
+## Persistence Landscapes
+
+A **persistence landscape** converts a persistence diagram into a sequence of functions $\lambda_k: \mathbb{R} \to \mathbb{R}$ defined by:
+
+$$\lambda_k(t) = \sup\left\{ m \geq 0 : \exists (b,d) \in \text{Dgm},\; b+m \leq t \leq d-m \right\}$$
+
+where the supremum is over the $k$-th largest value. Each birth–death pair $(b, d)$ contributes a tent function centred at $(b+d)/2$ with height $(d-b)/2$. The first landscape function $\lambda_1$ is the envelope of the tallest tent at each parameter position; $\lambda_2$ is the second-tallest; and so on.
+
+Persistence landscapes have two critical properties. **Stability:** a perturbation of $\epsilon$ in bottleneck distance between diagrams produces a perturbation of at most $\epsilon$ in the $L^\infty$ norm of the landscape functions. **Linearisation:** landscapes live in a Banach space, making the Fréchet mean (pointwise average) well-defined and easily computable. This means you can legally average persistence diagrams by averaging their landscape functions — a cornerstone of statistical inference.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+# from persim.landscapes import PersistenceLandscaper
+
+# Vectorise a single diagram to a persistence landscape
+# landscaper = PersistenceLandscaper(hom_deg=1, num_steps=200)
+# landscape_vector = landscaper.fit_transform([dgm_H1])[0]
+# # landscape_vector: shape (num_landscapes * num_steps,) = fixed-length 1D vector
+
+# Apply to a collection of diagrams for downstream ML
+# from ripser import ripser
+# diagrams = [ripser(X_i, maxdim=1)['dgms'][1] for X_i in welfare_areas]
+# landscape_matrix = landscaper.fit_transform(diagrams)
+# # landscape_matrix: shape (n_areas, num_landscapes * num_steps)
+# # Now directly usable in sklearn: KMeans, PCA, RandomForest, etc.
+```
+
+## Persistence Images
+
+**Persistence images** provide an alternative fixed-dimensional vectorisation. The idea: convert each diagram to a weighted sum of Gaussian kernels placed at each birth–death point, then evaluate on a fixed grid. The weight function $f(b, d) = (d - b)$ (persistence) ensures that long-lived features contribute more mass to the image than noise features.
+
+Persistence images tend to be more compact than landscape vectors (a $20 \times 20$ pixel image is 400 dimensions; a landscape with 5 functions at 200 steps is 1,000 dimensions) and perform better empirically in supervised learning tasks. However, they involve a smoothing bandwidth parameter (Gaussian kernel width) that must be tuned, and the discrete grid resolution introduces a mild information loss. For welfare data with a small number of prominent features, persistence images are a practical default for building feature matrices for regression.
+
+## Practical Comparison: Which to Use
+
+The choice between bottleneck distance, Wasserstein distance, landscapes, and images depends on the downstream task:
+
+| Task | Recommended approach |
+|---|---|
+| Two-sample hypothesis test | Wasserstein-1 (Module 5 protocol) |
+| Clustering many diagrams | Persistence landscape + k-means or hierarchical clustering |
+| Supervised classification | Persistence image as feature vector |
+| Detecting change in strongest feature | Bottleneck distance |
+| Averaging diagrams (Fréchet mean) | Landscape average (pointwise) |
+
+For the welfare-research programme in this path, landscape vectorisation is the primary tool for comparing TDA summaries across geographic areas or demographic groups, and Wasserstein-1 distance is the test statistic for the permutation tests confirming that topological differences are statistically significant.
+
+## How This Module Connects
+
+The vectorisation methods introduced here provide the bridge between the raw topological outputs of `ripser` (computed in Modules 1–3) and the statistical and machine-learning analyses in **Papers 2 and 3**. Paper 2 uses Wasserstein distances to compare persistence diagrams across survey waves with differential non-response rates, quantifying how non-response biases the topological summary. Paper 3 applies persistence landscape vectorisation to compare bifiltration summaries across 180 UK local authority areas, building a topological profile of geographic variation in poverty-cycle dynamics.

@@ -1,0 +1,225 @@
+/**
+ * MapperParameterLab.css — Task 5.2 — Agent_Interactive_Advanced
+ *
+ * Styles for the Mapper Parameter Lab interactive.
+ * Uses design tokens from src/styles/tokens.css.
+ *
+ * Palette:
+ *   TDA "Mathematical": --color-tda-teal, --color-tda-slate for Mapper nodes/edges.
+ *   Okabe-Ito: --color-viz-1 through --color-viz-6 for filter-value colour scale.
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.mpl-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+}
+
+/* ── Dual panel row ───────────────────────────────────────────────────────── */
+
+.mpl-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4, 1rem);
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .mpl-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Individual panel ─────────────────────────────────────────────────────── */
+
+.mpl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  min-width: 0;
+}
+
+.mpl-panel-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--color-neutral-muted, #555555);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider, 0.05em);
+  margin: 0;
+}
+
+/* ── SVG container ────────────────────────────────────────────────────────── */
+
+.mpl-svg-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-neutral-border, #DEDBD4);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-neutral-surface, #FFFFFF);
+  overflow: hidden;
+}
+
+.mpl-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── SVG element styles (applied via D3 class selectors) ─────────────────── */
+
+/* Point cloud scatter */
+.mpl-point {
+  cursor: pointer;
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: transform 0.15s ease;
+}
+
+.mpl-point:hover {
+  transform: scale(1.4);
+}
+
+/* Axis text */
+.mpl-svg text {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 11px;
+  fill: var(--color-neutral-muted, #555555);
+}
+
+.mpl-axis-label {
+  font-size: 12px;
+  fill: var(--color-neutral-body, #1A1A1A);
+  font-weight: 500;
+}
+
+/* Mapper force graph */
+.mpl-edge {
+  stroke: var(--color-tda-slate, #3D5A80);
+  stroke-opacity: 0.6;
+}
+
+.mpl-node circle {
+  stroke: var(--color-neutral-surface, #FFFFFF);
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+.mpl-node circle:hover {
+  stroke-width: 3px;
+  stroke: var(--color-tda-teal, #1A5F6A);
+}
+
+/* ── Tooltip (shared .viz-tooltip via global.css, no override needed) ─────── */
+
+/* ── Pan + zoom affordances ───────────────────────────────────────────────── */
+
+.mpl-svg--pannable {
+  cursor: grab;
+}
+
+.mpl-svg--pannable:active {
+  cursor: grabbing;
+}
+
+.mpl-zoom-reset {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-muted, #555555);
+  background: var(--color-neutral-surface, #ffffff);
+  border: 1px solid var(--color-neutral-border, #DEDBD4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.mpl-zoom-reset:hover {
+  opacity: 1;
+  color: var(--color-neutral-body, #1A1A1A);
+}
+
+/* ── Controls panel ────────────────────────────────────────────────────────── */
+
+.mpl-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4, 1rem) var(--space-6, 1.5rem);
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #EDEAE2);
+  border: 1px solid var(--color-neutral-border, #DEDBD4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.mpl-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.mpl-control-group label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+  color: var(--color-neutral-body, #1A1A1A);
+}
+
+.mpl-control-group select,
+.mpl-control-group input[type='range'] {
+  width: 100%;
+}
+
+.mpl-control-group select {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+  border: 1px solid var(--color-neutral-border, #DEDBD4);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-neutral-surface, #FFFFFF);
+  color: var(--color-neutral-body, #1A1A1A);
+  cursor: pointer;
+}
+
+.mpl-control-group select:focus {
+  outline: 2px solid var(--color-tda-teal, #1A5F6A);
+  outline-offset: 1px;
+}
+
+.mpl-control-group input[type='range'] {
+  accent-color: var(--color-tda-teal, #1A5F6A);
+  cursor: pointer;
+}
+
+.mpl-control-group input[type='range']:focus {
+  outline: 2px solid var(--color-tda-teal, #1A5F6A);
+  outline-offset: 2px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* ── Graph stats strip ────────────────────────────────────────────────────── */
+
+.mpl-graph-stats {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-muted, #555555);
+  padding: var(--space-2, 0.5rem) 0;
+  border-top: 1px solid var(--color-neutral-border, #DEDBD4);
+}
+
+/* ── Empty-graph placeholder ──────────────────────────────────────────────── */
+
+.mpl-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-muted, #555555);
+  font-style: italic;
+}

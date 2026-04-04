@@ -1,0 +1,74 @@
+---
+title: 'Reading the Results'
+path: 'tda-practitioners'
+module_number: 11
+core_concept: 'Interpreting TDA output in a poverty-measurement context means linking topological features to social trajectories'
+connections:
+  chapters: [10, 11, 12]
+  papers: [1, 2]
+  modules: []
+  methods: []
+check_understanding:
+  - question: 'A persistence diagram for a poverty panel dataset shows two long-lived $H_0$ classes and one long-lived $H_1$ class. What social structural interpretation is most consistent with this output?'
+    answer: 'Two long-lived $H_0$ classes indicate two persistent, structurally separated subpopulations — for example, a chronically poor group and a non-poor group with no continuous gradient of intermediate households connecting them. One long-lived $H_1$ class indicates a closed cyclical loop connecting households within or between those groups — perhaps a circuit of households cycling between near-poverty and poverty at a typical frequency. Together, these features suggest a bimodal population with an internal cycle: households occupy one of two distinct deprivation regimes, and some move cyclically between the margins of those regimes rather than making clean transitions. This pattern is inconsistent with a simple two-state Markov model and calls for a path-dependent model with at least one memory parameter.'
+  - question: 'What does it mean for a topological finding to be robust to the choice of distance metric, and how would you test this in practice?'
+    answer: 'A topological finding is robust to metric choice if the same qualitative features — same number of long-lived $H_0$ and $H_1$ classes, similar birth–death scales relative to the data''s diameter — appear in persistence diagrams built using multiple different metrics on the same dataset. In practice, you would compute persistence diagrams using Euclidean distance, Manhattan distance, and a domain-specific composite metric (for example, one that up-weights income and down-weights housing tenure), compare the resulting diagrams using Wasserstein distance, and report which features are consistent across all three. Features that appear only for one metric are artefacts of that metric choice; features that appear under all reasonable metrics reflect genuine structure in the data.'
+  - question: 'Why is it insufficient to report only that a poverty dataset has $\beta_1 > 0$ at some scale, without specifying the persistence, the scale, and the comparison group?'
+    answer: 'Every sufficiently large point cloud will have $\beta_1 > 0$ at some scale — spurious short-lived loops appear at the noise level near the diagonal of any persistence diagram. A claim that $\beta_1 > 0$ is scientifically meaningful only if the associated feature has high persistence (born and died at well-separated scales), occurs at a scale that corresponds to a substantively interpretable distance in the original variable space, and is more persistent or more prominent than the corresponding feature in a null-model comparison (shuffled data, Markov-generated synthetic data, or a dataset from a population known to lack poverty traps). Without these qualifications, the topological claim is unfalsifiable.'
+status: 'drafting'
+---
+
+## What Does the Shape of Poverty Actually Look Like?
+
+You have run the full pipeline. You collected panel data on 3,800 UK households across fifteen years. You embedded the data as a point cloud in seven-dimensional variable space. You ran the Vietoris–Rips filtration, computed persistent homology in dimensions 0 and 1, plotted the persistence diagrams, computed persistence landscapes, ran the Markov memory ladder, and estimated Wasserstein distances between pre- and post-reform cohorts. Now the output is in front of you: diagrams, landscapes, ladder plots, distances. What do you do with it? This final module addresses the interpretive question — how to translate topological output into claims about poverty that are substantive, honest about what TDA can and cannot show, and useful for research and policy.
+
+## A Reading Framework for Persistence Diagrams
+
+Reading a persistence diagram is an interpretive act, not a mechanical decoding. The following framework provides structure without pretending that the interpretation is automatic.
+
+**Step 1: Separate signal from noise.** Points close to the diagonal — with persistence less than roughly $10$–$15\%$ of the data's diameter — are likely noise features arising from sampling fluctuations. Features far from the diagonal are candidates for genuine structure. The threshold is not universal: validate it by comparing your diagram to diagrams computed from shuffled data (randomly permuted rows in the dataset), which should produce only near-diagonal features.
+
+**Step 2: Interpret $H_0$ features.** The number and persistence of zero-dimensional features (connected components) tells you about population segmentation. One very long-lived $H_0$ class means the population forms one connected cloud with no structural gap. Two long-lived $H_0$ classes means two structurally separated subpopulations. The scale at which the second $H_0$ class dies tells you how large the gap between subpopulations is, in units of your chosen metric.
+
+**Step 3: Interpret $H_1$ features.** One-dimensional features (loops) indicate that the data cannot be contracted to a tree. In a poverty dataset, a loop typically indicates a population with two distinct pathways between some origin and destination state — for example, two trajectories from near-poverty to poverty, one direct and one circuitous — such that no single pathway dominates. Multiple $H_1$ features indicate multiple independent cycles, which may correspond to distinct institutional mechanisms.
+
+**Step 4: Scale interpretation.** Every birth and death scale $r_b, r_d$ is in the units of your distance metric. If you used standardised Euclidean distance, then $r = 1$ corresponds to a difference of one standard deviation in each variable simultaneously. A feature born at $r = 0.4$ and dying at $r = 1.6$ was visible at scales corresponding to roughly $0.4$ to $1.6$ standard deviations of collective deprivation — a substantively meaningful range that can be compared to known thresholds in the poverty literature.
+
+## Common Interpretive Pitfalls
+
+**Pitfall 1: Claiming topology without persistence.** Every finite point cloud has topological features at some scale. The claim of interest is that features are *long-lived* relative to noise. Always report persistence, not merely presence.
+
+**Pitfall 2: Confusing topological equivalence with substantive equivalence.** Two datasets may be topologically equivalent (same Betti numbers, similar persistence diagrams) yet substantively very different — different distributions, different causal mechanisms, different policy implications. Topological similarity is a coarse equivalence; it does not transfer substantive meaning automatically.
+
+**Pitfall 3: Over-precise interpretation of birth and death scales.** Birth and death scales are estimated from data and subject to sampling variability. The stability theorem guarantees convergence, but at finite sample sizes there is uncertainty in the precise location of features in the diagram. Report ranges and, where possible, bootstrap confidence intervals.
+
+**Pitfall 4: Attributing causal meaning to loops.** A loop in a persistence diagram is a structural description of the data, not a causal mechanism. The loop tells you that the data has a certain shape; it does not tell you *why* it has that shape. The causal interpretation requires domain knowledge, comparison with counterfactuals, and acknowledgement of alternative explanations.
+
+## The Full TDA–Social Science Pipeline
+
+The complete pipeline that this learning path has assembled, module by module, can now be stated concisely. Beginning with survey data:
+
+$$
+\text{Data} \xrightarrow{\text{Metric}} \text{Point Cloud} \xrightarrow{\text{VR Filtration}} \text{Simplicial Complexes} \xrightarrow{\text{Homology}} \text{Persistence Diagram} \xrightarrow{\text{Landscape/Wasserstein}} \text{Statistical Inference}.
+$$
+
+Each arrow corresponds to a methodological choice — which metric, which filtration, which homological dimension, which vectorisation — and each choice requires justification from domain knowledge and validation against alternative choices. The pipeline is not a black box; it is a sequence of decisions, each of which can be examined, critiqued, and improved.
+
+## Connecting TDA Output to Policy
+
+The strategic use of TDA results in a policy document or research paper requires translating topological claims into language accessible to non-specialists. The following correspondences are useful starting points:
+
+- Long-lived $H_0$ features → *structural population segmentation* (substantive claim: the poverty distribution is genuinely bimodal)
+- Long-lived $H_1$ features → *cyclical dynamics* (substantive claim: there are closed trajectories in the poverty space, inconsistent with absorption into non-poverty)
+- Non-trivial Markov memory ladder → *path dependence* (substantive claim: current survey results underestimate the heterogeneity that history creates)
+- Large Wasserstein distance between cohorts → *topological reform effect* (substantive claim: the intervention changed the structural shape of poverty, not just its mean level)
+
+Each of these claims is stronger than the corresponding statistical claim (significant coefficient, rejected null hypothesis) because it relies on fewer distributional assumptions and detects broader classes of structural change. Each is also weaker in the sense that it does not quantify the effect size in familiar units — that is the work of the statistical pipeline built on top of the topological analysis.
+
+## A Notional Interactive
+
+This final module does not have an associated interactive, but the most useful exercise at this stage is to return to the Persistence Diagram Builder (Module 5) with fresh eyes. Construct a point cloud that you believe represents, schematically, each of the four policy-linked topological claims above: one with two separated clusters ($H_0$ segmentation), one with a loop ($H_1$ cycle), one with a long-history version of the same data differing in shape (memory ladder), and one pair that differs in Wasserstein distance. Compare the diagrams. You now have the vocabulary to describe what you see and the interpretive framework to say what it would mean in a poverty-measurement context.
+
+## How This Module Connects
+
+The interpretive framework developed here draws directly on **Chapter 10** and **Chapter 11** of *Counting Lives*, which present the first empirical applications of the TDA pipeline to UK poverty panel data and confront the interpretive challenges head-on: what do the features mean, which are artefacts, and what policy claims can be responsibly made? **Chapter 12** synthesises the results and articulates the methodological standards — persistence thresholds, null model comparisons, scale interpretation protocols — that the research programme applies throughout. **Papers 1** and **2** from the research portfolio provide the formal empirical grounding for the claims previewed in those chapters.

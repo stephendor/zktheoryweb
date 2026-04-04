@@ -26,8 +26,17 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
 import { PovertySimulator } from '@components/interactives/PovertySimulator';
-import { PersistenceDiagramBuilder } from '@components/interactives/PersistenceDiagramBuilder';
+import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';
+import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
+import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
+import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
+import { TDAResultsExplorer, type PresetId, DEFAULT_PRESET_ID } from '@components/interactives/TDAResultsExplorer';
 
+// Preset map: interactive slug → default presetId for TDAResultsExplorer.
+// Typed as Record<string, PresetId> so invalid preset strings are caught at compile time.
+const PRESET_MAP: Record<string, PresetId> = {
+  'tda-results-explorer': DEFAULT_PRESET_ID,
+};
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
 export async function getStaticPaths() {
@@ -68,7 +77,15 @@ const { title, description, slug } = entry.data;
       ) : slug === 'poverty-threshold-simulator' ? (
         <PovertySimulator client:visible />
       ) : slug === 'persistence-diagram-builder' ? (
-        <PersistenceDiagramBuilder client:visible />
+        <PersistenceDiagramBuilderWrapper client:visible />
+      ) : slug === 'mapper-parameter-lab' ? (
+        <MapperParameterLab client:visible />
+      ) : slug === 'benefit-taper-calculator' ? (
+        <BenefitTaperCalculator client:visible />
+      ) : slug === 'filtration-playground' ? (
+        <FiltrationPlayground client:visible />
+      ) : slug === 'tda-results-explorer' ? (
+        <TDAResultsExplorer presetId={PRESET_MAP[slug] ?? DEFAULT_PRESET_ID} client:visible />
       ) : (
         <p class="interactive-page__missing">
           Interactive <code>{slug}</code> is not yet implemented.

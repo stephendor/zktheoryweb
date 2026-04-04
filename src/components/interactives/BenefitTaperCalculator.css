@@ -1,0 +1,280 @@
+/**
+ * BenefitTaperCalculator.css — Task 5.4 — Agent_Interactive_Advanced
+ *
+ * Styles for the Benefit Taper Calculator interactive.
+ *
+ * Palette:
+ *   Counting Lives "Archival" — --color-cl-red, --color-cl-ochre for chart lines
+ *   --color-neutral-muted     — comparison overlay (dashed line)
+ *   --color-viz-3             — poverty trap zone highlight (bluish green)
+ *
+ * All colour values reference CSS custom properties from tokens.css.
+ * No hard-coded hex values.
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.btc-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Responsive container override ─────────────────────────────────────────── */
+
+.btc-responsive {
+  min-height: 420px;
+}
+
+/* ── Chart container ────────────────────────────────────────────────────────── */
+
+.btc-chart-container {
+  width: 100%;
+  min-height: 300px;
+  position: relative; /* Needed for tooltip absolute positioning */
+}
+
+.btc-svg {
+  display: block;
+  overflow: visible; /* Allow axis labels to extend beyond viewBox */
+}
+
+/* ── Axes ───────────────────────────────────────────────────────────────────── */
+
+.btc-svg .axis-label {
+  font-size: 12px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-neutral-muted, #555);
+}
+
+.btc-svg .tick text {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+  font-variant-numeric: tabular-nums;
+}
+
+.btc-svg .domain,
+.btc-svg .tick line {
+  stroke: var(--color-neutral-border, #dedbd4);
+}
+
+/* ── SVG text elements ──────────────────────────────────────────────────────── */
+
+.btc-zone-label {
+  font-size: 11px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-viz-3, #009e73);
+}
+
+.btc-marker-label {
+  font-size: 11px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-neutral-muted, #555);
+}
+
+.btc-annotation-text {
+  font-size: 11px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+
+/* ── Controls panel ─────────────────────────────────────────────────────────── */
+
+.btc-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5, 1.25rem);
+  align-items: flex-start;
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+}
+
+/* ── Fieldset reset ─────────────────────────────────────────────────────────── */
+
+.btc-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.btc-fieldset__legend {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  padding: 0;
+  margin-bottom: var(--space-2, 0.5rem);
+  letter-spacing: var(--tracking-wide, 0.025em);
+  text-transform: uppercase;
+}
+
+/* ── Radio inputs ───────────────────────────────────────────────────────────── */
+
+.btc-radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-body, #1a1a1a);
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+
+.btc-radio {
+  accent-color: var(--color-cl-red, #8b2e2e);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.btc-radio-hint {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+  margin-left: 1.5rem;
+}
+
+/* ── Checkbox ───────────────────────────────────────────────────────────────── */
+
+.btc-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-body, #1a1a1a);
+  cursor: pointer;
+}
+
+.btc-checkbox {
+  accent-color: var(--color-cl-red, #8b2e2e);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── Spotlight slider control ────────────────────────────────────────────────── */
+
+.btc-spotlight-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  flex: 1;
+  min-width: 200px;
+}
+
+.btc-spotlight-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  letter-spacing: var(--tracking-wide, 0.025em);
+  text-transform: uppercase;
+}
+
+.btc-spotlight-value {
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--color-cl-red, #8b2e2e);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.btc-slider {
+  width: 100%;
+  accent-color: var(--color-cl-red, #8b2e2e);
+  cursor: pointer;
+  height: 1.5rem;
+}
+
+.btc-slider:focus {
+  outline: 2px solid var(--color-cl-red, #8b2e2e);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm, 4px);
+}
+
+.btc-spotlight-clear {
+  align-self: flex-start;
+  padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem);
+  font-size: var(--text-xs, 0.75rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-muted, #555);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btc-spotlight-clear:hover {
+  background: var(--color-neutral-subtle, #edeae2);
+}
+
+.btc-spotlight-clear:focus {
+  outline: 2px solid var(--color-cl-red, #8b2e2e);
+  outline-offset: 2px;
+}
+
+/* ── Contextual annotation zone ─────────────────────────────────────────────── */
+
+.btc-annotation {
+  padding: var(--space-4, 1rem);
+  background: var(--color-cl-cream, #f5f0e8);
+  border-left: 4px solid var(--color-cl-ochre, #c07a2a);
+  border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.btc-annotation__text {
+  margin: 0;
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-body, Georgia, serif);
+  color: var(--color-cl-charcoal, #2c2c2c);
+  line-height: var(--leading-relaxed, 1.625);
+}
+
+.btc-annotation__link {
+  margin: 0;
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-muted, #555);
+}
+
+.btc-annotation__link a {
+  color: var(--color-cl-red, #8b2e2e);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btc-annotation__link a:hover {
+  color: var(--color-cl-red-light, #c47070);
+}
+
+/* ── Tooltip (shared .viz-tooltip class from tooltip.ts) ─────────────────────
+   The tooltip div is created by createTooltip and positioned absolutely
+   within .btc-chart-container (position: relative).
+   Actual .viz-tooltip styles come from the shared viz-tooltip CSS
+   loaded by tooltip.ts — no override needed here. */
+
+/* ── Responsive: narrow viewport ────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .btc-controls {
+    flex-direction: column;
+  }
+
+  .btc-spotlight-control {
+    min-width: 0;
+    width: 100%;
+  }
+}

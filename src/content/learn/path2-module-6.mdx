@@ -56,9 +56,9 @@ Converting a predicted probability $\hat{p}$ to an actionable classification req
 
 In welfare fraud detection, a low $\tau$ minimises missed cases but flags large numbers of legitimate claimants for intrusive investigation. A high $\tau$ reduces intrusive false positives but misses more genuine cases. The welfare consequences of each error type are asymmetric: false positives impose investigation costs on innocent claimants; false negatives represent financial loss to the DWP. Routinely, $\tau$ is set to minimise the latter at the expense of the former — a policy choice embedded in a technical parameter, largely invisible to public scrutiny.
 
-## A Notional Tool for Score Anatomy
+## A Note on the Interactive
 
-No interactive is embedded in this module. A productive companion exercise would be a tool that presents a simplified logistic regression model trained on synthetic welfare data, allowing users to adjust both the feature set and the decision threshold $\tau$, and to observe the resulting false positive and false negative rates across demographic sub-groups. The key observation is that a globally accurate model can simultaneously be a systematically unfair one — and that selecting $\tau$ is a distributive policy decision, not a statistical one. The tool would make visible that the same model, with the same $\hat{p}$ outputs, produces radically different social consequences depending on where the decision threshold is drawn.
+This module does not yet have a dedicated interactive. A tool planned for Phase 6 will present a simplified logistic regression model trained on synthetic welfare data, letting you adjust the decision threshold τ and observe the resulting false-positive and false-negative rates across demographic sub-groups. It will make visible that the same model, with identical probability outputs, produces radically different social consequences depending on where the threshold is drawn — a policy choice embedded in a technical parameter.
 
 ## How This Module Connects
 

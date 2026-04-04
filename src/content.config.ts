@@ -149,6 +149,7 @@ const learnModules = defineCollection({
     module_number: z.number().int().positive(),
     core_concept: z.string(),
     interactive_slug: z.string().optional(),
+    tda_preset_id: z.string().optional(),
     connections: z.object({
       chapters: z.array(z.number().int()).default([]),
       papers: z.array(z.number().int()).default([]),

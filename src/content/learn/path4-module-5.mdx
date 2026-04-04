@@ -1,0 +1,119 @@
+---
+title: 'Null Models and Hypothesis Testing'
+path: 'tda-practitioners'
+module_number: 5
+core_concept: 'Bootstrap and permutation approaches to deciding whether your topology is statistically significant'
+connections:
+  chapters: []
+  papers: [1, 2]
+  modules: []
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'Your bootstrap test produces confidence bands that just barely exclude the observed H₁ persistence value of 0.88 (the 95th percentile of the bootstrap null distribution is 0.86). Is this a statistically significant finding? What would you do next?'
+    answer: 'The observed value 0.88 exceeds the 95th percentile of the null distribution (0.86) by 0.02, which is a marginal exceedance at the 5% level. Whether this constitutes a significant finding depends on several considerations. First, are the bootstrap confidence bands themselves stable — do they converge as you increase the bootstrap sample size from, say, 500 to 2000 iterations? If the bands are still moving at 500 iterations, the marginal exceedance may be sampling noise in the bootstrap itself. Second, what is the Wasserstein distance between the observed diagram and the mean null diagram? A persistent feature that is statistically significant but Wasserstein-close to the null distribution may be real but substantively small. Third, check sensitivity: if you vary the filtration maximum distance by ±10%, does the observed persistence remain above the null 95th percentile? The correct response is to report the marginal result with all its uncertainty, increase bootstrap iterations to stabilise the bands, and run the sensitivity analysis before making any claim of significance.'
+  - question: 'Explain the difference between a bootstrap confidence band test and a permutation test for topological significance, and when would you prefer each?'
+    answer: 'A bootstrap confidence band test repeatedly resamples from the data with replacement to build a null distribution of diagram features under the hypothesis that the data generating process is stable across subsamples. It tests whether the observed topology is robust to sampling variation — a finding that survives subsampling appears in the confident band. A permutation test shuffles some label or structure in the data (e.g., shuffling which observations belong to which survey year, or randomising welfare-state transitions) and recomputes persistence under each permutation, building a null distribution under the hypothesis that the labelling is arbitrary. The permutation test addresses a different question: is the topology associated with a specific grouping or labelling, or is it present regardless of how you assign records to groups? Prefer bootstrap when the question is "is this feature real or a sampling artefact?" and prefer permutation when the question is "is this feature associated with a specific stratification?"'
+  - question: 'You run 1000 bootstrap iterations and find that the observed H₁ persistence (0.73) falls below the 5th percentile of the bootstrap distribution (0.79). How do you interpret this finding?'
+    answer: 'The observed value falls below the 5th percentile of the bootstrap distribution, meaning 95% of bootstrap subsamples produce higher persistence than you observe in the full dataset. This is the inverse of the usual significance finding: the subsamples are consistently more topologically structured than the full data. The most likely explanation is that the full dataset contains outliers or structural heterogeneity that disrupts the loop geometry visible in more homogeneous subsamples. When a random subset systematically shows stronger topology than the full sample, investigate whether the full sample contains a mixed population — different stratified groups with opposing geometric structures that cancel out when combined. This is not a null result for topology but a diagnosis: the data needs stratified analysis, not a single aggregate persistence diagram.'
+status: 'drafting'
+---
+
+## When Is a Loop Real?
+
+A persistence diagram is a mathematical object, not a statistical test. The stability theorem guarantees that small perturbations to the point cloud produce small changes in the diagram — but it does not tell you whether the observed topology exceeds what you would expect from pure sampling noise. A dataset of 500 households randomly sampled from a uniform distribution will still produce a persistence diagram with non-zero H₁ features; some finite subset of 500 random points will, by chance, form near-ring configurations that generate apparent loops. The question every applied TDA analysis must answer is not "is there topology in my diagram?" but "is the topology I observe in excess of what I would expect from noise?" That is a statistical question, and it requires statistical tools.
+
+Two primary approaches exist: **bootstrap confidence band testing** and **permutation testing**. They test different null hypotheses and are appropriate in different analytic situations. Both are implemented in `persim` and through standard Python statistical libraries. Neither requires a parametric assumption about the data distribution.
+
+## Bootstrap Confidence Bands
+
+The bootstrap test treats the observed point cloud as a finite sample and asks whether the observed topological features are stable across different subsamplings of the same population. The procedure:
+
+1. Draw $B$ bootstrap samples $X^{(1)}, \ldots, X^{(B)}$, each of size $n$ (sampling with replacement from $X$).
+2. For each bootstrap sample, compute the persistence diagram $\text{Dgm}^{(b)}$.
+3. For each diagram, record the maximum H₁ persistence value $p^{(b)} = \max_{(b,d) \in \text{Dgm}^{(b)}_1} (d - b)$.
+4. The bootstrap null distribution is $\{p^{(b)}\}_{b=1}^B$.
+5. A confidence threshold at level $\alpha$ is the $(1-\alpha)$ quantile $\hat{q}_{1-\alpha}$ of this distribution.
+6. The observed feature is significant at level $\alpha$ if $p_{\text{obs}} > \hat{q}_{1-\alpha}$.
+
+This test is directly interpretable: it asks whether the observed loop survives the sampling perturbation. If 95% of bootstrap subsamples produce a maximum H₁ persistence below the observed value, the feature is unlikely to be a pure sampling artefact.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+# from ripser import ripser
+
+# Bootstrap persistence test
+# def bootstrap_max_persistence(X, B=500, seed=0, dim=1):
+#     rng = np.random.default_rng(seed)
+#     null_perst = []
+#     for _ in range(B):
+#         idx = rng.integers(0, len(X), size=len(X))
+#         sample = X[idx]
+#         dgm = ripser(sample, maxdim=dim)['dgms'][dim]
+#         finite_mask = np.isfinite(dgm[:, 1])
+#         if finite_mask.any():
+#             null_perst.append(np.max(dgm[finite_mask, 1] - dgm[finite_mask, 0]))
+#         else:
+#             null_perst.append(0.0)
+#     return np.array(null_perst)
+
+# null_dist = bootstrap_max_persistence(normalised_data, B=500)
+# obs_max_persistence = 0.88  # replace with your observed value
+# p_value = np.mean(null_dist >= obs_max_persistence)
+# threshold_95 = np.percentile(null_dist, 95)
+# print(f'Observed: {obs_max_persistence:.3f} | 95th pctile null: {threshold_95:.3f} | p ≈ {p_value:.3f}')
+```
+
+In practice, $B = 500$ iterations is sufficient for an exploratory test; $B = 2{,}000$ is recommended for publication-grade results. Computation time scales linearly with $B$ and quadratically with $n$, so for large datasets, run the bootstrap over landmark-subsampled data (Module 2).
+
+## Permutation Tests
+
+The permutation test addresses a different null hypothesis: not "could this topology arise from noise?" but "does this topology depend on the specific labelling or grouping structure I am investigating?" For poverty data, a common application is to test whether the topology of welfare trajectories in one region or demographic group differs from another. The null hypothesis is that group labels are arbitrary — the observed topological difference is no larger than what would arise if households were randomly reassigned between groups.
+
+Procedure for a two-sample permutation test:
+
+1. Compute observed diagrams $\text{Dgm}_A$ and $\text{Dgm}_B$ for groups $A$ and $B$.
+2. Compute observed test statistic $T_{\text{obs}} = d_W(\text{Dgm}_A, \text{Dgm}_B)$ using Wasserstein-1 distance.
+3. Pool the data: $X_{\text{pool}} = X_A \cup X_B$.
+4. For each of $B$ permutations: randomly assign $|X_A|$ observations to group $A'$ and $|X_B|$ to group $B'$; compute $T^{(b)} = d_W(\text{Dgm}_{A'}, \text{Dgm}_{B'})$.
+5. P-value $= \frac{1}{B} \sum_b \mathbf{1}[T^{(b)} \geq T_{\text{obs}}]$.
+
+The Wasserstein-$p$ distance used as the test statistic is:
+
+$$W_p(X, Y) = \left( \inf_\gamma \sum_{x \in \text{Dgm}(X)} \| x - \gamma(x) \|^p \right)^{1/p}$$
+
+where the infimum is over all matchings $\gamma$ between points of the two diagrams (extended to the diagonal), and the norm is the $L^p$ norm on the plane. With $p = 1$ (Wasserstein-1), the test is more robust to outliers; with $p = 2$ (Wasserstein-2), large persistent features dominate the distance and the test is more sensitive to changes in the strongest structural features.
+
+## A Worked Poverty-Data Example
+
+Consider a national welfare survey with households grouped into two cohorts: those who received Discretionary Housing Payments (DHP) during a benefit cap period (Cohort A, $n_A = 1{,}843$) and those who did not (Cohort B, $n_B = 2{,}107$). Both cohorts are observed across six annual waves and represented as normalised welfare vectors in a shared six-dimensional space. The research question: does the topological structure of poverty trajectories differ between DHP recipients and the comparison group?
+
+Compute H₁ diagrams for both cohorts separately. The observed Wasserstein-1 distance between the diagrams is $T_{\text{obs}} = 0.42$. Run 1,000 permutations, randomising cohort assignment while preserving group sizes. The null distribution of $T^{(b)}$ has mean 0.18 and 99th percentile 0.31. The observed distance 0.42 exceeds all 1,000 permuted values: one-tailed p-value $< 0.001$.
+
+The topological conclusion: the H₁ structure of welfare trajectories differs significantly between DHP and non-DHP households — the cyclical poverty dynamics visible in their trajectory data are not drawn from the same topological population. This finding motivates substantive analysis of *which* features differ, using the Persistence Diagram Builder (Module 4) to directly compare the diagrams.
+
+## Computing Distances with `persim`
+
+```python
+# {/* Pyodide code runner slot */}
+# from persim import bottleneck, wasserstein
+# import numpy as np
+
+# Compute H₁ diagrams for two groups
+# dgm_A = ripser(X_A, maxdim=1)['dgms'][1]
+# dgm_B = ripser(X_B, maxdim=1)['dgms'][1]
+
+# Remove infinite-death features for distance computation
+# def finite_only(dgm):
+#     return dgm[np.isfinite(dgm[:, 1])]
+
+# W1_distance = wasserstein(finite_only(dgm_A), finite_only(dgm_B), matching=False)
+# BN_distance = bottleneck(finite_only(dgm_A), finite_only(dgm_B))# print(f'Wasserstein-1: {W1_distance:.4f}')
+# print(f'Bottleneck: {BN_distance:.4f}')
+```
+
+Note: `persim.wasserstein` and `persim.bottleneck` handle the diagonal-projection matching internally. Passing infinite-death rows will raise a ValueError, so filter them with `np.isfinite` before calling distance functions.
+
+## How This Module Connects
+
+The statistical framework introduced here is the methodological backbone of the empirical claims in **Paper 1** (bootstrap test for the main H₁ finding) and **Paper 2** (permutation test comparing diagram stability across survey subsamples with different non-response rates). Neither paper treats a persistent feature as established purely from diagram inspection; both require the null-model exceedance reported here. Module 6 applies analogous statistical thinking to the Mapper algorithm, where the relevant test is not persistence but cluster-membership stability under resampling.

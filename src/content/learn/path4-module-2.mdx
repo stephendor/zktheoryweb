@@ -1,0 +1,100 @@
+---
+title: 'Point Cloud Preprocessing'
+path: 'tda-practitioners'
+module_number: 2
+core_concept: 'Normalisation, distance matrices, and subsampling strategies that affect TDA output'
+connections:
+  chapters: []
+  papers: [1, 2]
+  modules: ['path4-module-3']
+  methods: ['persistent-homology']
+check_understanding:
+  - question: 'Why does z-score normalisation give each variable equal influence on pairwise distances, and when might applying it be a substantive research error rather than a neutral correction?'
+    answer: 'Z-score normalisation divides each column by its standard deviation, rescaling all variables so that one unit of distance corresponds to one standard deviation regardless of the original measurement scale. In Euclidean space, pairwise distances then reflect equal weighting across all dimensions. This is appropriate when the variables are theoretically commensurable — when the research question concerns how households differ jointly across all welfare dimensions. It becomes a substantive error when scale carries meaning: if the height of a poverty spike (magnitude of income shock) is theoretically more important than its breadth (duration), equalising income and duration in the distance metric prematurely discards that asymmetry. The choice of normalisation encodes a theoretical claim about what kind of variation matters.'
+  - question: 'What is the maxmin landmark algorithm and why does it produce better topological coverage than random subsampling for Vietoris-Rips computations?'
+    answer: 'The maxmin algorithm initialises with one landmark chosen arbitrarily, then iteratively selects the point farthest from all landmarks chosen so far, measured by the minimum distance to the nearest existing landmark. This greedy farthest-point rule guarantees that the landmarks are distributed as uniformly as possible across the point cloud: no region of the space is left uncovered by a landmark for more than the coverage radius determined by the final landmark-to-landmark distance. Random subsampling, by contrast, concentrates landmarks proportionally to local density, leaving sparse regions of the data — which may contain the topologically important long-persistent features — with no landmark coverage. For TDA, where persistent loops may live in low-density bridge regions between clusters, maxmin subsampling is strongly preferred.'
+  - question: 'You construct two persistence diagrams from the same dataset: one using Euclidean distance on z-score normalised variables, and one using cosine distance on the raw data. The Euclidean diagram shows two long-lived H₁ features; the cosine diagram shows none. How do you interpret this discrepancy and what analysis would you run next?'
+    answer: 'The discrepancy shows that the detected loops are features of the magnitude structure of the data rather than its angular (proportional) structure. Euclidean distance responds to absolute differences in variable values, so two households can be close even if their deprivation profiles (the relative pattern across dimensions) are very different, as long as all their absolute values are similar. Cosine distance responds only to the angle between vectors (the proportional profile), ignoring magnitude. If the loops vanish under cosine distance, the cyclical structure is driven by magnitude variation — for instance, households cycling between high-income and low-income states with similar profiles — rather than by structural transitions in the type of deprivation. The next step is to compute a Wasserstein distance between the two diagrams to quantify how different they are, then interpret the magnitude-vs-profile distinction in substantive terms for the research question.'
+status: 'drafting'
+---
+
+## When the Numbers Lie: Scale and Topology
+
+You have assembled a dataset of 8,000 household observations drawn from ten waves of a longitudinal welfare panel. Each observation is a vector of six variables: annual household income (range: £3,000–£120,000), a binary employment indicator (0 or 1), housing deprivation score (1–10), food insecurity index (0–100), years in current postcode (0–60), and age of household head (18–85). You pass the raw matrix to `ripser` and obtain a persistence diagram with one visually striking H₁ feature — a loop with persistence 47,000. You write it up as a finding. Then a colleague normalises the matrix and re-runs the analysis. The loop disappears entirely. The apparent discovery was an artefact: income's enormous variance dominated all pairwise distance computations. Every distance in the 8,000-point cloud was determined almost entirely by the income difference between households, and the remaining five variables contributed negligibly. The resulting geometric structure was the shape of income variation, not the joint structure of welfare trajectories across all dimensions. Preprocessing is not a bureaucratic step that precedes the real analysis. It is a topological intervention that fundamentally determines what structure you will detect — and what you will miss.
+
+## Normalisation and Its Topological Effects
+
+The two canonical normalisation strategies have different topological implications. **Z-score normalisation** subtracts the column mean and divides by the column standard deviation, mapping each variable to a distribution with mean zero and variance one. The effect on TDA is egalitarian: every variable contributes equally to pairwise Euclidean distances regardless of original scale. This is appropriate when all variables are theoretically commensurable — when you want the topology of the joint welfare distribution and have no prior reason to weight income more heavily than housing deprivation or food security.
+
+**Min-max normalisation** rescales each column to the interval $[0, 1]$ using:
+
+$$\tilde{x} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
+
+This also equalises scales, but the denominator is the range rather than the standard deviation, making it sensitive to outliers. One household with an exceptionally high income compresses all other income variation into a narrow sub-interval of $[0, 1]$, distorting the topology in the vicinity of all other households. For poverty data — where outliers are often substantively meaningful, whether they represent administrative errors (declared income of zero) or genuinely outlying affluence — min-max normalisation is generally less appropriate than z-score for TDA, though it can be informative for sensitivity analysis.
+
+A third approach, useful when domain knowledge is available, is to normalise by a theoretically motivated denominator. For UK income data, dividing by median household income (from the Households Below Average Income series) preserves the economic interpretation of distance — households are separated by multiples of median income — while still making all variables commensurable when similarly normalised. Reporting the normalisation choice in full is as essential as reporting the regression specification: different choices produce different diagrams and different findings.
+
+## Custom Distance Matrices
+
+The default assumption in `ripser` is Euclidean distance. When you pass a data matrix directly, pairwise Euclidean distances are computed internally. But Euclidean distance is not always the right measure of similarity for social data, and `ripser` accepts a precomputed pairwise distance matrix via `metric='precomputed'`.
+
+**Cosine distance** captures angular similarity: two households are close if their vectors point in the same direction in variable space, regardless of their magnitudes. This is appropriate when the research question concerns the *type* of deprivation rather than its level — two households with the same relative profile across variables but different incomes will have small cosine distance. For welfare-stratification questions ("are there distinct types of poverty experience?"), cosine distance often reveals cluster structure that Euclidean distance obscures.
+
+**Wasserstein-1 distance** (the Earth Mover's Distance) treats each data row as a sample from a distribution and computes the minimum transport cost to move one distribution's mass to match the other. This is appropriate when variables represent marginal distributions (e.g., welfare receipt rates in a geographic area across different benefit types) rather than individual measurements.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+# from sklearn.preprocessing import StandardScaler
+# from scipy.spatial.distance import pdist, squareform
+# from ripser import ripser
+
+# Z-score normalisation
+# scaler = StandardScaler()
+# normalised = scaler.fit_transform(raw_data)
+
+# Custom Euclidean distance matrix from normalised data
+# D_euclidean = squareform(pdist(normalised, metric='euclidean'))
+# result_euclidean = ripser(D_euclidean, metric='precomputed')
+
+# Cosine distance matrix from raw data
+# D_cosine = squareform(pdist(raw_data, metric='cosine'))
+# result_cosine = ripser(D_cosine, metric='precomputed')
+```
+
+## Landmark Subsampling
+
+For large datasets ($n > 10{,}000$), the full Vietoris–Rips computation becomes prohibitively expensive: the distance matrix is $O(n^2)$ in memory, and the simplex count grows combinatorially with $n$ and the homology dimension. The standard solution is **landmark subsampling**: construct the filtration on a representative subset of $L \ll n$ points rather than all $n$ points, accepting a controlled approximation of the full diagram.
+
+The canonical landmark selection algorithm is **maxmin** (maxmin farthest-point sampling): choose an initial landmark $l_0$ arbitrarily, then iteratively select the point farthest from all current landmarks:
+
+$$l_k = \arg\max_{x \in X} \min_{j < k} d(x, l_j)$$
+
+This greedy rule guarantees that landmarks are distributed as uniformly as possible across the point cloud, minimising the maximum coverage gap (the maximum distance from any data point to its nearest landmark). For a dataset of 50,000 observations, selecting 500 landmarks via maxmin typically preserves the global topological structure — particularly long-lived H₁ features — while reducing computation time by orders of magnitude.
+
+```python
+# {/* Pyodide code runner slot */}
+import numpy as np
+
+# Maxmin landmark selection
+# def maxmin_landmarks(X, n_landmarks):
+#     idx = [np.random.randint(len(X))]
+#     dists = np.full(len(X), np.inf)
+#     for _ in range(n_landmarks - 1):
+#         dists = np.minimum(dists, np.linalg.norm(X - X[idx[-1]], axis=1))
+#         idx.append(int(np.argmax(dists)))
+#     return X[np.array(idx)], np.array(idx)
+
+# landmarks, landmark_indices = maxmin_landmarks(normalised_data, n_landmarks=500)
+# result = ripser(landmarks)
+```
+
+## The Impact of Each Choice on Persistence Diagrams
+
+Each preprocessing decision leaves a characteristic signature on the resulting persistence diagram. Z-score normalisation typically tightens the near-diagonal cluster in `dgms[0]`, producing more compact connected-component structure because no single variable dominates the inter-point distances. Custom distance metrics can amplify or suppress specific H₁ features: a loop that is invisible under Euclidean distance may be conspicuous under cosine distance if it reflects angular variation in deprivation profiles across dimensions. Maxmin landmark subsampling generally preserves long-lived features (high persistence) while eliminating short-lived noise features: landmarks are too sparse to generate the noise H₁ cycles that dense-sampling artefacts create.
+
+The structural implication is that a persistence diagram is always relative to its preprocessing choices. This is not a defect but a design feature that imposes explicitness. When reporting a TDA analysis, state the normalisation method, the distance metric, and whether landmark subsampling was used. These decisions are as analytically consequential as the choice of filtration algorithm, and reviewers who understand TDA will expect them to be justified.
+
+## How This Module Connects
+
+The preprocessing decisions introduced here directly determine the outputs analysed in **Paper 1** and are the principal source of methodological variation addressed in **Paper 2**. Paper 2 confronts the additional complication of missing data in longitudinal welfare surveys: when a household drops out of a panel for non-random reasons (e.g., sanctioning, migration, housing instability), the effective distance matrix has structured gaps that can bias both normalisation and landmark selection in ways that interact with the topological signal. Module 3 builds directly on this module by making explicit preprocessing choices in a complete end-to-end pipeline, and the rationale for those choices is grounded in the analysis here.

@@ -134,6 +134,8 @@ export interface PointCloudEditorProps {
   className?: string;
   /** Simplicial complex overlay at the current filtration radius. */
   complexOverlay?: ComplexOverlay;
+  /** Maximum number of points allowed on the canvas. Defaults to 30. */
+  maxPoints?: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -145,6 +147,7 @@ export function PointCloudEditor({
   initialPoints,
   className,
   complexOverlay,
+  maxPoints = MAX_POINTS,
 }: PointCloudEditorProps) {
   const [points, setPoints] = useState<Point2D[]>(initialPoints ?? []);
 
@@ -157,7 +160,7 @@ export function PointCloudEditor({
   }, [points]);
 
   // Counter string helper.
-  const isFull = points.length >= MAX_POINTS;
+  const isFull = points.length >= maxPoints;
 
   const handleClear = useCallback(() => {
     setPoints([]);
@@ -191,7 +194,7 @@ export function PointCloudEditor({
           aria-live="polite"
           aria-atomic="true"
         >
-          {points.length}/{MAX_POINTS} points
+          {points.length}/{maxPoints} points
         </span>
 
         <button
@@ -220,6 +223,7 @@ export function PointCloudEditor({
               setPoints={setPoints}
               complexOverlay={complexOverlay}
               onOverlayClick={complexOverlay?.onOverlayClick}
+              maxPoints={maxPoints}
             />
           )}
         </ResponsiveContainer>
@@ -245,9 +249,11 @@ interface CanvasProps {
   complexOverlay?: ComplexOverlay;
   /** Propagated from complexOverlay.onOverlayClick — hoisted to avoid stale-closure issues. */
   onOverlayClick?: (vertexIds: string[]) => void;
+  /** Maximum number of points allowed. */
+  maxPoints: number;
 }
 
-function PointCloudCanvas({ width, height, points, setPoints, complexOverlay, onOverlayClick }: CanvasProps) {
+function PointCloudCanvas({ width, height, points, setPoints, complexOverlay, onOverlayClick, maxPoints }: CanvasProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const tooltipRef = useRef<TooltipHandle | null>(null);
   // Track which point is currently being dragged (by id).
@@ -330,7 +336,7 @@ function PointCloudCanvas({ width, height, points, setPoints, complexOverlay, on
     (e: React.MouseEvent<SVGSVGElement>) => {
       // Ignore if the click target is a point circle (drag/dblclick handles those).
       if ((e.target as SVGElement).tagName === 'circle') return;
-      if (pointsRef.current.length >= MAX_POINTS) return;
+      if (pointsRef.current.length >= maxPoints) return;
 
       const svg = svgRef.current!;
       const rect = svg.getBoundingClientRect();
@@ -343,10 +349,8 @@ function PointCloudCanvas({ width, height, points, setPoints, complexOverlay, on
         { x: nx, y: ny, id: `pt-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` },
       ]);
     },
-    [toNorm, setPoints],
+    [toNorm, setPoints, maxPoints],
   );
-
-  // ── Double-click handler on a point (remove it) ──
   const handlePointDblClick = useCallback(
     (e: React.MouseEvent<SVGCircleElement>, id: string) => {
       e.stopPropagation();

@@ -98,50 +98,50 @@ const mathematicsOfPoverty: LearnPath = {
   modules: [
     {
       moduleNumber: 1,
-      title: 'Counting the Poor: A History of the Threshold',
-      coreConcept: 'From Booth and Rowntree to the present day, poverty measurement has always embedded contested political choices.',
+      title: 'Drawing the Line',
+      coreConcept: 'The poverty line is a political choice masquerading as a technical one.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 2,
-      title: 'Absolute vs Relative Poverty: Two Traditions',
-      coreConcept: 'Absolute thresholds fix a basket of necessities; relative thresholds tie poverty to the median — both are political acts.',
+      title: 'The Average Person',
+      coreConcept: 'Statistical normality has always encoded political normality — Quetelet\'s l\'homme moyen carries ideological weight.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 3,
-      title: 'The Normal Distribution and the "Average Man"',
-      coreConcept: 'Quetelet\'s application of the bell curve to human populations gave poverty measurement a statistical vocabulary — and its first major distortion.',
+      title: 'Counting What Counts',
+      coreConcept: 'The choice of what to include in the poverty basket encodes a theory of human need and desert.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 4,
-      title: 'Index Construction: From Sen to the MPI',
-      coreConcept: 'Multidimensional poverty indices aggregate deprivations across dimensions using axiomatic social-choice theory.',
+      title: 'The Welfare Formula',
+      coreConcept: 'Equivalisation scales translate household composition into a single income denominator — and each formula embeds a theory of economies of scale.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 5,
-      title: 'Equivalence Scales and Household Composition',
-      coreConcept: 'Equivalence scales convert household income to a per-adult-equivalent figure — a transformation that hides enormous assumptions.',
+      title: 'Optimisation and Control',
+      coreConcept: 'Welfare reform uses optimisation logic — minimising fiscal cost subject to work-incentive constraints — that treats the poor as a variable to be managed.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 6,
-      title: 'Persistent Deprivation: A Topological Reading',
-      coreConcept: 'Applying homology to welfare-state data reveals structural clusters of deprivation invisible to regression analysis.',
+      title: 'The Score',
+      coreConcept: 'Algorithmic scoring assigns a poverty likelihood to individuals; logistic regression and its social consequences.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 7,
-      title: 'Sensitivity Analysis: How Thresholds Shape Outcomes',
-      coreConcept: 'Small changes in the poverty line can move millions in or out of poverty — sensitivity analysis quantifies this instability.',
+      title: 'The Black Box',
+      coreConcept: 'Neural networks in welfare administration operate without interpretable features — the right to explanation meets the limits of adversarial auditing.',
       estimatedMinutes: 15,
     },
     {
       moduleNumber: 8,
-      title: 'Towards a Geometry of Social Policy',
-      coreConcept: 'TDA provides a mathematically rigorous, policy-neutral framework for comparing welfare systems without choosing a single threshold.',
+      title: 'Counter-Mathematics',
+      coreConcept: 'Participatory statistics and data justice propose that the measured should control the measurement.',
       estimatedMinutes: 15,
     },
   ],
@@ -155,3 +155,18 @@ export const learnPaths: Record<string, LearnPath> = {
 };
 
 export const availablePathSlugs = Object.keys(learnPaths) as Array<keyof typeof learnPaths>;
+
+/**
+ * Maps the path-number prefix used in content entry IDs (e.g. 'path1', 'path2')
+ * to the canonical URL slug for that learning path.
+ *
+ * This is the single source of truth for this mapping — import it wherever you need
+ * to convert an entry ID prefix to a path slug (e.g. ModuleLayout connection links).
+ * When a new path is added, update this map and the Zod enum in content.config.ts together.
+ */
+export const pathNumberToSlug: Record<string, string> = {
+  path1: 'topology-social-scientists',
+  path2: 'mathematics-of-poverty',
+  path3: 'data-justice',
+  path4: 'tda-practitioners',
+};

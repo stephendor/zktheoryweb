@@ -1,0 +1,102 @@
+---
+title: 'TDA and Deep Learning'
+path: 'tda-practitioners'
+module_number: 12
+core_concept: 'Incorporating topological features and topological regularisation into neural network pipelines'
+connections:
+  chapters: []
+  papers: [7, 8]
+  modules: []
+  methods: ['persistent-homology', 'mapper']
+check_understanding:
+  - question: 'Explain the difference between topological feature extraction and topological regularisation as integration strategies, and give an example of a research question for which each is appropriate in a welfare-modelling context.'
+    answer: 'Topological feature extraction treats the persistence diagram as a preprocessing step: compute the diagram, vectorise it as a landscape or image, append the vector as additional features to your data matrix, and train a standard classifier or regressor on the augmented features. The network never "sees" the original data directly in its topological form; the topology is condensed into a fixed-length feature vector before training. This is appropriate when the topological structure is a predictor: for example, predicting whether a geographic area will experience a poverty spike in the next survey wave, using the current persistence-landscape features of that area as predictors. Topological regularisation adds a topological loss term to the training objective, penalising the network when its internal representations do not have a specified topological structure. This is appropriate when you want to constrain the learned representation: for example, training a poverty-severity embedding where the latent space should preserve cyclical trajectory dynamics — a topological loss that penalises the disappearance of the known H₁ feature in the latent space ensures the embedding does not collapse the cycle structure.'
+  - question: 'What is sublevel persistence of neural activations, and why is it relevant to auditing whether a trained welfare-score predictor has learned topologically coherent representations?'
+    answer: 'Sublevel persistence applies persistent homology to scalar functions rather than point clouds. Given a trained network, the activation values of a layer can be treated as a scalar function over the sample — each data point gets a real-valued activation, and the sublevel set filtration connects points whose activations are below a threshold, growing the threshold from the minimum to maximum activation. The resulting persistence diagram characterises how the activation landscape is structured: are there distinct modes (H₀ features representing well-separated activation clusters), are there loops (H₁ features in the activation landscape indicating cyclical response patterns)? For welfare-score predictors, sublevel set persistence of the final hidden layer answers whether the network has learned to separate welfare trajectories in ways that respect the cyclical structures identified in Modules 3–5 — or whether the training procedure collapsed those structures into a flat, monotone activation landscape. A network that discards the persistent H₁ feature from the original data during training cannot be said to have learned a topologically faithful representation of poverty dynamics.'
+  - question: 'A pytorch-topological topological loss function penalises the difference between the target topology (one H₁ feature with persistence 0.8) and the current latent-space topology. During training, the topological loss decreases from 1.2 to 0.15 over 50 epochs while the task loss (cross-entropy) increases from 0.31 to 0.44. How do you interpret this and what would you do next?'
+    answer: 'The topological loss decreasing to 0.15 means the latent space has successfully developed the target H₁ feature — it now contains a loop with approximately the right persistence. But the task loss increasing from 0.31 to 0.44 indicates the topological constraint is harming classification accuracy: the network is trading predictive performance for topological structure. This is a classic regularisation trade-off. The intervention is to introduce a loss weighting parameter λ: total_loss = task_loss + λ * topological_loss, and reduce λ until the task loss stabilises at an acceptable level while the topological constraint still meaningfully constrains the representation. Start with λ = 0.01 (strongly downweighting the topological term) and sweep upward. If no value of λ allows both task loss and topological loss to improve simultaneously, the hypothesis that the target topology is compatible with the classification task is likely wrong — the topological structure you are trying to enforce in the latent space may not be informative for the downstream prediction problem.'
+status: 'drafting'
+---
+
+## When the Network Should Know About Loops
+
+Deep learning and topological data analysis have developed largely independently, each producing powerful tools for different kinds of structure. Deep learning excels at learning hierarchical representations from raw data, extracting features that are predictive of task labels without explicit feature engineering. TDA excels at characterising the global geometric structure of data in a way that is stable, scale-free, and theoretically grounded. For welfare research, both capabilities are needed: the data is high-dimensional and complex enough to benefit from deep representation learning, yet the research questions concern structural properties — cyclical poverty dynamics, stratification geometry, boundary structure — that TDA characterises precisely and neural networks can dissolve.
+
+The integration challenge is therefore not "which tool to use" but "how do the tools reinforce each other?" Two integration strategies have emerged as the principled approaches: **topological feature extraction**, which treats TDA as a preprocessing step that augments the feature set before network training; and **topological regularisation**, which adds a topological loss term to the training objective, constraining the network's learned representations to preserve specified topological structure. This module covers both strategies, their implementation in `pytorch-topological`, and their application to poverty-score prediction where the topological structure of welfare trajectories should be preserved rather than collapsed in the latent space.
+
+## Strategy 1: Topological Feature Extraction
+
+In topological feature extraction, TDA is used to derive a fixed-length numerical description of each data point's local or global topological neighbourhood, and that description is appended to the original feature vector before passing to a standard neural network.
+
+The pipeline for a welfare classification task:
+
+1. For each geographic area or individual, compute a neighbourhood subgraph representation (e.g., the $k$-nearest neighbours in the welfare-variable space).
+2. Run `ripser` on the subgraph's distance matrix to produce H₀ and H₁ persistence diagrams.
+3. Vectorise each diagram using a persistence landscape (Module 9) or persistence image.
+4. Concatenate the landscape or image vector with the original feature vector.
+5. Train a standard MLP, random forest, or gradient boosting model on the augmented features.
+
+This approach is simple to implement and does not require specialised TDA-aware training infrastructure. Its limitation is that the topological features are precomputed and fixed — the network cannot learn to weight different aspects of the persistence diagram differently during training. The landscape vectorisation is a linear function of the diagram, and if the task-relevant topology is encoded nonlinearly, the extraction step may discard it before training begins.
+
+## Strategy 2: Topological Regularisation
+
+Topological regularisation adds a **topological loss** $\mathcal{L}_{\text{topo}}$ to the training objective, penalising the network when the persistence diagram of its output (or internal representation) deviates from a target topology:
+
+$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{task}} + \lambda \cdot \mathcal{L}_{\text{topo}}$$
+
+The topological loss is typically the sum of squared persistence discrepancies between the current diagram and the target diagram, differentiable with respect to the network weights through the use of sub-gradient or implicit differentiation techniques. The `pytorch-topological` library implements several differentiable topological loss functions including the **signature loss** (penalising the difference in persistence barcodes), the **Wasserstein topological loss** (penalising diagram distance from a target), and the **connectivity loss** (penalising unwanted connected components in the output).
+
+```python
+# {/* Pyodide code runner slot */}
+# import torch
+# from torch import nn
+# from pytorch_topological.nn import VietorisRipsComplex, SummaryStatisticLoss
+
+# class WelfareEncoder(nn.Module):
+#     def __init__(self, input_dim, latent_dim, num_classes):
+#         super().__init__()
+#         self.encoder = nn.Sequential(
+#             nn.Linear(input_dim, 64),
+#             nn.ReLU(),
+#             nn.Linear(64, latent_dim),
+#         )
+#         self.classifier = nn.Linear(latent_dim, num_classes)
+#
+#     def forward(self, x):
+#         z = self.encoder(x)
+#         logits = self.classifier(z)
+#         return z, logits
+
+# model = WelfareEncoder(input_dim=6, latent_dim=2, num_classes=3)
+# topo_loss_fn = SummaryStatisticLoss('persistence_entropy')
+# vr = VietorisRipsComplex(dim=1)
+
+# Training loop sketch
+# for batch_x, batch_y in dataloader:
+#     z, classifier_logits = model(batch_x)
+#     # Compute VR complex over latent batch
+#     persistence_info = vr(z)
+#     task_loss = criterion(classifier_logits, batch_y)
+#     topo_loss = topo_loss_fn(persistence_info)
+#     loss = task_loss + 0.1 * topo_loss
+#     loss.backward()
+#     optimiser.step()
+```
+
+## Sublevel Persistence of Neural Activations
+
+A third integration point is **post-hoc audit**: after training a standard neural network on welfare prediction, apply TDA to the network's internal activations to determine whether the learned representation preserves the known topological structure of the data.
+
+The tool for this is sublevel set persistence. For a trained network $f: \mathbb{R}^d \to \mathbb{R}^k$, extract the intermediate-layer activations $a(x) \in \mathbb{R}^m$ for all data points $x$ in the validation set. Construct a scalar function $g: X \to \mathbb{R}$ from these activations (e.g., the norm $\|a(x)\|_2$ or the first PCA component of the activation matrix). Compute the sublevel set persistence of $g$ — the persistent homology of the filtration defined by $g^{-1}(-\infty, t]$ as $t$ grows from $\min g$ to $\max g$. The resulting diagram characterises the topology of the activation landscape.
+
+For a welfare-score predictor where the original data has a known persistent H₁ feature (Module 3), the sublevel persistence of the final hidden layer should also show a persistent H₁ feature of comparable magnitude if the network learned a topologically faithful representation. A flat diagram (no persistent H₁ in the activation landscape) indicates the network learned to solve the task by collapsing the cyclical structure — perhaps exploiting a correlation that is not the structural signal.
+
+## Application: Poverty-Score Prediction with Topological Fidelity
+
+The motivating application from **Papers 7 and 8** is poverty-severity scoring for policy targeting: predict a welfare-vulnerability score for each household that reflects not just current income but the structural trajectory risk implied by the household's position in welfare space. Standard regression models trained to minimise squared prediction error will learn to approximate the mean trajectory, potentially discarding the cyclical structure that predicts recurrence risk. A topological regularisation approach adds a loss term penalising the disappearance of the H₁ features in the latent space, ensuring the learned score function preserves the poverty-cycle structure detected by TDA rather than averaging over it.
+
+The connection to Papers 7 and 8 is direct: Paper 7 develops the sublevel persistence audit methodology for welfare predictors trained on Universal Credit assessment data, finding that standard gradient-boosting models consistently suppress the persistent H₁ feature even when achieving high predictive accuracy. Paper 8 tests whether topological regularisation recovers this structure without sacrificing predictive performance, and evaluates the trade-off between task accuracy and topological fidelity as a function of the regularisation weight $\lambda$.
+
+## How This Module Connects
+
+This module bridges all of Path 4's technical content with the machine-learning applications that are increasingly prevalent in welfare-administration contexts. The tools here — `pytorch-topological`, sublevel persistence audit, and topological loss functions — are the operational link between the theoretical TDA methods of Modules 1–9 and the fairness and deployment concerns of Module 11. A welfare-scoring system that has been audited for topological fidelity (sublevel persistence audit showing preserved H₁) and trained with topological regularisation represents the current state of the art in structurally-grounded algorithmic welfare prediction.

@@ -49,19 +49,27 @@ export interface IncomeDataPoint {
 // ─── Population Distribution Parameters ──────────────────────────────────────
 
 /**
- * Log-normal model of UK household annual gross income (2024/25).
+ * Log-normal model of UK equivalised household income (2024/25).
  *
- * Source: ONS Family Resources Survey 2022/23 (approximate).
- *   Mean gross household income ≈ £28,000 / yr (working-age, 2024 prices)
- *   Shape parameter σ = 0.6 (produces a realistic Lorenz-curve skew)
+ * Parameterised by median (not mean) to align with the threshold data sources.
+ * Source: ONS Family Resources Survey / DWP HBAI 2022/23 uprated to 2024/25.
+ *   Median equivalised household income (BHC) ≈ £35,000 / yr
+ *   Shape parameter σ = 0.6 (Gini ≈ 0.33 under this model)
  *
- * For X ~ LogNormal(μ, σ): E[X] = exp(μ + σ²/2)
- *   → μ = ln(28 000) − σ²/2
+ * Anchoring at the median ensures the simulated relative poverty rate
+ * (P(X ≤ 60%·median)) is ~20%, consistent with UK observed rates of 17–22%.
+ *
+ * For X ~ LogNormal(μ, σ²):
+ *   median = exp(μ)          → μ = ln(POPULATION_MEDIAN)
+ *   mean   = exp(μ + σ²/2)  ≈ £41,900  (derived, not a parameter)
  */
-export const POPULATION_MEAN = 28_000;
+export const POPULATION_MEDIAN = 35_000;
 export const POPULATION_SIGMA = 0.6;
-export const POPULATION_MU =
-  Math.log(POPULATION_MEAN) - (POPULATION_SIGMA * POPULATION_SIGMA) / 2;
+export const POPULATION_MU = Math.log(POPULATION_MEDIAN);
+/** Mean of the modelled distribution (derived from median and σ). ≈ £41,900. */
+export const POPULATION_MEAN = Math.round(
+  Math.exp(POPULATION_MU + (POPULATION_SIGMA * POPULATION_SIGMA) / 2),
+);
 
 // ─── Normal CDF (Abramowitz & Stegun 26.2.17 — 5-term polynomial) ─────────────
 
@@ -103,10 +111,13 @@ export function populationBelowThreshold(income: number): number {
  * Used for the y-values of the area chart.
  *
  * @param income - Annual income in £. Returns 0 for income ≤ 0.
+ * @param mu     - Log-space mean (default POPULATION_MU). Pass a household-scaled
+ *                 value (ln(POPULATION_MEDIAN × OECD factor)) to shift the curve
+ *                 to actual household income space.
  */
-export function populationDensity(income: number): number {
+export function populationDensity(income: number, mu = POPULATION_MU): number {
   if (income <= 0) return 0;
-  const z = (Math.log(income) - POPULATION_MU) / POPULATION_SIGMA;
+  const z = (Math.log(income) - mu) / POPULATION_SIGMA;
   return (
     Math.exp((-z * z) / 2) /
     (income * POPULATION_SIGMA * Math.sqrt(2 * Math.PI))
@@ -121,14 +132,16 @@ export function populationDensity(income: number): number {
  * for incomes below ~£1,000 with these parameters.
  *
  * @param points - Number of evenly-spaced samples. Defaults to 400.
+ * @param mu     - Log-space mean (default POPULATION_MU). Pass a household-scaled
+ *                 value to generate a curve in actual household income space.
  */
-export function generateDensityCurve(points = 400): IncomeDataPoint[] {
+export function generateDensityCurve(points = 400, mu = POPULATION_MU): IncomeDataPoint[] {
   const MIN_INCOME = 500;
   const MAX_INCOME = 80_000;
   const step = (MAX_INCOME - MIN_INCOME) / (points - 1);
   return Array.from({ length: points }, (_, i) => {
     const income = MIN_INCOME + i * step;
-    return { income, density: populationDensity(income) };
+    return { income, density: populationDensity(income, mu) };
   });
 }
 
@@ -252,13 +265,21 @@ const REGION_LABELS: Record<Region, string> = {
  * Calculate the poverty threshold and simulated population poverty rate
  * for a given measurement method and household composition.
  *
- * The `rate` is derived from the log-normal population model and represents
- * the fraction of the simulated UK income distribution below the threshold.
- * It is a stylised approximation — not a precise empirical poverty rate.
+ * The population distribution is parameterised by equivalised income
+ * (median £35,000). To compute a correct poverty rate the threshold must
+ * also be expressed in equivalised terms before querying the CDF:
+ *
+ *   relative / dwp — threshold ÷ OECD factor = 0.6 × median (constant ~20 %)
+ *   absolute (MIS) — threshold ÷ OECD factor (basket cost back to single-adult)
+ *
+ * The `threshold` field in the result is always the *actual* household income
+ * threshold (as displayed on the chart); only the `rate` uses the equivalised
+ * figure. This keeps the visual line position meaningful while the poverty-rate
+ * readout stays accurate.
  *
  * @param method - Measurement framework to apply.
  * @param params - Household composition parameters.
- * @returns Threshold (£/yr), fraction of simulated population below threshold, description.
+ * @returns Threshold (£/yr actual), fraction of simulated population below threshold, description.
  */
 export function calculateThreshold(
   method: ThresholdMethod,
@@ -278,7 +299,13 @@ export function calculateThreshold(
       break;
   }
 
-  const rate = populationBelowThreshold(threshold);
+  // Poverty rates must be read off the equivalised-income distribution.
+  // Dividing by the OECD factor converts the actual household threshold back
+  // to single-adult-equivalent income, which is the scale the distribution
+  // is parameterised on (median £35,000).
+  const oecd = oecdEqualisationFactor(params.adults, params.children);
+  const equivalisedThreshold = threshold / oecd;
+  const rate = populationBelowThreshold(equivalisedThreshold);
   const pct = Math.round(rate * 100);
 
   const adultStr = `${params.adults} adult${params.adults !== 1 ? 's' : ''}`;

@@ -3,7 +3,6 @@ title: 'Point Clouds and Distance'
 path: 'topology-social-scientists'
 module_number: 2
 core_concept: 'A point cloud is a finite metric space; distance defines what it means for points to be ''near'''
-interactive_slug: 'normal-distribution-explorer'
 connections:
   chapters: [2]
   papers: []
@@ -58,10 +57,6 @@ This is the set of all points within distance $\varepsilon$ of $x$. The $\vareps
 ## From Individual Points to Global Structure
 
 The power of metric-space thinking becomes visible only when we look at the global arrangement of many points simultaneously. A single point tells you nothing; ten points with a clear gap between two clusters tells you something about the population's structure; hundreds of points that form a loop in two-dimensional projection tells you that there are two distinct pathways through the deprivation landscape and that they are cyclically connected. None of these conclusions are accessible from summary statistics — they require reasoning about the collective geometry of the point cloud.
-
-## Using the Interactive: Normal Distribution Explorer
-
-The **Normal Distribution Explorer** paired with this module lets you adjust the mean and standard deviation of a normal distribution and observe how the resulting sample of points is distributed in one and two dimensions. This is relevant to point clouds in two ways. First, it makes concrete the idea that changing a distribution parameter changes the spatial spread of the points — their pairwise distances. A high-variance distribution produces a point cloud that is geometrically "stretched out"; a low-variance distribution produces one that is "compressed". Second, by toggling between one and two variables, you can observe how adding a second axis creates angle and orientation in the cloud — a foretaste of the high-dimensional geometry that TDA must navigate. As you explore, notice how the shape of the cluster changes: a cloud with equal variance on both axes forms a circle; one with unequal variances forms an ellipse. Both are topologically the same (no holes), but geometrically very different — a distinction that TDA preserves carefully.
 
 ## How This Module Connects
 

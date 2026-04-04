@@ -32,7 +32,12 @@ import { ExpandableCard } from '@components/shared/ExpandableCard';
 import MarkCompleteButton from '@components/learn/MarkCompleteButton';
 import { NormalDistExplorer } from '@components/interactives/NormalDistExplorer';
 import { PovertySimulator } from '@components/interactives/PovertySimulator';
-import { PersistenceDiagramBuilder } from '@components/interactives/PersistenceDiagramBuilder';
+import { PersistenceDiagramBuilderWrapper } from '@components/interactives/PersistenceDiagramBuilderWrapper';
+import { MapperParameterLab } from '@components/interactives/MapperParameterLab';
+import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
+import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
+import { TDAResultsExplorer, type PresetId, VALID_PRESET_IDS, DEFAULT_PRESET_ID } from '@components/interactives/TDAResultsExplorer';
+import { pathNumberToSlug } from '@data/learnPaths';
 
 interface ModuleRef {
   slug: string;
@@ -59,6 +64,7 @@ const {
   module_number,
   core_concept,
   interactive_slug,
+  tda_preset_id,
   connections,
   check_understanding,
 } = entry.data;
@@ -76,6 +82,25 @@ const pathLabel = toPathLabel(path);
 
 /* ── Stable title id for aria-labelledby ── */
 const titleId = 'module-title';
+
+/* ── Convert a content-collection entry ID (e.g. 'path1-module-3') to the
+   canonical module URL (/learn/topology-social-scientists/3/). Used for
+   connections.modules sidebar links whose values come from MDX frontmatter.
+   Falls back to /learn/ for any unrecognised pattern.
+   The slug mapping is imported from src/data/learnPaths.ts — update
+   pathNumberToSlug there whenever a new path is added. ── */
+function moduleEntryIdToHref(entryId: string): string {
+  const m = entryId.match(/^(path\d+)-module-(\d+)$/);
+  if (!m) return '/learn/';
+  const pathSlug = pathNumberToSlug[m[1]];
+  if (!pathSlug) return '/learn/';
+  return `/learn/${pathSlug}/${m[2]}/`;
+}
+
+/** Type guard — returns true when `id` is a known TDAResultsExplorer PresetId. */
+function isPresetId(id: string | undefined): id is PresetId {
+  return VALID_PRESET_IDS.includes(id as PresetId);
+}
 ---
 
 <BaseLayout title={title} description={core_concept} section="learn">
@@ -108,7 +133,7 @@ const titleId = 'module-title';
           return (
             <li class="progress-node-item">
               <a
-                href={`/learn/modules/${mod.slug}/`}
+                href={`/learn/${path}/${num}/`}
                 class:list={['progress-node', isCurrent && 'progress-node--current']}
                 aria-current={isCurrent ? 'true' : undefined}
                 title={mod.title}
@@ -147,7 +172,11 @@ const titleId = 'module-title';
             <p class="module-core-concept">{core_concept}</p>
           )}
 
-          {/* Interactive slot — inline component rendering when interactive_slug is defined */}
+          <Content />
+
+          {/* Interactive slot — rendered after prose so it follows the
+              "Using the Interactive" section in the module text.
+              Pedagogical order: Read → Explore → Test (check understanding). */}
           {interactive_slug && (
             <div class="module-interactive" aria-label="Interactive tool">
               {interactive_slug === 'normal-distribution-explorer' && (
@@ -157,18 +186,28 @@ const titleId = 'module-title';
                 <PovertySimulator client:visible />
               )}
               {interactive_slug === 'persistence-diagram-builder' && (
-                <PersistenceDiagramBuilder client:visible />
+                <PersistenceDiagramBuilderWrapper client:visible />
+              )}
+              {interactive_slug === 'mapper-parameter-lab' && (
+                <MapperParameterLab client:visible />
+              )}
+              {interactive_slug === 'filtration-playground' && (
+                <FiltrationPlayground client:visible />
+              )}
+              {interactive_slug === 'benefit-taper-calculator' && (
+                <BenefitTaperCalculator client:visible />
+              )}
+              {interactive_slug === 'tda-results-explorer' && (
+                <TDAResultsExplorer presetId={isPresetId(tda_preset_id) ? tda_preset_id : DEFAULT_PRESET_ID} client:visible />
               )}
               {/* Fallback link for any interactive without a registered component */}
-              {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder'].includes(interactive_slug) && (
+              {!['normal-distribution-explorer', 'poverty-threshold-simulator', 'persistence-diagram-builder', 'mapper-parameter-lab', 'filtration-playground', 'benefit-taper-calculator', 'tda-results-explorer'].includes(interactive_slug) && (
                 <a href={`/learn/interactives/${interactive_slug}/`} class="interactive-launch-link">
                   Launch interactive →
                 </a>
               )}
             </div>
           )}
-
-          <Content />
 
           {/* ── Check Your Understanding ── */}
           {check_understanding.length > 0 && (
@@ -267,7 +306,7 @@ const titleId = 'module-title';
                     {connections.modules.map((slug) => (
                       <li>
                         <a
-                          href={`/learn/modules/${slug}/`}
+                          href={moduleEntryIdToHref(slug)}
                           class="connections-link"
                         >
                           {slug}
@@ -294,7 +333,7 @@ const titleId = 'module-title';
       <div class="module-nav-inner">
 
         {prevModule ? (
-          <a href={`/learn/modules/${prevModule.slug}/`} class="module-nav-link module-nav-prev">
+          <a href={`/learn/${path}/${module_number - 1}/`} class="module-nav-link module-nav-prev">
             <span class="nav-direction" aria-hidden="true">←</span>
             <span class="nav-meta">Previous module</span>
             <span class="nav-title">{prevModule.title}</span>
@@ -304,7 +343,7 @@ const titleId = 'module-title';
         )}
 
         {nextModule ? (
-          <a href={`/learn/modules/${nextModule.slug}/`} class="module-nav-link module-nav-next">
+          <a href={`/learn/${path}/${module_number + 1}/`} class="module-nav-link module-nav-next">
             <span class="nav-direction" aria-hidden="true">→</span>
             <span class="nav-meta">Next module</span>
             <span class="nav-title">{nextModule.title}</span>
@@ -422,9 +461,18 @@ const titleId = 'module-title';
     border-left: 4px solid var(--color-tda-teal);
     border-radius: var(--radius-md);
     padding: var(--space-6);
-    margin-bottom: var(--space-7);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-8);
     overflow: hidden;
     min-height: 320px;
+  }
+
+  /* On desktop, break the interactive out of the prose column so it fills
+     the full module-grid row (article + gap + sidenote = container inner width). */
+  @media (min-width: 1024px) {
+    .module-interactive {
+      margin-right: calc(-1 * (var(--sidenote-width) + var(--space-8)));
+    }
   }
 
   .interactive-launch-link {

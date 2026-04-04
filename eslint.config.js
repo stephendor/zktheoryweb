@@ -7,7 +7,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 export default [
   // Global ignores
   {
-    ignores: ['dist/', '.astro/', 'node_modules/', 'storybook-static/'],
+    ignores: ['dist/', '.astro/', 'node_modules/', 'storybook-static/', 'playwright.config.ts'],
   },
 
   // TypeScript files
