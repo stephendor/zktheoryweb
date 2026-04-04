@@ -2,7 +2,7 @@
 title: 'Multi-Parameter Persistent Homology for Poverty Trap Detection'
 paper_number: 4
 stage: 2
-status: 'planned'
+status: 'in-progress'
 target_journal: 'Journal of the American Statistical Association'
 depends_on: [2, 3]
 enables: [7, 8]
@@ -17,12 +17,12 @@ compute:
   runtime: 'Hours'
   cloud: true
 key_findings:
-  - claim: 'The paper aims to test whether two-parameter persistence modules can distinguish genuine poverty trap topology from transient poverty using a supervised classification framework.'
-    detail: 'A support vector classifier will be trained on MPH feature vectors and compared against a single-parameter baseline, validated on a held-out test set. The hypothesis is that poverty trap topology will be characterised by persistent H₀ features in the income–time parameter plane, corresponding to isolated connected components surviving across both filtration dimensions.'
-  - claim: 'The paper aims to assess whether poverty trap topology is geographically concentrated in former mining and manufacturing regions of the UK.'
-    detail: 'Spatial disaggregation of MPH-derived trap probability scores by NUTS-2 region will be used to test whether trap concentrations are higher in regions with persistent post-deindustrialisation structural disadvantage, such as South Yorkshire, Tyne and Wear, and South Wales.'
-  - claim: 'The paper aims to quantify the extent to which single-parameter persistent homology under-counts poverty trap configurations relative to the two-parameter method.'
-    detail: 'A systematic comparison will assess how many cases identified as poverty traps by MPH are missed by single-parameter PH applied to income alone, testing the hypothesis that the two-dimensional signature — conditioning simultaneously on income level and temporal persistence — is necessary to distinguish genuine trapping from extended-but-recoverable hardship.'
+  - claim: 'Poverty trap topology is characterised by the **absence** of H₁ at low income levels, not by isolated H₀ components.'
+    detail: 'Exploratory bifiltration (2,000 maxmin landmarks, quantile income grid) finds that H₁ mass shows a strong income gradient — Q3/Q4 carry ~4× the H₁ mass of Q1. Low-income trajectories form simpler, more linear structures (low H₁); the poverty trap signature is the topological absence of diverse connectivity at the low-income end of the income filtration, not isolated connected components as initially hypothesised.'
+  - claim: 'Quantile-based income discretisation is more stable than fixed-grid discretisation for the bifiltration.'
+    detail: 'Comparison of quantile and fixed-grid discretisation strategies (12 resolution levels each) finds that the quantile grid produces more balanced H₀ low-fraction (0.512 vs 0.454) and more stable H₁ convergence (CV range [0.329, 0.444] vs [0.263, 0.507] for fixed grid). Quantile grid adopted as primary analysis; fixed grid used in sensitivity appendix.'
+  - claim: 'The Rips × income bifiltration is computationally feasible at scale using the multipers library with 2,000 landmarks.'
+    detail: 'Development-scale bifiltration (2,000 maxmin landmarks from 27,280-trajectory P01 checkpoint) runs in ~3s for simplex construction and produces signed measures for H₀ and H₁ via the multipers 2.3.4 API. GPU escalation planned for the full 8,000-landmark production run.'
 abstract: >
   Poverty traps — states from which exit is structurally impeded — represent a central concern of welfare research. Single-parameter persistent homology cannot distinguish trapping configurations from transient low-income spells. This paper will introduce a multi-parameter persistent homology (MPH) framework that simultaneously filters employment trajectory space by income level and time, yielding a two-parameter persistence module. When applied to Understanding Society data, MPH will be used to identify topological invariants associated with poverty trap configurations, distinguishing them from transient poverty. GPU computation will enable practical estimation across large panels. We aim to show that poverty trap topology is concentrated in specific regional and household-type sub-populations, with implications for targeted policy design.
 plain_summary: >
@@ -55,18 +55,22 @@ Understanding Society waves 1–14 provide the core data. BHPS waves 1–18 are 
 
 ## Results
 
-### Topological Characterisation of Poverty Traps
+### The Bifiltration: Computation and Discretisation
 
-The two-parameter persistence module reveals a class of persistent H₀ features — isolated connected components that survive across both the income-depth and time dimensions of the filtration. These are interpreted as poverty traps: households whose income-trajectory configuration is topologically isolated from the main income-recovery manifold.
+A development-scale Rips × income bifiltration (2,000 maxmin landmarks drawn from the 27,280-trajectory P01 checkpoint) produces 215,958 simplices in approximately 3 seconds. Income score is computed as the proportion-weighted mean of per-wave income bands (Low = 0, Mid = 1, High = 2) with mean 1.02 and median 1.00. Comparison of quantile-based and fixed-grid income discretisation strategies confirms that the quantile grid produces more balanced H₀ low-fraction (0.512 vs 0.454) and more stable H₁ convergence properties. Quantile grid is adopted as the primary analysis; fixed grid is used in the sensitivity appendix.
 
-### Spatial and Demographic Distribution
+### The Poverty Trap Signature: Absence of H₁ at Low Income
 
-MPH-derived trap probability scores vary by a factor of three across UK NUTS-2 regions, with the highest concentrations in former industrial areas. Within-region analysis shows that single-adult households with children are over-represented in the trap-topology sub-population.
+The central finding inverts the initial hypothesis. The poverty trap signature in the bifiltration is **not** the presence of isolated H₀ components (isolated connected components surviving across both income depth and time dimensions). It is the **absence of H₁** at low income levels. H₁ signed-measure mass shows a strong income gradient: Q3/Q4 income quartiles carry approximately 4× the H₁ mass of Q1. Low-income trajectories form simpler, more linear topological structures — they lack the diverse inter-trajectory connectivity that characterises mid-to-high income trajectory space. The poverty trap is, topologically, a region of impoverished connectivity rather than isolated enclosure.
+
+### Topological Interpretation
+
+This finding reframes the poverty trap concept geometrically. High-income trajectories are diverse: they connect in complex configurations because the routes to sustained high income are varied (sector changes, qualification effects, partnership effects). Low-income trajectories converge on a narrow structural form — a topologically simple manifold from which the paths out are few and the paths in are many. The bifiltration captures this as the relative absence of H₁ features in the low-income end of the income filtration. GPU-scale computation (full 8,000-landmark production run) is planned to confirm the gradient at production scale.
 
 ## Discussion
 
-MPH provides a geometry-respecting operationalisation of poverty traps that resolves the ambiguity between sustained transient poverty and structural trapping. The GPU computation pipeline developed for this paper will be released as a replication package and is expected to be used by Papers 8 and 9 in the research programme.
+The H₁ absence finding has direct implications for policy design. If poverty traps were characterised by isolated H₀ components, the intervention implication would be to build connections between isolated sub-populations and the main labour market. If they are characterised by H₁ absence — by structural simplicity rather than enclosure — the implication is that poverty trap exit requires diversifying the trajectory options available from low-income starting points, not bridging a gap between separate manifolds. MPH provides a geometry-respecting framework for distinguishing these two structural diagnoses that threshold-based operationalisations of poverty traps cannot.
 
 ## Conclusion
 
-Multi-parameter persistent homology successfully distinguishes poverty trap topology from transient poverty in UK panel data. The regional concentration of trap topology has direct implications for geographically targeted anti-poverty policy.
+Exploratory bifiltration results indicate that poverty trap topology in UK panel data is characterised by the absence of H₁ at low income levels rather than by isolated H₀ components, inverting the initial hypothesis and reframing the geometry of structural disadvantage. Full-scale GPU computation is underway to confirm the gradient and enable spatial disaggregation by NUTS-2 region.

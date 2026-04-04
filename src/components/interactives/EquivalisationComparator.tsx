@@ -31,7 +31,6 @@ import { ResponsiveContainer } from '@lib/viz/ResponsiveContainer';
 import { getVizColorScale } from '@lib/viz/scales';
 import { AriaLiveRegion } from '@lib/viz/a11y/AriaLiveRegion';
 import { TextDescriptionToggle } from '@lib/viz/a11y/TextDescriptionToggle';
-import { useReducedMotion } from '@lib/viz/a11y/useReducedMotion';
 
 import {
   compareScales,
@@ -167,14 +166,12 @@ interface DistributionChartProps {
   results: [ScaleResult, ScaleResult, ScaleResult];
   width: number;
   height: number;
-  reducedMotion: boolean;
 }
 
 function DistributionChart({
   results,
   width,
   height,
-  reducedMotion,
 }: DistributionChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const innerW = width - DENSITY_MARGIN.left - DENSITY_MARGIN.right;
@@ -188,7 +185,8 @@ function DistributionChart({
 
     // Shared x domain across all three scales' equivalised incomes
     const allEquivIncomes = results.flatMap((r) => r.rowResults.map((row) => row.equivalisedIncome));
-    const xDomain: [number, number] = [0, d3.max(allEquivIncomes)! * 1.05];
+    const maxVal = d3.max(allEquivIncomes) ?? 0;
+    const xDomain: [number, number] = [0, maxVal > 0 ? maxVal * 1.05 : 1];
     const xScale = d3.scaleLinear().domain(xDomain).range([0, innerW]);
 
     // KDE for each scale
@@ -263,9 +261,7 @@ function DistributionChart({
     const xAxis = d3.axisBottom(xScale).tickFormat((d) => `£${Number(d) / 1000}k`).ticks(6);
     svg.select<SVGGElement>('.ec-x-axis').call(xAxis);
     svg.select<SVGGElement>('.ec-y-axis').remove();
-
-    void reducedMotion;
-  }, [results, innerW, innerH, reducedMotion]);
+  }, [results, innerW, innerH]);
 
   return (
     <svg
@@ -304,8 +300,6 @@ export function EquivalisationComparator({ className }: EquivalisationComparator
   const [threshold, setThreshold] = useState(THRESHOLD_DEFAULT);
   const [liveMsg, setLiveMsg] = useState('');
 
-  const reducedMotion = useReducedMotion();
-
   const results = useMemo(
     () => compareScales(UK_HOUSEHOLDS, threshold),
     [threshold],
@@ -335,7 +329,7 @@ export function EquivalisationComparator({ className }: EquivalisationComparator
       <div className={`ec-wrapper${className ? ` ${className}` : ''}`}>
 
         {/* ── Summary row ───────────────────────────────────────────────── */}
-        <div className="ec-summary-row" aria-live="polite" aria-atomic="true">
+        <div className="ec-summary-row">
           {results.map((r) => (
             <div key={r.scale} className="ec-summary-card">
               <span
@@ -385,7 +379,6 @@ export function EquivalisationComparator({ className }: EquivalisationComparator
                 results={results}
                 width={width}
                 height={height}
-                reducedMotion={reducedMotion}
               />
             )}
           </ResponsiveContainer>

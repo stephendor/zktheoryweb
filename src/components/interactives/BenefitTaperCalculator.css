@@ -335,8 +335,10 @@
     flex-direction: column;
   }
 
-  .btc-spotlight-control {
+  .btc-spotlight-control,
+  .btc-taper-control {
     min-width: 0;
+    flex: unset;
     width: 100%;
   }
 }

@@ -346,7 +346,7 @@ function GroupComparisonBar({
             <span className="dte-group-label">{g.label}</span>
             <div className="dte-group-bar-track">
               <div
-                className="dte-group-bar-fill"
+                className={`dte-group-bar-fill${g.value === 0 ? ' dte-group-bar-fill--zero' : ''}`}
                 style={{
                   width: `${(g.value / maxVal) * 100}%`,
                   background: colour,

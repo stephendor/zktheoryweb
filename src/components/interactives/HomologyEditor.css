@@ -60,7 +60,7 @@
   font-family: var(--font-mono, monospace);
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  /* Alternate teal/orange per position (applied via :nth-child) */
+  /* Colors applied to the two Betti elements via :first-child and :last-child */
 }
 
 .he-betti-item:first-child .he-betti-value {
@@ -137,14 +137,35 @@
   transition: stroke 0.12s, stroke-opacity 0.12s;
 }
 
-/* Increase the hit area without making the line look thicker */
-.he-edge:not(.he-edge--active) {
-  stroke-width: 14;
-  stroke-opacity: 0;
-  /* Visible part via a sibling element... Actually use SVG trick below */
+.he-edge:focus,
+.he-edge:focus-visible {
+  outline: none;
+  stroke: var(--color-viz-1, #e69f00);
+  stroke-opacity: 1;
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 3px var(--color-viz-1, #e69f00));
 }
 
-/* Use a pointer-events wide stroke but render thin */
+/* Widen hit area without making the line visually thicker */
+.he-edge:not(.he-edge--active) {
+  stroke-width: 14;
+  stroke-opacity: 0.01; /* near-transparent but still hit-testable */
+  pointer-events: stroke;
+}
+
+.he-edge.he-edge--ghost {
+  stroke: var(--color-neutral-muted, #aaa);
+  stroke-width: 2;
+  stroke-opacity: 0.35;
+  stroke-dasharray: 6 4;
+}
+
+.he-edge.he-edge--ghost:hover {
+  stroke: var(--color-viz-1, #e69f00);
+  stroke-opacity: 0.65;
+  stroke-dasharray: none;
+}
+
 .he-edge--active {
   stroke: var(--color-viz-1, #e69f00);
   stroke-width: 3.5;
@@ -154,19 +175,6 @@
 .he-edge--active:hover {
   stroke: var(--color-viz-1, #e69f00);
   stroke-opacity: 0.75;
-}
-
-.he-edge--ghost {
-  stroke: var(--color-neutral-muted, #aaa);
-  stroke-width: 2;
-  stroke-opacity: 0.35;
-  stroke-dasharray: 6 4;
-}
-
-.he-edge--ghost:hover {
-  stroke: var(--color-viz-1, #e69f00);
-  stroke-opacity: 0.65;
-  stroke-dasharray: none;
 }
 
 /* ── Vertices ───────────────────────────────────────────────────────────────── */

@@ -203,9 +203,8 @@ describe('OFFICIAL_DATASET vs COMMUNITY_DATASET', () => {
     const sameCounts =
       OFFICIAL_DATASET.h0Count === COMMUNITY_DATASET.h0Count &&
       OFFICIAL_DATASET.h1Count === COMMUNITY_DATASET.h1Count;
-    // Different topological structure (at least in counts or content)
-    // This is the core claim of the interactive — not necessarily different counts
-    // but the bottleneck distance confirms different structure
-    expect(H0_BOTTLENECK + H1_BOTTLENECK + (sameCounts ? 0 : 1)).toBeGreaterThanOrEqual(0);
+    // The datasets must differ in topological counts or structure —
+    // if counts happen to match, the bottleneck distance must be positive.
+    expect(sameCounts === false || H0_BOTTLENECK > 0 || H1_BOTTLENECK > 0).toBe(true);
   });
 });

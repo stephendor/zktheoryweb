@@ -55,18 +55,26 @@ Data are drawn from the BHPS (1991–2009) and Understanding Society (2009–pre
 
 ## Results
 
-### Topology of the Trajectory Space
+### Regime Structure and Mapper Topology
 
-Mapper produces a network with five robust clusters: (i) stable employment, (ii) stable inactivity, (iii) cycling employment–unemployment, (iv) early labour-market exit, and (v) late-career exit. The early-exit cluster forms a flare topology — a branch appendage — suggesting it is a structurally distinct sub-population rather than an endpoint of continuous variation.
+Mapper produces a connected graph whose global structure reproduces the seven-regime GMM typology from Paper 1 (regime-shuffle permutation null: observed sub-regime count 358 vs null mean 86, *p* < 0.01). The graph has one giant component and several peripheral nodes; high-income stable employment occupies the central mass and disadvantaged regimes form branches. Sensitivity analysis across 24 configurations (varying lens function, cover resolution, overlap, and clustering algorithm) confirms that the five topologically robust findings are stable; estimated noise rate and bridge node counts are algorithm-dependent.
 
-### Gender and the Flare
+### Within-Regime Heterogeneity
 
-The flare sub-population is heavily female (71%), consistent with theories of care-related early exit. This finding motivates the cross-national comparison in Paper 5.
+The primary novel result is within-regime heterogeneity that the scalar topology and GMM typology both compress away. Regimes R3 (employment-income churning) and R5 (inactivity-income churning) are superficially similar — they share identical E↔I transition rates — but differ in the Mapper sub-graph structure: R3 nodes colour dark when colouring by employment income bands (churning within employment), while R5 nodes colour dark when colouring by inactivity income bands (churning within inactivity). This decomposition is invisible to standard sequence analysis and to the global PH of Paper 1. Within-node-shuffle permutation test (*p* < 0.01) confirms the sub-regime structure is not a distributional artefact.
+
+### Outcome Geography
+
+Colouring Mapper nodes by substantive outcomes (income endpoint, occupational class, benefit receipt, housing tenure) creates an outcome geography of trajectory space: nodes — sub-populations of individuals with similar careers — are coloured by their eventual outcomes, revealing spatial gradients from the disadvantaged branches to the stable-employment core. The early-exit branch (heavily female, 71% of its sub-population) grades from domestic inactivity in its distal nodes to mid-career re-entry near the junction with the main component, providing a more granular characterisation than the binary early-exit category.
+
+### Robustness
+
+UMAP-16D embedding robustness check confirms that sub-regime findings are embedding-invariant: the R3/R5 churning decomposition and outcome geography gradients identified in the primary PCA-20D analysis replicate in the UMAP-16D space. Findings dependent on bridge nodes and noise rate estimates are flagged as embedding-sensitive.
 
 ## Discussion
 
-Mapper provides an interpretable, topology-respecting representation of employment career space. The five-cluster topology is stable across bootstrap samples and robust to distance-metric choice. The flare structure offers a richer characterisation of early exit than binary classification.
+Mapper provides interpretable, topology-respecting interior structure that the global PH of Paper 1 and the GMM typology of that paper's regime analysis both miss. The R3/R5 churning decomposition is the paper's most substantively significant finding: two regimes that look identical in terms of transition rates have qualitatively different internal structures, implying that interventions designed for R3 (address employment-income volatility) would look different from interventions designed for R5 (address inactivity-income cycling). The outcome geography visualisation offers a navigable representation of trajectory space whose practical use is discussed in relation to targeted welfare policy design.
 
 ## Conclusion
 
-Mapper reveals structured interior topology in UK employment trajectory data. These results motivate further analysis via zigzag persistence (Paper 3) and cross-national comparison (Paper 5).
+Mapper reveals structured interior topology in UK employment trajectory data that complements and extends the global PH results of Paper 1. The sub-regime heterogeneity results motivate further analysis via multi-parameter PH (Paper 4), which provides a geometry-respecting method for simultaneously conditioning on income depth and temporal persistence.

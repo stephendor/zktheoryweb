@@ -143,7 +143,8 @@ export function computeFiscalCostDelta(taperRatePct: number): number {
   const selectedRate = taperRatePct / 100;
   const baselineRate = TAPER_RATE_DEFAULT / 100;
 
-  if (selectedRate === baselineRate) return 0;
+  const EPS = 1e-9;
+  if (Math.abs(selectedRate - baselineRate) < EPS) return 0;
 
   const baselineParams: UCParams = {
     ...CURRENT_PARAMS,

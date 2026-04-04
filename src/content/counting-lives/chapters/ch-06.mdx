@@ -4,14 +4,20 @@ chapter_number: 6
 part: "II"
 part_number: 2
 transition: 3
-spine_role: "This chapter analyses how Mollie Orshansky's food-cost poverty measure, developed inside the Social Security Administration in the early 1960s, became the official US poverty line — and how its institutionalisation was a political victory precisely because it set the threshold so low."
+spine_role: "This chapter traces how operations research transplanted from the RAND Corporation to the Great Society programmes, replacing 'what do people need?' with 'what is the cost-effective allocation?' — and how that substitution shaped US and UK welfare policy for decades."
 status: drafting
 key_figures:
-  - "Mollie Orshansky"
+  - "Charles Hitch"
+  - "Robert McNamara"
   - "Daniel Patrick Moynihan"
+  - "Alice Rivlin"
+  - "Milton Friedman"
 mathematical_concepts:
-  - "poverty threshold"
-  - "logistic regression"
+  - "operations research"
+  - "cost-effectiveness analysis"
+  - "PPBS objective function"
+  - "randomised controlled trial"
+  - "labour-supply elasticity"
 interludes:
   - "mm2-correlation-regression"
   - "mm3-logistic-regression"
@@ -20,31 +26,52 @@ related_tda_papers:
   - 1
   - 5
 key_claims:
-  - claim: "Orshansky's formula was a measure of subsistence, not adequacy"
-    detail: "Mollie Orshansky calculated her poverty thresholds using the USDA's Economy Food Plan and a food-expenditure multiplier derived from 1955 consumption data — a baseline designed to capture emergency subsistence, not the cost of full social participation in mid-century American life."
-  - claim: "The poverty line's institutionalisation was a political ceiling, not a floor"
-    detail: "When political officials in 1965 chose Orshansky's lower-bound measure over the higher thresholds she had also calculated, they did so not on technical grounds but on political ones — the lower line minimised the visible scale of the poverty problem and the public cost of addressing it."
-  - claim: "RAND's systems-analytic culture shaped the evaluation infrastructure of the War on Poverty"
-    detail: "The methodological culture of RAND — cost-effectiveness analysis, operational research, social policy as applied engineering — migrated into the Office of Economic Opportunity and shaped the assumptions under which War on Poverty programmes were designed, measured, and ultimately cut."
-  - claim: "Race was structurally absent from the official poverty measure"
-    detail: "Although structural racism was a primary driver of American poverty, Orshansky's thresholds were racially unmarked — the same food-cost formula applied across all demographic groups, erasing the mechanisms producing racial wealth gaps from the official measurement architecture."
-  - claim: "The poverty line has been updated for inflation but never fundamentally revised"
-    detail: "Since 1969, the US poverty threshold has been adjusted for price changes using the Consumer Price Index but has never been modernised to reflect changes in consumption patterns, housing costs, or the relative cost of social participation — making it an increasingly archaic and inadequate measure."
+  - claim: "Operations research required an objective function that displaced material need"
+    detail: "When cost-effectiveness analysis migrated from RAND to HEW, the objective that proved most tractable was 'reduce welfare caseloads' rather than 'ensure that poor families have enough to eat' — because caseloads could be expressed as a measurable outcome metric, while nutritional adequacy could not."
+  - claim: "RAND's New York fire station analysis caused preventable destruction"
+    detail: "The RAND Corporation's queuing-theory model optimised fire station placement and response times but contained no variable for fire risk accumulation in communities experiencing housing abandonment. Acting on RAND's recommendations, New York reduced fire capacity in the South Bronx and Brownsville, accelerating the destruction of those communities."
+  - claim: "The New Jersey Income Maintenance Experiment measured the wrong objective"
+    detail: "The first social policy randomised controlled trial in history measured labour-supply elasticity rather than household welfare adequacy. Its finding that guaranteed income reduced work effort by a small amount was used to defeat the Family Assistance Plan, suppressing evidence that participants also experienced improved health and education outcomes."
+  - claim: "Cost-effectiveness analysis concentrated power over objective-setting"
+    detail: "A framework that optimises within a given objective but does not question the objective is not neutral with respect to power. When cost-effectiveness analysis migrated from Pentagon to welfare state, the authority to define what the programme was for passed to economists and programme evaluators rather than to the households the programmes were meant to serve."
 ---
 
-## The Cheapest Adequate Diet
+## Synopsis
 
-In 1963, Mollie Orshansky, a statistician at the Social Security Administration, published a paper in the *Social Security Bulletin* proposing poverty thresholds derived from the USDA's Economy Food Plan — the cheapest diet the Department of Agriculture believed could sustain life, multiplied by three on the assumption that food accounted for roughly one third of a working family's budget. Orshansky did not design this measure to become the official poverty line of the United States. She designed it to produce a better count of poor children. But in 1965, in the heat of the War on Poverty, Lyndon Johnson's Council of Economic Advisers adopted it — choosing her lower-bound alternative over the higher thresholds she had also produced — and it has remained the basis of the official American poverty measure ever since. The line's durability is not a mark of its accuracy. It is a mark of its political convenience.
+By the mid-1960s, the methods Charles Hitch had developed at the RAND Corporation for optimising nuclear deterrence had been carried, almost intact, into the welfare state. The Planning, Programming, and Budgeting System that Robert McNamara deployed at the Department of Defense was extended across the domestic agencies of the Johnson Great Society; the economists and systems analysts who had spent the 1950s calculating optimal bombing patterns were now calculating cost-effective allocations for Head Start, Model Cities, and the Office of Economic Opportunity. The transfer accomplished something more fundamental than an administrative update: it replaced the welfare state's original question — what do these people need? — with a different question — given a defined objective and limited resources, what is the optimal allocation? The two questions sound adjacent; in practice, the second is a replacement for the first. The objective was now set by analysts, administrators, and elected officials with their own interests, and the analytical framework was not designed to challenge it.
 
-This chapter's core argument is that the Orshansky line's six-decade longevity is a political achievement, not a technical one.
+## 1. The War Room Comes to Washington
 
-### In This Chapter
+The RAND Corporation's analysts in Santa Monica had learned, under conditions of genuine urgency, that killing and destruction could be made more efficient by treating them as optimisation problems. Charles Hitch, who ran RAND's Economics Division from 1948, argued in *The Economics of Defense in the Nuclear Age* (1960) that public-sector decision-making should be treated as an economic problem: specify the objective, enumerate the options, calculate a cost-effectiveness ratio for each, identify the optimal allocation. The framework treated the objective as a given — as a technical parameter determined before analysis begins, whose content the analysis would not question. For defence procurement, this division of labour was workable. The objectives of nuclear deterrence could be operationalised; the question of how much deterrence was enough admitted no clean answer but at least admitted measurement. But a framework that accepts objectives as given and optimises within them is not neutral with respect to whoever has the authority to specify what the objective is.
 
-- How RAND's culture of systems analysis and cost-effectiveness thinking shaped the analytical infrastructure of the War on Poverty, producing an evaluation paradigm that privileged measurable programme efficiency over distributional outcomes
-- How Orshansky's own ambivalence about the measure she had devised — she understood its limitations and said so, repeatedly — was systematically set aside as the line hardened into official policy and the threshold became fixed
-- How the political choice between Orshansky's lower and higher thresholds was determined not by technical superiority but by the size of the programme liability each figure implied — a decision that has constrained poverty measurement in the United States for sixty years
-- How the racially marked character of American poverty was rendered invisible by a measure that was technically neutral with respect to race but structurally blind to the mechanisms producing racial wealth gaps
+The migration of RAND's methods into social policy was as much institutional as intellectual. Throughout the late 1950s, RAND's board was actively seeking to reduce dependence on Air Force contracts. The Great Society programmes of the mid-1960s created a substantial new market. The Office of Economic Opportunity, HEW, the Department of Housing and Urban Development, and the Department of Labor all required analytical capacity they did not have in-house. RAND's board pushed the organisation into non-military research from 1965 onward; the methods followed the money. The RAND that arrived in the social policy arena brought a complete analytical culture: quantitative modelling over qualitative case study, cost-effectiveness ratios as the primary programme evaluation criterion, and a confidence that expert analysis could resolve questions that democratic deliberation had been too slow to settle.
+
+RAND's work for New York City, which began in 1969 as the New York City–RAND Institute, provides the paradigm case. The Institute applied queuing theory and optimisation modelling to fire station placement and response capacity. Acting on RAND's recommendations, the Lindsay administration reduced fire service capacity in the South Bronx, Brownsville, and Bushwick — communities experiencing extreme housing stress, overcrowding, and arson-for-insurance — because the model's cost-effectiveness ratios made this appear optimal. The model could not see the relevant risk because fire risk of the accumulative kind — abandoned buildings, cascading neighbourhood departure, the systemic collapse of informal fire prevention — was not among its variables. The model measured response times and cost per call. It did not measure what would happen to a community if its fire stations closed.
+
+## 2. McNamara's Children
+
+Robert McNamara brought PPBS from the Ford Motor Company to the Pentagon in 1961, and Lyndon Johnson mandated its extension across all federal agencies in 1965. The system required each agency to specify its objectives in measurable terms, enumerate programme alternatives for achieving them, calculate a cost-effectiveness ratio for each alternative, and allocate resources to the highest-ratio options. This was Hitch's framework scaled to the entire federal government and applied to social programmes that had previously been evaluated in terms of coverage, eligibility, and political legitimacy rather than cost-effectiveness ratios.
+
+The specific consequence for welfare was that the objective that proved most tractable was not "ensure that poor families have enough to eat" — which would have required measuring adequacy in household-specific terms and would have connected the analysis to Orshansky's 124 thresholds. The tractable objective was "reduce welfare caseloads" and "increase labour market participation," because caseloads and participation rates could be expressed as measurable outcome metrics, could be tracked over time, could anchor a cost-effectiveness ratio, and could be defended in a congressional appropriation vote. A welfare programme that reduced caseloads by ten per cent at a cost of $X per caseload-reduction was measurably better than one that cost $2X per caseload-reduction, regardless of whether either programme had done anything for the material conditions of the households it served.
+
+## 3. The Moynihan Problem
+
+In March 1965, Daniel Patrick Moynihan — then Assistant Secretary of Labor — circulated a classified report: *The Negro Family: The Case for National Action*. Its central statistical finding was that the number of Black families receiving Aid to Families with Dependent Children was rising even as Black unemployment was falling. Moynihan interpreted this as evidence of pathological family structure: the rise of female-headed households, the "tangle of pathology" he described, was self-perpetuating and had become, in his analysis, the proximate cause of persistent Black poverty, more significant than current discrimination or economic conditions. The report did not ask what AFDC benefit levels were relative to what families needed to survive, or what the unemployment rate for Black men had been in the preceding decade, or what the housing and labour market conditions were in the specific cities where caseload growth was occurring. It treated statistical outcomes as evidence of cultural deficiency.
+
+The report was immediately and accurately criticised by Black scholars and civil rights leaders for its misuse of statistics, its pathologisation of Black family structure, and its diversion of policy attention from structural causes to behavioural ones. William Julius Wilson's later analysis, and the extensive subsequent literature on concentrated disadvantage and structural unemployment, confirmed that the statistical patterns Moynihan had attributed to family pathology were the predictable consequences of deindustrialisation, residential segregation, and discriminatory employment. But the report's influence on the subsequent policy conversation ensured that behavioural explanations for racial poverty disparities were institutionally available and analytically legitimate for the next three decades — and the cost-effectiveness framework had no mechanism for distinguishing between them and structural explanations, because it took objectives as given and did not question whether the objectives were tracking the right thing.
+
+## 4. The New Jersey Experiment
+
+In 1968, the Office of Economic Opportunity funded the New Jersey Income Maintenance Experiment: the first social policy randomised controlled trial in American history. The experiment randomly assigned low-income families to different guaranteed-income treatment levels and a control group, then tracked their employment and income over three years. Its primary measurement objective was labour-supply elasticity: did recipients work less when they received guaranteed income? The answer was yes, slightly — treatment families worked an average of five to seven per cent fewer hours than control families. This finding was used in the congressional debate to argue against Richard Nixon's Family Assistance Plan, which proposed a guaranteed minimum income. The experiment's other findings — improved health outcomes, improved school attendance and test scores among children in treatment families — received no equivalent weight in the policy conversation.
+
+The New Jersey experiment inaugurated a methodology, the social policy RCT, that would shape welfare programme evaluation for the next half-century. Its specific design embedded the cost-effectiveness objective function at the moment of measurement: what mattered was whether recipients worked, because "reduce welfare caseloads" and "increase labour market participation" were the tractable metrics the PPBS framework had installed. What households needed to survive — the question Orshansky, Townsend, and Tillmon had each asked from different directions — was not a variable in the experiment's primary analysis. The RCT's authority derived from its experimental rigour. Its rigour was in service of the wrong question.
+
+## 5. Legacy: From Cost-Effectiveness to Conditionality
+
+The policy trajectory from PPBS through the War on Poverty's analytical culture to TANF and Universal Credit is traceable as a direct institutional descent. TANF's work requirements and time limits — enacted in the 1996 Personal Responsibility and Work Opportunity Reconciliation Act — are the cost-effectiveness framework's logical endpoint: the welfare state's objective is defined as labour market participation, the population that fails to achieve the objective is sanctioned, and the programme's success is measured by caseload reduction. Universal Credit replicates the architecture in the UK context: a claimant commitment specifying weekly job-search requirements, automatic benefit sanctions for non-compliance, and a digital administrative system that enforces the objective function without requiring any caseworker to assess whether the objective is appropriate to the specific household's circumstances.
+
+Hitch's original framework was explicit that the choice of objective was a political decision outside the analyst's remit. The analyst served the decision-maker, who served the political process. But in transit from the Pentagon to the welfare agency, the political check did not travel with the method. The objective was set by the analytical culture that the method itself had produced — by economists trained in cost-effectiveness reasoning, by programme evaluators whose RCT designs measured the tractable metric, by administrators whose institutional incentives aligned with the objective of caseload reduction. The households whose welfare the programmes were nominally designed to serve had no equivalent role in specifying what the objective was. The result is welfare policy that is, in the PPBS sense, optimally efficient at achieving its objective, and whose objective has nothing to do with what poor families need.
 
 ### Connection Forward
 
-Chapter 7 advances two decades to find the poverty-measurement imagination colonised by a new force — Silicon Valley's libertarian philosophers, who propose that markets and technology, rather than state measurement, are the appropriate tools for addressing poverty.
+Chapter 7 traces where RAND's analytical culture and the eugenic statistical tradition of Chapter 2 converged: in the meritocratic ideology of Silicon Valley, where the cognitive distribution became the market's natural sorting mechanism, operations-research efficiency became disruption, and the welfare state became the obstacle to a self-correcting market whose fitness sorting the RAND framework and the Galtonian tradition had each prepared their adherents to accept.

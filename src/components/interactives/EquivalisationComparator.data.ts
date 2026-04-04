@@ -166,7 +166,7 @@ export function applyScale(
   }));
 
   const poorCount = rowResults.filter((r) => r.isPoor).length;
-  const povertyRate = (poorCount / households.length) * 100;
+  const povertyRate = households.length > 0 ? (poorCount / households.length) * 100 : 0;
 
   return {
     scale,

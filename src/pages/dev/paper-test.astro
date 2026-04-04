@@ -12,12 +12,12 @@ if (import.meta.env.PROD) {
 }
 
 const papers = await getCollection('papers');
-const entry = papers.find((p) => p.id === 'paper-01-sample');
+const entry = papers.find((p) => p.id === 'paper-01');
 
 if (!entry) {
   throw new Error(
-    'paper-test.astro: paper-01-sample not found in papers collection. ' +
-    'Ensure src/content/tda/papers/paper-01-sample.mdx exists.',
+    'paper-test.astro: paper-01 not found in papers collection. ' +
+    'Ensure src/content/tda/papers/paper-01.mdx exists.',
   );
 }
 ---

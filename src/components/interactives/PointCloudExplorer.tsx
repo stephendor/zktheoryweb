@@ -126,7 +126,8 @@ function PointCloudChart({
     if (selectedIdx !== null) {
       const cx = xScale(points[selectedIdx].x);
       const cy = yScale(points[selectedIdx].y);
-      const rx = xScale(epsilon) - xScale(0);  // radius in pixels
+      const rx = Math.abs(xScale(epsilon) - xScale(0));  // x-radius in pixels
+      const ry = Math.abs(yScale(0) - yScale(epsilon));   // y-radius in pixels (scale may invert)
 
       if (metric === 'euclidean') {
         ballG
@@ -142,11 +143,11 @@ function PointCloudChart({
       } else {
         // Manhattan ball: rotated square (diamond).
         // In L₁ metric, the ball { d₁ ≤ ε } is a square rotated 45°.
-        // Vertices at (cx ± r, cy) and (cx, cy ± r) in pixel space.
+        // Use separate rx/ry so the diamond is correct when pixel scales differ.
         const pts = [
-          [cx, cy - rx],
+          [cx, cy - ry],
           [cx + rx, cy],
-          [cx, cy + rx],
+          [cx, cy + ry],
           [cx - rx, cy],
         ];
         ballG
@@ -561,9 +562,9 @@ export function PointCloudExplorer({ className }: PointCloudExplorerProps) {
             </div>
           </div>
 
-          {/* Status */}
+          {/* Status — aria-live removed; AriaLiveRegion handles announcements */}
           {selectedIdx !== null && (
-            <div className="pce-ball-status" aria-live="polite" aria-atomic="true">
+            <div className="pce-ball-status">
               Point <strong>{selectedIdx}</strong>: {ballIndices.length} neighbour{ballIndices.length !== 1 ? 's' : ''} in ε-ball
               {ballIndices.length > 0 && (
                 <> ({ballIndices.join(', ')})</>

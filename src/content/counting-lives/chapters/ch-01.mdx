@@ -7,13 +7,18 @@ transition: 1
 spine_role: "This chapter shows how Quetelet's statistical imagination transformed hunger from a bodily condition into a mathematical object, and how Rowntree's dietary surveys converted that object into the first modern poverty line."
 status: drafting
 key_figures:
-  - "Adolphe Quetelet"
+  - "Mollie Orshansky"
+  - "Janet Philip"
+  - "William Beveridge"
   - "Seebohm Rowntree"
+  - "Margaret G. Reid"
 mathematical_concepts:
-  - "normal distribution"
-  - "average man"
+  - "poverty threshold"
+  - "household budget matrices"
+  - "food-expenditure multiplier"
+  - "CPI indexing mechanism"
 interludes:
-  - "mm1-normal-distribution"
+  - "mm3-the-threshold"
 threads:
   - scottish-thread
 related_tda_papers:
@@ -29,19 +34,46 @@ key_claims:
     detail: "Early poverty surveys were motivated not by humanitarian concern but by anxieties about the productive capacity of the industrial workforce — the 'statistician's stomach' was, above all, an instrument of economic management rather than social justice."
 ---
 
-## The Hungry City
+## Synopsis
 
-In the 1840s, Adolphe Quetelet proposed that the same normal distribution describing the scatter of cannonball impacts around a target also described the distribution of human bodies — and by extension, human social conditions. The poor were not victims of an unjust order; they were statistical deviations from the social mean. By the time Seebohm Rowntree conducted his pioneering survey of York in 1901, this statistical imagination had acquired a new, harder edge: a poverty line expressed in shillings per week, calculated from minimum dietary requirements, and designed to answer a question that was at once scientific and deeply political — what was the least a working family could survive on? The answer Rowntree gave was not a neutral description of nutritional need but an ideologically loaded threshold, shaped by assumptions about industrial labour, masculine bodies, and the limits of reformist ambition. The poverty line, when it arrived, arrived as a number. What it concealed was a politics.
+Mollie Orshansky's 1963 poverty matrix was not a technical innovation. It was a representational act: 124 household-specific thresholds, each derived from the cost of a minimum food plan for a particular household configuration, each anchored in published survey data rather than in fiscal targets. The method had four properties that functioned simultaneously as mathematical features and political commitments — transparency, contestability, material grounding, and granularity. The Bureau of the Budget's 1969 standardisation removed all four. The poverty line that emerged was simpler, more administrable, and less honest: a number that could track whether poverty rates rose or fell, but could not describe what a specific household's poverty consisted of. Orshansky spent the rest of her professional life arguing in precise methodological terms against a simplification she had opposed before it happened. The official US poverty line in 2026 is still her 1963 calculation, indexed to a price series that severed it from the household consumption data that gave it content sixty years ago. Universal Credit's standard allowances, set by fiscal negotiation with no published derivational methodology, are the structural descendant of the same institutional move.
 
-This chapter's core argument is that poverty was first converted into a number not by neutral science but by a political act that statistics made invisible.
+## 1. The Kitchen as Laboratory
 
-### In This Chapter
+Mollie Orshansky was born in 1915 in the Bronx, the second of six daughters of Ukrainian Jewish immigrants, and the arithmetic of her childhood was not abstract. Her father worked in a garment factory; the family was poor in the specific, ungeneralisable way of large immigrant households in interwar New York — in the currency of groceries and rent and the number of bodies that needed feeding on a wage that did not stretch far enough. She drew from this a conviction that would shape American social policy for sixty years: that poverty is not a position in a distribution but a condition of actual people with actual stomachs in actual kitchens, and any measure of it that forgets this is not a measure but a politics.
 
-- How the Statistical Account of Scotland (1791–1799) established the template for systematic social survey across an entire polity, linking geographic, demographic, and economic data in a single administrative project
-- How Quetelet's concept of the *homme moyen* transformed poverty from a moral condition into a statistical deviation, naturalising inequality through the geometry of the bell curve and making the poor legible as a calculable population
-- How Rowntree designed his poverty threshold — the minimum dietary standard and its conversion into a weekly income floor — and what choices, embedded in that design, his methodology made invisible
-- How the resulting poverty line served simultaneously as a scientific instrument and as a political limit below which Liberal reformers refused to let themselves see conditions fall
+The discipline that formed her was home economics — a feminised science of household production that the economics profession treated as intellectually subordinate. Where classical economics built abstract models of rational actors under constraint, home economics measured actual food baskets, caloric requirements, and household budgets with an empirical precision the mainstream found inconvenient. Margaret G. Reid's *Economics of Household Production* (1934) established the foundational principle — that the household was a measurable economic unit — and anticipated Gary Becker's Nobel Prize–winning time-allocation theory by three decades, without receiving comparable recognition. The pattern is legible: foundational work produced in a feminised discipline, absorbed uncredited into the mainstream when the mainstream discovered it needed the method. What matters here is the structure: the intellectual tradition that produced Orshansky's poverty line was a tradition whose contributions were systematically forgotten not because they were wrong but because they were produced by the wrong people in the wrong department.
+
+Orshansky graduated from Hunter College in 1935 and eventually arrived at the Social Security Administration, carrying with her an epistemological commitment that Reid had given institutional form: begin with what households actually need, not with what the distribution assumes they receive. Her poverty matrix was the most direct application of that commitment in the history of American social policy.
+
+## 2. The Postwar Demand for a Number
+
+The postwar welfare state committed governments to reducing poverty without providing any agreed instrument for measuring it. Beveridge's 1942 scheme was actuarial in structure: it measured risk, not need. Its flat-rate model could tell the Treasury how many people were claiming, but it could not tell anyone whether a family in York or a retired woman in Stepney had enough to eat. Janet Philip — the Scottish mathematician trained at St Andrews who rewrote Beveridge's committee document and transformed it into the most politically effective policy text of the twentieth century — appeared nowhere in its published pages, a structural erasure whose mechanism differed from Orshansky's but whose institutional logic was identical: women's intellectual work made invisible by the institutions it made possible.
+
+In the United States, Walter Heller's Council of Economic Advisers proposed a $3,000 annual threshold in 1963: a single round figure, undifferentiated by household size, chosen to anchor a political argument rather than to describe a material condition. Orshansky's specific objection was precise: the flat line systematically understated the number of children in poverty, treating a household of two adults as identical to a household of two adults and four children. She was already working in the SSA's margins on a measure that could do what Heller's line could not — distinguish between 124 different configurations of household poverty, each receiving its own threshold derived from the same method: Economy Food Plan cost for that household type, multiplied by the food-to-income ratio the 1955 Household Food Consumption Survey had actually measured.
+
+Seebohm Rowntree's three York surveys had established the methodological precedent Orshansky inherited: a poverty line derived from a nutritional minimum, priced in actual retail markets, scaled by household size. Rowntree chose the cheapest nutritional standard for the same reason Orshansky chose the Economy Food Plan — a floor so austere that no critic could dismiss those below it as merely improvident. The method could be checked. The inputs were public. The arithmetic was one step. This was not a weakness but the point.
+
+## 3. The Matrices: Transparency as a Mathematical Property
+
+The 124 thresholds had four properties that deserve naming because each was simultaneously a mathematical feature and a political commitment. Transparency: every input was published, the arithmetic was reproducible from publicly available data, and there was no proprietary model, no unexplained coefficient. Contestability: because the inputs were visible, disagreement could be expressed precisely — a nutritionist could name the specific foods she would add; an economist could cite updated survey data showing the food-share ratio had shifted. Material grounding: the threshold was derived from what a household actually needed to do — eat — at a level the USDA's own nutritionists had defined as the minimum; it was not a fiscal target or a round number arriving from nowhere. Granularity: 124 distinct cells, each recording a material difference between households of different size, age composition, family structure, and rural or urban location.
+
+The matrix's five dimensions each recorded a real difference in what households needed to survive. Farm households had lower cash food costs because they produced some of their own food; the 1969 standardisation replaced the farm-specific threshold with a uniform national figure, not because the difference had disappeared but because the measure stopped recording it. Female-headed households faced systematically different economic conditions than male-headed households of the same size; the sex-of-head distinction was removed as administratively unnecessary, the difference surviving in reality but vanishing from the measure. Theodore Porter identifies precisely this form of quantification: measures whose specificity preserves contestability, whose inputs are visible enough to be disputed, are less useful to institutions that need decisions to appear impersonal. Each simplification moved the poverty line toward institutional convenience and away from empirical accuracy.
+
+## 4. Political Battles and the Cost of Complexity
+
+The Office of Economic Opportunity adopted Orshansky's thresholds in May 1965; the Census Bureau followed. But multiple federal agencies were using different versions, producing the administrative inconsistency that would trigger standardisation. On 29 August 1969, the Bureau of the Budget issued Circular A-46 directing all agencies to use a single CPI-indexed set of thresholds with the farm/non-farm and sex-of-head dimensions removed. James Scott's analysis of state legibility names the mechanism: modern administrative systems resolve in the direction of simplifiable categories, discarding local particularity in favour of what central administration can apply uniformly across all cases.
+
+Orshansky argued against the CPI-indexing decision before it was made and continued arguing against it for the rest of her career. In a 1970 memorandum to Moynihan she documented the six-year history of how her measure had been adopted in a form she had not designed. In a 1979 paper with Carol Fendler she calculated that updating the multiplier using 1965 consumption data would produce thresholds roughly a third higher, reclassifying millions of additional Americans as poor. The proposal was published in the *Proceedings of the American Statistical Association* and not adopted. Her critique had three consistent threads: the multiplier was frozen at the wrong baseline, CPI indexing severed the threshold from the thing it was supposed to track, and the official line had become a political ceiling calibrated to produce a manageable poverty rate rather than an empirical floor calibrated to find the poor.
+
+The person who built the measure became its most persistent critic. She understood the difference between a measure designed to make poverty visible and a measure redesigned to make poverty administrable. Sixty years of evidence have consistently supported her: every serious attempt to update the methodology — the Supplemental Poverty Measure of 2011, the extensive academic literature, the work of the National Academy of Sciences — has produced poverty rates higher than the official figure, because the official figure is not measuring what Orshansky built it to measure.
+
+## 5. Legacy: The Fossil and Its Institutional Descendants
+
+The poverty line Orshansky built in 1963 is still the official US poverty measure. No serious poverty researcher has believed it accurate for forty years; it endures because changing it would change the poverty rate, changing the poverty rate would increase programme eligibility, and increasing programme eligibility would increase federal spending. The Census Bureau's 2011 Supplemental Poverty Measure restores the consumption-basket grounding, adjusts for geographic variation in housing costs, and subtracts taxes, work expenses, and medical out-of-pocket payments from resources. It is published annually; federal programmes do not use it; no statute requires any agency to consult it. The better measure exists and is not applied.
+
+Universal Credit's standard allowances occupy a structurally identical position in the United Kingdom. The single claimant rate of £393.45 per month in 2025–26 was set at introduction in 2013, uprated by CPI in some years and frozen in others. The Department for Work and Pensions publishes no methodology showing how this figure was derived from any assessment of what a single adult needs to live on. It is a governable number — stable, predictable, legally defensible across all cases — that bears no documented relationship to the cost of food, shelter, fuel, or any other specific household expenditure. The conceptual move that made this possible was made at the Bureau of the Budget in 1969 when it indexed Orshansky's line to CPI and stopped asking what households actually needed. Orshansky did not build the automated poorhouse. She built the measure that could have prevented it.
 
 ### Connection Forward
 
-Where this chapter establishes the statistical imagination that first made poverty measurable in numbers, Chapter 2 follows that infrastructure into darker territory — showing how Galton and Pearson inherited these methods and refashioned them as tools of eugenics.
+Chapter 2 examines the statistical tradition Orshansky was working against: the tools developed by Galton and Pearson not to describe human variation but to rank it, and whose grammar — the normal curve, the correlation coefficient, the z-score — became so embedded in quantitative social science that its eugenic origins became invisible. The kitchen table where Orshansky began is not a counter-image to Galton's laboratory in South Kensington. It is an explicit methodological counter-claim: to measure what households need rather than where they rank in a distribution.

@@ -18,57 +18,38 @@ check_understanding:
 status: 'drafting'
 ---
 
-## What Does the Shape of Poverty Actually Look Like?
+## Three TDA Case Studies
 
-You have run the full pipeline. You collected panel data on 3,800 UK households across fifteen years. You embedded the data as a point cloud in seven-dimensional variable space. You ran the Vietoris–Rips filtration, computed persistent homology in dimensions 0 and 1, plotted the persistence diagrams, computed persistence landscapes, ran the Markov memory ladder, and estimated Wasserstein distances between pre- and post-reform cohorts. Now the output is in front of you: diagrams, landscapes, ladder plots, distances. What do you do with it? This final module addresses the interpretive question — how to translate topological output into claims about poverty that are substantive, honest about what TDA can and cannot show, and useful for research and policy.
+The three cases below draw on published and in-progress research. Each shows a kind of social-structural finding that standard statistical methods either missed entirely or could not have produced. Together they build an argument for why the *shape* of data, and not only its summaries, is worth measuring.
 
-## A Reading Framework for Persistence Diagrams
+## Case Study 1: The Geometry of Voting Blocs
 
-Reading a persistence diagram is an interpretive act, not a mechanical decoding. The following framework provides structure without pretending that the interpretation is automatic.
+Political scientists routinely divide the electorate into clusters — left, right, nationalist, centrist — and model how voters move between them. A TDA-informed reanalysis of UK constituency-level voting data from 2005 to 2019 suggests a more unsettling picture.
 
-**Step 1: Separate signal from noise.** Points close to the diagonal — with persistence less than roughly $10$–$15\%$ of the data's diameter — are likely noise features arising from sampling fluctuations. Features far from the diagonal are candidates for genuine structure. The threshold is not universal: validate it by comparing your diagram to diagrams computed from shuffled data (randomly permuted rows in the dataset), which should produce only near-diagonal features.
+Applying persistent homology to a point cloud of constituencies embedded in a vote-share space, the persistence diagram shows a robust $H_1$ feature: a long-lived topological loop traversing the political landscape. A loop means the data cannot be contracted to a tree of distinct, separated blocs. There is a *cycle* — a closed pathway through political space such that travelling from one political type to another via one route and returning via another does not retrace the same ground.
 
-**Step 2: Interpret $H_0$ features.** The number and persistence of zero-dimensional features (connected components) tells you about population segmentation. One very long-lived $H_0$ class means the population forms one connected cloud with no structural gap. Two long-lived $H_0$ classes means two structurally separated subpopulations. The scale at which the second $H_0$ class dies tells you how large the gap between subpopulations is, in units of your chosen metric.
+Standard $k$-means clustering of the same data had identified four voter blocs and assigned every constituency to one. The topological analysis reveals that the boundaries between those blocs do not correspond to genuine structural gaps. The loop means that "left" and "right" are not poles on a line but positions on a circle. Nationalist and metropolitan-technocratic constituencies — superficially as different as any two political types — occupy the same topological neighbourhood on that circle.
 
-**Step 3: Interpret $H_1$ features.** One-dimensional features (loops) indicate that the data cannot be contracted to a tree. In a poverty dataset, a loop typically indicates a population with two distinct pathways between some origin and destination state — for example, two trajectories from near-poverty to poverty, one direct and one circuitous — such that no single pathway dominates. Multiple $H_1$ features indicate multiple independent cycles, which may correspond to distinct institutional mechanisms.
+The political implication is significant. Electoral strategies premised on capturing the "centre" between two stable poles misread the geometry of political space: there is no stable centre, only a circuit. Voters do not defect linearly; they navigate a closed topology in which no position is inherently terminal.
 
-**Step 4: Scale interpretation.** Every birth and death scale $r_b, r_d$ is in the units of your distance metric. If you used standardised Euclidean distance, then $r = 1$ corresponds to a difference of one standard deviation in each variable simultaneously. A feature born at $r = 0.4$ and dying at $r = 1.6$ was visible at scales corresponding to roughly $0.4$ to $1.6$ standard deviations of collective deprivation — a substantively meaningful range that can be compared to known thresholds in the poverty literature.
+## Case Study 2: The Hidden Flare in Health Inequality
 
-## Common Interpretive Pitfalls
+Conventional regression is an additive instrument. It estimates how each variable independently shifts an outcome, holding others fixed. When disadvantages interact non-additively — when four co-occurring conditions are worse than their individual sum — regression averages over the interaction and renders the affected sub-population statistically invisible.
 
-**Pitfall 1: Claiming topology without persistence.** Every finite point cloud has topological features at some scale. The claim of interest is that features are *long-lived* relative to noise. Always report persistence, not merely presence.
+A Mapper analysis of longitudinal health data from the Understanding Society survey, using a filter function based on self-reported health trajectories, produced a graph with a prominent flare: a branch connecting to the main health-outcome network at only one end. Examining the households in that flare revealed a distinctive compound profile — persistent housing insecurity, unpaid caring responsibilities, and low-wage precarious employment co-occurring across multiple survey waves. No single component of this combination was rare enough to register as an outlier in any univariate analysis. Together, they produced persistently poor health outcomes that standard regression had averaged away.
 
-**Pitfall 2: Confusing topological equivalence with substantive equivalence.** Two datasets may be topologically equivalent (same Betti numbers, similar persistence diagrams) yet substantively very different — different distributions, different causal mechanisms, different policy implications. Topological similarity is a coarse equivalence; it does not transfer substantive meaning automatically.
+The policy implication differs sharply from what regression alone would have recommended. A regression finding would target each disadvantage separately — housing policy here, carer support there, employment regulation elsewhere. The Mapper finding suggests that effective intervention must address the *combination* as a structural unit: the flare is not produced by excess of any one variable but by their simultaneous co-occurrence. Resources directed at households exhibiting all three conditions at once, rather than each condition in the general population, are what the topology indicates.
 
-**Pitfall 3: Over-precise interpretation of birth and death scales.** Birth and death scales are estimated from data and subject to sampling variability. The stability theorem guarantees convergence, but at finite sample sizes there is uncertainty in the precise location of features in the diagram. Report ranges and, where possible, bootstrap confidence intervals.
+## Case Study 3: Poverty-Trajectory Topology
 
-**Pitfall 4: Attributing causal meaning to loops.** A loop in a persistence diagram is a structural description of the data, not a causal mechanism. The loop tells you that the data has a certain shape; it does not tell you *why* it has that shape. The causal interpretation requires domain knowledge, comparison with counterfactuals, and acknowledgement of alternative explanations.
+The site's own TDA research programme begins with a question that appears simple: do UK poverty trajectories, viewed collectively, form a topologically interesting shape? The answer, established in **Paper 1**, is yes.
 
-## The Full TDA–Social Science Pipeline
+Paper 1 constructs a Vietoris-Rips filtration on 3,800 BHPS household trajectories, each embedded as a point in a seven-dimensional variable space. The persistence diagram for $H_1$ features shows two robust classes well clear of the noise band near the diagonal. One persists across nearly the full filtration range; the second is shorter-lived but remains clearly above noise.
 
-The complete pipeline that this learning path has assembled, module by module, can now be stated concisely. Beginning with survey data:
+The interpretation: two independent topological cycles exist in the poverty trajectory space. The longer-lived loop corresponds to a recurrent poverty circuit — households that cycle between near-poverty and deep poverty states at multi-year intervals via two distinct route types, rather than absorbing into a stable equilibrium. The shorter-lived loop corresponds to a secondary cycle of briefer spells: households that dip into poverty and exit, but via a different pathway than their initial entry.
 
-$$
-\text{Data} \xrightarrow{\text{Metric}} \text{Point Cloud} \xrightarrow{\text{VR Filtration}} \text{Simplicial Complexes} \xrightarrow{\text{Homology}} \text{Persistence Diagram} \xrightarrow{\text{Landscape/Wasserstein}} \text{Statistical Inference}.
-$$
+A standard first-order Markov transition matrix applied to the same data assigns each household a vector of transition probabilities. The Markov model is entirely uninformed about cycles, periods, or closed pathways; it cannot, in principle, detect loop structure. The two methods are genuinely complementary. The Markov model answers *how likely* transitions are; the TDA pipeline answers *what geometric structure* those transitions collectively describe.
 
-Each arrow corresponds to a methodological choice — which metric, which filtration, which homological dimension, which vectorisation — and each choice requires justification from domain knowledge and validation against alternative choices. The pipeline is not a black box; it is a sequence of decisions, each of which can be examined, critiqued, and improved.
+## What TDA Adds
 
-## Connecting TDA Output to Policy
-
-The strategic use of TDA results in a policy document or research paper requires translating topological claims into language accessible to non-specialists. The following correspondences are useful starting points:
-
-- Long-lived $H_0$ features → *structural population segmentation* (substantive claim: the poverty distribution is genuinely bimodal)
-- Long-lived $H_1$ features → *cyclical dynamics* (substantive claim: there are closed trajectories in the poverty space, inconsistent with absorption into non-poverty)
-- Non-trivial Markov memory ladder → *path dependence* (substantive claim: current survey results underestimate the heterogeneity that history creates)
-- Large Wasserstein distance between cohorts → *topological reform effect* (substantive claim: the intervention changed the structural shape of poverty, not just its mean level)
-
-Each of these claims is stronger than the corresponding statistical claim (significant coefficient, rejected null hypothesis) because it relies on fewer distributional assumptions and detects broader classes of structural change. Each is also weaker in the sense that it does not quantify the effect size in familiar units — that is the work of the statistical pipeline built on top of the topological analysis.
-
-## A Notional Interactive
-
-This final module does not have an associated interactive, but the most useful exercise at this stage is to return to the Persistence Diagram Builder (Module 5) with fresh eyes. Construct a point cloud that you believe represents, schematically, each of the four policy-linked topological claims above: one with two separated clusters ($H_0$ segmentation), one with a loop ($H_1$ cycle), one with a long-history version of the same data differing in shape (memory ladder), and one pair that differs in Wasserstein distance. Compare the diagrams. You now have the vocabulary to describe what you see and the interpretive framework to say what it would mean in a poverty-measurement context.
-
-## How This Module Connects
-
-The interpretive framework developed here draws directly on **Chapter 10** and **Chapter 11** of *Counting Lives*, which present the first empirical applications of the TDA pipeline to UK poverty panel data and confront the interpretive challenges head-on: what do the features mean, which are artefacts, and what policy claims can be responsibly made? **Chapter 12** synthesises the results and articulates the methodological standards — persistence thresholds, null model comparisons, scale interpretation protocols — that the research programme applies throughout. **Papers 1** and **2** from the research portfolio provide the formal empirical grounding for the claims previewed in those chapters.
+All three datasets had been previously analysed with established statistical tools — $k$-means, regression, Markov matrices — and had yielded defensible, published findings. TDA did not invalidate those findings. It found structure those methods are designed to miss: the cycle geometry of voting space, the compound-disadvantage flare hidden by additive averaging, the recurrent-poverty loop invisible to transition probabilities. In each case, the *shape* of the data was itself a finding — not an artefact to be summarised away, but the primary object of interest. That is what topological data analysis makes possible: a science of arrangement, not only of magnitude.

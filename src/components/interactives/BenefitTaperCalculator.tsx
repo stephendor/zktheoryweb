@@ -68,7 +68,7 @@ interface BenefitTaperChartProps {
   currentSchedule: UCResult[];
   comparisonSchedule: UCResult[] | null;
   hasHousingElement: boolean;
-  /** Whether to show the pre-2021 63% reference line. Always true — kept for API compat. */
+  /** Whether to show the pre-2021 63% reference line. Toggled by the UI checkbox; defaults to true. */
   showComparison: boolean;
   highlightedEarnings: number | null;
   reducedMotion: boolean;
@@ -742,8 +742,8 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
             </div>
           </div>
 
-          {/* Fiscal cost readout */}
-          <div className="btc-fiscal-readout" aria-live="polite" aria-atomic="true">
+          {/* Fiscal cost readout — aria-live removed; AriaLiveRegion handles announcements */}
+          <div className="btc-fiscal-readout" aria-hidden="true">
             <span className="btc-fiscal-readout__label">Fiscal cost vs 55% baseline:</span>{' '}
             {taperRatePct === TAPER_RATE_DEFAULT ? (
               <span className="btc-fiscal-readout__value btc-fiscal-readout__value--neutral">

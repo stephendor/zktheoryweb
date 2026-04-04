@@ -192,11 +192,12 @@ function HEditorSVG({
 
 export interface HomologyEditorProps {
   className?: string;
+  initialPresetId?: string;
 }
 
-export function HomologyEditor({ className }: HomologyEditorProps) {
+export function HomologyEditor({ className, initialPresetId }: HomologyEditorProps) {
   // ── State ──────────────────────────────────────────────────────────────────
-  const [presetId, setPresetId] = useState(DEFAULT_HOMOLOGY_PRESET_ID);
+  const [presetId, setPresetId] = useState(initialPresetId ?? DEFAULT_HOMOLOGY_PRESET_ID);
   const [liveMsg, setLiveMsg] = useState('');
 
   const reducedMotion = useReducedMotion();
@@ -243,15 +244,15 @@ export function HomologyEditor({ className }: HomologyEditorProps) {
         const next = new Set(prev);
         if (next.has(key)) {
           next.delete(key);
-          setLiveMsg(`Edge removed. β₀ = ${betti.beta0}, β₁ = ${betti.beta1}.`);
+          setLiveMsg('Edge removed.');
         } else {
           next.add(key);
-          setLiveMsg(`Edge added. β₀ = ${betti.beta0}, β₁ = ${betti.beta1}.`);
+          setLiveMsg('Edge added.');
         }
         return next;
       });
     },
-    [betti],
+    [],
   );
 
   const handleToggleTriangle = useCallback(
@@ -260,15 +261,15 @@ export function HomologyEditor({ className }: HomologyEditorProps) {
         const next = new Set(prev);
         if (next.has(key)) {
           next.delete(key);
-          setLiveMsg(`Triangle removed. β₀ = ${betti.beta0}, β₁ = ${betti.beta1}.`);
+          setLiveMsg('Triangle removed.');
         } else {
           next.add(key);
-          setLiveMsg(`Triangle added. β₀ = ${betti.beta0}, β₁ = ${betti.beta1}.`);
+          setLiveMsg('Triangle added.');
         }
         return next;
       });
     },
-    [betti],
+    [],
   );
 
   const handleReset = useCallback(() => {

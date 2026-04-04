@@ -11,7 +11,7 @@ import { HomologyEditor } from './HomologyEditor';
 export function DefaultEditor() {
   return (
     <div style={{ width: '100%', maxWidth: 720, padding: '1rem' }}>
-      <HomologyEditor />
+      <HomologyEditor initialPresetId="triangle" />
     </div>
   );
 }
@@ -19,7 +19,7 @@ export function DefaultEditor() {
 export function TorusSkeletonEditor() {
   return (
     <div style={{ width: '100%', maxWidth: 720, padding: '1rem' }}>
-      <HomologyEditor />
+      <HomologyEditor initialPresetId="torus-skeleton" />
     </div>
   );
 }
@@ -27,7 +27,7 @@ export function TorusSkeletonEditor() {
 export function MobiusEditor() {
   return (
     <div style={{ width: '100%', maxWidth: 720, padding: '1rem' }}>
-      <HomologyEditor />
+      <HomologyEditor initialPresetId="mobius-strip" />
     </div>
   );
 }

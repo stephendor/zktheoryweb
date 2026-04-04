@@ -221,8 +221,13 @@ function ScatterSvg({
     const g = d3.select(svgEl).select<SVGGElement>('.bc-scatter-g');
     g.selectAll('*').remove();
 
-    const xExt = d3.extent(dataset.points, (p) => p.x) as [number, number];
-    const yExt = d3.extent(dataset.points, (p) => p.y) as [number, number];
+    if (dataset.points.length === 0) return;
+
+    const xExtRaw = d3.extent(dataset.points, (p) => p.x);
+    const yExtRaw = d3.extent(dataset.points, (p) => p.y);
+    if (xExtRaw[0] === undefined || yExtRaw[0] === undefined) return;
+    const xExt = xExtRaw as [number, number];
+    const yExt = yExtRaw as [number, number];
 
     const xPad = (xExt[1] - xExt[0]) * 0.1 || 0.05;
     const yPad = (yExt[1] - yExt[0]) * 0.1 || 0.05;

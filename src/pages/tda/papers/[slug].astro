@@ -1,0 +1,57 @@
+---
+/**
+ * src/pages/tda/papers/[slug].astro — Task 6.1a-followup — Agent_Infra
+ *
+ * Dynamic route for TDA paper detail pages.
+ * URL: /tda/papers/{slug}  (e.g. /tda/papers/paper-01)
+ *
+ * getStaticPaths() generates one route per paper entry, sorted by
+ * paper_number, with prev/next navigation objects.
+ *
+ * Note: paper-01.mdx is Paper 1 (renamed from paper-01-sample.mdx
+ * for consistency with paper-02.mdx through paper-10.mdx).
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import PaperLayout from '@layouts/PaperLayout.astro';
+
+// ─── Static paths ─────────────────────────────────────────────────────────────
+
+export async function getStaticPaths() {
+  const allPapers = await getCollection('papers');
+
+  // Sort ascending by paper_number for correct prev/next ordering.
+  allPapers.sort((a, b) => a.data.paper_number - b.data.paper_number);
+
+  return allPapers.map((entry, index) => {
+    const prev = allPapers[index - 1];
+    const next = allPapers[index + 1];
+
+    const prevPaper = prev
+      ? { slug: prev.id, title: prev.data.title }
+      : undefined;
+
+    const nextPaper = next
+      ? { slug: next.id, title: next.data.title }
+      : undefined;
+
+    return {
+      params: { slug: entry.id },
+      props: { entry, prevPaper, nextPaper },
+    };
+  });
+}
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+interface Props {
+  entry: CollectionEntry<'papers'>;
+  prevPaper?: { slug: string; title: string };
+  nextPaper?: { slug: string; title: string };
+}
+
+const { entry, prevPaper, nextPaper } = Astro.props;
+---
+
+<PaperLayout entry={entry} prevPaper={prevPaper} nextPaper={nextPaper} />

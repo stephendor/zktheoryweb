@@ -2,7 +2,7 @@
 title: 'Zigzag Persistence for Business Cycle Topology'
 paper_number: 3
 stage: 1
-status: 'planned'
+status: 'in-progress'
 target_journal: 'Sociological Methods & Research'
 depends_on: [1]
 enables: [4, 6]
@@ -17,12 +17,12 @@ compute:
   runtime: 'Hours to day'
   cloud: false
 key_findings:
-  - claim: 'The 2008 financial crisis is associated with a statistically significant increase in H₁ loop count in the employment trajectory topology.'
-    detail: 'Zigzag persistence barcodes measured in five-year rolling windows show a doubling of mean H₁ barcode count from the window 2005–2009 to the window 2009–2013, with bootstrap confidence intervals non-overlapping. The topological signal precedes the official OECD unemployment peak by approximately one quarter.'
-  - claim: 'Topological transitions in employment trajectory space lead official unemployment rate changes by approximately two quarters.'
-    detail: 'Cross-correlation analysis between a zigzag-derived topological complexity index and the seasonally-adjusted OECD UK unemployment series reveals a consistent 2-quarter lead structure, suggesting that the shape of career trajectories begins to change before aggregate statistics register the shift.'
-  - claim: 'The paper aims to test whether gender differences in topological response to business cycles are substantial and asymmetric.'
-    detail: 'The analysis will disaggregate the topological complexity index by gender to test whether women''s and men''s employment trajectories exhibit different topological responses at recession onset and during recovery, consistent with differential sectoral composition and cyclical reabsorption patterns.'
+  - claim: 'The dominant post-2008 topological discontinuity is a BHPS→USoc survey-design artefact, not a GFC signature.'
+    detail: 'Era-specific sub-series analysis and sub-sampling within each survey era demonstrates that the large H₀ fragmentation jump at 2008–2009 reflects the change in state-coding schema between BHPS and USoc rather than the macroeconomic shock. Genuine GFC topological effects, isolated within each era, are substantially smaller.'
+  - claim: 'A genuine secular flexibilisation trend is detectable within the BHPS era (1991–2008): H₀ fragmentation increases steadily from 1991 to ~2003.'
+    detail: 'Within-BHPS-era zigzag analysis identifies a monotonic increase in H₀ barcode count from 1991 to ~2003, consistent with labour market deregulation and the proliferation of fixed-term contracts. Robust to 11×4 sensitivity grid and sub-sampling.'
+  - claim: 'Macroeconomic correlation analysis finds topological complexity tracks GDP growth but not unemployment rates within each survey era.'
+    detail: 'Within-era cross-correlation finds significant association with GDP growth (r = −0.41, BHPS era, p < 0.05) but not with seasonally adjusted unemployment rates, suggesting trajectory topology captures income-band cycling rather than employment-status cycling as the primary macroeconomic instability signal.'
 abstract: >
   Standard persistent homology analyses a single filtration. Zigzag persistence extends this to sequences of spaces and maps, enabling the tracking of topological features as they appear and disappear through time. This paper applies zigzag persistence to the BHPS and Understanding Society panels to measure how the topological structure of employment trajectory space shifts across macroeconomic cycles, including the early 1990s recession, the 2008 financial crisis, and the subsequent austerity period. We find that business cycle downturns are associated with measurable topological transitions in trajectory space, particularly an increase in H₁ loop structures corresponding to cyclical unemployment patterns.
 plain_summary: >
@@ -57,22 +57,22 @@ The full BHPS/Understanding Society linked panel is used, following the construc
 
 ## Results
 
-### Topological Response to Recessions
+### Survey Design Artefact: The Post-2008 Discontinuity
 
-H₁ loop count in the employment trajectory topology rises sharply during the windows centred on 1993 and 2010, corresponding to the early 1990s recession and the post-2008 austerity period. The topological complexity index is significantly elevated in these windows relative to expansion periods.
+The dominant topological signal in the 32-year zigzag sequence is a sharp increase in H₀ fragmentation at the 2008–2009 transition. This signal initially appeared consistent with the Global Financial Crisis as a topological regime change. Diagnostic analysis — era-specific sub-series computation and systematic sub-sampling within each survey era — demonstrates that **the discontinuity reflects the change in state-coding schema between BHPS and Understanding Society, not the macroeconomic shock**. The BHPS uses a six-category state scheme; USoc's successor scheme modifies category boundaries and includes a distinct part-time state. The change in categorical distances creates a structural break in the embedding that manifests as inflated H₀ fragmentation after 2009.
 
-### Leading Indicator Properties
+### Genuine Secular Flexibilisation (BHPS Era, 1991–2008)
 
-Cross-correlation with the OECD unemployment rate reveals a 2-quarter lead structure in the topological index. This suggests that career trajectories begin to exhibit cyclical loop patterns before the aggregate rate rises, potentially because topology captures behavioural responses in advance of official labour market statistics.
+Isolating the BHPS-era sub-series reveals a genuine secular trend: H₀ barcode count increases monotonically from 1991 to approximately 2003, then stabilises. This trend is robust to the 11 × 4 sensitivity grid (ε × landmark count) and sub-sampling within the era. The chronology is consistent with labour market deregulation: the proliferation of fixed-term contracts from the early 1990s produces increasing trajectory fragmentation. The 1993 recession produces a temporary spike above the secular trend but does not interrupt it.
 
-### Gender Disaggregation
+### Macroeconomic Correlations and H₁ Absence
 
-The analysis will disaggregate the topological complexity index and H\u2081 barcode counts by gender to test whether women\u2019s and men\u2019s employment trajectories exhibit differential topological responses at recession onset and during recovery phases. The hypothesis is that differential sectoral composition \u2014 higher female representation in part-time service employment \u2014 and faster cyclical reabsorption patterns would produce asymmetric topological signatures across the macroeconomic cycle.
+H₁ (loop) features remain non-significant across both eras, consistent with the Paper 1 negative result. Within-era correlation finds the topological complexity index tracks GDP growth (*r* = −0.41, BHPS era, *p* < 0.05) but not unemployment rates — suggesting trajectory topology captures income-band cycling rather than employment-status cycling as the primary instability signal.
 
 ## Discussion
 
-Zigzag persistence provides a mathematically rigorous method for tracking employment topology across macroeconomic time. The leading indicator result is exploratory and requires replication in other national contexts (see Paper 5), but is consistent with the hypothesis that topological methods capture structural labour market change earlier than rate-based measures. The gender disaggregation analysis will test whether asymmetric topological responses reflect the differential sectoral and contractual composition of female and male employment documented in the sociological literature.
+The central finding — that the most visually dramatic signal is a measurement artefact — is a substantive methodological contribution. Survey panel transitions create structural breaks that topological methods amplify, because they capture the full geometric structure of trajectory space. The paper develops a diagnostic protocol for distinguishing genuine temporal variation from survey-design artefact applicable to any multi-wave zigzag analysis. The genuine secular flexibilisation result, stripped of the artefact, is consistent with the labour market de-standardisation literature.
 
 ## Conclusion
 
-Business cycle recessions leave detectable topological signatures in employment trajectory space. Zigzag persistence is the appropriate tool for monitoring these signatures over time, and the method's output carries potential value as an early-warning indicator of structural labour market deterioration.
+Zigzag persistence applied to UK employment panel data reveals a genuine secular flexibilisation trend within the 1991–2008 BHPS era and confirms the Paper 1 negative result for H₁; the dominant post-2008 discontinuity is a survey-design artefact. The diagnostic protocol developed here provides a template for future multi-wave zigzag analyses.

@@ -98,7 +98,7 @@ function ScoreGauge({ score, baseline }: { score: number; baseline: number }) {
       <div className="shap-gauge-score-line">
         <span className="shap-gauge-score-value">{(score).toFixed(3)}</span>
         <span className="shap-gauge-score-note">
-          {score > BASELINE_SHAP.score ? '▲' : score < BASELINE_SHAP.score ? '▼' : '='} from baseline {BASELINE_SHAP.score.toFixed(3)}
+          {score > baseline ? '▲' : score < baseline ? '▼' : '='} from baseline {baseline.toFixed(3)}
         </span>
       </div>
     </div>
@@ -305,11 +305,11 @@ export function ShapInstabilityDemo({ className }: ShapInstabilityDemoProps) {
         const next = [...prev] as Features;
         next[i] = v;
         const shap = computeShap(next);
-        const sChange = Math.abs(shap.score - BASELINE_SHAP.score);
+        const delta = shap.score - BASELINE_SHAP.score;
         const shapCh = shapInstability(shap.shapValues, BASELINE_SHAP.shapValues);
         setLiveMsg(
           `${FEATURE_NAMES[i]} = ${v.toFixed(2)}. Score: ${shap.score.toFixed(3)} ` +
-          `(Δ ${sChange > 0 ? '+' : ''}${(shap.score - BASELINE_SHAP.score).toFixed(3)}). ` +
+          `(Δ ${delta > 0 ? '+' : ''}${delta.toFixed(3)}). ` +
           `SHAP instability: ${shapCh.toFixed(4)}.`,
         );
         return next;

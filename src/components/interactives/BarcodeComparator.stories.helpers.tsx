@@ -1,9 +1,9 @@
 /** BarcodeComparator.stories.helpers.tsx */
 import { BarcodeComparator } from './BarcodeComparator';
 
-export function DefaultComparator() {
+export function DefaultComparator(): JSX.Element {
   return (
-    <div style={{ width: '100%', maxWidth: 900, padding: '1rem' }}>
+    <div style={{ boxSizing: 'border-box', width: '100%', maxWidth: 900, padding: '1rem' }}>
       <BarcodeComparator />
     </div>
   );

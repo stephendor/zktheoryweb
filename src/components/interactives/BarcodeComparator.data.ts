@@ -293,10 +293,6 @@ export function approximateBottleneckDistance(
     }
   }
 
-  // Also consider unmatched diagonal contributions
-  const unmatchedA = ptsA.filter((_, i) => !used.has(i));
-  for (const p of unmatchedA) maxDist = Math.max(maxDist, distToDiag(p));
-
   return maxDist;
 }
 
