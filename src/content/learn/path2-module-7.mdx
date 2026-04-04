@@ -3,6 +3,7 @@ title: 'The Black Box'
 path: 'mathematics-of-poverty'
 module_number: 7
 core_concept: 'Neural networks in welfare administration operate without interpretable features — the right to explanation meets the limits of adversarial auditing'
+interactive_slug: 'shap-instability'
 connections:
   chapters: [14, 15]
   papers: []
@@ -54,9 +55,19 @@ Without access to model weights, training data, or deployment code, external aud
 
 The structural problem is asymmetric access. The auditor must hypothesise which demographic dimensions to probe, construct test inputs that isolate the variable of interest, and demonstrate a systematic pattern rather than individual cases. System operators can contest audit methodologies, claim that test conditions do not reflect production behaviour, and invoke commercial confidentiality over deployment details. The legal burden of proof in discrimination claims under the Equality Act 2010 requires the claimant to establish a prima facie case before the burden shifts to the defendant — a standard difficult to meet from the outside of a black-box system.
 
-## A Note on the Interactive
+## Using the Interactive: SHAP Instability Demonstrator
 
-This module does not yet have a dedicated interactive. A tool planned for Phase 6 will train a small neural network on synthetic welfare data and demonstrate SHAP value instability: the explanation for a near-threshold individual changes as their features are perturbed slightly, while the predicted score stays approximately constant. This makes visible that SHAP explanations are properties of a local approximation algorithm, not the model’s internal representations — and therefore cannot carry the legal and ethical weight regulators assign to them.
+The **SHAP Instability Demonstrator** presents a synthetic near-threshold welfare claimant and a small fixed-weight neural network. Exact SHAP values are computed via subset enumeration (2^4 = 16 subsets for 4 features: age, income score, benefit duration, household size). Because this is the exact Shapley computation — not an approximation — the instability demonstrated here is intrinsic to the local structure of the model, not an artefact of the sampling algorithm.
+
+The **score gauge** shows the predicted risk score and whether the claimant is flagged (≥ τ = 0.50) or cleared. The grey tick indicates the baseline score; as you adjust feature values, the fill colour shifts between green (cleared) and red (flagged).
+
+The **SHAP bar chart** shows each feature's current attribution (orange/blue bars) alongside the baseline attribution (faded grey). Positive SHAP values push the score above the baseline; negative values push it below. The sum of all SHAP values equals score − baseline.
+
+The **instability panel** tracks two quantities: the change in predicted score (Δ Score) and the maximum change across all four feature attributions (Δ SHAP). If the ratio Δ SHAP / Δ Score exceeds 2×, the panel highlights it in red. This is the mathematically precise version of the claim in the module text: the explanation can shift more than the prediction does.
+
+To reproduce the core instability result: nudge the *income score* slider slightly upward from its baseline position (say, from 0.42 to 0.50). The score changes modestly. But a different feature — *benefit duration* or *household size* — may jump to become the dominant positive or negative contributor as the local gradient rotates. Slide back and forward across this region to watch the attributions oscillate while the score stays close to 0.50.
+
+This is not a fault of the specific network used here. It is a structural property of SHAP in the neighbourhood of highly curved decision boundaries, which are common in neural networks near the decision threshold. A claimant in this region — "borderline" in practical terms — is precisely the person for whom the explanation matters most and for whom it is most unstable.
 
 ## How This Module Connects
 

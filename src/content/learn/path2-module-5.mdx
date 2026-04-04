@@ -51,13 +51,17 @@ The model's fragility appears when the asymmetric information assumption is wron
 
 ## Using the Interactive: Benefit Taper Calculator
 
-The **Benefit Taper Calculator** below displays the Universal Credit budget constraint — net income as a function of gross earnings. Two controls shape the curve.
+The **Benefit Taper Calculator** below displays the Universal Credit budget constraint — net income as a function of gross earnings. Three controls shape the curve.
 
 **Household type** switches the work allowance between £673/month (no housing element) and £404/month (with housing element). Watch the curve shift left: a lower work allowance means the taper zone starts earlier, and a claimant at any given earnings level keeps less. This is the first political choice embedded in the formula: what counts as a "typical" household.
 
-**Show pre-2021 (63% taper)** overlays the budget constraint that applied before the October 2021 reform. The gap between the two lines is the value of the rate cut — at any earnings level in the taper zone, claimants today keep 8p more per pound than they did under the old rate. Hover along the curve to read the exact net income and effective marginal rate at any point.
+**Taper rate slider** (40%–75%) replaces the fixed 55% rate with a freely adjustable parameter. Drag it lower: claimants keep more per pound, the work incentive strengthens, and the poverty-trap zone disappears. Drag it higher: the budget constraint flattens, the effective marginal rate rises, and for any rate above 60% the "High EMR zone" shading appears — the region where a claimant faces a higher combined marginal tax rate than most higher-rate taxpayers. The UC exhaustion point (where UC reaches £0) moves visibly with the slider.
 
-What the interactive does not yet show is a freely adjustable taper rate and a fiscal cost readout — features that would make the "optimal rate is a political choice" argument fully concrete. Those enhancements are planned for Phase 6.
+**Fiscal cost readout** shows the approximate annualised change in UC expenditure at your chosen rate relative to the 55% baseline. The model integrates a stylised UK earnings distribution across the claimant population (~2.5 million working UC recipients) and expresses the aggregate delta in £bn per year. A lower rate costs more; a higher rate saves more. This makes the political trade-off concrete: the "optimal" taper rate is not determined by mathematics but by whose objective function the government is solving.
+
+**Show pre-2021 (63% taper)** overlays the budget constraint that applied before the October 2021 reform as a dashed reference line. The gap between the current line and the reference line is the value of that rate cut — at any earnings level in the taper zone, claimants today keep 8p more per pound than they did under the old rate.
+
+Hover along any curve to read the exact net income and effective marginal rate at any point.
 
 ## How This Module Connects
 

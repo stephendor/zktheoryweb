@@ -1,5 +1,5 @@
 /**
- * BenefitTaperCalculator.test.ts — Task 5.4 — Agent_Interactive_Advanced
+ * BenefitTaperCalculator.test.ts — Task 5.4 / 6.1b — Agent_Interactive_Advanced
  *
  * Unit tests for the UC benefit taper calculation logic.
  * Pure calculation tests — no React rendering, no afterEach(cleanup).
@@ -14,13 +14,21 @@
  *   UC        = max(0, standardAllowance − taper)
  *   netIncome = earnings + UC
  *   EMR       = taperRate × 100 in taper zone; 0 elsewhere
+ *
+ * Fiscal cost delta (PH6-E1):
+ *   Integrates per-person UC delta over a log-normal earnings distribution
+ *   and scales to annualised aggregate across ~2.5m working UC claimants.
  */
 
 import { describe, it, expect } from 'vitest';
 import {
   computeUCSchedule,
+  computeFiscalCostDelta,
   CURRENT_PARAMS,
   PRE_2021_PARAMS,
+  TAPER_RATE_DEFAULT,
+  TAPER_RATE_MIN,
+  TAPER_RATE_MAX,
 } from './BenefitTaperCalculator.data';
 
 // ─── 55% taper — no housing element ──────────────────────────────────────────
@@ -180,5 +188,56 @@ describe('computeUCSchedule — 63% taper (pre-2021), no housing element', () =>
     const exhaustion55 = schedule55.findIndex((r) => r.ucAmount === 0);
     // Higher taper rate exhausts UC sooner
     expect(exhaustion63).toBeLessThan(exhaustion55);
+  });
+});
+
+// ─── computeFiscalCostDelta tests (PH6-E1) ────────────────────────────────────
+
+describe('computeFiscalCostDelta', () => {
+  it('returns exactly 0 at the 55% baseline', () => {
+    expect(computeFiscalCostDelta(TAPER_RATE_DEFAULT)).toBe(0);
+  });
+
+  it('returns a positive value for rates below 55% (more generous)', () => {
+    // Lower taper → more UC paid → higher expenditure → positive delta
+    expect(computeFiscalCostDelta(40)).toBeGreaterThan(0);
+    expect(computeFiscalCostDelta(50)).toBeGreaterThan(0);
+  });
+
+  it('returns a negative value for rates above 55% (cheaper)', () => {
+    // Higher taper → less UC paid → lower expenditure → negative delta
+    expect(computeFiscalCostDelta(63)).toBeLessThan(0);
+    expect(computeFiscalCostDelta(75)).toBeLessThan(0);
+  });
+
+  it('delta is monotonically decreasing as taper rate rises', () => {
+    const rates = [40, 45, 50, 55, 60, 65, 70, 75];
+    const deltas = rates.map(computeFiscalCostDelta);
+    for (let i = 1; i < deltas.length; i++) {
+      expect(deltas[i]).toBeLessThanOrEqual(deltas[i - 1]);
+    }
+  });
+
+  it('absolute delta at TAPER_RATE_MIN is larger than at TAPER_RATE_MAX (symmetric magnitude check)', () => {
+    // The distribution is centred; extreme rates should produce larger deltas than moderate ones.
+    expect(Math.abs(computeFiscalCostDelta(TAPER_RATE_MIN))).toBeGreaterThan(
+      Math.abs(computeFiscalCostDelta(TAPER_RATE_MIN + 5)),
+    );
+    expect(Math.abs(computeFiscalCostDelta(TAPER_RATE_MAX))).toBeGreaterThan(
+      Math.abs(computeFiscalCostDelta(TAPER_RATE_MAX - 5)),
+    );
+  });
+
+  it('delta at 40% is in a plausible £bn range (0.5bn – 10bn)', () => {
+    // Stylised model — not a precise forecast, but should be order-of-magnitude reasonable.
+    const delta = computeFiscalCostDelta(40);
+    expect(delta).toBeGreaterThan(0.5);
+    expect(delta).toBeLessThan(10);
+  });
+
+  it('delta at 75% is in a plausible negative £bn range (−10bn – −0.5bn)', () => {
+    const delta = computeFiscalCostDelta(75);
+    expect(delta).toBeLessThan(-0.5);
+    expect(delta).toBeGreaterThan(-10);
   });
 });

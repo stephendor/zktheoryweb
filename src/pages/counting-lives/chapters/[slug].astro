@@ -1,0 +1,56 @@
+---
+/**
+ * src/pages/counting-lives/chapters/[slug].astro — Task 6.1a — Agent_Infra
+ *
+ * Dynamic route for Counting Lives chapter pages.
+ * URL: /counting-lives/chapters/{slug}  (e.g. /counting-lives/chapters/ch-01)
+ *
+ * getStaticPaths() generates one route per chapter entry, sorted by
+ * chapter_number, with prev/next navigation objects.
+ * ch-00-sample.mdx is excluded (it is a layout template reference, not a
+ * real chapter — filtered by entry.id).
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import ChapterLayout from '@layouts/ChapterLayout.astro';
+
+// ─── Static paths ─────────────────────────────────────────────────────────────
+
+export async function getStaticPaths() {
+  const allChapters = await getCollection('chapters', ({ id }) => id !== 'ch-00-sample');
+
+  // Sort ascending by chapter_number for correct prev/next ordering.
+  allChapters.sort((a, b) => a.data.chapter_number - b.data.chapter_number);
+
+  return allChapters.map((entry, index) => {
+    const prev = allChapters[index - 1];
+    const next = allChapters[index + 1];
+
+    const prevChapter = prev
+      ? { slug: prev.id, title: prev.data.title, chapter_number: prev.data.chapter_number }
+      : undefined;
+
+    const nextChapter = next
+      ? { slug: next.id, title: next.data.title, chapter_number: next.data.chapter_number }
+      : undefined;
+
+    return {
+      params: { slug: entry.id },
+      props: { entry, prevChapter, nextChapter },
+    };
+  });
+}
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+interface Props {
+  entry: CollectionEntry<'chapters'>;
+  prevChapter?: { slug: string; title: string; chapter_number: number };
+  nextChapter?: { slug: string; title: string; chapter_number: number };
+}
+
+const { entry, prevChapter, nextChapter } = Astro.props;
+---
+
+<ChapterLayout entry={entry} prevChapter={prevChapter} nextChapter={nextChapter} />
