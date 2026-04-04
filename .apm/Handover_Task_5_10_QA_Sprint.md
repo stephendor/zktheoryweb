@@ -154,6 +154,80 @@ Do NOT batch multiple groups into a single exchange. The value of this sprint is
 
 ---
 
+## Phase 6 Interactive Backlog
+
+Interactives identified during QA that are deferred to Phase 6. Each entry includes the module it should be linked to and what the prose currently says.
+
+### PH6-I1 — Point Cloud & Distance Explorer
+**Module:** `path1-module-2.mdx` (Topology for Social Scientists, Module 2 — "Point Clouds and Distance")
+**Status:** `interactive_slug` removed; "Using the Interactive" section cut in QA sprint.
+**Description:** A 2D scatter of points. Click a point to see its ε-ball expand. Toggle between Euclidean and Manhattan distance to see the ball shape change (circle vs diamond). Optionally show pairwise distance matrix updating live.
+**Pedagogical goal:** Make concrete the ε-ball definition and the effect of metric choice on neighbourhood structure.
+**When added:** Update `path1-module-2.mdx` frontmatter with `interactive_slug: 'point-cloud-explorer'` and write a "Using the Interactive" section.
+
+### PH6-I2 — Simplex/Homology Editor
+**Module:** `path1-module-4.mdx` (Topology for Social Scientists, Module 4 — "Homology: Counting Holes")
+**Status:** "A Notional Interactive" section replaced with "A Note on the Interactive" placeholder in QA sprint.
+**Description:** A small fixed simplicial complex rendered as an SVG. Click simplices (edges, triangles) to add or remove them. Betti numbers (β₀, β₁) update in real time. Should show clearly how removing a triangle can expose a loop (β₁+1) and how removing an edge can disconnect a component (β₀+1) or expose a loop.
+**Pedagogical goal:** Build intuition that homology measures global structure, not local geometry.
+**When added:** Update `path1-module-4.mdx` frontmatter with `interactive_slug: 'homology-editor'`, replace placeholder section with full "Using the Interactive" guidance, register component in `ModuleLayout.astro`.
+
+### PH6-W1 — Mapper Social Scientists Module
+**Module:** `path1-module-7.mdx` (Topology for Social Scientists, Module 7 — "Mapper: A Bird's-Eye View of High-Dimensional Data")
+**Status:** Stub created in QA sprint. Interactive (`mapper-parameter-lab`) already wired in frontmatter.
+**Description:** Write the full module text introducing the Mapper algorithm to non-mathematical readers. Cover: the core idea (cover → cluster → nerve graph), what the filter function means intuitively, how to read a Mapper graph (nodes = clusters, edges = overlap, size = population count), and one concrete social-science example. Must not use algebra or require persistent homology as prior knowledge.
+**When added:** Replace stub prose with full content. The "Using the Interactive: Mapper Parameter Lab" section should follow the main text.
+
+### PH6-W2 — TDA Case Studies Module (Path 1 capstone)
+**Module:** `path1-module-8.mdx` (Topology for Social Scientists, Module 8 — "TDA Meets Social Science: Case Studies")
+**Status:** Stub created in QA sprint. No interactive (case study format).
+**Description:** Three case studies: (1) voting-pattern geometry, (2) health-inequality clustering, (3) poverty-trajectory topology (linking back to the research portfolio). Each case should explain what conventional analysis missed and what TDA found, without requiring technical background. Should serve as the path capstone.
+
+### PH6-I5 — SHAP Instability Demonstrator
+**Module:** `path2-module-7.mdx` (Mathematics of Poverty, Module 7 — "The Black Box")
+**Status:** "A Notional Tool for Explanation Instability" replaced with placeholder in QA sprint. No `interactive_slug` was assigned.
+**Description:** A small neural network trained on synthetic welfare data. User selects a near-threshold individual and perturbs their features slightly (sliders); SHAP values update to show how the explanation changes while the model score stays approximately constant. Core point: explanations are properties of the local approximation, not the model internals.
+**When added:** Add `interactive_slug: 'shap-instability-demo'` to frontmatter, write "Using the Interactive" section, register component in `ModuleLayout.astro`.
+
+### PH6-I6 — Participatory vs Official Data Barcode Comparator
+**Module:** `path2-module-8.mdx` (Mathematics of Poverty, Module 8 — "Counter-Mathematics")
+**Status:** "A Notional Tool for Community Mapping" replaced with placeholder in QA sprint. No `interactive_slug` was assigned.
+**Description:** Two persistence diagrams side by side: one built from a synthetic participatory dataset (community-defined dimensions: safety, green space, neighbourhood trust), one from official deprivation indices for the same synthetic population. User can toggle which dimensions are active in each dataset. The Wasserstein distance between the two diagrams updates live. Core point: the divergence between the barcodes is the formal signature of the difference between being measured and being heard. May be implementable by wiring `PersistenceDiagramBuilder` with two preset datasets rather than building from scratch.
+**When added:** Add `interactive_slug: 'participatory-barcode-comparator'` to frontmatter, write "Using the Interactive" section, register component in `ModuleLayout.astro`.
+
+### PH6-I4 — Logistic Regression / Decision Threshold Explorer
+**Module:** `path2-module-6.mdx` (Mathematics of Poverty, Module 6 — "The Score")
+**Status:** `interactive_slug: 'tda-results-explorer'` removed (was incorrectly assigned). "A Notional Tool for Score Anatomy" replaced with "A Note on the Interactive" placeholder in QA sprint.
+**Description:** A simplified logistic regression model trained on synthetic welfare data. Sliders: decision threshold τ (0–1), optionally feature weights. Outputs: confusion matrix, false-positive rate, false-negative rate, broken down by at least two demographic sub-groups. Key insight: a globally accurate model can be systematically unfair to a minority group, and τ is a distributive policy choice not a statistical one.
+**When added:** Update `path2-module-6.mdx` frontmatter with `interactive_slug: 'scoring-threshold-explorer'`, write "Using the Interactive" section, register component in `ModuleLayout.astro`.
+
+### PH6-I3 — Equivalisation Scale Comparator
+**Module:** `path2-module-4.mdx` (Mathematics of Poverty, Module 4 — "The Welfare Formula")
+**Status:** "A Notional Tool for Scale Comparison" replaced with "A Note on the Interactive" placeholder in QA sprint. `interactive_slug` removed (was incorrectly set to `benefit-taper-calculator`).
+**Description:** Apply the three major equivalisation scales (original OECD, Modified OECD, McClements) to the same household income distribution and display the resulting poverty rates side by side. Allow household composition sliders (adults, children) to show how divergence grows with family size.
+**Pedagogical goal:** Make explicit that poverty statistics are functions of the scale selected, not measurements of a fixed quantity.
+**When added:** Update `path2-module-4.mdx` frontmatter with `interactive_slug: 'equivalisation-comparator'`, replace placeholder section with full "Using the Interactive" guidance, register component in `ModuleLayout.astro`.
+
+### PH6-E1 — Benefit Taper Calculator: adjustable rate + fiscal cost
+**Component:** `src/components/interactives/BenefitTaperCalculator.tsx`
+**Status:** Enhancement — existing component works correctly but is missing two features needed to fully support the Module 5 argument.
+**Current state:** Taper rate is fixed (55% current, 63% pre-2021 comparison only). No fiscal cost readout. Housing element toggle works. Hover shows EMTR at each earnings point.
+**Missing features:**
+1. **Adjustable taper rate slider** — free range, e.g. 40%–75%, replacing the fixed 55%/63% toggle. The curve should update live. This makes the "optimal rate is a political choice" argument interactive rather than illustrative.
+2. **Fiscal cost readout** — approximate aggregate cost of UC at the selected taper rate, relative to the 55% baseline. Even a stylised model (linear approximation over a representative earnings distribution) would suffice. Shows that a lower taper is more generous but more expensive, making the trade-off concrete.
+**When added:** Update `path2-module-5.mdx` "Using the Interactive" section to reference both features. The existing guidance text already notes these are planned and will need updating.
+
+### Note: Benefit Taper Calculator fix (QA sprint)
+`interactive_slug: 'benefit-taper-calculator'` was incorrectly assigned to `path2-module-4.mdx` (The Welfare Formula).
+Moved to `path2-module-5.mdx` (Optimisation and Control), where the taper mechanics are the subject of the module.
+"A Notional Tool for Taper Analysis" in module 5 was replaced with a full "Using the Interactive" guidance section.
+Modules 10–12 of `tda-practitioners` were renumbered to 12–14.
+Former `path1-module-7.mdx` (Markov Memory Ladder) is now `path4-module-10.mdx`.
+Former `path1-module-8.mdx` (Reading the Results) is now `path4-module-11.mdx`.
+Path 4 now runs modules 1–14. `learnPaths.ts` does not yet register Path 4 (deferred to Phase 6).
+
+---
+
 ## Files to Read Before Starting Any QA Work
 
 - This document

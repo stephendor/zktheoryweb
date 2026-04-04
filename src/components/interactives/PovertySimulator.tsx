@@ -33,6 +33,8 @@ import {
   calculateThreshold,
   generateDensityCurve,
   populationBelowThreshold,
+  oecdEqualisationFactor,
+  POPULATION_MEDIAN,
   type HouseholdParams,
   type ThresholdMethod,
   type Region,
@@ -48,8 +50,6 @@ const X_MAX = 80_000;
 const ANIMATION_DURATION_MS = 450;
 const DEBOUNCE_MS = 400;
 const LINE_STEP = 100; // £ per arrow-key press
-
-const DENSITY_CURVE = generateDensityCurve(400);
 
 // ─── Method metadata ──────────────────────────────────────────────────────────
 
@@ -149,6 +149,15 @@ function ChartInner({
     const svg = d3.select(svgEl);
     svg.selectAll('*').remove(); // full redraw on dimension change
 
+    // ── Household-scaled density curve ─────────────────────────────────────
+    // The distribution is parameterised by equivalised income (median £35 k).
+    // Scaling mu by the OECD factor shifts the entire curve to actual household
+    // income space, so the shaded area to the left of the poverty line visually
+    // matches the poverty-rate readout for any household composition.
+    const oecd = oecdEqualisationFactor(params.adults, params.children);
+    const scaledMu = Math.log(POPULATION_MEDIAN * oecd);
+    const densityCurve = generateDensityCurve(400, scaledMu);
+
     // ── Scales ─────────────────────────────────────────────────────────────
     const xScale = d3
       .scaleLinear()
@@ -156,7 +165,7 @@ function ChartInner({
       .range([0, chartW]);
     xScaleRef.current = xScale;
 
-    const maxDensity = d3.max(DENSITY_CURVE, (d) => d.density) ?? 1;
+    const maxDensity = d3.max(densityCurve, (d) => d.density) ?? 1;
     const yScale = d3
       .scaleLinear()
       .domain([0, maxDensity * 1.12])
@@ -169,14 +178,14 @@ function ChartInner({
 
     // ── Area generator ─────────────────────────────────────────────────────
     const area = d3
-      .area<(typeof DENSITY_CURVE)[0]>()
+      .area<(typeof densityCurve)[0]>()
       .x((d) => xScale(d.income))
       .y0(chartH)
       .y1((d) => yScale(d.density))
       .curve(d3.curveBasis);
 
     const line = d3
-      .line<(typeof DENSITY_CURVE)[0]>()
+      .line<(typeof densityCurve)[0]>()
       .x((d) => xScale(d.income))
       .y((d) => yScale(d.density))
       .curve(d3.curveBasis);
@@ -211,7 +220,7 @@ function ChartInner({
     // ── Areas ──────────────────────────────────────────────────────────────
     // Above-threshold area (muted fill)
     g.append('path')
-      .datum(DENSITY_CURVE)
+      .datum(densityCurve)
       .attr('class', 'ps-area-above')
       .attr('clip-path', 'url(#ps-above-clip)')
       .attr('d', area)
@@ -221,7 +230,7 @@ function ChartInner({
     // Below-threshold shaded area (Counting Lives red)
     const shadeEl = g
       .append('path')
-      .datum(DENSITY_CURVE)
+      .datum(densityCurve)
       .attr('class', 'ps-area-below')
       .attr('clip-path', 'url(#ps-below-clip)')
       .attr('d', area)
@@ -231,7 +240,7 @@ function ChartInner({
 
     // Distribution outline
     g.append('path')
-      .datum(DENSITY_CURVE)
+      .datum(densityCurve)
       .attr('class', 'ps-line')
       .attr('d', line)
       .attr('fill', 'none')
@@ -328,7 +337,7 @@ function ChartInner({
     );
 
     svg.call(drag);
-  }, [dimensions, chartW, chartH]);
+  }, [dimensions, chartW, chartH, params.adults, params.children]);
 
   // ── Update poverty line position (without full redraw) ──────────────────
   useEffect(() => {
@@ -515,10 +524,12 @@ export function PovertySimulator() {
     setThreshold(newResult.threshold);
   }, [method, params]);
 
-  // Derive current rate from current threshold (manual drag may differ from method threshold)
-  // Compute rate from the current threshold value (which may have been
-  // manually adjusted via the slider), not from the method's fixed threshold.
-  const currentRate = populationBelowThreshold(threshold);
+  // Derive current rate from current threshold (manual drag may differ from method threshold).
+  // The population distribution is in equivalised-income space, so divide the actual
+  // household threshold by the OECD factor before querying the CDF.
+  const currentRate = populationBelowThreshold(
+    threshold / oecdEqualisationFactor(params.adults, params.children),
+  );
 
   // Stable debounced announcer — created once on first render, held in a ref.
   // useCallback requires an inline function; useRef avoids that constraint while

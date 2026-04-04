@@ -76,9 +76,15 @@ $$
 
 By the Nerve Lemma, the Čech complex is homotopy equivalent to the union of balls $\bigcup_{x \in X} B(x, r)$, so it captures the topology of the thickened point cloud exactly. However, checking ball intersections in high dimensions is computationally expensive. The Vietoris–Rips complex is a 2-approximation: $\text{VR}(X, r) \subseteq \text{Čech}(X, r\sqrt{2}) \subseteq \text{VR}(X, r\sqrt{2})$. For most applications this approximation is tight enough, and Vietoris–Rips is the standard choice in practice.
 
-## A Notional Interactive
+## Using the Interactive: Filtration Playground
 
-Though no interactive is paired directly with this module, imagine a tool that lets you place points on a canvas, set a distance threshold $r$ with a slider, and watch the simplicial complex build in real time. At low $r$, only isolated points; as $r$ rises, edges appear between near neighbours; at higher $r$, triangles fill in between triples of mutually close points; eventually, at very high $r$, the entire canvas is covered by one giant filled simplex. Such a tool makes concrete the otherwise abstract claim that simplicial complexes are built incrementally by a distance threshold. The Persistence Diagram Builder in Module 5 is one step further along this pipeline.
+The **Filtration Playground** below is precisely the tool this module describes. Load a preset point cloud — or place your own points on the canvas — then advance the radius slider to watch the Vietoris–Rips complex build in real time.
+
+At radius zero you have isolated points: the 0-simplices only, β₀ equal to the number of points. As the radius grows, edges appear between pairs of points that fall within distance $r$ of each other. Watch the **Connected components** counter in the right panel: every time two clusters merge through a new edge, β₀ decreases by one. When a triple of mutually close points all acquire their pairwise edges simultaneously, the filled triangle (2-simplex) appears — the hole closes and β₁ stays at zero. But if the three edges appear before the triangle is filled in, a loop forms and β₁ rises by one.
+
+Three things to verify from this module: (1) the **closure property** — every face of every simplex is present (you will never see a triangle without all three of its edges); (2) the **pairwise condition** — a triangle appears exactly when all three pairwise distances are within $r$, not when any geometric centroid condition is met; (3) the **loop-filling mechanism** — a loop registered in β₁ disappears when the enclosing triangle is added, not merely when the perimeter edges are all present.
+
+The step-by-step playback mode (the arrows beside the slider) is useful for watching individual homological events: a birth or death of a connected component or loop corresponds to a single edge or triangle being added. Module 5 formalises precisely which births and deaths persist across the full filtration.
 
 ## How This Module Connects
 

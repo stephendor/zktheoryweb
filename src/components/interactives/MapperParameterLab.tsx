@@ -305,6 +305,7 @@ interface MapperGraphPanelProps {
   width: number;
   height: number;
   graph: MapperGraph;
+  filterFnName: FilterFnName;
   reducedMotion: boolean;
   onHover: (msg: string) => void;
 }
@@ -313,6 +314,7 @@ function MapperGraphPanel({
   width,
   height,
   graph,
+  filterFnName,
   reducedMotion,
   onHover,
 }: MapperGraphPanelProps) {
@@ -321,6 +323,8 @@ function MapperGraphPanel({
   const tooltipRef = useRef<TooltipHandle | null>(null);
   // Keep a ref to the active simulation so we can stop it when graph changes.
   const simulationRef = useRef<d3.Simulation<SimNode, SimEdge> | null>(null);
+  // Keep a ref to the zoom behaviour so the reset button can call zoomIdentity.
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
 
   type SimNode = MapperNode & d3.SimulationNodeDatum;
   // SimEdge uses node references for source/target (not strings), so we
@@ -469,12 +473,13 @@ function MapperGraphPanel({
 
     nodeSelection
       .on('pointermove', function (event: PointerEvent, d: SimNode) {
+        const label = filterLabel(filterFnName);
         showTooltip(
           tooltipRef.current!,
           event,
-          `${d.id} · ${d.size} pts · mean filter: ${d.filterMeanValue.toFixed(3)}`,
+          `${d.size} point${d.size !== 1 ? 's' : ''} clustered here · mean ${label}: ${d.filterMeanValue.toFixed(3)}`,
         );
-        onHover(`Node ${d.id}: ${d.size} points, mean filter value ${d.filterMeanValue.toFixed(3)}`);
+        onHover(`${d.size} point${d.size !== 1 ? 's' : ''} clustered in this node. Mean ${label} value: ${d.filterMeanValue.toFixed(3)}.`);
       })
       .on('pointerleave', () => {
         hideTooltip(tooltipRef.current!);
@@ -496,6 +501,20 @@ function MapperGraphPanel({
       );
     };
 
+    // ── Pan + zoom ────────────────────────────────────────────────────────
+    // Attach d3.zoom to the SVG; transforms the graph <g> only.
+    // Scroll to zoom (0.25×–4×), drag to pan. Nodes and tooltip are unaffected.
+    const zoom = d3
+      .zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.25, 4])
+      .on('zoom', (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+        g.attr('transform', event.transform.toString());
+      });
+    zoomRef.current = zoom;
+    d3.select(svgEl).call(zoom);
+    // Reset to identity whenever the graph data changes.
+    d3.select(svgEl).call(zoom.transform, d3.zoomIdentity);
+
     if (reducedMotion) {
       // Static snapshot: tick to convergence, render once, then stop.
       simulation.tick(300);
@@ -508,7 +527,7 @@ function MapperGraphPanel({
     return () => {
       simulation.stop();
     };
-  }, [graph, width, height, rScale, edgeWScale, reducedMotion, onHover]);
+  }, [graph, width, height, rScale, edgeWScale, reducedMotion, onHover, filterFnName]);
 
   // Cleanup tooltip on unmount.
   useEffect(() => {
@@ -524,13 +543,28 @@ function MapperGraphPanel({
     <div ref={containerRef} style={{ position: 'relative', width, height }}>
       <svg
         ref={svgRef}
-        className="mpl-svg"
+        className="mpl-svg mpl-svg--pannable"
         width={width}
         height={height}
         aria-hidden="true"
       >
         <g className="mpl-graph-g" />
       </svg>
+      <button
+        type="button"
+        className="mpl-zoom-reset"
+        aria-label="Reset graph view"
+        onClick={() => {
+          if (svgRef.current && zoomRef.current) {
+            d3.select(svgRef.current)
+              .transition()
+              .duration(300)
+              .call(zoomRef.current.transform, d3.zoomIdentity);
+          }
+        }}
+      >
+        Reset view
+      </button>
     </div>
   );
 }
@@ -693,11 +727,13 @@ export function MapperParameterLab({ className }: MapperParameterLabProps) {
       <div className={`mpl-wrapper${className ? ` ${className}` : ''}`}>
         <AriaLiveRegion message={liveMsg || hoverMsg} />
 
-        <ResponsiveContainer minHeight={340}>
+        <ResponsiveContainer minHeight={440}>
           {({ width }) => {
             // Each panel gets half the container width minus gap (8px each side).
             const panelW = Math.max(120, Math.floor((width - 16) / 2));
-            const panelH = Math.min(panelW, 340);
+            // Height: match panel width up to 480px so the force graph has room.
+            // Capped at 480px to avoid excessive height on very wide screens.
+            const panelH = Math.min(panelW, 480);
 
             const graph = mapperGraph ?? { nodes: [], edges: [] };
 
@@ -724,6 +760,7 @@ export function MapperParameterLab({ className }: MapperParameterLabProps) {
                       width={panelW}
                       height={panelH}
                       graph={graph}
+                      filterFnName={filterFnName}
                       reducedMotion={reducedMotion}
                       onHover={handleHover}
                     />

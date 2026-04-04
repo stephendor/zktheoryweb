@@ -70,9 +70,9 @@ These numbers are computable from the simplicial complex via **matrix reduction*
 
 Homology is sensitive to topology, not geometry. It cannot tell you the *size* of a hole or how far apart the clusters are — only how many there are and their dimensional character. Two complexes with $\beta_1 = 1$ may have loops of very different scales: one might be a small local cycle within a cluster, the other a global loop connecting distant regions of the data. Persistent homology, introduced in Module 5, addresses this limitation by tracking how Betti numbers change as the scale parameter $r$ varies, associating each topological feature with a birth scale and a death scale.
 
-## A Notional Interactive
+## A Note on the Interactive
 
-A useful thought experiment for this module: take a simplicial complex with two clusters and one loop, as described above. Now remove one triangle from the complex. Has $\beta_0$ changed? Has $\beta_1$ changed? (Probably not, unless the triangle was the only face filling a cycle.) Now remove an edge. Under what conditions does removing that edge increase $\beta_1$ (exposing a new loop) versus increase $\beta_0$ (disconnecting a component) versus leave both unchanged? Working through these cases manually builds the intuition that homology tracks global structure, not local geometry. A future interactive will automate this exploration, allowing you to click to add or remove simplices and watch the Betti numbers update in real time.
+This module does not yet have a dedicated interactive. A future tool — planned for Phase 6 — will let you click to add and remove simplices from a small complex and watch the Betti numbers update in real time. The thought experiment in the paragraph above is the manual version of that tool: work through it with pencil and paper to build the intuition before the automated version is available.
 
 ## How This Module Connects
 

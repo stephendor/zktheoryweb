@@ -1,124 +1,99 @@
 ---
-title: 'Designing Your Own TDA Study'
+title: 'TDA and Deep Learning'
 path: 'tda-practitioners'
 module_number: 12
-core_concept: 'A structured checklist for scoping, executing, and reporting a TDA analysis in social research'
+core_concept: 'Incorporating topological features and topological regularisation into neural network pipelines'
 connections:
   chapters: []
-  papers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  papers: [7, 8]
   modules: []
-  methods: ['persistent-homology', 'mapper', 'zigzag-persistence']
+  methods: ['persistent-homology', 'mapper']
 check_understanding:
-  - question: 'You want to apply TDA to a cross-sectional survey of 3,200 households measured on eight welfare variables (income, employment status, housing quality, health, food security, social connectedness, digital access, and educational attainment). Walk through checklist items 1–4 as applied to this study, making explicit choices at each step and justifying them.'
-    answer: 'Item 1 (Research question framing): The topological claim is that welfare deprivation is multi-dimensionally structured — that households are not scattered randomly across the eight-dimensional welfare space but form identifiable clusters and possibly cyclical structures corresponding to typologies of deprivation. The specific testable claim is: the data contains at least one H₁ feature with persistence exceeding the 95th percentile of a bootstrap null distribution, indicating a genuine loop in the joint distribution of welfare variables. Item 2 (Preprocessing): Normalise all eight variables by z-score — they are theoretically commensurable as welfare dimensions. Use Euclidean distance in the normalised space as the default, with cosine-distance sensitivity analysis to test whether profile-type or magnitude drives results. Apply maxmin landmark subsampling at 400 landmarks (approximately 12.5% of 3,200) to reduce computation time. Item 3 (Algorithm selection): Standard Vietoris-Rips persistent homology with ripser at maxdim=1 (H₀ and H₁ only — higher dimensions are unlikely to be interpretable with cross-sectional data). This is a single-parameter analysis, appropriate for cross-sectional data where there is no temporal index needed for zigzag. Item 4 (Parameter sensitivity): Compute diagrams at five landmark counts (200, 300, 400, 500, full dataset on a sample of 500) and compare bottleneck distances between consecutive pairs. A bottleneck distance below 10% of the maximum persistence across all five runs indicates converged topological resolution. Also vary the maximum filtration distance from 0.5× to 2× the median pairwise distance to confirm that the primary features are visible across a range of filtration extents.'
-  - question: 'Your TDA study finds one significant H₁ feature (persistence 0.71, p=0.03 from bootstrap test) in a welfare dataset. A reviewer asks: "What is the loop? Which households form it, and what social mechanism closes it?" Describe how you would answer this question using the tools from Path 4, and what you cannot answer with TDA alone.'
-    answer: 'To identify which households form the loop: run ripser with cocycles=True to obtain a representative cocycle for the H₁ feature. The cocycle is a 1-cochain whose coboundary is zero in the persistence diagram cohomology — its support identifies which edges (pairs of households) carry the persistent cycle. Extract the household indices from these edges and examine their welfare profiles. These are the households whose pairwise proximity at scale b (birth parameter 0.71 in this case) constitutes the geometrical loop. To understand what closes the loop: examine the filtration at scale d (death parameter), find the triangle that fills the cycle, and identify the three households forming that triangle — these are the households whose mutual proximity at scale d triangulates the void. The social mechanism is then interpretable: which welfare-variable combination makes these three households mutually close, and why does that configuration close the cycle? What TDA cannot answer: why the loop exists, what causes it, whether it will persist under policy changes, and whether any individual household position in the loop is causal rather than correlational. TDA establishes the geometric structure; the causal story requires qualitative research, administrative data linkage, and longitudinal follow-up that the persistence diagram does not contain.'
-  - question: 'You are writing up a TDA analysis of poverty data for a social policy journal whose reviewers are not TDA specialists. Checklist item 8 calls for reporting standards including diagrams, parameter choices, null model results, and interpretation guard-rails. What are the three most important elements to include, and what is the single most common TDA reporting error you should avoid?'
-    answer: 'The three most important elements: (1) The persistence diagram itself, with the diagonal clearly drawn, H₀ and H₁ clearly distinguished by colour or symbol, and the bootstrap-derived significance threshold annotated as a horizontal or vertical line distinguishing the signal zone from the noise zone. Without the actual diagram, reviewers cannot evaluate the finding. (2) The null-model test result: which test was run (bootstrap or permutation), how many iterations, what the null distribution looks like, and the precise p-value. A claim of "significant persistent topology" without a null-model test is not publishable in a journal with quantitative standards. (3) The preprocessing specification: normalisation method, distance metric, landmark count if subsampling was used, and the maximum filtration distance parameter. These determine what topology could in principle be detected and what was ruled out by design. The single most common TDA reporting error is the missing negative result: reporting only the significant features and omitting the noise-zone features, or failing to report that H₀ was examined and found to show N connected components. TDA findings must be reported in full — what was present, at what persistence, against what null distribution, and what was absent.'
+  - question: 'Explain the difference between topological feature extraction and topological regularisation as integration strategies, and give an example of a research question for which each is appropriate in a welfare-modelling context.'
+    answer: 'Topological feature extraction treats the persistence diagram as a preprocessing step: compute the diagram, vectorise it as a landscape or image, append the vector as additional features to your data matrix, and train a standard classifier or regressor on the augmented features. The network never "sees" the original data directly in its topological form; the topology is condensed into a fixed-length feature vector before training. This is appropriate when the topological structure is a predictor: for example, predicting whether a geographic area will experience a poverty spike in the next survey wave, using the current persistence-landscape features of that area as predictors. Topological regularisation adds a topological loss term to the training objective, penalising the network when its internal representations do not have a specified topological structure. This is appropriate when you want to constrain the learned representation: for example, training a poverty-severity embedding where the latent space should preserve cyclical trajectory dynamics — a topological loss that penalises the disappearance of the known H₁ feature in the latent space ensures the embedding does not collapse the cycle structure.'
+  - question: 'What is sublevel persistence of neural activations, and why is it relevant to auditing whether a trained welfare-score predictor has learned topologically coherent representations?'
+    answer: 'Sublevel persistence applies persistent homology to scalar functions rather than point clouds. Given a trained network, the activation values of a layer can be treated as a scalar function over the sample — each data point gets a real-valued activation, and the sublevel set filtration connects points whose activations are below a threshold, growing the threshold from the minimum to maximum activation. The resulting persistence diagram characterises how the activation landscape is structured: are there distinct modes (H₀ features representing well-separated activation clusters), are there loops (H₁ features in the activation landscape indicating cyclical response patterns)? For welfare-score predictors, sublevel set persistence of the final hidden layer answers whether the network has learned to separate welfare trajectories in ways that respect the cyclical structures identified in Modules 3–5 — or whether the training procedure collapsed those structures into a flat, monotone activation landscape. A network that discards the persistent H₁ feature from the original data during training cannot be said to have learned a topologically faithful representation of poverty dynamics.'
+  - question: 'A pytorch-topological topological loss function penalises the difference between the target topology (one H₁ feature with persistence 0.8) and the current latent-space topology. During training, the topological loss decreases from 1.2 to 0.15 over 50 epochs while the task loss (cross-entropy) increases from 0.31 to 0.44. How do you interpret this and what would you do next?'
+    answer: 'The topological loss decreasing to 0.15 means the latent space has successfully developed the target H₁ feature — it now contains a loop with approximately the right persistence. But the task loss increasing from 0.31 to 0.44 indicates the topological constraint is harming classification accuracy: the network is trading predictive performance for topological structure. This is a classic regularisation trade-off. The intervention is to introduce a loss weighting parameter λ: total_loss = task_loss + λ * topological_loss, and reduce λ until the task loss stabilises at an acceptable level while the topological constraint still meaningfully constrains the representation. Start with λ = 0.01 (strongly downweighting the topological term) and sweep upward. If no value of λ allows both task loss and topological loss to improve simultaneously, the hypothesis that the target topology is compatible with the classification task is likely wrong — the topological structure you are trying to enforce in the latent space may not be informative for the downstream prediction problem.'
 status: 'drafting'
 ---
 
-## The Study You Will Design
+## When the Network Should Know About Loops
 
-Every module in Path 4 has developed one piece of the TDA practitioner toolkit: computing persistence (Modules 1–3), interpreting diagrams (Module 4), testing statistical significance (Module 5), applying Mapper (Module 6), tracking features through time with zigzag (Module 7), handling multi-parameter complexity (Module 8), vectorising for downstream analysis (Module 9), integrating with deep learning (Module 10), and auditing algorithmic fairness (Module 11). This final module asks you to assemble all of it into a coherent study design. Not a tutorial exercise, but a real study — the kind you will actually run on welfare data, submit to a social policy journal, and defend to reviewers who may include both TDA specialists and empirical social scientists with no prior exposure to computational topology.
+Deep learning and topological data analysis have developed largely independently, each producing powerful tools for different kinds of structure. Deep learning excels at learning hierarchical representations from raw data, extracting features that are predictive of task labels without explicit feature engineering. TDA excels at characterising the global geometric structure of data in a way that is stable, scale-free, and theoretically grounded. For welfare research, both capabilities are needed: the data is high-dimensional and complex enough to benefit from deep representation learning, yet the research questions concern structural properties — cyclical poverty dynamics, stratification geometry, boundary structure — that TDA characterises precisely and neural networks can dissolve.
 
-The checklist below does not provide a recipe. It provides a structured set of decisions that every TDA study must make explicitly, with enough reasoning to explain each choice to a non-specialist and to reviewers in revision. The checklist is organised in the order decisions must be made, from the initial framing of the topological claim through to the final reporting standard.
+The integration challenge is therefore not "which tool to use" but "how do the tools reinforce each other?" Two integration strategies have emerged as the principled approaches: **topological feature extraction**, which treats TDA as a preprocessing step that augments the feature set before network training; and **topological regularisation**, which adds a topological loss term to the training objective, constraining the network's learned representations to preserve specified topological structure. This module covers both strategies, their implementation in `pytorch-topological`, and their application to poverty-score prediction where the topological structure of welfare trajectories should be preserved rather than collapsed in the latent space.
 
-## 1. Research Question Framing
+## Strategy 1: Topological Feature Extraction
 
-**What topological claim are you making?**
+In topological feature extraction, TDA is used to derive a fixed-length numerical description of each data point's local or global topological neighbourhood, and that description is appended to the original feature vector before passing to a standard neural network.
 
-Every TDA study rests on an implicit or explicit topological claim: the data has a particular global structure — clusters, loops, voids, branching — that is not adequately described by mean values or correlations. Before computing anything, state the claim precisely.
+The pipeline for a welfare classification task:
 
-A well-formed topological claim has three parts: (a) a specified homology dimension (H₀ for clustering, H₁ for loops, H₂ for voids); (b) a persistence threshold (the minimum persistence that constitutes a finding rather than noise); and (c) a substantive interpretation that is falsified if the topological structure is absent. Example: "We claim that the joint welfare trajectory data contains a persistent H₁ feature — indicating cyclical poverty dynamics — with persistence exceeding the 95th percentile of the bootstrap null distribution. Absence of this feature would falsify the poverty-trap hypothesis as stated."
+1. For each geographic area or individual, compute a neighbourhood subgraph representation (e.g., the $k$-nearest neighbours in the welfare-variable space).
+2. Run `ripser` on the subgraph's distance matrix to produce H₀ and H₁ persistence diagrams.
+3. Vectorise each diagram using a persistence landscape (Module 9) or persistence image.
+4. Concatenate the landscape or image vector with the original feature vector.
+5. Train a standard MLP, random forest, or gradient boosting model on the augmented features.
 
-Stating the claim up front disciplines the entire analysis. It forces a decision about which homology dimension matters, prevents post-hoc adjustment of the significance threshold, and makes the substantive interpretation testable rather than vague.
+This approach is simple to implement and does not require specialised TDA-aware training infrastructure. Its limitation is that the topological features are precomputed and fixed — the network cannot learn to weight different aspects of the persistence diagram differently during training. The landscape vectorisation is a linear function of the diagram, and if the task-relevant topology is encoded nonlinearly, the extraction step may discard it before training begins.
 
-## 2. Data Preprocessing Decisions
+## Strategy 2: Topological Regularisation
 
-**Which normalisation, which distance, which subsampling?**
+Topological regularisation adds a **topological loss** $\mathcal{L}_{\text{topo}}$ to the training objective, penalising the network when the persistence diagram of its output (or internal representation) deviates from a target topology:
 
-Each of these decisions is a theoretical commitment about what kind of variation matters (Module 2):
+$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{task}} + \lambda \cdot \mathcal{L}_{\text{topo}}$$
 
-- **Normalisation choice**: z-score treats all variables as theoretically commensurable; domain-normalisation (e.g., dividing by median income) preserves economic interpretation. State the choice and justify it in one sentence referencing the research question.
-- **Distance metric**: Euclidean is the default; cosine is appropriate when welfare profile type matters more than welfare level; precomputed matrices allow custom metrics. If your distance choice changes the finding, report both results and discuss the discrepancy.
-- **Subsampling**: If $n > 5{,}000$, use maxmin landmark subsampling (Module 2). Report the landmark count and the convergence evidence — that increasing landmarks does not substantially change the diagram.
+The topological loss is typically the sum of squared persistence discrepancies between the current diagram and the target diagram, differentiable with respect to the network weights through the use of sub-gradient or implicit differentiation techniques. The `pytorch-topological` library implements several differentiable topological loss functions including the **signature loss** (penalising the difference in persistence barcodes), the **Wasserstein topological loss** (penalising diagram distance from a target), and the **connectivity loss** (penalising unwanted connected components in the output).
 
-Document these choices in a dedicated "Computational Methods" subsection of your paper. Reviewers from TDA backgrounds will check these first; reviewers from social science backgrounds will check whether the choices are theoretically motivated.
+```python
+# {/* Pyodide code runner slot */}
+# import torch
+# from torch import nn
+# from pytorch_topological.nn import VietorisRipsComplex, SummaryStatisticLoss
 
-## 3. Algorithm Selection
+# class WelfareEncoder(nn.Module):
+#     def __init__(self, input_dim, latent_dim):
+#         super().__init__()
+#         self.encoder = nn.Sequential(
+#             nn.Linear(input_dim, 64),
+#             nn.ReLU(),
+#             nn.Linear(64, latent_dim),
+#         )
+#
+#     def forward(self, x):
+#         return self.encoder(x)
 
-**VR vs Čech vs alpha complex; standard vs zigzag vs multi-parameter.**
+# model = WelfareEncoder(input_dim=6, latent_dim=2)
+# topo_loss_fn = SummaryStatisticLoss('persistence_entropy')
+# vr = VietorisRipsComplex(dim=1)
 
-Select the filtration algorithm based on the data structure, not computational convenience:
+# Training loop sketch
+# for batch_x, batch_y in dataloader:
+#     z = model(batch_x)
+#     # Compute VR complex over latent batch
+#     persistence_info = vr(z)
+#     task_loss = criterion(z, batch_y)
+#     topo_loss = topo_loss_fn(persistence_info)
+#     loss = task_loss + 0.1 * topo_loss
+#     loss.backward()
+#     optimiser.step()
+```
 
-- **Standard VR (ripser)**: for cross-sectional data or single time-point data. Default choice unless a principled reason exists for alternatives.
-- **Alpha complex**: for point clouds in low-dimensional Euclidean space (typically $d \leq 4$) where a geometrically tighter complex is desired. Not appropriate for high-dimensional welfare data.
-- **Zigzag**: for longitudinal data where the panel composition changes across waves (Module 7). Required when tracking features through time rather than comparing diagrams.
-- **Multi-parameter**: when density and scale are theoretically independent concerns and you need to separate their effects (Module 8). Requires RIVET and substantially more interpretation effort.
+## Sublevel Persistence of Neural Activations
 
-Justify the choice in one sentence. If you use standard VR on longitudinal data when zigzag would be more appropriate, that is a methodological limitation to be acknowledged.
+A third integration point is **post-hoc audit**: after training a standard neural network on welfare prediction, apply TDA to the network's internal activations to determine whether the learned representation preserves the known topological structure of the data.
 
-## 4. Parameter Sensitivity
+The tool for this is sublevel set persistence. For a trained network $f: \mathbb{R}^d \to \mathbb{R}^k$, extract the intermediate-layer activations $a(x) \in \mathbb{R}^m$ for all data points $x$ in the validation set. Construct a scalar function $g: X \to \mathbb{R}$ from these activations (e.g., the norm $\|a(x)\|_2$ or the first PCA component of the activation matrix). Compute the sublevel set persistence of $g$ — the persistent homology of the filtration defined by $g^{-1}(-\infty, t]$ as $t$ grows from $\min g$ to $\max g$. The resulting diagram characterises the topology of the activation landscape.
 
-**Have you swept the filtration parameter? Tested multiple cover settings?**
+For a welfare-score predictor where the original data has a known persistent H₁ feature (Module 3), the sublevel persistence of the final hidden layer should also show a persistent H₁ feature of comparable magnitude if the network learned a topologically faithful representation. A flat diagram (no persistent H₁ in the activation landscape) indicates the network learned to solve the task by collapsing the cyclical structure — perhaps exploiting a correlation that is not the structural signal.
 
-No TDA finding is credible if it depends on a single parameter setting. The minimum sensitivity analysis:
+## Application: Poverty-Score Prediction with Topological Fidelity
 
-- Vary the maximum filtration distance (or the `thresh` parameter in `ripser`) from half to twice the default value. Report whether the primary features are visible across this range.
-- If using Mapper: vary resolution from 15 to 40 and gain from 20% to 45%. Report the parameter region where the claimed graph structure (loop, flare, bifurcation) is stable.
-- If using landmark subsampling: vary the landmark count from 200 to the minimum feasible full-sample size and report the bottleneck distance between consecutive diagrams as the landmark count increases. A decreasing bottleneck distance demonstrates convergence.
+The motivating application from **Papers 7 and 8** is poverty-severity scoring for policy targeting: predict a welfare-vulnerability score for each household that reflects not just current income but the structural trajectory risk implied by the household's position in welfare space. Standard regression models trained to minimise squared prediction error will learn to approximate the mean trajectory, potentially discarding the cyclical structure that predicts recurrence risk. A topological regularisation approach adds a loss term penalising the disappearance of the H₁ features in the latent space, ensuring the learned score function preserves the poverty-cycle structure detected by TDA rather than averaging over it.
 
-A parameter sweep is not optional. It is the minimum evidence that the finding is a property of the data rather than of a particular algorithmic configuration.
+The connection to Papers 7 and 8 is direct: Paper 7 develops the sublevel persistence audit methodology for welfare predictors trained on Universal Credit assessment data, finding that standard gradient-boosting models consistently suppress the persistent H₁ feature even when achieving high predictive accuracy. Paper 8 tests whether topological regularisation recovers this structure without sacrificing predictive performance, and evaluates the trade-off between task accuracy and topological fidelity as a function of the regularisation weight $\lambda$.
 
-## 5. Statistical Validation
+## How This Module Connects
 
-**Do your features survive a bootstrap test?**
-
-Run the bootstrap significance test (Module 5) with $B \geq 1{,}000$ iterations for any H₁ feature you intend to report as a finding. The p-value should be reported with two significant figures (p = 0.031, not p < 0.05). If you are comparing diagrams across groups, run the permutation test (Module 5) as well.
-
-Report the full null distribution — not just the p-value — as a histogram in supplementary materials. This allows reviewers to assess whether the null distribution is well-behaved and whether the observed feature is a clear outlier or a marginal exceedance.
-
-## 6. Vectorisation for Downstream Analysis
-
-**Which vectorisation for which downstream task?**
-
-If the study includes regression, classification, or clustering over multiple diagrams (e.g., comparing persistence across geographic areas or demographic groups), choose and justify the vectorisation method (Module 9):
-
-- **Persistence landscape**: use for interpretable comparison and statistical testing (landscape averages are well-defined).
-- **Persistence image**: use for supervised machine learning tasks where compact fixed-dimensional vectors are needed.
-- **Wasserstein distance matrix**: use for distance-based clustering (hierarchical clustering, UMAP projection) of diagram collections.
-
-Report the vectorisation hyperparameters (grid resolution, bandwidth, number of landscape levels) and justify their choice.
-
-## 7. Interpretation Guard-Rails
-
-**What can topology claim versus what it cannot?**
-
-TDA establishes the existence and robustness of geometric structure. It does not establish:
-
-- **Causality**: a persistent loop does not identify the mechanism that creates it.
-- **Individual membership**: which specific households are in a loop is a post-hoc analysis; the H₁ feature does not come with a pre-attached list of members.
-- **Prediction**: the presence of a loop in the current data does not predict how long it will persist or what would dissolve it.
-- **Policy prescription**: a topological finding is evidence for a structural argument; the argument must be made with additional tools.
-
-Include a one-paragraph "Interpretation Limits" section in every TDA paper. It demonstrates methodological honesty and pre-empts the most predictable reviewer complaints.
-
-## 8. Reporting Standards
-
-**Include diagrams, parameter choices, null model results, and interpretation guard-rails.**
-
-A complete TDA replication package includes:
-
-1. The persistence diagram(s) as publication-quality figures, with diagonal drawn and significance threshold annotated.
-2. All preprocessing parameters (normalisation, distance metric, landmark count, maximum filtration distance).
-3. The bootstrap or permutation null distribution as a histogram.
-4. The full Mapper graph (if used) with parameter settings documented.
-5. Code to reproduce all computations from the preprocessed data matrix.
-6. The "Interpretation Limits" paragraph discussed in item 7.
-
-The single most common TDA reporting error is reporting only findings. A credible TDA paper reports what topology was found, what topology was absent, at what parameter settings, against what null model, and with what limitations.
-
-## Path 4 Retrospect
-
-This path has taken you from installation to frontier methodology. The gradient has been: computation (Modules 1–3) → interpretation (Modules 4–5) → advanced tools (Modules 6–9) → applications (Modules 10–11) → design (Module 12). The methods are now a toolkit; the research programme represented by Papers 1–10 is the context in which that toolkit has been deployed and tested. Designing your own study means making explicit choices that, in the papers, appear as settled conventions — but which were each the result of exactly this kind of principled decision procedure, documented here so that the next generation of TDA welfare researchers does not have to reconstruct it from first principles.
+This module bridges all of Path 4's technical content with the machine-learning applications that are increasingly prevalent in welfare-administration contexts. The tools here — `pytorch-topological`, sublevel persistence audit, and topological loss functions — are the operational link between the theoretical TDA methods of Modules 1–9 and the fairness and deployment concerns of Module 11. A welfare-scoring system that has been audited for topological fidelity (sublevel persistence audit showing preserved H₁) and trained with topological regularisation represents the current state of the art in structurally-grounded algorithmic welfare prediction.

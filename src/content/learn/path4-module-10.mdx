@@ -1,99 +1,80 @@
 ---
-title: 'TDA and Deep Learning'
+title: 'The Markov Memory Ladder'
 path: 'tda-practitioners'
 module_number: 10
-core_concept: 'Incorporating topological features and topological regularisation into neural network pipelines'
+core_concept: 'The Markov memory ladder captures how topological signature changes encode temporal dynamics in panel data'
+interactive_slug: 'mapper-parameter-lab'
 connections:
-  chapters: []
-  papers: [7, 8]
+  chapters: [10, 11]
+  papers: [1]
   modules: []
-  methods: ['persistent-homology', 'mapper']
+  methods: ['markov-memory-ladder']
 check_understanding:
-  - question: 'Explain the difference between topological feature extraction and topological regularisation as integration strategies, and give an example of a research question for which each is appropriate in a welfare-modelling context.'
-    answer: 'Topological feature extraction treats the persistence diagram as a preprocessing step: compute the diagram, vectorise it as a landscape or image, append the vector as additional features to your data matrix, and train a standard classifier or regressor on the augmented features. The network never "sees" the original data directly in its topological form; the topology is condensed into a fixed-length feature vector before training. This is appropriate when the topological structure is a predictor: for example, predicting whether a geographic area will experience a poverty spike in the next survey wave, using the current persistence-landscape features of that area as predictors. Topological regularisation adds a topological loss term to the training objective, penalising the network when its internal representations do not have a specified topological structure. This is appropriate when you want to constrain the learned representation: for example, training a poverty-severity embedding where the latent space should preserve cyclical trajectory dynamics — a topological loss that penalises the disappearance of the known H₁ feature in the latent space ensures the embedding does not collapse the cycle structure.'
-  - question: 'What is sublevel persistence of neural activations, and why is it relevant to auditing whether a trained welfare-score predictor has learned topologically coherent representations?'
-    answer: 'Sublevel persistence applies persistent homology to scalar functions rather than point clouds. Given a trained network, the activation values of a layer can be treated as a scalar function over the sample — each data point gets a real-valued activation, and the sublevel set filtration connects points whose activations are below a threshold, growing the threshold from the minimum to maximum activation. The resulting persistence diagram characterises how the activation landscape is structured: are there distinct modes (H₀ features representing well-separated activation clusters), are there loops (H₁ features in the activation landscape indicating cyclical response patterns)? For welfare-score predictors, sublevel set persistence of the final hidden layer answers whether the network has learned to separate welfare trajectories in ways that respect the cyclical structures identified in Modules 3–5 — or whether the training procedure collapsed those structures into a flat, monotone activation landscape. A network that discards the persistent H₁ feature from the original data during training cannot be said to have learned a topologically faithful representation of poverty dynamics.'
-  - question: 'A pytorch-topological topological loss function penalises the difference between the target topology (one H₁ feature with persistence 0.8) and the current latent-space topology. During training, the topological loss decreases from 1.2 to 0.15 over 50 epochs while the task loss (cross-entropy) increases from 0.31 to 0.44. How do you interpret this and what would you do next?'
-    answer: 'The topological loss decreasing to 0.15 means the latent space has successfully developed the target H₁ feature — it now contains a loop with approximately the right persistence. But the task loss increasing from 0.31 to 0.44 indicates the topological constraint is harming classification accuracy: the network is trading predictive performance for topological structure. This is a classic regularisation trade-off. The intervention is to introduce a loss weighting parameter λ: total_loss = task_loss + λ * topological_loss, and reduce λ until the task loss stabilises at an acceptable level while the topological constraint still meaningfully constrains the representation. Start with λ = 0.01 (strongly downweighting the topological term) and sweep upward. If no value of λ allows both task loss and topological loss to improve simultaneously, the hypothesis that the target topology is compatible with the classification task is likely wrong — the topological structure you are trying to enforce in the latent space may not be informative for the downstream prediction problem.'
+  - question: 'What does the Markov assumption assert, and in what sense does a poverty trap violate it?'
+    answer: 'The Markov assumption asserts that the probability of transitioning to any future state depends only on the current state, not on the history of past states. A poverty trap violates this in a subtle way: the *apparent* transition probabilities estimated from observed data may be consistent with Markov dynamics, yet the underlying social process contains persistent memory — households that have been poor for three consecutive years face systematically different risks than those newly entering poverty with identical current variables. The Markov assumption masks this heterogeneity by compressing history into current-state labels.'
+  - question: 'How does computing persistence diagrams at increasing temporal orders allow you to detect memory in panel data, and what would a "flat" ladder (no change in diagrams across orders) indicate?'
+    answer: 'At temporal order $m$, each observation in the panel is represented not by its current-period variables alone but by the concatenation of its variables across $m$ consecutive periods — a point in $mk$-dimensional space (where $k$ is the number of variables). Persistent homology run on these extended point clouds generates a sequence of diagrams $\text{Dgm}_1, \text{Dgm}_2, \ldots$ indexed by $m$. If the topological structure changes as $m$ increases — new long-lived features appear, or the Wasserstein distance $W_2(\text{Dgm}_m, \text{Dgm}_{m+1})$ remains non-negligible — then history is adding genuine new information: the data is not Markov. A flat ladder (distances approaching zero as $m$ increases) indicates that current-state information already captures all relevant structure: the Markov assumption holds topologically.'
+  - question: 'Why is the Markov memory ladder a topological test rather than a statistical test, and what does this distinction imply for how its results should be interpreted?'
+    answer: 'A statistical test for the Markov property (such as a likelihood-ratio test comparing first-order and higher-order transition matrices) assesses whether the improvement in fit from adding history is statistically significant given the sample size. A topological test assesses whether the *shape* of the extended point cloud differs from the shape of the current-state cloud — a structural, not parametric, comparison. The topological test does not depend on a distributional assumption about how past states enter transition probabilities; it detects any form of structural memory, including non-linear and non-additive forms that a parametric model might miss. This makes it a more general diagnostic, but it produces a qualitative conclusion (memory present vs. absent) rather than a quantified effect size.'
 status: 'drafting'
 ---
 
-## When the Network Should Know About Loops
+## Are Yesterday's Poor Different From Today's?
 
-Deep learning and topological data analysis have developed largely independently, each producing powerful tools for different kinds of structure. Deep learning excels at learning hierarchical representations from raw data, extracting features that are predictive of task labels without explicit feature engineering. TDA excels at characterising the global geometric structure of data in a way that is stable, scale-free, and theoretically grounded. For welfare research, both capabilities are needed: the data is high-dimensional and complex enough to benefit from deep representation learning, yet the research questions concern structural properties — cyclical poverty dynamics, stratification geometry, boundary structure — that TDA characterises precisely and neural networks can dissolve.
+Standard poverty modelling asks: given that a household is poor today, what is the probability it will be poor next year? The answer is estimated from data as a transition probability, and the whole analysis rests on the Markov assumption: what matters is where you are now, not how long you have been there or what path brought you. But experienced poverty researchers are deeply suspicious of this assumption. A household that has been in poverty for five years has different social capital, different physical and mental health, different relationships with institutions, than one newly fallen into poverty this year — even if their observed income and consumption figures are identical today. The Markov assumption, by collapsing all this history into current-state labels, potentially misrepresents the underlying social dynamics. The Markov memory ladder is a topological method for testing whether this suspicion is warranted, without assuming any specific functional form for the memory effect.
 
-The integration challenge is therefore not "which tool to use" but "how do the tools reinforce each other?" Two integration strategies have emerged as the principled approaches: **topological feature extraction**, which treats TDA as a preprocessing step that augments the feature set before network training; and **topological regularisation**, which adds a topological loss term to the training objective, constraining the network's learned representations to preserve specified topological structure. This module covers both strategies, their implementation in `pytorch-topological`, and their application to poverty-score prediction where the topological structure of welfare trajectories should be preserved rather than collapsed in the latent space.
+## The Markov Assumption and Its Limitations
 
-## Strategy 1: Topological Feature Extraction
+A **first-order Markov chain** on a state space $S$ is a stochastic process $\{X_t\}_{t \geq 0}$ satisfying:
 
-In topological feature extraction, TDA is used to derive a fixed-length numerical description of each data point's local or global topological neighbourhood, and that description is appended to the original feature vector before passing to a standard neural network.
+$$
+P(X_{t+1} = s \mid X_t, X_{t-1}, \ldots, X_0) = P(X_{t+1} = s \mid X_t) \quad \forall s \in S, t \geq 0.
+$$
 
-The pipeline for a welfare classification task:
+The distribution of tomorrow's state depends only on today's. For poverty modelling with categorical states (poor/near-poor/non-poor), this reduces to a $3 \times 3$ transition matrix estimated from observed year-to-year transitions. A higher-order Markov model extends the conditioning window: $(X_{t+1} \mid X_t, X_{t-1}, \ldots, X_{t-m+1})$ for memory order $m$.
 
-1. For each geographic area or individual, compute a neighbourhood subgraph representation (e.g., the $k$-nearest neighbours in the welfare-variable space).
-2. Run `ripser` on the subgraph's distance matrix to produce H₀ and H₁ persistence diagrams.
-3. Vectorise each diagram using a persistence landscape (Module 9) or persistence image.
-4. Concatenate the landscape or image vector with the original feature vector.
-5. Train a standard MLP, random forest, or gradient boosting model on the augmented features.
+Testing whether $m > 1$ matters is typically done with likelihood-ratio tests comparing transition matrices of different orders. These tests are parametric: they assume the extra history enters transition probabilities in a specific linear or log-linear form. If the true memory structure is non-linear — if, for example, the effect of prolonged poverty interacts with household composition in a complex way — parametric tests may fail to detect it.
 
-This approach is simple to implement and does not require specialised TDA-aware training infrastructure. Its limitation is that the topological features are precomputed and fixed — the network cannot learn to weight different aspects of the persistence diagram differently during training. The landscape vectorisation is a linear function of the diagram, and if the task-relevant topology is encoded nonlinearly, the extraction step may discard it before training begins.
+## The Ladder Construction
 
-## Strategy 2: Topological Regularisation
+The **Markov memory ladder** addresses this by using topology instead of parametric assumptions. The construction proceeds in three stages:
 
-Topological regularisation adds a **topological loss** $\mathcal{L}_{\text{topo}}$ to the training objective, penalising the network when the persistence diagram of its output (or internal representation) deviates from a target topology:
+**Stage 1 — Define order-$m$ embeddings.** For each household $i$ observed at times $t, t+1, \ldots, t+m-1$, form the concatenated vector:
 
-$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{task}} + \lambda \cdot \mathcal{L}_{\text{topo}}$$
+$$
+\mathbf{x}_i^{(m)} = (x_{i,t}, x_{i,t+1}, \ldots, x_{i,t+m-1}) \in \mathbb{R}^{mk},
+$$
 
-The topological loss is typically the sum of squared persistence discrepancies between the current diagram and the target diagram, differentiable with respect to the network weights through the use of sub-gradient or implicit differentiation techniques. The `pytorch-topological` library implements several differentiable topological loss functions including the **signature loss** (penalising the difference in persistence barcodes), the **Wasserstein topological loss** (penalising diagram distance from a target), and the **connectivity loss** (penalising unwanted connected components in the output).
+where $k$ is the number of variables measured per period. This embeds the household's $m$-period history as a single point in $mk$-dimensional space. The collection of all such vectors forms an order-$m$ **history point cloud**.
 
-```python
-# {/* Pyodide code runner slot */}
-# import torch
-# from torch import nn
-# from pytorch_topological.nn import VietorisRipsComplex, SummaryStatisticLoss
+**Stage 2 — Compute persistence diagrams.** Apply the Vietoris–Rips filtration to each history point cloud $\mathcal{X}^{(m)}$ for $m = 1, 2, \ldots, M$, obtaining a sequence of persistence diagrams $\text{Dgm}^{(m)}$.
 
-# class WelfareEncoder(nn.Module):
-#     def __init__(self, input_dim, latent_dim):
-#         super().__init__()
-#         self.encoder = nn.Sequential(
-#             nn.Linear(input_dim, 64),
-#             nn.ReLU(),
-#             nn.Linear(64, latent_dim),
-#         )
-#
-#     def forward(self, x):
-#         return self.encoder(x)
+**Stage 3 — Climb the ladder.** Compute the Wasserstein distance between consecutive diagrams:
 
-# model = WelfareEncoder(input_dim=6, latent_dim=2)
-# topo_loss_fn = SummaryStatisticLoss('persistence_entropy')
-# vr = VietorisRipsComplex(dim=1)
+$$
+d_m = W_2\!\left(\text{Dgm}^{(m)},\, \text{Dgm}^{(m+1)}\right), \quad m = 1, 2, \ldots, M-1.
+$$
 
-# Training loop sketch
-# for batch_x, batch_y in dataloader:
-#     z = model(batch_x)
-#     # Compute VR complex over latent batch
-#     persistence_info = vr(z)
-#     task_loss = criterion(z, batch_y)
-#     topo_loss = topo_loss_fn(persistence_info)
-#     loss = task_loss + 0.1 * topo_loss
-#     loss.backward()
-#     optimiser.step()
-```
+The sequence $d_1, d_2, \ldots, d_{M-1}$ is the **memory ladder**. If the sequence decays to zero — each step adds less and less new topological structure — the process is consistent with Markov dynamics: history beyond the current state adds no structural information. If the sequence remains elevated or exhibits a non-monotone pattern — new topological features continue to appear as the history window expands — the data carries genuine memory that violates the Markov assumption.
 
-## Sublevel Persistence of Neural Activations
+## Reading the Ladder
 
-A third integration point is **post-hoc audit**: after training a standard neural network on welfare prediction, apply TDA to the network's internal activations to determine whether the learned representation preserves the known topological structure of the data.
+Three archetypal ladder patterns have substantively different interpretations:
 
-The tool for this is sublevel set persistence. For a trained network $f: \mathbb{R}^d \to \mathbb{R}^k$, extract the intermediate-layer activations $a(x) \in \mathbb{R}^m$ for all data points $x$ in the validation set. Construct a scalar function $g: X \to \mathbb{R}$ from these activations (e.g., the norm $\|a(x)\|_2$ or the first PCA component of the activation matrix). Compute the sublevel set persistence of $g$ — the persistent homology of the filtration defined by $g^{-1}(-\infty, t]$ as $t$ grows from $\min g$ to $\max g$. The resulting diagram characterises the topology of the activation landscape.
+A **steeply decaying ladder** ($d_1 \gg d_2 \approx d_3 \approx \cdots \approx 0$) indicates that one period of history beyond the current state captures all structural memory. First-order Markov dynamics held, or at most a second-order model is sufficient.
 
-For a welfare-score predictor where the original data has a known persistent H₁ feature (Module 3), the sublevel persistence of the final hidden layer should also show a persistent H₁ feature of comparable magnitude if the network learned a topologically faithful representation. A flat diagram (no persistent H₁ in the activation landscape) indicates the network learned to solve the task by collapsing the cyclical structure — perhaps exploiting a correlation that is not the structural signal.
+A **slowly decaying ladder** ($d_1 > d_2 > \cdots > 0$, all non-negligible) indicates long-range memory: households accumulating disadvantage across many periods remain topologically distinct from those with shorter poverty spells, at all history lengths tested. Standard Markov models are fundamentally inappropriate for this population.
 
-## Application: Poverty-Score Prediction with Topological Fidelity
+A **non-monotone ladder** ($d_m$ rises at some orders and falls at others) indicates complex temporal structure — perhaps seasonal cycles in poverty incidence, institutional intervention points that generate new topological features at specific lag distances, or heterogeneous subpopulations with different memory structures that become visible at different temporal scales.
 
-The motivating application from **Papers 7 and 8** is poverty-severity scoring for policy targeting: predict a welfare-vulnerability score for each household that reflects not just current income but the structural trajectory risk implied by the household's position in welfare space. Standard regression models trained to minimise squared prediction error will learn to approximate the mean trajectory, potentially discarding the cyclical structure that predicts recurrence risk. A topological regularisation approach adds a loss term penalising the disappearance of the H₁ features in the latent space, ensuring the learned score function preserves the poverty-cycle structure detected by TDA rather than averaging over it.
+## From the Ladder to Policy
 
-The connection to Papers 7 and 8 is direct: Paper 7 develops the sublevel persistence audit methodology for welfare predictors trained on Universal Credit assessment data, finding that standard gradient-boosting models consistently suppress the persistent H₁ feature even when achieving high predictive accuracy. Paper 8 tests whether topological regularisation recovers this structure without sacrificing predictive performance, and evaluates the trade-off between task accuracy and topological fidelity as a function of the regularisation weight $\lambda$.
+The practical import of a non-trivial ladder is methodological and substantive. Methodologically, it invalidates transition-matrix based poverty trap definitions that implicitly assume Markov dynamics. Substantively, it provides evidence that poverty has a *path-dependent* structure: where you end up depends not just on where you are but on how long you have been there and what route you took. This finding has direct implications for policy design: interventions targeted at households currently at the poverty threshold will be less effective than the Markov model predicts if prolonged poverty has permanently altered a household's structural position in the data manifold.
+
+## A Notional Interactive
+
+A future interactive for this module would let you load stylised panel data, adjust the memory order $m$, and watch the point cloud grow in dimensionality as $m$ increases, while a chart below tracks the Wasserstein distance between consecutive diagrams. You would be able to compare a dataset with artificially planted long-run memory (a synthetic poverty trap) to a Markov dataset with the same marginal distributions, and see the ladder clearly distinguish them. This would make concrete the otherwise abstract claim that topology detects memory without specifying its functional form.
 
 ## How This Module Connects
 
-This module bridges all of Path 4's technical content with the machine-learning applications that are increasingly prevalent in welfare-administration contexts. The tools here — `pytorch-topological`, sublevel persistence audit, and topological loss functions — are the operational link between the theoretical TDA methods of Modules 1–9 and the fairness and deployment concerns of Module 11. A welfare-scoring system that has been audited for topological fidelity (sublevel persistence audit showing preserved H₁) and trained with topological regularisation represents the current state of the art in structurally-grounded algorithmic welfare prediction.
+The Markov memory ladder is first introduced theoretically in **Chapter 10** of *Counting Lives*, which traces the intellectual history of poverty-trap models from Lewis (1954) to Dasgupta–Ray (1986) to contemporary panel-data approaches, and argues that all of them implicitly assume a topology of poverty dynamics that the data may not support. **Chapter 11** presents early empirical results using the ladder on UK panel data, identifying memory depths of $m = 3$ to $m = 5$ in different subpopulations. The full formal development appears in **Paper 1** of the research portfolio, which treats the **markov-memory-ladder** method as the primary technical contribution.

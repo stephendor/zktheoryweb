@@ -54,9 +54,9 @@ Without access to model weights, training data, or deployment code, external aud
 
 The structural problem is asymmetric access. The auditor must hypothesise which demographic dimensions to probe, construct test inputs that isolate the variable of interest, and demonstrate a systematic pattern rather than individual cases. System operators can contest audit methodologies, claim that test conditions do not reflect production behaviour, and invoke commercial confidentiality over deployment details. The legal burden of proof in discrimination claims under the Equality Act 2010 requires the claimant to establish a prima facie case before the burden shifts to the defendant — a standard difficult to meet from the outside of a black-box system.
 
-## A Notional Tool for Explanation Instability
+## A Note on the Interactive
 
-No interactive is embedded in this module. A useful companion exercise would be a tool that trains a small neural network on synthetic welfare data and then demonstrates SHAP value instability: showing how the explanation for a near-threshold individual changes as their features are perturbed slightly, while the predicted score remains approximately constant. The exercise would make viscerally clear that SHAP explanations are properties of the local approximation algorithm, not of the model's internal representations — and therefore cannot fulfil the legal and ethical function that regulators have assigned to them.
+This module does not yet have a dedicated interactive. A tool planned for Phase 6 will train a small neural network on synthetic welfare data and demonstrate SHAP value instability: the explanation for a near-threshold individual changes as their features are perturbed slightly, while the predicted score stays approximately constant. This makes visible that SHAP explanations are properties of a local approximation algorithm, not the model’s internal representations — and therefore cannot carry the legal and ethical weight regulators assign to them.
 
 ## How This Module Connects
 

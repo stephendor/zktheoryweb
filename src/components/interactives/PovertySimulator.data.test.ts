@@ -306,7 +306,7 @@ describe('populationBelowThreshold', () => {
   });
 
   it('returns approximately 0.5 near the population distribution median', () => {
-    // Median of log-normal = exp(μ) = POPULATION_MEAN × exp(−σ²/2) ≈ £23,388
+    // Median of log-normal = exp(μ) = POPULATION_MEAN × exp(−σ²/2) ≈ £35,000
     const median = POPULATION_MEAN * Math.exp(-(0.6 * 0.6) / 2);
     const rate = populationBelowThreshold(median);
     expect(rate).toBeGreaterThan(0.48);

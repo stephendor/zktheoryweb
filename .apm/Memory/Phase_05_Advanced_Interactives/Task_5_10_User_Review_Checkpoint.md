@@ -1,7 +1,7 @@
 ---
 agent: Manager (GitHub Copilot)
 task_ref: Task 5.10 – User Review Checkpoint: Phase 5
-status: Partial
+status: Partial — QA Sprint active, Groups A–D closed, E and F remain open
 ad_hoc_delegation: false
 compatibility_issues: false
 important_findings: true
@@ -30,17 +30,25 @@ All fixes committed to `phase-5/advanced-interactives` at `439003e`.
 
 ### Confirmed bugs / calibration problems
 
-1. **Poverty Threshold Simulator — rate mismatch**
-   The three threshold values are correct UK 2024 data (MIS, 60%-median, DWP). However the log-normal population model has `POPULATION_MEAN=28,000` (producing an implied median of ~£23,300) while the relative and DWP thresholds are calibrated against `RELATIVE_MEDIAN=35,000`. The chart shows ~40–43% of the population below the relative poverty line, versus the actual UK rate of ~17%. The area-chart line position is right; the shaded percentage is wrong. Needs log-normal parameters recalibrated (`POPULATION_MEAN` → ~£33,000 or `POPULATION_MEDIAN` anchor) or explicit prose noting the curve is stylised and not empirical.
-   **File:** `src/components/interactives/PovertySimulator.data.ts`
+1. **Poverty Threshold Simulator — rate mismatch** ✅ RESOLVED (QA Sprint session 1)
+   Three-stage fix applied:
+   - Re-parameterised log-normal by median (£35,000) not mean; `POPULATION_MEDIAN` is now the anchor, `POPULATION_MEAN` is a derived export (~£41,900).
+   - `calculateThreshold()` now equivalises the threshold (÷ OECD factor) before querying the CDF, so relative/DWP rates are invariant across household sizes (~20%/~19%).
+   - `ChartInner` now computes a household-scaled density curve (mu = ln(POPULATION_MEDIAN × OECD factor)) so the shaded area visually matches the rate readout for any household composition.
+   Files changed: `src/components/interactives/PovertySimulator.data.ts`, `src/components/interactives/PovertySimulator.tsx`.
+   Build: ✓ clean. Tests: 41/41. Lint: 0 errors.
 
-2. **Filtration Playground — "Topological Features" panel behaviour unclear to user**
-   User reported: features island doesn't seem to update, text description doesn't update. From static code analysis: β₀ initialises at 0 (correct — no points loaded), β₀ rises to n on load (correct — n isolated components). The Betti animation counter runs via RAF and could lag visibly on slower machines. Text description is in a `useMemo` that updates correctly. The event log only fires on β changes, so at step 0 it correctly shows empty. Possible UX issue: "Connected components (β₀)" counter showing n=8 on load looks wrong to a user who expects "0 until connected". **Needs live testing** — can't fully diagnose from static analysis.
-   **File:** `src/components/interactives/FiltrationPlayground.tsx`
+2. **Filtration Playground — "Topological Features" panel behaviour unclear to user** ✅ RESOLVED (QA Sprint session 1)
+   B2 (panel not updating) and B3 (text description) confirmed non-issues after live testing — behaviour is correct.
+   B1 (Betti counter initial state): no change made; β₀ = n on load is mathematically correct and user accepted this.
+   Additional improvements made:
+   - Radius sweep circles: `stroke-opacity` raised from 0.1 → 0.45, `stroke-width` 1 → 1.5 (`FiltrationPlayground.css`).
+   - Simplex count subtitle added to Betti display box: "X vertices · Y edges · Z triangles", updates live with `aria-live="polite"` (`FiltrationPlayground.tsx` + `.css`).
 
-3. **Mapper Parameter Lab — display sizing**
-   User flagged as "display is problematic due to the size of the viewing island". Not yet diagnosed. Flagged for dedicated review. May be a CSS panel height / flexbox overflow issue, or the force simulation viewport not matching the panel dimensions.
-   **File:** `src/components/interactives/MapperParameterLab.tsx` + `.css`
+3. **Mapper Parameter Lab — display sizing** ✅ RESOLVED (QA Sprint session 1)
+   - `ResponsiveContainer minHeight`: 340 → 440px; `panelH` cap: 340 → 480px (`MapperParameterLab.tsx`).
+   - Pan + zoom added to Mapper graph panel via `d3.zoom` (0.25×–4×, drag to pan, scroll to zoom). Reset view button bottom-right of panel. Cursor changes to grab/grabbing. View auto-resets on parameter/preset change (`MapperParameterLab.tsx`, `.css`).
+   - Node tooltip rewritten from internal label (`node_2_0 · 8 pts · mean filter: 0.342`) to plain language (`8 points clustered here · mean PCA: 0.342`), using the active filter name. `filterFnName` prop added to `MapperGraphPanelProps`.
 
 ### Not yet reviewed
 

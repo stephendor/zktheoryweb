@@ -116,6 +116,37 @@
 
 /* ── Tooltip (shared .viz-tooltip via global.css, no override needed) ─────── */
 
+/* ── Pan + zoom affordances ───────────────────────────────────────────────── */
+
+.mpl-svg--pannable {
+  cursor: grab;
+}
+
+.mpl-svg--pannable:active {
+  cursor: grabbing;
+}
+
+.mpl-zoom-reset {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-muted, #555555);
+  background: var(--color-neutral-surface, #ffffff);
+  border: 1px solid var(--color-neutral-border, #DEDBD4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.mpl-zoom-reset:hover {
+  opacity: 1;
+  color: var(--color-neutral-body, #1A1A1A);
+}
+
 /* ── Controls panel ────────────────────────────────────────────────────────── */
 
 .mpl-controls {

@@ -477,6 +477,14 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
                 </span>
                 <span className="fp-betti-label">Voids (β₂)</span>
               </div>
+              <p className="fp-betti-subtitle" aria-live="polite">
+                {(() => {
+                  const V = currentComplex.filter((s) => s.dimension === 0).length;
+                  const E = currentComplex.filter((s) => s.dimension === 1).length;
+                  const T = currentComplex.filter((s) => s.dimension === 2).length;
+                  return `${V} vertices · ${E} edges · ${T} triangles`;
+                })()}
+              </p>
             </div>
 
             {/* Feature event log */}
