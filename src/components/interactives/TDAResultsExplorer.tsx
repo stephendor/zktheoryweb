@@ -438,9 +438,9 @@ function PersistenceDiagramPanel({
 
         {/* Legend */}
         <rect className="tre-legend-bg" x={plotW - 88} y={4} width={84} height={44} rx={3} />
-        <circle cx={plotW - 76} cy={16} r={5} fill="var(--color-cl-ochre, #c07a2a)" />
+        <circle cx={plotW - 76} cy={16} r={5} fill="var(--color-tda-teal, #1a5f6a)" />
         <text className="tre-legend-text" x={plotW - 67} y={16}>H₀ component</text>
-        <circle cx={plotW - 76} cy={32} r={5} fill="var(--color-tda-teal, #1a5f6a)" />
+        <circle cx={plotW - 76} cy={32} r={5} fill="var(--color-viz-6, #d55e00)" />
         <text className="tre-legend-text" x={plotW - 67} y={32}>H₁ loop</text>
 
         {/* Feature points */}

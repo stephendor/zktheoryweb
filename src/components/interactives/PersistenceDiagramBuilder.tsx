@@ -539,7 +539,7 @@ interface PersistenceDiagramProps {
 }
 
 const H0_COLOR = 'var(--color-tda-teal, #2a7d8f)';
-const H1_COLOR = 'var(--color-tda-slate, #3a5a8c)';
+const H1_COLOR = 'var(--color-cl-ochre, #c8873e)';
 
 function PersistenceDiagram({
   features,

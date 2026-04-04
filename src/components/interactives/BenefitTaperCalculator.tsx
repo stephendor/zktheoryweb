@@ -611,7 +611,7 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
 
   // Text description for TextDescriptionToggle
   const textDescription = [
-    `Taper rate: ${CURRENT_PARAMS.taperRate * 100}%.`,
+    `Taper rate: ${Math.round(CURRENT_PARAMS.taperRate * 100)}%.`,
     `Work allowance threshold applied: £${workAllowance}/month${hasHousingElement ? ' (with housing element)' : ' (no housing element)'}.`,
     `UC exhausts at approximately £${ucExhaustsAt?.toFixed(0) ?? 'N/A'} gross monthly earnings.`,
     showComparison
