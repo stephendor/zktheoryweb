@@ -3,6 +3,7 @@ title: 'Counter-Mathematics'
 path: 'mathematics-of-poverty'
 module_number: 8
 core_concept: 'Participatory statistics and data justice propose that the measured should control the measurement'
+interactive_slug: 'barcode-comparator'
 connections:
   chapters: [15, 16, 17]
   papers: []
@@ -52,9 +53,21 @@ Any poverty measure that becomes a target will eventually cease to describe the 
 
 Counter-mathematics does not solve Goodhart's problem by finding a better metric. It proposes that the instability of any single metric under political pressure is an argument for distributing metric authority — for having multiple, community-controlled poverty measures that no single government can optimise its way through. The resulting landscape of measures is harder to navigate and resists simple international comparison. But it is far more robust against the dynamic by which any fixed measure eventually becomes a target and any target eventually becomes an obstacle to the reality it was once designed to illuminate.
 
-## A Note on the Interactive
+## Using the Interactive: Barcode Comparator
 
-This module does not yet have a dedicated interactive. A tool planned for Phase 6 will let you explore a synthetic participatory dataset constructed by a hypothetical community, comparing the persistence diagram produced when the dataset uses community-defined dimensions (sense of safety, access to green space, neighbourhood trust) against the same population described in official deprivation indices. The divergence between the two barcodes is the mathematical signature of the difference between being measured and being heard.
+The **Barcode Comparator** presents the same 30 synthetic households described in two ways: once using official DWP deprivation index dimensions (income, employment, health, education, housing) and once using the community-defined dimensions from the hypothetical East Manchester participatory project (safety, green space access, neighbourhood trust, public transport, childcare access).
+
+The data have been deliberately designed to contain three groups. Ten households are officially deprived (low income and employment scores) but community-resilient: they live in neighbourhoods with high trust, good safety scores, and accessible green space. Ten households are not officially deprived but community-isolated: their income and employment scores are acceptable, but they lack access to green space, their neighbourhood trust is very low, and childcare is unavailable. The final ten households are consistently deprived: both systems record them as poorly off.
+
+Because the two coordinate systems arrange these 30 points differently — official deprivation clusters the first and last groups together (both have low income) while separating the middle group; community dimensions cluster the first group separately (both have high trust and safety) and place the middle group near the consistently deprived — the Vietoris-Rips filtration on the two projected point clouds detects different topological structure.
+
+The **H₀ barcode** shows how connected components merge as the filtration radius ε grows. Under the official coordinate system, the three groups behave differently: the first and third groups (both officially deprived) merge early at small ε, while the second group (not officially deprived) joins later. Under the community coordinate system, the groupings are rearranged: the first group (community-resilient) and the second group (community-isolated) are separated by the same ε values, but they form different early clusters.
+
+The **H₁ barcode** shows loops: configurations of households that are mutually near-connected but do not form a simple cluster. The number and persistence of H₁ intervals differs between the two systems, reflecting the different geometric structure of deprivation under each measurement framework.
+
+The **bottleneck distance** at the top quantifies how different the two persistence diagrams are. A value of 0 would mean the topological features are identical: the two measurement systems would produce the same structural picture of deprivation. A positive value means that the official and community systems record structurally different patterns in the same population. This is not a statistical artefact — it is the mathematical formalisation of the claim in Chapter 16 that different measurement frameworks can produce genuinely different rather than merely differently-labelled pictures of poverty.
+
+The stability theorem of Cohen-Steiner et al. (2007) guarantees that if two measurement functions differ by at most δ in the L∞ norm, their persistence diagrams differ by at most δ in the bottleneck distance. The bottleneck distances observed here exceed what could be explained by measurement error alone — they reflect a structural difference in the dimensions of welfare that the two frameworks choose to encode.
 
 ## How This Module Connects
 

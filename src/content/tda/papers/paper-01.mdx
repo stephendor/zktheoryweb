@@ -76,18 +76,32 @@ Monthly activity sequences are constructed following the BHPS coding scheme: emp
 
 ## Results
 
-### Topological Signal
+### Markov Memory Ladder: Scalar Statistics
 
-The primary finding is that observed trajectory topology significantly exceeds the Markov-1 null. The principal test statistic (normalised sum of persistent H₁ lifespans) returns z ≈ −3.7 under the permutation null, corresponding to p < 0.001.
+Under total-persistence testing, H₀ structure is order-dependent (order-shuffle *p* < 0.005) but **not** rejected by the Markov-1 null (Markov-1 *p* = 1.000). Both Markov-2 and label-shuffle controls behave as expected (*p* = 1.000 and *p* = 0.315 respectively). The scalar test is thus consistent with a first-order Markov generating process: observed persistence sums are within the null distribution.
 
-### Robustness
+### The Wasserstein Reversal
 
-The signal is consistent across BHPS and Understanding Society waves, across gender subgroups, and across three alternative distance metrics. It is not attributable to length differences or state marginal distributions.
+Upgrading the test statistic to Wasserstein diagram-level distances — comparing the full geometric configuration of persistence features rather than collapsing them to a scalar — **reverses the Markov-1 conclusion**. Under Wasserstein testing (100 permutations, 2,000 landmarks), the Markov-1 null is rejected for H₀ (*p* = 0.002): observed persistence diagrams differ significantly in geometric configuration from Markov-generated diagrams, even though Markov surrogates produce more total persistence. This discrepancy — detectable only because both statistics were applied to the same null battery — is the paper's central methodological finding. Total persistence masks structural differences that Wasserstein distances detect.
+
+### Seven Mobility Regimes
+
+Gaussian mixture modelling (BIC-optimised) of the embedded trajectory space identifies seven mobility regimes: (R1) stable high-income employment, (R2) stable mid-income employment, (R3) employment-income churning, (R4) inactivity to employment transitions, (R5) inactivity-income churning, (R6) persistently low income, and (R7) mixed trajectories. The regime typology qualitatively resembles what sequence analysis finds in similar data; TDA adds multi-scale geometric characterisation and formal significance tests (ARI = 0.26 at matched *k* = 7 versus OM baseline).
+
+### Regime Stickiness
+
+Overlapping 10-year career-phase window analysis confirms extreme stickiness: among 7,453 individuals starting in disadvantaged regimes (R3, R5, R6), only 416 (5.6%) escape to advantaged regimes within the observation window (11.0% under non-overlapping windows). Phase-order shuffle testing (*n* = 500) finds no evidence that phase ordering creates additional topology (H₀ *p* = 0.98, H₁ *p* = 0.542).
+
+### Stratification and Cross-Era Validation
+
+Stratified Wasserstein distances reveal significant topological differences by gender, parental NS-SEC, and birth cohort; 30/50 tests survive Benjamini-Hochberg FDR correction at *q* < 0.05. BHPS cross-era replication (1991–2008) confirms the Wasserstein discrepancy with stronger results — Markov-1 H₀ *p* = 0.000 under both total persistence and Wasserstein — consistent with the longer observation window (mean 14.5 years vs 12.9 years in USoc).
 
 ## Discussion
 
-The Markov Memory Ladder result motivates the subsequent papers in this programme. If trajectories carry persistent topological structure beyond Markov memory, then higher-order tools — mapper graphs, zigzag persistence, multi-parameter persistence — are the natural instruments for studying that structure.
+The central methodological contribution of this paper is the demonstration that two legitimate summary statistics — total persistence and Wasserstein diagram-level distance — yield opposite verdicts about whether the Markov-1 null accounts for trajectory topology. This is not a paradox: total persistence is a marginal summary that can be matched by Markov surrogates that produce many short-lived features; Wasserstein distance compares the full geometric configuration of the diagram and detects structural differences invisible to the scalar. The implication for TDA hypothesis testing in empirical applications is direct: choosing a test statistic is not a technical formality but a substantive decision.
+
+Finding no evidence for H₁ loops (cycles) is the study's cleanest negative result. The absence of significant cyclical structure in embedding space is a substantive finding: it suggests that employment churning produces fragmentation (H₀, cluster separation) but does not create persistent loop topology of the kind that would be expected from absorbing cycles where return is structurally guaranteed. This distinction — between fragmented and genuinely cyclic topology — was not available to standard sequence analysis methods.
 
 ## Conclusion
 
-UK employment trajectories exhibit robust topological memory. The MML provides the baseline against which all subsequent topological analyses in this programme are calibrated.
+UK employment trajectories exhibit robust topological structure that cannot be fully accounted for by first-order Markov dynamics — but the conclusion depends on the test statistic. Total persistence says Markov-1 is sufficient; Wasserstein distance says it is not. The Markov Memory Ladder formalises this as a graded hypothesis-testing framework whose outputs provide the baseline calibration for higher-order topological methods in Papers 2–4.

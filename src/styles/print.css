@@ -104,7 +104,10 @@
   blockquote,
   table,
   figure,
-  .bib-entry {
+  .bib-entry,
+  .ec-card,
+  .key-claims,
+  .connections-panel {
     page-break-inside: avoid;
   }
 
@@ -158,6 +161,36 @@
   th {
     background: #eee !important;
     font-weight: bold;
+  }
+
+  /* ── 11. Force light theme when printing (overrides data-theme="dark") ─────── */
+  /*
+   * If the user has dark mode active, printing must still produce a
+   * white page with black text. Reset all neutral tokens to light values.
+   */
+  :root,
+  [data-theme="dark"] {
+    --color-neutral-bg:      #FAFAF7;
+    --color-neutral-body:    #1A1A1A;
+    --color-neutral-muted:   #555555;
+    --color-neutral-border:  #DEDBD4;
+    --color-neutral-surface: #FFFFFF;
+    --color-neutral-subtle:  #EDEAE2;
+    --color-cl-charcoal:     #2C2C2C;
+    --color-cl-cream:        #F5F0E8;
+    --color-tda-warm-grey:   #E8E6E0;
+  }
+
+
+  /* ── 12. Hide interactive components (JS/canvas — non-printable) ─────────── */
+  /*
+   * Three.js renders to <canvas>; D3 interactives on the dedicated
+   * /learn/interactives/* pages are wrapped in .interactive-page.
+   * Neither prints meaningfully, so suppress both.
+   */
+  canvas,
+  .interactive-page {
+    display: none !important;
   }
 
 } /* end @media print */

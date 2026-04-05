@@ -28,3 +28,6 @@ storybook-static/
 playwright-report/
 test-results/
 .playwright-mcp/
+
+# Content source — local reference files, not committed
+content-source/

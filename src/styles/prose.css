@@ -396,3 +396,95 @@
   background: var(--color-neutral-border);
   color: var(--color-neutral-body);
 }
+
+/* prose pre uses --color-cl-charcoal as a "dark" code bg in light mode;
+   in dark mode that token flips to cream (#E8E4DC) — override explicitly. */
+[data-theme="dark"] .prose pre {
+  background: var(--color-neutral-subtle);
+}
+
+/* ── 12. Two-Lenses toggle & lens sections ───────────────────────────────── */
+/*
+ * Lens-based show/hide for mathematical interlude pages.
+ * .interlude-content[data-lens] controls visibility of .is-politics
+ * and .is-math sections inside it.
+ * Default (data-lens="politics"): math sections hidden.
+ * When data-lens="math": politics sections hidden.
+ */
+
+/* Lens section base — no visual style, only layout logic */
+.lens-section {
+  /* no default overrides needed */
+}
+
+/* Hide math sections when lens is "politics" (default) */
+.interlude-content[data-lens="politics"] .is-math {
+  display: none;
+}
+
+/* Hide politics sections when lens is "math" */
+.interlude-content[data-lens="math"] .is-politics {
+  display: none;
+}
+
+/* TwoLensesToggle component styles */
+.two-lenses-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.two-lenses-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-neutral-muted);
+  white-space: nowrap;
+}
+
+.two-lenses-control {
+  display: flex;
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.two-lenses-btn {
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--color-neutral-border);
+  cursor: pointer;
+  color: var(--color-neutral-muted);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.two-lenses-btn:last-child {
+  border-right: none;
+}
+
+.two-lenses-btn:hover {
+  background-color: var(--color-neutral-subtle);
+  color: var(--color-neutral-body);
+}
+
+.two-lenses-btn--active {
+  background-color: var(--color-cl-red);
+  color: #fff;
+  font-weight: 600;
+}
+
+.two-lenses-btn--active:hover {
+  background-color: var(--color-cl-red-light);
+  color: #fff;
+}
+
+[data-theme="dark"] .two-lenses-btn--active {
+  background-color: var(--color-cl-red);
+}
+

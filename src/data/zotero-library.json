@@ -1,5 +1,5 @@
 {
-  "version": 351,
+  "version": 366,
   "items": [
     {
       "key": "692VLFHW",
@@ -3210,7 +3210,7 @@
     },
     {
       "key": "CKZT2NIC",
-      "version": 189,
+      "version": 366,
       "itemType": "book",
       "title": "Social foundations of postindustrial economies",
       "creators": [
@@ -3252,13 +3252,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "XYIV4U6L",
-      "version": 188,
+      "version": 366,
       "itemType": "book",
       "title": "The three worlds of welfare capitalism",
       "creators": [
@@ -3300,13 +3356,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "PIFQMBYX",
-      "version": 187,
+      "version": 366,
       "itemType": "conferencePaper",
       "title": "PersLay: A neural network layer for persistence diagrams and new graph topological signatures",
       "creators": [
@@ -3361,13 +3435,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "CPHWMP7E",
-      "version": 186,
+      "version": 366,
       "itemType": "conferencePaper",
       "title": "Weisfeiler and Lehman go cellular: CW Networks",
       "creators": [
@@ -3422,13 +3514,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "QA7WHMBS",
-      "version": 185,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Graph attention networks",
       "creators": [
@@ -3486,13 +3596,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "IP5WVD4L",
-      "version": 184,
+      "version": 366,
       "itemType": "conferencePaper",
       "title": "Semi-supervised classification with graph convolutional networks",
       "creators": [
@@ -3538,13 +3666,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "DBN56BVG",
-      "version": 183,
+      "version": 365,
       "itemType": "journalArticle",
       "title": "Combinatorial complex neural networks",
       "creators": [
@@ -3602,7 +3748,63 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
@@ -3619,7 +3821,7 @@
     },
     {
       "key": "KPEHHGF7",
-      "version": 181,
+      "version": 366,
       "itemType": "book",
       "title": "Geometric deep learning: Grids, groups, graphs, geodesics, and gauges",
       "creators": [
@@ -3676,13 +3878,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "4XUWAZCM",
-      "version": 180,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "UMAP: Uniform manifold approximation and projection for dimension reduction",
       "creators": [
@@ -3736,13 +3956,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "DALAMGWA",
-      "version": 179,
+      "version": 366,
       "itemType": "report",
       "title": "Levelling up the United Kingdom",
       "creators": [
@@ -3778,13 +4016,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "USQC2ZSN",
-      "version": 178,
+      "version": 366,
       "itemType": "book",
       "title": "Non-linear time series: a dynamical system approach",
       "creators": [
@@ -3826,13 +4082,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "46LDD5A4",
-      "version": 177,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "The representation of social processes by Markov models",
       "creators": [
@@ -3881,13 +4155,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "J8L8UP4M",
-      "version": 176,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "The economics of poverty traps and persistent poverty: Empirical and policy implications",
       "creators": [
@@ -3936,13 +4228,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "JAG3I3XB",
-      "version": 175,
+      "version": 366,
       "itemType": "bookSection",
       "title": "Poverty traps",
       "creators": [
@@ -4000,13 +4310,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "ACJSA79I",
-      "version": 174,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Poverty trajectories, triggering events and exit routes",
       "creators": [
@@ -4050,13 +4378,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "YE3BR9K3",
-      "version": 173,
+      "version": 364,
       "itemType": "book",
       "title": "Changing fortunes: Income mobility and poverty dynamics in Britain",
       "creators": [
@@ -4098,13 +4444,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "Q9KRN299",
-      "version": 172,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Cumulative advantage as a mechanism for inequality: A review of theoretical and empirical developments",
       "creators": [
@@ -4153,13 +4555,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "GDM7WH5C",
-      "version": 171,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "A new model of social class? Findings from the BBC's Great British Class Survey experiment",
       "creators": [
@@ -4217,13 +4637,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "TF8ITDEH",
-      "version": 170,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Trends in intergenerational class mobility in modern Britain: Evidence from national surveys, 1972–2005",
       "creators": [
@@ -4272,13 +4710,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "IYQ6ICXQ",
-      "version": 169,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Social class mobility in modern Britain: Changing structure, constant process",
       "creators": [
@@ -4322,13 +4778,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "8SWIC8L8",
-      "version": 168,
+      "version": 366,
       "itemType": "book",
       "title": "Social mobility and education in Britain",
       "creators": [
@@ -4375,13 +4849,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "I7IJME2G",
-      "version": 167,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Intergenerational persistence in income and social class: The effect of within-group inequality",
       "creators": [
@@ -4435,13 +4927,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "UV729TMN",
-      "version": 166,
+      "version": 366,
       "itemType": "bookSection",
       "title": "Changes in intergenerational mobility in Britain",
       "creators": [
@@ -4504,13 +5014,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "7CL485WJ",
-      "version": 165,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Simplicial models of social contagion",
       "creators": [
@@ -4569,13 +5097,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "SL27A2EV",
-      "version": 164,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "The importance of the whole: Topological data analysis for the network neuroscientist",
       "creators": [
@@ -4634,13 +5180,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "XPZYP9G8",
-      "version": 163,
+      "version": 363,
       "itemType": "journalArticle",
       "title": "Hierarchical structures of amorphous solids characterized by persistent homology",
       "creators": [
@@ -4698,13 +5262,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "ALJWN8JY",
-      "version": 162,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Single-cell topological RNA-seq analysis reveals insights into cellular differentiation and development",
       "creators": [
@@ -4762,13 +5382,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "SREHRAN9",
-      "version": 161,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Towards a new approach to reveal dynamical organization of the brain using topological data analysis",
       "creators": [
@@ -4826,13 +5464,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "I8ZG55FW",
-      "version": 160,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Topological data analysis of financial time series: Landscapes of crashes",
       "creators": [
@@ -4881,13 +5537,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "UK8QLE8T",
-      "version": 159,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Multipers: Efficient approximation of multiparameter persistence modules",
       "creators": [
@@ -4931,7 +5605,25 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
@@ -4948,7 +5640,7 @@
     },
     {
       "key": "S8N733WP",
-      "version": 157,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Barcodes of towers and a streaming algorithm for persistent homology",
       "creators": [
@@ -4997,13 +5689,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "NGXZS5L5",
-      "version": 156,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Zigzag persistence",
       "creators": [
@@ -5052,13 +5762,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "97RDC3K9",
-      "version": 155,
+      "version": 366,
       "itemType": "conferencePaper",
       "title": "Topological methods for the analysis of high dimensional data sets and 3D object recognition",
       "creators": [
@@ -5119,13 +5847,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "Y6BGINQK",
-      "version": 154,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Persistent homology of time-dependent functional networks constructed from coupled time series",
       "creators": [
@@ -5179,13 +5925,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "XRU7X3PP",
-      "version": 153,
+      "version": 362,
       "itemType": "journalArticle",
       "title": "Topology of random geometric complexes: A survey",
       "creators": [
@@ -5234,13 +5998,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "Y7AXWPIL",
-      "version": 152,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Persistent entropy for separating topological features from noise in Vietoris–Rips complexes",
       "creators": [
@@ -5294,13 +6114,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "PVNF8TA9",
-      "version": 151,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Fréchet means for distributions of persistence diagrams",
       "creators": [
@@ -5359,13 +6197,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "ME8PPC5W",
-      "version": 150,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Hypothesis testing for topological data analysis",
       "creators": [
@@ -5414,13 +6270,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "4WY447AJ",
-      "version": 149,
+      "version": 366,
       "itemType": "conferencePaper",
       "title": "Topological estimation using witness complexes",
       "creators": [
@@ -5476,13 +6350,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "QNZHU5WI",
-      "version": 148,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Ripser: Efficient computation of Vietoris–Rips persistence barcodes",
       "creators": [
@@ -5526,13 +6418,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "I6LUUTLT",
-      "version": 147,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Stability of persistence diagrams",
       "creators": [
@@ -5586,13 +6496,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "N3ARF7VD",
-      "version": 146,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Computing persistent homology",
       "creators": [
@@ -5641,13 +6569,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "9HTUWNPG",
-      "version": 145,
+      "version": 366,
       "itemType": "journalArticle",
       "title": "Topological persistence and simplification",
       "creators": [
@@ -5701,13 +6647,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/YE3BR9K3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "SHTYVPQ7",
-      "version": 144,
+      "version": 366,
       "itemType": "book",
       "title": "Computational topology: An introduction",
       "creators": [
@@ -5754,13 +6718,31 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/CKZT2NIC"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "9S7AFYQ5",
-      "version": 143,
+      "version": 361,
       "itemType": "journalArticle",
       "title": "Topology and data",
       "creators": [
@@ -5804,13 +6786,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "4CQX8EKP",
-      "version": 142,
+      "version": 360,
       "itemType": "journalArticle",
       "title": "Re-thinking residential mobility: Linking lives through time and space",
       "creators": [
@@ -5864,13 +6902,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/UHRZJXM3"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "UHRZJXM3",
-      "version": 141,
+      "version": 359,
       "itemType": "journalArticle",
       "title": "De-standardization of family-life trajectories of young adults: A cross-national comparison using sequence analysis",
       "creators": [
@@ -5919,13 +7013,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/B2EWS9GD"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "K54QYBS4",
-      "version": 140,
+      "version": 358,
       "itemType": "journalArticle",
       "title": "Class careers as sequences: An optimal matching analysis of work-life histories",
       "creators": [
@@ -5974,13 +7124,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/B2EWS9GD"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:44Z",
       "dateModified": "2026-03-24T01:40:44Z"
     },
     {
       "key": "B2EWS9GD",
-      "version": 139,
+      "version": 357,
       "itemType": "journalArticle",
       "title": "Comparing qualitative harmonic analysis and optimal matching: An exploratory study of occupational trajectories",
       "creators": [
@@ -6029,13 +7235,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/P4U64KWI"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:43Z",
       "dateModified": "2026-03-24T01:40:43Z"
     },
     {
       "key": "P4U64KWI",
-      "version": 138,
+      "version": 356,
       "itemType": "journalArticle",
       "title": "What matters in differences between life trajectories: A comparative review of sequence dissimilarity measures",
       "creators": [
@@ -6084,13 +7346,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:43Z",
       "dateModified": "2026-03-24T01:40:43Z"
     },
     {
       "key": "KXHQUUBQ",
-      "version": 137,
+      "version": 355,
       "itemType": "journalArticle",
       "title": "Multichannel sequence analysis applied to social science data",
       "creators": [
@@ -6149,13 +7467,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/KENMGQPN"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:43Z",
       "dateModified": "2026-03-24T01:40:43Z"
     },
     {
       "key": "KENMGQPN",
-      "version": 136,
+      "version": 354,
       "itemType": "journalArticle",
       "title": "Setting cost in optimal matching to uncover contemporaneous socio-temporal patterns",
       "creators": [
@@ -6199,13 +7573,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/U67D2TSZ",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:43Z",
       "dateModified": "2026-03-24T01:40:43Z"
     },
     {
       "key": "C2ZKTZEV",
-      "version": 135,
+      "version": 353,
       "itemType": "journalArticle",
       "title": "Sequence analysis and optimal matching methods in sociology",
       "creators": [
@@ -6254,13 +7684,69 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/Y6BGINQK",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/U67D2TSZ"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:43Z",
       "dateModified": "2026-03-24T01:40:43Z"
     },
     {
       "key": "U67D2TSZ",
-      "version": 134,
+      "version": 352,
       "itemType": "journalArticle",
       "title": "Sequence analysis: New methods for old ideas",
       "creators": [
@@ -6304,7 +7790,63 @@
       "collections": [
         "3YY2DRZH"
       ],
-      "relations": {},
+      "relations": {
+        "dc:relation": [
+          "http://zotero.org/users/19946020/items/4WY447AJ",
+          "http://zotero.org/users/19946020/items/7CL485WJ",
+          "http://zotero.org/users/19946020/items/8SWIC8L8",
+          "http://zotero.org/users/19946020/items/9S7AFYQ5",
+          "http://zotero.org/users/19946020/items/ACJSA79I",
+          "http://zotero.org/users/19946020/items/ALJWN8JY",
+          "http://zotero.org/users/19946020/items/B2EWS9GD",
+          "http://zotero.org/users/19946020/items/C2ZKTZEV",
+          "http://zotero.org/users/19946020/items/I8ZG55FW",
+          "http://zotero.org/users/19946020/items/IP5WVD4L",
+          "http://zotero.org/users/19946020/items/J8L8UP4M",
+          "http://zotero.org/users/19946020/items/KPEHHGF7",
+          "http://zotero.org/users/19946020/items/KXHQUUBQ",
+          "http://zotero.org/users/19946020/items/N3ARF7VD",
+          "http://zotero.org/users/19946020/items/PVNF8TA9",
+          "http://zotero.org/users/19946020/items/Q9KRN299",
+          "http://zotero.org/users/19946020/items/QA7WHMBS",
+          "http://zotero.org/users/19946020/items/SHTYVPQ7",
+          "http://zotero.org/users/19946020/items/SL27A2EV",
+          "http://zotero.org/users/19946020/items/UHRZJXM3",
+          "http://zotero.org/users/19946020/items/UK8QLE8T",
+          "http://zotero.org/users/19946020/items/XPZYP9G8",
+          "http://zotero.org/users/19946020/items/Y7AXWPIL",
+          "http://zotero.org/users/19946020/items/YE3BR9K3",
+          "http://zotero.org/users/19946020/items/46LDD5A4",
+          "http://zotero.org/users/19946020/items/4CQX8EKP",
+          "http://zotero.org/users/19946020/items/4XUWAZCM",
+          "http://zotero.org/users/19946020/items/97RDC3K9",
+          "http://zotero.org/users/19946020/items/9HTUWNPG",
+          "http://zotero.org/users/19946020/items/CKZT2NIC",
+          "http://zotero.org/users/19946020/items/CPHWMP7E",
+          "http://zotero.org/users/19946020/items/DALAMGWA",
+          "http://zotero.org/users/19946020/items/DBN56BVG",
+          "http://zotero.org/users/19946020/items/GDM7WH5C",
+          "http://zotero.org/users/19946020/items/I6LUUTLT",
+          "http://zotero.org/users/19946020/items/I7IJME2G",
+          "http://zotero.org/users/19946020/items/IYQ6ICXQ",
+          "http://zotero.org/users/19946020/items/JAG3I3XB",
+          "http://zotero.org/users/19946020/items/K54QYBS4",
+          "http://zotero.org/users/19946020/items/KENMGQPN",
+          "http://zotero.org/users/19946020/items/ME8PPC5W",
+          "http://zotero.org/users/19946020/items/NGXZS5L5",
+          "http://zotero.org/users/19946020/items/P4U64KWI",
+          "http://zotero.org/users/19946020/items/PIFQMBYX",
+          "http://zotero.org/users/19946020/items/QNZHU5WI",
+          "http://zotero.org/users/19946020/items/S8N733WP",
+          "http://zotero.org/users/19946020/items/SREHRAN9",
+          "http://zotero.org/users/19946020/items/TF8ITDEH",
+          "http://zotero.org/users/19946020/items/USQC2ZSN",
+          "http://zotero.org/users/19946020/items/UV729TMN",
+          "http://zotero.org/users/19946020/items/XRU7X3PP",
+          "http://zotero.org/users/19946020/items/XYIV4U6L",
+          "http://zotero.org/users/19946020/items/Y6BGINQK"
+        ]
+      },
       "dateAdded": "2026-03-24T01:40:43Z",
       "dateModified": "2026-03-24T01:40:43Z"
     },
@@ -7594,5 +9136,9 @@
       "dateModified": "2026-03-23T12:02:17Z"
     }
   ],
-  "fetchedAt": "2026-04-02T22:23:19.342Z"
+  "collections": {
+    "3YY2DRZH": "TDA-Research",
+    "KN9TUB59": "Counting Lives"
+  },
+  "fetchedAt": "2026-04-05T01:38:06.905Z"
 }

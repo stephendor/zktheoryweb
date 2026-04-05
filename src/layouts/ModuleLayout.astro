@@ -104,6 +104,26 @@ function isPresetId(id: string | undefined): id is PresetId {
 ---
 
 <BaseLayout title={title} description={core_concept} section="learn">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": title,
+      "description": core_concept,
+      "educationalLevel": "HigherEducation",
+      "isPartOf": {
+        "@type": "Course",
+        "name": toPathLabel(path)
+      },
+      "position": module_number,
+      "provider": {
+        "@type": "Person",
+        "name": "Stephen Dorling",
+        "url": "https://zktheory.org/about/"
+      },
+      "url": `https://zktheory.org${Astro.url.pathname}`
+    })} />
+  </Fragment>
 
   {/* ════════════════════════════════════════════════════════════════════
       BREADCRUMB — path label link + current module title

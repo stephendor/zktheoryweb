@@ -1,0 +1,339 @@
+/**
+ * HomologyEditor.css — Task 6.1b — Agent_Interactive_Advanced
+ *
+ * Styles for the Simplex / Homology Editor interactive.
+ *
+ * Palette: Mathematical — deep teal/slate-blue.
+ *   Active simplices: --color-viz-1 (orange for edges), --color-viz-3 (teal for triangles)
+ *   Ghost simplices: --color-neutral-muted (dashed, low opacity)
+ *   Betti counter emphasis: --color-viz-1 for β₀, --color-viz-3 for β₁
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.he-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+}
+
+/* ── Betti counter bar ─────────────────────────────────────────────────────── */
+
+.he-betti-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 2px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  background: var(--color-neutral-subtle, #edeae2);
+}
+
+.he-betti-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+}
+
+.he-betti-divider {
+  width: 2px;
+  height: 3.5rem;
+  background: var(--color-neutral-border, #dedbd4);
+  flex-shrink: 0;
+}
+
+.he-betti-symbol {
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-body, Georgia, serif);
+  font-style: italic;
+  color: var(--color-neutral-muted, #555);
+  font-variant-numeric: tabular-nums;
+}
+
+.he-betti-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  /* Colors applied to the two Betti elements via :first-child and :last-child */
+}
+
+.he-betti-item:first-child .he-betti-value {
+  color: var(--color-viz-1, #e69f00);
+}
+
+.he-betti-item:last-child .he-betti-value {
+  color: var(--color-viz-3, #009e73);
+}
+
+.he-betti-label {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  margin-top: var(--space-1, 0.25rem);
+}
+
+/* ── SVG responsive container ──────────────────────────────────────────────── */
+
+.he-responsive {
+  min-height: 340px;
+}
+
+/* ── SVG base ───────────────────────────────────────────────────────────────── */
+
+.he-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+/* ── Triangles ──────────────────────────────────────────────────────────────── */
+
+.he-triangle {
+  cursor: pointer;
+  transition: fill 0.12s, fill-opacity 0.12s;
+}
+
+.he-triangle:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+}
+
+.he-triangle--active {
+  fill: var(--color-viz-3, #009e73);
+  fill-opacity: 0.28;
+  stroke: var(--color-viz-3, #009e73);
+  stroke-width: 0;
+}
+
+.he-triangle--active:hover {
+  fill-opacity: 0.40;
+}
+
+.he-triangle--ghost {
+  fill: var(--color-neutral-muted, #aaa);
+  fill-opacity: 0.07;
+  stroke: none;
+}
+
+.he-triangle--ghost:hover {
+  fill: var(--color-viz-3, #009e73);
+  fill-opacity: 0.14;
+}
+
+/* ── Edges ──────────────────────────────────────────────────────────────────── */
+
+.he-edge {
+  stroke-linecap: round;
+  cursor: pointer;
+  transition: stroke 0.12s, stroke-opacity 0.12s;
+}
+
+.he-edge:focus,
+.he-edge:focus-visible {
+  outline: none;
+  stroke: var(--color-viz-1, #e69f00);
+  stroke-opacity: 1;
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 3px var(--color-viz-1, #e69f00));
+}
+
+/* Widen hit area without making the line visually thicker */
+.he-edge:not(.he-edge--active) {
+  stroke-width: 14;
+  stroke-opacity: 0.01; /* near-transparent but still hit-testable */
+  pointer-events: stroke;
+}
+
+.he-edge.he-edge--ghost {
+  stroke: var(--color-neutral-muted, #aaa);
+  stroke-width: 2;
+  stroke-opacity: 0.35;
+  stroke-dasharray: 6 4;
+}
+
+.he-edge.he-edge--ghost:hover {
+  stroke: var(--color-viz-1, #e69f00);
+  stroke-opacity: 0.65;
+  stroke-dasharray: none;
+}
+
+.he-edge--active {
+  stroke: var(--color-viz-1, #e69f00);
+  stroke-width: 3.5;
+  stroke-opacity: 1;
+}
+
+.he-edge--active:hover {
+  stroke: var(--color-viz-1, #e69f00);
+  stroke-opacity: 0.75;
+}
+
+/* ── Vertices ───────────────────────────────────────────────────────────────── */
+
+.he-vertex {
+  fill: var(--color-neutral-body, #1a1a1a);
+  stroke: var(--color-neutral-surface, #fff);
+  stroke-width: 2.5;
+  pointer-events: none;
+}
+
+.he-vertex-label {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  fill: var(--color-neutral-surface, #fff);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Legend ─────────────────────────────────────────────────────────────────── */
+
+.he-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 0.75rem) var(--space-5, 1.25rem);
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+.he-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.he-legend-swatch {
+  width: 22px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.he-legend-swatch--edge-active {
+  background: var(--color-viz-1, #e69f00);
+  height: 4px;
+  border-radius: 2px;
+}
+
+.he-legend-swatch--edge-ghost {
+  background: var(--color-neutral-muted, #aaa);
+  height: 4px;
+  border-radius: 2px;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-neutral-muted, #aaa) 0,
+    var(--color-neutral-muted, #aaa) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  background-color: transparent;
+}
+
+.he-legend-swatch--tri-active {
+  background: var(--color-viz-3, #009e73);
+  opacity: 0.35;
+  border: 1px solid var(--color-viz-3, #009e73);
+}
+
+.he-legend-swatch--tri-ghost {
+  background: var(--color-neutral-muted, #aaa);
+  opacity: 0.12;
+  border: 1px dashed var(--color-neutral-muted, #aaa);
+}
+
+/* ── Preset description ─────────────────────────────────────────────────────── */
+
+.he-preset-desc {
+  margin: 0;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-body, Georgia, serif);
+  line-height: var(--leading-relaxed, 1.625);
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-subtle, #edeae2);
+  border-radius: var(--radius-md, 8px);
+  border-left: 4px solid var(--color-viz-3, #009e73);
+}
+
+/* ── Controls ───────────────────────────────────────────────────────────────── */
+
+.he-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4, 1rem);
+  align-items: flex-end;
+}
+
+.he-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.he-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  letter-spacing: var(--tracking-wide, 0.025em);
+  text-transform: uppercase;
+}
+
+.he-select {
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+  border-radius: var(--radius-sm, 4px);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  background: var(--color-neutral-surface, #fff);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-body, #1a1a1a);
+  cursor: pointer;
+}
+
+.he-select:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+}
+
+.he-reset-btn {
+  padding: var(--space-2, 0.5rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.he-reset-btn:hover {
+  background: var(--color-neutral-subtle, #edeae2);
+}
+
+.he-reset-btn:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .he-betti-value {
+    font-size: 1.75rem;
+  }
+
+  .he-controls {
+    flex-direction: column;
+  }
+}

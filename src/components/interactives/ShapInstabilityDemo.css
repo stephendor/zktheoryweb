@@ -1,0 +1,455 @@
+/**
+ * ShapInstabilityDemo.css — Task 6.1b — Agent_Interactive_Advanced
+ *
+ * Styles for the SHAP Instability Demonstrator.
+ * Palette: Archival — Counting Lives / path2.
+ */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+
+.shap-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Score gauge ─────────────────────────────────────────────────────────── */
+
+.shap-gauge-wrapper {
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.shap-gauge-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.shap-gauge-title {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-muted, #555);
+}
+
+.shap-gauge-badge {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+}
+
+.shap-gauge-badge--flagged {
+  background: #fee2e2;
+  color: #cc3311;
+  border: 1px solid #fca5a5;
+}
+
+.shap-gauge-badge--clear {
+  background: #dcfce7;
+  color: #009e73;
+  border: 1px solid #86efac;
+}
+
+.shap-gauge-bar-track {
+  position: relative;
+  height: 20px;
+  background: var(--color-neutral-subtle, #edeae2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.shap-gauge-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.08s ease;
+}
+
+.shap-gauge-threshold {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--color-neutral-body, #1a1a1a);
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+.shap-gauge-baseline-marker {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 28px;
+  background: var(--color-neutral-muted, #888);
+  opacity: 0.5;
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
+.shap-gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  position: relative;
+  font-family: var(--font-mono, monospace);
+}
+
+.shap-gauge-score-line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3, 0.75rem);
+}
+
+.shap-gauge-score-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.shap-gauge-score-note {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+/* ── Two-column layout ───────────────────────────────────────────────────── */
+
+.shap-two-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── SHAP bar chart ──────────────────────────────────────────────────────── */
+
+.shap-chart-wrapper {
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+}
+
+.shap-chart-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4, 1rem);
+  flex-wrap: wrap;
+}
+
+.shap-chart-title {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-muted, #555);
+}
+
+.shap-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.shap-legend-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.shap-legend-swatch--current {
+  background: var(--color-viz-1, #e69f00);
+}
+
+.shap-legend-swatch--baseline {
+  background: var(--color-neutral-muted, #aaa);
+  opacity: 0.5;
+}
+
+.shap-chart-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.shap-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 60px;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.shap-feature-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 500;
+  color: var(--color-neutral-body, #1a1a1a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shap-bar-container {
+  position: relative;
+  height: 20px;
+  background: var(--color-neutral-subtle, #edeae2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.shap-bar-zero {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--color-neutral-border, #dedbd4);
+}
+
+.shap-bar {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 2px;
+  transition: width 0.08s ease, left 0.08s ease, right 0.08s ease;
+}
+
+.shap-bar--baseline {
+  background: var(--color-neutral-muted, #aaa);
+  opacity: 0.35;
+}
+
+.shap-bar--current.shap-bar--positive {
+  background: var(--color-viz-1, #e69f00);
+}
+
+.shap-bar--current.shap-bar--negative {
+  background: var(--color-viz-2, #56b4e9);
+}
+
+.shap-value-label {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--color-neutral-muted, #555);
+  transition: color 0.15s;
+}
+
+.shap-value-label--changed {
+  color: var(--color-viz-1, #e69f00);
+  font-weight: 700;
+}
+
+.shap-sum-note {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  border-top: 1px solid var(--color-neutral-border, #dedbd4);
+  padding-top: var(--space-2, 0.5rem);
+  font-family: var(--font-mono, monospace);
+}
+
+.shap-sum-note-sub {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-weight: 400;
+}
+
+/* ── Instability panel ───────────────────────────────────────────────────── */
+
+.shap-instability-panel {
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.shap-instability-heading {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-muted, #555);
+  margin: 0;
+}
+
+.shap-instability-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-neutral-border, #edeae2);
+  padding-bottom: var(--space-1, 0.25rem);
+}
+
+.shap-instability-label {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+.shap-instability-value {
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.shap-instability-value--high {
+  color: var(--color-viz-alert, #cc3311);
+  font-weight: 700;
+}
+
+.shap-instability-note {
+  font-size: var(--text-xs, 0.75rem);
+  font-style: italic;
+  color: var(--color-neutral-muted, #555);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Section heading ─────────────────────────────────────────────────────── */
+
+.shap-section-heading {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-body, #1a1a1a);
+  margin: 0 0 var(--space-3, 0.75rem);
+}
+
+/* ── Feature sliders ─────────────────────────────────────────────────────── */
+
+.shap-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.shap-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.shap-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.shap-slider-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.shap-slider-delta {
+  font-size: var(--text-xs, 0.75rem);
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-neutral-muted, #555);
+}
+
+.shap-slider {
+  width: 100%;
+  accent-color: var(--color-viz-1, #e69f00);
+  cursor: pointer;
+  height: 1.5rem;
+}
+
+.shap-slider:focus {
+  outline: 2px solid var(--color-viz-1, #e69f00);
+  outline-offset: 2px;
+}
+
+.shap-range-endpoints {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+
+.shap-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4, 1rem);
+  align-items: flex-start;
+}
+
+.shap-reset-btn {
+  padding: var(--space-2, 0.5rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.shap-reset-btn:hover {
+  background: var(--color-neutral-subtle, #edeae2);
+}
+
+.shap-reset-btn:focus {
+  outline: 2px solid var(--color-viz-1, #e69f00);
+  outline-offset: 2px;
+}
+
+.shap-insight {
+  flex: 1;
+  margin: 0;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-body, Georgia, serif);
+  font-style: italic;
+  line-height: var(--leading-relaxed, 1.625);
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-subtle, #edeae2);
+  border-left: 4px solid var(--color-viz-1, #e69f00);
+  border-radius: var(--radius-sm, 4px);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .shap-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .shap-bar-row {
+    grid-template-columns: 80px 1fr 56px;
+  }
+}

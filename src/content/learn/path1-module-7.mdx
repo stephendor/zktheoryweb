@@ -13,10 +13,48 @@ check_understanding: []
 status: 'drafting'
 ---
 
-{/* PHASE 6 WRITING TASK — see .apm/Handover_Task_5_10_QA_Sprint.md PH6-W1 */}
+## A Dataset With No Obvious Shape
 
-## Coming Soon
+You are a public health researcher with survey responses from 6,000 adults across five years: income, employment status, housing tenure, caring responsibilities, chronic health conditions, benefit receipt. You know roughly what the averages look like. What you do not know is the *structure* of the population. Are low-income respondents one homogeneous group, or several distinct kinds? Is there a sub-population that combines precarious housing with poor health in ways no single variable captures? Conventional methods give you summaries — a mean, a cluster label, a regression coefficient. None of them give you a picture of the overall landscape. Mapper answers a different question: **what is the shape of this data?**
 
-This module is being written for Phase 6. It will introduce the Mapper algorithm to readers with no mathematics background, explaining how it compresses high-dimensional data into a navigable graph that reveals clusters, flares, and bridges in a population.
+## From Point Cloud to Graph
 
-The **Mapper Parameter Lab** interactive below lets you start exploring the algorithm now — load a preset point cloud and experiment with the resolution and overlap sliders to see how they shape the output graph.
+The Mapper algorithm, developed by Singh, Memoli, and Carlsson in 2007, converts a high-dimensional dataset into a readable graph in three steps.
+
+**Step 1: Choose a filter function.** Pick one number that summarises where each data point sits along a meaningful axis. For a poverty dataset, this might be each household's average income score across all survey waves: low-income households score at one end, high-income at the other. The filter function reduces many dimensions to one, giving each data point a position on a line. It is your lens — it determines which aspect of the data's shape you are examining.
+
+**Step 2: Divide into overlapping cover intervals, then cluster.** Divide the filter function's range into a series of overlapping intervals — like consecutive rungs on a ladder where each rung overlaps with the one above and below. Take every data point whose filter value falls within the first interval and cluster them using a standard algorithm. Move to the second interval and cluster those points. Repeat for every interval. The critical feature is the *overlap*: a point near the boundary between two intervals appears in *both* clusters. This deliberate redundancy is what allows Mapper to stitch adjacent clusters together into a connected graph.
+
+**Step 3: Build the graph.** Each cluster becomes a node. Two nodes are connected by an edge if their clusters shared at least one data point — because that point appeared in the overlapping region of two adjacent intervals. The resulting network is the Mapper graph: a compact summary of the data's global topology.
+
+An everyday analogy makes this concrete. Imagine a room of 300 people. You want to map the social structure without a survey. Your filter function is height. You define overlapping height bands: "under 165 cm," "160-175 cm," "170-185 cm," "over 180 cm." Within each band, you cluster people further by age — you find two natural groups in the 160-175 cm band, one younger and one older. You do this for every band. Then you form a network: two clusters are connected whenever a person belongs to both. The result is a map of the room's population — showing not just who clusters together, but how those clusters are arranged relative to each other: a chain, a loop, or a branching tree.
+
+For a poverty study, the filter function might be a trajectory-density score placing households along a gradient from stable employment to chronic unemployment; the cover intervals span this distribution with overlap; the clustering algorithm groups households by income-transition similarity within each interval. The output network encodes how trajectory types are globally arranged — which form the dense core, which form peripheral branches, and whether any circulate in closed loops.
+
+## Reading a Mapper Graph
+
+A Mapper graph carries meaning in three visual channels.
+
+**Node size** reflects the number of data points in that cluster. A large node is a common, dense sub-population; a small node is a rare or structurally unusual group.
+
+**Edges** represent shared membership across adjacent cover intervals. A chain of connected nodes reflects continuous variation along the filter gradient. A node attached at only one end is a terminus — a sub-population at the extreme margin with no further connections.
+
+**Colour** encodes a variable of interest mapped onto the topology — average income, proportion of years in poverty, or a health outcome. Colour lets you read how a chosen variable flows across the graph's structure.
+
+Two shapes are especially informative. A **flare** is a branch that connects at only one end, like a tendril. Flares typically identify structurally isolated sub-populations: in employment data, a flare of early-exit workers means those workers genuinely do not grade continuously into the majority trajectory space — their combination of characteristics has no analogue elsewhere in the data. A **loop** means two distinct pathways connect the same origin and destination: the data has a genuine cycle. In poverty data, a loop suggests households travel between deprivation states via multiple distinct routes, a pattern inconsistent with simple absorbing Markov models.
+
+## Using the Interactive: Mapper Parameter Lab
+
+The **Mapper Parameter Lab** below lets you adjust three parameters and observe their effect on the resulting graph in real time.
+
+**Cover resolution** sets how many intervals divide the filter range. More intervals produce a finer, more detailed graph. Too few and distinct sub-populations merge into a single undifferentiated node; too many and the graph splinters into isolated fragments.
+
+**Overlap percentage** controls how much adjacent intervals share. More overlap produces more edges and a more connected graph. Too little overlap severs connections between genuinely related clusters, potentially disconnecting the graph entirely.
+
+**Clustering threshold** determines how tightly grouped points must be to count as one cluster within each interval. Raising it merges nearby trajectories; lowering it separates fine distinctions.
+
+Try the **Circles** preset at moderate resolution and overlap: the ring structure in the synthetic dataset appears as a clear loop in the graph. Gradually reduce overlap to near zero and watch the loop break into a disconnected chain. Raise resolution until the graph fragments. These three failure modes — over-merged, disconnected, shattered — are the practical diagnostics every Mapper user must recognise before trusting a result from real data.
+
+## From the Bird's-Eye View to the Poverty Research Programme
+
+Mapper provides something persistent homology alone does not: a navigable picture of the data's global structure that domain specialists can read, label, and interrogate. **Paper 2** in this research portfolio applies Mapper to BHPS (British Household Panel Survey) and Understanding Society employment trajectories. It identifies five robust topological clusters — and one flare of early-exit workers whose structural isolation from the main employment space Mapper makes unmistakeable. Conventional sequence analysis had identified that group; Mapper demonstrates that it forms a branch genuinely disconnected from the mainstream trajectory cluster at every parameter setting. The arrangement of groups in the topology, not just their membership, is often the finding that matters most.

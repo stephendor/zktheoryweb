@@ -3,6 +3,7 @@ title: 'Homology: Counting Holes'
 path: 'topology-social-scientists'
 module_number: 4
 core_concept: 'Homology groups count topological features — components, loops, voids — that persist across scales'
+interactive_slug: 'homology-editor'
 connections:
   chapters: []
   papers: [1]
@@ -70,9 +71,17 @@ These numbers are computable from the simplicial complex via **matrix reduction*
 
 Homology is sensitive to topology, not geometry. It cannot tell you the *size* of a hole or how far apart the clusters are — only how many there are and their dimensional character. Two complexes with $\beta_1 = 1$ may have loops of very different scales: one might be a small local cycle within a cluster, the other a global loop connecting distant regions of the data. Persistent homology, introduced in Module 5, addresses this limitation by tracking how Betti numbers change as the scale parameter $r$ varies, associating each topological feature with a birth scale and a death scale.
 
-## A Note on the Interactive
+## Using the Interactive: Homology Editor
 
-This module does not yet have a dedicated interactive. A future tool — planned for Phase 6 — will let you click to add and remove simplices from a small complex and watch the Betti numbers update in real time. The thought experiment in the paragraph above is the manual version of that tool: work through it with pencil and paper to build the intuition before the automated version is available.
+The **Homology Editor** below makes the chain complex definition operational. You are given a fixed vertex set; edges and triangles can be toggled in and out of the complex by clicking them. The β₀ (components) and β₁ (loops) counters update immediately after each click.
+
+**Triangle preset** starts with the three edges of a triangle forming a 1-cycle: β₀=1, β₁=1. There is one connected component and one independent loop. Click the interior region to add the 2-simplex (filled triangle). The boundary of the triangle is exactly the three edges, so adding the triangle fills the loop: β₁ drops to 0. Remove one edge instead: the loop opens but the graph stays connected (β₀=1, β₁=0) — it is now a path, which has no cycle. Remove a second edge: the graph disconnects (β₀=2, β₁=0).
+
+**Torus skeleton preset** starts with four vertices and five edges forming two triangular loops sharing a central edge: β₁=2. This matches the first homology of the torus, $H_1(\mathbb{T}^2) \cong \mathbb{Z} \oplus \mathbb{Z}$, which has two independent generators. Filling one triangle: β₁=1. Filling both: β₁=0. The two operations are independent — you cannot reduce β₁ by more than 1 per triangle.
+
+**Möbius strip preset** shows a rectangular strip (six vertices, nine edges). All edges are active initially; β₁=4 (four independent cycles in the 1-skeleton). Fill triangles to reduce β₁. When fully triangulated, the flat strip is contractible: β₁=0, β₀=1. A note: the actual Möbius band — with one pair of end edges identified in reversed orientation — cannot be drawn planarly. That twisted identification creates a non-orientable surface with $H_1 \cong \mathbb{Z}/2\mathbb{Z}$ over $\mathbb{Z}$, or equivalently β₁=1 over GF(2). The flat strip here is the "unrolled" representation.
+
+The Betti numbers are computed using GF(2) Gaussian elimination on the boundary matrix $\partial_2$ — not the simplified Euler formula $\beta_1 = E - V + \beta_0 - T$. The difference matters when triangles form a 2-cycle (as in an annular region): the algebraically correct computation gives the right answer; the Euler shortcut does not.
 
 ## How This Module Connects
 

@@ -27,9 +27,10 @@
  */
 
 import type { CollectionEntry } from 'astro:content';
-import { render } from 'astro:content';
+import { render, getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import StickyToC from '@components/shared/StickyToC.astro';
+import ConnectionsPanel from '@components/shared/ConnectionsPanel.astro';
 import { ExpandableCard } from '@components/shared/ExpandableCard';
 import { BibTexCopyButton } from '@components/tda/BibTexCopyButton';
 
@@ -59,6 +60,7 @@ const {
   abstract,
   plain_summary,
   bibtex,
+  date,
 } = entry.data;
 
 const { Content, headings } = await render(entry);
@@ -88,9 +90,62 @@ const statusInfo = statusConfig[status] ?? { label: status, modifier: 'planned' 
 /* ── Dependency position strip: 10 papers ── */
 const TOTAL_PAPERS = 10;
 const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
+
+/* ── Cross-project connections ── */
+const allMethods = methods.length > 0 ? await getCollection('methods') : [];
+const allPapersForDeps =
+  (depends_on.length > 0 || enables.length > 0) ? await getCollection('papers') : [];
+
+const methodConnections = methods.map((slug) => {
+  const method = allMethods.find((m) => m.data.method_slug === slug);
+  return method
+    ? { href: `/tda/methods/${slug}`, label: 'Method', title: method.data.title, palette: 'tda' as const }
+    : { href: `/tda/methods/${slug}`, label: 'Method', title: slug, palette: 'tda' as const };
+});
+
+const dependsOnConnections = depends_on.map((n) => {
+  const paper = allPapersForDeps.find((p) => p.data.paper_number === n);
+  return paper
+    ? { href: `/tda/papers/${paper.id}`, label: `Dependency: Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
+    : { label: `Dependency: Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
+});
+
+const enablesConnections = enables.map((n) => {
+  const paper = allPapersForDeps.find((p) => p.data.paper_number === n);
+  return paper
+    ? { href: `/tda/papers/${paper.id}`, label: `Enables: Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
+    : { label: `Enables: Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
+});
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const pubYear: number | null = date
+  ? (() => { const y = new Date(date).getFullYear(); return Number.isNaN(y) ? null : y; })()
+  : null;
 ---
 
 <BaseLayout title={title} description={abstract ?? plain_summary} section="tda">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": title,
+      "description": abstract ?? plain_summary,
+      "author": {
+        "@type": "Person",
+        "name": "Stephen Dorling",
+        "url": "https://zktheory.org/about/"
+      },
+      "isPartOf": {
+        "@type": "Collection",
+        "name": "TDA Research Programme"
+      },
+      "position": paper_number
+    })} />
+    <meta name="citation_title" content={title} />
+    <meta name="citation_author" content="Dorling, Stephen" />
+    {pubYear !== null && <meta name="citation_publication_date" content={pubYear.toString()} />}
+    <meta name="citation_abstract_html_url" content={canonicalURL.toString()} />
+  </Fragment>
 
   {/* ════════════════════════════════════════════════════════════════════
       HERO — full-width TDA band
@@ -236,6 +291,7 @@ const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
                 const isEnabled = enables.includes(n);
                 return (
                   <div
+                    role="img"
                     class:list={[
                       'dep-node',
                       isCurrent && 'dep-node--current',
@@ -321,6 +377,23 @@ const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
       </div>
     </div>
   </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      CROSS-PROJECT CONNECTIONS
+      ════════════════════════════════════════════════════════════════════ */}
+  {(methodConnections.length > 0 || dependsOnConnections.length > 0 || enablesConnections.length > 0) && (
+    <div class="paper-connections container-prose--wide">
+      {methodConnections.length > 0 && (
+        <ConnectionsPanel heading="Methods Used" connections={methodConnections} />
+      )}
+      {(dependsOnConnections.length > 0 || enablesConnections.length > 0) && (
+        <ConnectionsPanel
+          heading="Research Dependencies"
+          connections={[...dependsOnConnections, ...enablesConnections]}
+        />
+      )}
+    </div>
+  )}
 
   {/* ════════════════════════════════════════════════════════════════════
       PAPER NAVIGATION — prev / next links
@@ -727,7 +800,8 @@ const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
 
   .legend-current { color: var(--color-tda-teal); }
   .legend-depends  { color: var(--color-tda-slate); }
-  .legend-enables  { color: var(--color-tda-teal-light); }
+  /* was tda-teal-light (3.82:1); use darker tda-teal (~5.5:1) */
+  .legend-enables  { color: var(--color-tda-teal); }
 
   /* ══ Citation & Downloads ════════════════════════════════════════════════ */
   .citation-section {
@@ -778,12 +852,18 @@ const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
 
   .download-link--placeholder {
     cursor: default;
-    opacity: 0.55;
+    opacity: 0.85; /* was 0.55; raised to maintain WCAG 2.1 AA contrast (≥4.5:1) */
     pointer-events: none;
   }
 
   .bibtex-block {
     margin-top: var(--space-5);
+  }
+
+  /* ══ Cross-project connections wrapper ══════════════════════════════════ */
+  .paper-connections {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-6);
   }
 
   /* ══ Prev / Next navigation ══════════════════════════════════════════════ */

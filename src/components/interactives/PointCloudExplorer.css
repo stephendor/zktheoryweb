@@ -1,0 +1,310 @@
+/**
+ * PointCloudExplorer.css — Task 6.1b — Agent_Interactive_Advanced
+ *
+ * Styles for the Point Cloud & Distance Explorer interactive.
+ *
+ * Palette: Mathematical — --color-viz-1 through --color-viz-6 (Okabe-Ito).
+ * Points inside ε-ball: viz-1 (orange). Points outside: viz-2 (sky-blue).
+ * Selected centre: viz-3 (green).
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.pce-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Responsive container ───────────────────────────────────────────────────── */
+
+.pce-responsive {
+  min-height: 380px;
+}
+
+/* ── Chart container ────────────────────────────────────────────────────────── */
+
+.pce-chart-container {
+  width: 100%;
+  min-height: 300px;
+  position: relative;
+}
+
+.pce-svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ── Point labels ───────────────────────────────────────────────────────────── */
+
+.pce-point-label {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+  pointer-events: none;
+}
+
+/* ── Axes ───────────────────────────────────────────────────────────────────── */
+
+.pce-svg .tick text {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+  font-variant-numeric: tabular-nums;
+}
+
+.pce-svg .domain,
+.pce-svg .tick line {
+  stroke: var(--color-neutral-border, #dedbd4);
+}
+
+/* ── Controls ───────────────────────────────────────────────────────────────── */
+
+.pce-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5, 1.25rem);
+  align-items: flex-start;
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+}
+
+.pce-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  flex: 1;
+  min-width: 160px;
+}
+
+.pce-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  letter-spacing: var(--tracking-wide, 0.025em);
+  text-transform: uppercase;
+}
+
+.pce-eps-value {
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--color-viz-3, #009e73);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.pce-select {
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+  border-radius: var(--radius-sm, 4px);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  background: var(--color-neutral-surface, #fff);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-body, #1a1a1a);
+  cursor: pointer;
+  max-width: 200px;
+}
+
+.pce-select:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+}
+
+/* ── Fieldset / radio ───────────────────────────────────────────────────────── */
+
+.pce-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.pce-radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-body, #1a1a1a);
+  cursor: pointer;
+}
+
+.pce-radio {
+  accent-color: var(--color-viz-3, #009e73);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── ε slider ───────────────────────────────────────────────────────────────── */
+
+.pce-eps-control {
+  min-width: 200px;
+}
+
+.pce-slider {
+  width: 100%;
+  accent-color: var(--color-viz-3, #009e73);
+  cursor: pointer;
+  height: 1.5rem;
+}
+
+.pce-slider:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm, 4px);
+}
+
+.pce-eps-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+/* ── Ball status ────────────────────────────────────────────────────────────── */
+
+.pce-ball-status {
+  width: 100%;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-body, #1a1a1a);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.pce-clear-btn {
+  margin-left: auto;
+  padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem);
+  font-size: var(--text-xs, 0.75rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  color: var(--color-neutral-muted, #555);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+}
+
+.pce-clear-btn:hover {
+  background: var(--color-neutral-border, #dedbd4);
+}
+
+.pce-clear-btn:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+}
+
+/* ── Distance matrix ────────────────────────────────────────────────────────── */
+
+.pce-matrix-details {
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.pce-matrix-summary {
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-subtle, #edeae2);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+.pce-matrix-summary::-webkit-details-marker {
+  display: none;
+}
+
+.pce-matrix-summary::before {
+  content: '▶ ';
+  font-size: 0.75em;
+  transition: transform 0.15s;
+}
+
+.pce-matrix-details[open] .pce-matrix-summary::before {
+  content: '▼ ';
+}
+
+.pce-matrix-summary:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: -2px;
+}
+
+.pce-matrix-wrapper {
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+}
+
+.pce-matrix-scroll {
+  overflow-x: auto;
+}
+
+.pce-matrix-table {
+  border-collapse: collapse;
+  font-size: var(--text-xs, 0.75rem);
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.pce-matrix-corner {
+  background: transparent;
+}
+
+.pce-matrix-header,
+.pce-matrix-rowheader {
+  padding: 0.25rem 0.4rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted, #555);
+  text-align: center;
+  min-width: 3rem;
+}
+
+.pce-matrix-header--selected {
+  color: var(--color-viz-3, #009e73);
+}
+
+.pce-matrix-cell {
+  padding: 0.25rem 0.4rem;
+  text-align: right;
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  background-color: color-mix(in srgb, var(--color-viz-1, #e69f00) calc(var(--cell-alpha, 0) * 35%), transparent);
+  transition: background-color 0.1s;
+}
+
+.pce-matrix-cell--diag {
+  background: var(--color-neutral-subtle, #edeae2);
+  color: var(--color-neutral-muted, #555);
+  text-align: center;
+}
+
+.pce-matrix-cell--selected-row {
+  background-color: color-mix(in srgb, var(--color-viz-3, #009e73) 15%, transparent);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .pce-controls {
+    flex-direction: column;
+  }
+
+  .pce-control-group,
+  .pce-eps-control {
+    min-width: 0;
+    width: 100%;
+  }
+}

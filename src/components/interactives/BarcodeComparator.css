@@ -1,0 +1,219 @@
+/**
+ * BarcodeComparator.css — Task 6.1b — Agent_Interactive_Advanced
+ *
+ * Styles for the Barcode Comparator interactive.
+ * Palette: Mathematical — TDA / topological tools.
+ */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+
+.bc-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Bottleneck distance row ─────────────────────────────────────────────── */
+
+.bc-bn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: var(--space-3, 0.75rem);
+}
+
+.bc-bn-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.bc-bn-tile--note {
+  background: var(--color-neutral-surface, #fff);
+}
+
+.bc-bn-dim {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-muted, #555);
+}
+
+.bc-bn-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.bc-bn-note {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+.bc-bn-note-long {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  line-height: 1.5;
+}
+
+/* ── Toggle row ──────────────────────────────────────────────────────────── */
+
+.bc-toggle-row {
+  display: flex;
+  gap: var(--space-2, 0.5rem);
+  flex-wrap: wrap;
+}
+
+.bc-toggle-btn {
+  padding: var(--space-2, 0.5rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-weight: 500;
+  color: var(--color-neutral-muted, #555);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+}
+
+.bc-toggle-btn--active {
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-subtle, #edeae2);
+  border-color: var(--color-neutral-body, #1a1a1a);
+  font-weight: 700;
+}
+
+.bc-toggle-btn:hover {
+  background: var(--color-neutral-subtle, #edeae2);
+}
+
+.bc-toggle-btn:focus {
+  outline: 2px solid var(--color-viz-3, #009e73);
+  outline-offset: 2px;
+}
+
+/* ── Side-by-side panels ─────────────────────────────────────────────────── */
+
+.bc-panels-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Individual panel ────────────────────────────────────────────────────── */
+
+.bc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-top: 3px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.bc-panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.bc-panel-title {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.bc-panel-desc {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  margin: 0;
+}
+
+.bc-panel-counts {
+  display: flex;
+  gap: var(--space-3, 0.75rem);
+  font-size: var(--text-xs, 0.75rem);
+  font-family: var(--font-mono, monospace);
+  color: var(--color-neutral-muted, #555);
+  flex-wrap: wrap;
+}
+
+/* ── Chart stack ─────────────────────────────────────────────────────────── */
+
+.bc-chart-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.bc-chart-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-neutral-muted, #555);
+}
+
+.bc-chart-box {
+  width: 100%;
+  overflow: hidden;
+}
+
+.bc-barcode-svg,
+.bc-scatter-svg {
+  display: block;
+}
+
+.bc-barcode-svg .tick text,
+.bc-scatter-svg .tick text {
+  font-size: 9px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+}
+
+.bc-barcode-svg .domain,
+.bc-scatter-svg .domain,
+.bc-barcode-svg .tick line,
+.bc-scatter-svg .tick line {
+  stroke: var(--color-neutral-border, #dedbd4);
+}
+
+.bc-axis-title {
+  font-size: 10px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-neutral-muted, #555);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 680px) {
+  .bc-bn-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bc-bn-tile--note {
+    grid-column: 1 / -1;
+  }
+
+  .bc-panels-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .bc-bn-row {
+    grid-template-columns: 1fr;
+  }
+}

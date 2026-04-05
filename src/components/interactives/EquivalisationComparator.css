@@ -1,0 +1,269 @@
+/**
+ * EquivalisationComparator.css — Task 6.1b — Agent_Interactive_Advanced
+ *
+ * Styles for the Equivalisation Comparator interactive.
+ * Palette: "Archival" (muted reds, ochre, charcoal) — Counting Lives section.
+ * Scale colours use the Okabe-Ito viz-1/2/3 set for accessibility.
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.ec-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Summary cards ─────────────────────────────────────────────────────────── */
+
+.ec-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4, 1rem);
+}
+
+.ec-summary-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.ec-summary-swatch {
+  width: 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  align-self: stretch;
+  min-height: 3rem;
+}
+
+.ec-summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.ec-summary-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--color-neutral-muted, #555);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ec-summary-rate {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.ec-summary-sub {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Section headings ──────────────────────────────────────────────────────── */
+
+.ec-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.ec-section-heading {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide, 0.025em);
+}
+
+.ec-section-note {
+  font-weight: 400;
+  color: var(--color-neutral-muted, #555);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Chart containers ──────────────────────────────────────────────────────── */
+
+.ec-chart-container {
+  width: 100%;
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.ec-bar-svg,
+.ec-dist-svg {
+  display: block;
+}
+
+/* ── Bar chart text ─────────────────────────────────────────────────────────── */
+
+.ec-bar-label {
+  font-size: 12px;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  fill: var(--color-neutral-body, #1a1a1a);
+  font-weight: 600;
+}
+
+.ec-bar-scale-name {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+}
+
+.ec-grid-line {
+  stroke: var(--color-neutral-border, #dedbd4);
+  stroke-width: 1;
+}
+
+.ec-axis-tick {
+  stroke: var(--color-neutral-border, #dedbd4);
+}
+
+.ec-axis-label {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  fill: var(--color-neutral-muted, #555);
+}
+
+.ec-axis-title {
+  font-size: 11px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-neutral-muted, #555);
+}
+
+/* D3-generated axes */
+.ec-dist-svg .tick text,
+.ec-bar-svg .tick text {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+}
+
+.ec-dist-svg .domain,
+.ec-dist-svg .tick line,
+.ec-bar-svg .domain,
+.ec-bar-svg .tick line {
+  stroke: var(--color-neutral-border, #dedbd4);
+}
+
+/* ── Legend ─────────────────────────────────────────────────────────────────── */
+
+.ec-legend {
+  display: flex;
+  gap: var(--space-5, 1.25rem);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ec-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.ec-legend-swatch {
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.ec-legend-text {
+  font-weight: 500;
+}
+
+/* ── Controls ───────────────────────────────────────────────────────────────── */
+
+.ec-controls {
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.ec-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.ec-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide, 0.025em);
+}
+
+.ec-threshold-value {
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--color-viz-1, #e69f00);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ec-slider {
+  width: 100%;
+  accent-color: var(--color-viz-1, #e69f00);
+  cursor: pointer;
+  height: 1.5rem;
+}
+
+.ec-slider:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-viz-1, #e69f00);
+}
+
+.ec-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+/* ── Insight note ───────────────────────────────────────────────────────────── */
+
+.ec-insight {
+  margin: 0;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-body, Georgia, serif);
+  font-style: italic;
+  line-height: var(--leading-relaxed, 1.625);
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-subtle, #edeae2);
+  border-left: 4px solid var(--color-viz-1, #e69f00);
+  border-radius: var(--radius-sm, 4px);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 540px) {
+  .ec-summary-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ec-summary-rate {
+    font-size: 1.5rem;
+  }
+}

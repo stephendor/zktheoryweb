@@ -7,10 +7,18 @@ related_tda_methods:
 status: drafting
 ---
 
+import { LensSection } from '@components/shared/LensSection';
+
+<LensSection lens="politics">
+
 #### Intuitive
 
 A neural network is a software system loosely inspired by the structure of the brain. It is made of layers of simple computational units — neurons — each of which takes a set of numbers as input, multiplies them by learned weights, sums the result, and passes it through an activation function to produce an output. Layer after layer, these operations compose into a function that can learn extraordinarily complex patterns from data: recognising faces, translating languages, predicting which benefit claimants are likely to commit fraud.
 The power of neural networks comes precisely from the opacity of what they learn. Unlike a regression model, where every coefficient has an interpretable meaning, a large neural network's learned weights are inscrutable — there are typically millions of them, and no individual weight corresponds to a human-readable rule. This is the "black box" problem. When such a model is used to make decisions about welfare eligibility, child protection risk, or recidivism probability, the person affected cannot be told why the algorithm reached its conclusion — because neither the algorithm's designers nor its operators can read it.
+
+</LensSection>
+
+<LensSection lens="math">
 
 #### Intermediate
 
@@ -35,3 +43,5 @@ Minimisation proceeds via stochastic gradient descent with backpropagation compu
 The explainability crisis examined in Chapter 13 arises because neither the loss function nor the gradient-based training procedure has any obligation to produce human-interpretable representations. Post-hoc methods like SHAP (SHapley Additive exPlanations) attempt to attribute predictions to features after training, but these attributions are themselves approximations that can be gamed, and they tell us nothing about the causal structure of the underlying decision process.
 
 Graph Neural Networks (examined as a TDA method elsewhere) address one dimension of this problem by operating natively on relational data — social networks, administrative dependency graphs, household linkage records — rather than treating each individual as an independent input vector. This structural inductive bias can produce more interpretable and more genuinely structural representations of poverty than flat-vector neural networks that ignore relational context.
+
+</LensSection>

@@ -31,6 +31,12 @@ import { MapperParameterLab } from '@components/interactives/MapperParameterLab'
 import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
 import { FiltrationPlayground } from '@components/interactives/FiltrationPlayground';
 import { TDAResultsExplorer, type PresetId, DEFAULT_PRESET_ID } from '@components/interactives/TDAResultsExplorer';
+import { PointCloudExplorer } from '@components/interactives/PointCloudExplorer';
+import { HomologyEditor } from '@components/interactives/HomologyEditor';
+import { EquivalisationComparator } from '@components/interactives/EquivalisationComparator';
+import { DecisionThresholdExplorer } from '@components/interactives/DecisionThresholdExplorer';
+import { ShapInstabilityDemo } from '@components/interactives/ShapInstabilityDemo';
+import { BarcodeComparator } from '@components/interactives/BarcodeComparator';
 
 // Preset map: interactive slug → default presetId for TDAResultsExplorer.
 // Typed as Record<string, PresetId> so invalid preset strings are caught at compile time.
@@ -86,6 +92,18 @@ const { title, description, slug } = entry.data;
         <FiltrationPlayground client:visible />
       ) : slug === 'tda-results-explorer' ? (
         <TDAResultsExplorer presetId={PRESET_MAP[slug] ?? DEFAULT_PRESET_ID} client:visible />
+      ) : slug === 'point-cloud-explorer' ? (
+        <PointCloudExplorer client:visible />
+      ) : slug === 'homology-editor' ? (
+        <HomologyEditor client:visible />
+      ) : slug === 'equivalisation-comparator' ? (
+        <EquivalisationComparator client:visible />
+      ) : slug === 'decision-threshold-explorer' ? (
+        <DecisionThresholdExplorer client:visible />
+      ) : slug === 'shap-instability' ? (
+        <ShapInstabilityDemo client:visible />
+      ) : slug === 'barcode-comparator' ? (
+        <BarcodeComparator client:visible />
       ) : (
         <p class="interactive-page__missing">
           Interactive <code>{slug}</code> is not yet implemented.

@@ -9,11 +9,18 @@ status: drafting
 key_figures:
   - "Bill Fair"
   - "Earl Isaac"
+  - "Cathy O'Neil"
+  - "Frank Pasquale"
+  - "Mehrsa Baradaran"
 mathematical_concepts:
-  - "credit scoring"
-  - "algorithmic decision-making"
+  - "FICO score logistic regression"
+  - "risk banding"
+  - "CDO tranching"
+  - "credit bureau data aggregation"
+  - "alternative data scoring"
 interludes:
   - "mm3-logistic-regression"
+  - "mm2-correlation-regression"
 threads: []
 related_tda_papers: []
 key_claims:
@@ -29,19 +36,18 @@ key_claims:
     detail: "Credit bureau proposals to incorporate social media activity, rental payment history, utility records, and smartphone usage data into scoring models do not solve the discrimination problem but intensify it — extending algorithmic assessment into domains of life where its authority has never been publicly sanctioned."
 ---
 
-## The Number That Governs
+## Synopsis
 
-Bill Fair and Earl Isaac launched their first credit scoring system in 1956. By the early twenty-first century, the FICO score they had pioneered governed access to mortgages, car loans, and credit cards for hundreds of millions of people in the United States alone. In the United Kingdom, Experian, Equifax, and TransUnion maintained equivalent infrastructure for a similarly large fraction of the adult population. These were not neutral measures of financial behaviour. They were algorithms trained on historical data that encoded decades of racially discriminatory lending in their baseline parameters, translated impoverished circumstances into number form, and then used those numbers to enforce further exclusion — a self-reinforcing loop in which poverty scores determined access to the capital that could, in principle, end poverty. The credit score was the most successful poverty-measurement instrument in history, and its success consisted precisely in its success at preventing anyone from noticing that it was a poverty measurement instrument at all.
-
-This chapter argues that the credit score constitutes the foundational infrastructure of the algorithmic poverty governance described in this section, and that understanding it as poverty measurement is essential to understanding what the algorithmic present has done.
+The credit score is a welfare system that nobody voted for. It classifies people into eligibility bands, determines access to housing, employment, and essential services, penalises the poor for being poor, and is governed not by public law but by proprietary mathematics owned by three private companies. Bill Fair and Earl Isaac founded Fair Isaac Corporation in 1956 with an explicitly progressive argument: replace bank managers' racialised personal judgements with a formula, and you will remove racial and class bias from lending. Within a decade the formula had encoded both racial and class bias. The FICO score's feature weights — payment history 35%, amounts owed 30%, length of history 15%, credit mix 10%, new credit 10% — are not neutral measurements of creditworthiness. They are a political choice about which aspects of financial behaviour predict default, made by people who could not avoid bringing assumptions about whose behaviour was normal and whose was risky. The Fair Credit Reporting Act (1970), designed to protect consumers, inadvertently legitimised and standardised the credit bureau oligopoly in the act of trying to regulate it. The subprime mortgage crisis added a new mathematical layer: CDO tranching presented correlated risk as diversified, allowing the scoring infrastructure to generate profits from the pricing of poor people's risk rather than their exclusion. The borrowers were destroyed; the scoring infrastructure survived. The credit score is now an eligibility instrument for housing, employment, insurance, and utilities — a private welfare state whose accountability is protected by trade secrecy and whose harms are, for the people it governs, practically impossible to contest.
 
 ### In This Chapter
 
-- How credit scoring emerged from mid-century American consumer finance and was shaped, from its origins, by the racial and spatial geography of federal mortgage policy — through the Home Owners' Loan Corporation neighbourhood grades to the redlined maps embedded in bureau baseline data
-- How FICO's extension from consumer credit into employment screening, rental eligibility, and insurance pricing proceeded without systematic democratic deliberation, creating a de facto social scoring system by accretion of commercial decisions rather than public policy
-- How the proposed expansion of credit scoring into 'alternative data' — social media, utilities, rental payments — represents an intensification of algorithmic poverty governance into previously unmeasured domains, reproducing discrimination at greater resolution rather than eliminating it
-- How European credit scoring frameworks differ from the US model and what those differences reveal about the political choices embedded in credit data governance — showing that the current architecture is not technically inevitable but the product of specific legal, commercial, and political decisions
+- How Fair and Isaac's formula for removing personal bias from lending encoded the same biases through its training data, and how the FCRA's attempt to regulate the resulting system instead confirmed its authority
+- How CDO tranching used threshold mathematics to present correlated risk as diversified risk, converting the scoring infrastructure from an exclusion device into a profit-extraction device for the same populations it excluded from prime credit
+- How the score's scope expanded from credit to employment, housing, insurance, and utilities without democratic authorisation, creating a private eligibility infrastructure that exceeds the welfare state in practical power over life outcomes for many poor people
+- How Sesame Credit's extension of FICO logic across consumption patterns, social connections, and civic compliance demonstrates what the Western credit-scoring infrastructure becomes when the implicit becomes explicit
+- How "alternative data" scoring — rental history, utility bills, social media behaviour — is sold as financial inclusion for the "credit invisible" while functioning as the extension of the scoring apparatus into domains of life previously outside its reach
 
 ### Connection Forward
 
-Chapter 13 examines the ideological work performed by the discourse of 'measurement standards' within international poverty governance — showing how the pursuit of technical respectability in measurement has served to foreclose political debate about what poverty-reduction policy should do.
+Chapter 13 turns from the private scoring infrastructure to the British tradition of welfare respectability — tracing the single mathematical project from 1834 onwards that encoded the deserving/undeserving distinction as administrable criteria, and in whose most recent form — Universal Credit's claimant commitment — both American scoring logic and Victorian Poor Law logic converge.

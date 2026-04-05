@@ -1,0 +1,313 @@
+/**
+ * DecisionThresholdExplorer.css — Task 6.1b — Agent_Interactive_Advanced
+ *
+ * Styles for the Decision Threshold Explorer interactive.
+ * Palette: Archival — matching the Counting Lives / path2 convention.
+ */
+
+/* ── Outer wrapper ─────────────────────────────────────────────────────────── */
+
+.dte-wrapper {
+  width: 100%;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Metrics summary row ───────────────────────────────────────────────────── */
+
+.dte-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3, 0.75rem);
+}
+
+.dte-metric-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.dte-metric-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-muted, #555);
+}
+
+.dte-metric-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.dte-metric-sub {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+  line-height: 1.4;
+}
+
+/* ── Two-column layout ─────────────────────────────────────────────────────── */
+
+.dte-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5, 1.25rem);
+}
+
+/* ── Section headings ──────────────────────────────────────────────────────── */
+
+.dte-section-heading {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide, 0.025em);
+  color: var(--color-neutral-body, #1a1a1a);
+  margin: 0 0 var(--space-2, 0.5rem);
+}
+
+.dte-section-note {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-neutral-muted, #555);
+}
+
+/* ── Chart boxes ───────────────────────────────────────────────────────────── */
+
+.dte-chart-box {
+  width: 100%;
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.dte-roc-svg,
+.dte-hist-svg {
+  display: block;
+}
+
+/* D3-generated axis text */
+.dte-roc-svg .tick text,
+.dte-hist-svg .tick text {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  fill: var(--color-neutral-muted, #555);
+}
+
+.dte-roc-svg .domain,
+.dte-hist-svg .domain,
+.dte-roc-svg .tick line,
+.dte-hist-svg .tick line {
+  stroke: var(--color-neutral-border, #dedbd4);
+}
+
+.dte-axis-title {
+  font-size: 11px;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  fill: var(--color-neutral-muted, #555);
+}
+
+/* ── Group comparison panel ────────────────────────────────────────────────── */
+
+.dte-group-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.dte-group-note {
+  font-size: var(--text-xs, 0.75rem);
+  font-style: italic;
+  color: var(--color-neutral-muted, #555);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.dte-group-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.dte-group-metric-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-neutral-muted, #555);
+}
+
+.dte-group-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.dte-group-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.dte-group-label {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 500;
+  width: 4.5rem;
+  flex-shrink: 0;
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.dte-group-bar-track {
+  flex: 1;
+  height: 16px;
+  background: var(--color-neutral-subtle, #edeae2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dte-group-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.1s ease;
+}
+
+.dte-group-bar-fill--zero {
+  width: 0 !important;
+  opacity: 0;
+}
+
+.dte-group-bar-value {
+  font-size: var(--text-xs, 0.75rem);
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  width: 3rem;
+  text-align: right;
+  color: var(--color-neutral-body, #1a1a1a);
+  flex-shrink: 0;
+}
+
+/* ── Controls ───────────────────────────────────────────────────────────────── */
+
+.dte-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4, 1rem);
+  align-items: flex-end;
+  padding: var(--space-4, 1rem);
+  background: var(--color-neutral-subtle, #edeae2);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-md, 8px);
+}
+
+.dte-control-group {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.dte-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide, 0.025em);
+  color: var(--color-neutral-body, #1a1a1a);
+}
+
+.dte-tau-value {
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--color-viz-1, #e69f00);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.dte-tau-note {
+  font-weight: 400;
+  font-size: var(--text-xs, 0.75rem);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-neutral-muted, #555);
+}
+
+.dte-slider {
+  width: 100%;
+  accent-color: var(--color-viz-1, #e69f00);
+  cursor: pointer;
+}
+
+.dte-slider:focus {
+  outline: 2px solid var(--color-viz-1, #e69f00);
+  outline-offset: 2px;
+}
+
+.dte-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-neutral-muted, #555);
+}
+
+.dte-reset-btn {
+  padding: var(--space-2, 0.5rem) var(--space-4, 1rem);
+  font-size: var(--text-sm, 0.875rem);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-weight: 600;
+  color: var(--color-neutral-body, #1a1a1a);
+  background: var(--color-neutral-surface, #fff);
+  border: 1px solid var(--color-neutral-border, #dedbd4);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+.dte-reset-btn:hover {
+  background: var(--color-neutral-subtle, #edeae2);
+}
+
+.dte-reset-btn:focus {
+  outline: 2px solid var(--color-viz-1, #e69f00);
+  outline-offset: 2px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 680px) {
+  .dte-metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dte-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .dte-metrics-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dte-metric-value {
+    font-size: 1.25rem;
+  }
+}

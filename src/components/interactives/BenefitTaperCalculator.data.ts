@@ -85,6 +85,122 @@ export const PRE_2021_PARAMS: UCParams = {
   label: 'Pre-2021 (63% taper)',
 };
 
+// ─── Slider range ──────────────────────────────────────────────────────────────
+
+/** Minimum adjustable taper rate (integer percent). */
+export const TAPER_RATE_MIN = 40;
+
+/** Maximum adjustable taper rate (integer percent). */
+export const TAPER_RATE_MAX = 75;
+
+/** Default taper rate displayed on load (integer percent, matches current policy). */
+export const TAPER_RATE_DEFAULT = 55;
+
+// ─── Fiscal cost model ─────────────────────────────────────────────────────────
+
+/**
+ * Representative earnings distribution parameters (log-normal, stylised UK model).
+ * Used exclusively for the fiscal cost delta readout.
+ * Mean of the underlying normal: ln(monthly earnings). A monthly mean of ~£2,100
+ * (annual ~£25,200) is consistent with median UK full-time earnings.
+ */
+const FISCAL_DIST_MEAN = Math.log(2100);
+const FISCAL_DIST_SIGMA = 0.65;
+
+/**
+ * Number of integration steps for the fiscal cost integral.
+ * Higher = more accurate but each call is O(FISCAL_STEPS).
+ */
+const FISCAL_STEPS = 500;
+
+/**
+ * Population scale factor: approximate number of working-age UC claimants
+ * in the earnings range (stylised). Used to convert per-person monthly delta
+ * to an annualised aggregate figure (£bn).
+ * Source: ~2.5 million UC claimants in employment (2024).
+ */
+const FISCAL_CLAIMANT_COUNT = 2_500_000;
+
+/**
+ * Compute the approximate annualised UC expenditure for a given taper rate,
+ * relative to the 55% baseline.
+ *
+ * Model:
+ *   1. Draw `steps` representative earners from a log-normal(mu, sigma) distribution
+ *      across the earnings range [0, MAX_EARNINGS].
+ *   2. For each earner, compute their UC award under the selected rate and under the
+ *      55% baseline, using no housing element (the more common case).
+ *   3. Average the difference per earner per month.
+ *   4. Scale to annualised total across the full claimant population.
+ *
+ * Returns a positive value when the selected rate is LOWER than 55% (more generous),
+ * negative when higher (cheaper).
+ *
+ * @param taperRatePct  - Selected taper rate as an integer percentage (e.g. 55).
+ * @returns Annualised expenditure delta in £ billion (positive = more expensive).
+ */
+export function computeFiscalCostDelta(taperRatePct: number): number {
+  const selectedRate = taperRatePct / 100;
+  const baselineRate = TAPER_RATE_DEFAULT / 100;
+
+  const EPS = 1e-9;
+  if (Math.abs(selectedRate - baselineRate) < EPS) return 0;
+
+  const baselineParams: UCParams = {
+    ...CURRENT_PARAMS,
+    taperRate: baselineRate,
+  };
+  const selectedParams: UCParams = {
+    ...CURRENT_PARAMS,
+    taperRate: selectedRate,
+  };
+
+  // Integrate the UC delta over the log-normal earnings distribution.
+  // We use a quadrature-style approach: sample `FISCAL_STEPS` earnings levels
+  // weighted by the log-normal PDF, then average the per-person UC delta.
+  const step = MAX_EARNINGS / FISCAL_STEPS;
+  let totalDelta = 0;
+  let totalWeight = 0;
+
+  for (let i = 1; i <= FISCAL_STEPS; i++) {
+    const earnings = i * step;
+    // Log-normal PDF weight (unnormalised; we normalise below).
+    const lnE = Math.log(earnings);
+    const weight =
+      (1 / (earnings * FISCAL_DIST_SIGMA)) *
+      Math.exp(-0.5 * ((lnE - FISCAL_DIST_MEAN) / FISCAL_DIST_SIGMA) ** 2);
+
+    const ucBase = computeUCAtEarnings(baselineParams, false, earnings);
+    const ucSelected = computeUCAtEarnings(selectedParams, false, earnings);
+    // Delta: positive when the selected rate pays more UC than baseline.
+    totalDelta += (ucSelected - ucBase) * weight;
+    totalWeight += weight;
+  }
+
+  if (totalWeight === 0) return 0;
+
+  // Average monthly per-person delta (£).
+  const avgMonthlyDelta = totalDelta / totalWeight;
+
+  // Scale to annualised aggregate across UK claimant population (£bn).
+  const annualTotalGBP = avgMonthlyDelta * 12 * FISCAL_CLAIMANT_COUNT;
+  return annualTotalGBP / 1_000_000_000;
+}
+
+/**
+ * Compute the UC amount for a single earner under the given policy params.
+ * Internal helper for `computeFiscalCostDelta`.
+ */
+function computeUCAtEarnings(
+  params: UCParams,
+  hasHousingElement: boolean,
+  grossEarnings: number,
+): number {
+  const workAllowance = hasHousingElement ? WORK_ALLOWANCE_LOWER : params.workAllowance;
+  const tapered = Math.max(0, (grossEarnings - workAllowance) * params.taperRate);
+  return Math.max(0, params.standardAllowance - tapered);
+}
+
 // ─── Calculation ───────────────────────────────────────────────────────────────
 
 /**

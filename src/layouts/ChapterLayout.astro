@@ -20,9 +20,10 @@
  */
 
 import type { CollectionEntry } from 'astro:content';
-import { render } from 'astro:content';
+import { render, getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import StickyToC from '@components/shared/StickyToC.astro';
+import ConnectionsPanel from '@components/shared/ConnectionsPanel.astro';
 import { ExpandableCard } from '@components/shared/ExpandableCard';
 import ThreadMarker from '@components/counting-lives/ThreadMarker.astro';
 // ConceptTooltip is used directly in MDX files via component imports.
@@ -51,7 +52,27 @@ const {
   status,
   threads,
   key_claims,
+  related_tda_papers,
+  interludes: interludeSlugs,
 } = entry.data;
+
+/* ── Cross-project connections ── */
+const allPapers = related_tda_papers.length > 0 ? await getCollection('papers') : [];
+const allInterludes = interludeSlugs.length > 0 ? await getCollection('interludes') : [];
+
+const paperConnections = related_tda_papers.map((n) => {
+  const paper = allPapers.find((p) => p.data.paper_number === n);
+  return paper
+    ? { href: `/tda/papers/${paper.id}`, label: `Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
+    : { label: `Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
+});
+
+const interludeConnections = interludeSlugs.map((slug) => {
+  const interlude = allInterludes.find((i) => i.data.interlude_slug === slug);
+  return interlude
+    ? { href: `/counting-lives/interludes/${slug}`, label: 'Mathematical Interlude', title: interlude.data.title, palette: 'cl' as const }
+    : { label: 'Mathematical Interlude', title: slug, palette: 'cl' as const, dataTodo: 'route-missing' };
+});
 
 const { Content, headings } = await render(entry);
 
@@ -64,6 +85,24 @@ const statusLabels: Record<typeof status, string> = {
 ---
 
 <BaseLayout title={title} description={spine_role} section="counting-lives">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Chapter",
+      "name": title,
+      "isPartOf": {
+        "@type": "Book",
+        "name": "Counting Lives"
+      },
+      "position": chapter_number,
+      "description": spine_role,
+      "author": {
+        "@type": "Person",
+        "name": "Stephen Dorling",
+        "url": "https://zktheory.org/about/"
+      }
+    })} />
+  </Fragment>
 
   {/* ════════════════════════════════════════════════════════════════════
       HERO — full-width archival cream band
@@ -139,6 +178,20 @@ const statusLabels: Record<typeof status, string> = {
       </div>
     </div>
   </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      CROSS-PROJECT CONNECTIONS
+      ════════════════════════════════════════════════════════════════════ */}
+  {(paperConnections.length > 0 || interludeConnections.length > 0) && (
+    <div class="chapter-connections container-prose--wide">
+      {paperConnections.length > 0 && (
+        <ConnectionsPanel heading="Related in TDA" connections={paperConnections} />
+      )}
+      {interludeConnections.length > 0 && (
+        <ConnectionsPanel heading="Mathematical Interludes" connections={interludeConnections} />
+      )}
+    </div>
+  )}
 
   {/* ════════════════════════════════════════════════════════════════════
       CHAPTER NAVIGATION — prev / next links
@@ -294,6 +347,12 @@ const statusLabels: Record<typeof status, string> = {
     margin-top: var(--space-10);
     padding-top: var(--space-8);
     border-top: 1px solid var(--color-neutral-border);
+  }
+
+  /* ══ Cross-project connections wrapper ══════════════════════════════════ */
+  .chapter-connections {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-6);
   }
 
   /* ══ Chapter prev / next navigation ═══════════════════════════════════════ */

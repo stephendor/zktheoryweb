@@ -8,9 +8,9 @@ const chapters = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/counting-lives/chapters' }),
   schema: z.object({
     title: z.string(),
-    chapter_number: z.number().int().positive(),
+    chapter_number: z.number().int().nonnegative(),
     part: z.string().optional(),
-    part_number: z.number().int().positive().optional(),
+    part_number: z.number().int().nonnegative().optional(),
     transition: z.number().int().min(1).max(5).optional(),
     spine_role: z.string(),
     status: z.enum(['drafting', 'in-review', 'complete']).default('drafting'),
@@ -58,6 +58,7 @@ const interludes = defineCollection({
   schema: z.object({
     title: z.string(),
     interlude_slug: z.string(),
+    type: z.enum(['mathematical-moment', 'uk-interlude']).default('mathematical-moment'),
     related_chapters: z.array(z.number().int()).default([]),
     related_tda_methods: z.array(z.string()).default([]),
     status: z.enum(['drafting', 'in-review', 'complete']).default('drafting'),
@@ -85,6 +86,7 @@ const papers = defineCollection({
   schema: z.object({
     title: z.string(),
     paper_number: z.number().int().min(1).max(10),
+    date: z.string().optional(),  // ISO date string e.g. "2024-03-15"; used for citation_publication_date
     stage: z.number().int().min(0).max(3),
     status: z
       .enum(['planned', 'in-progress', 'submitted', 'in-review', 'revision', 'published'])

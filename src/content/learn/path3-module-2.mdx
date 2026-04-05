@@ -1,0 +1,43 @@
+---
+title: "Whose Categories?"
+path: 'data-justice'
+module_number: 2
+core_concept: 'Classification as power'
+connections:
+  chapters: [14, 15]
+  papers: []
+  modules: ['path2-module-2']
+  methods: []
+check_understanding:
+  - question: "Between 1890 and 2000, the US Census added, removed, and redefined racial categories multiple times. What does this instability tell us about the nature of racial classification?"
+    answer: "It tells us that racial categories are not descriptions of biological reality but administrative constructions that serve specific political and social purposes at specific historical moments. The category 'mulatto' appeared and disappeared; 'Hispanic' was added as an ethnicity but not a race; 'multiracial' became available only in 2000. Each change reflected shifts in political coalitions, legal frameworks, and social movements rather than any change in human genetic diversity. The categories shape identity as much as they reflect it."
+  - question: "Bowker and Star argue that classification systems have 'moral and political dimensions.' What do they mean, and can you give an example from outside race and ethnicity?"
+    answer: "They mean that every act of classification embeds a judgement about what differences matter and what differences can be safely ignored. Classifying a worker as 'self-employed' versus 'employed' determines eligibility for statutory sick pay, maternity leave, and pension contributions — a classification boundary with enormous material consequences that is contested precisely because it distributes benefits. Similarly, the classification of a drug as 'Schedule 1' (no medical use) versus 'Schedule 2' in US law shapes research funding, clinical access, and criminal penalties, determined by political and cultural forces as much as by pharmacology."
+  - question: "What is a 'feedback loop' between a category and the people it classifies? Why does this complicate the idea that we can simply improve categories to better match reality?"
+    answer: "Hacking's 'looping effects' describe how being classified changes how people understand and present themselves, which in turn changes the population the category describes. When 'depression' became a recognized clinical category with treatment pathways, more people sought diagnosis, the diagnostic criteria evolved, and the category now describes a far larger and more heterogeneous group than originally intended. This means we cannot treat classification as a neutral measurement of a pre-existing reality: the act of classifying is itself part of producing the thing being classified, making 'improvement' a moving target."
+status: 'drafting'
+---
+
+## The Census That Kept Changing Its Mind
+
+In 1890, the United States Census Bureau introduced separate categories for "mulatto," "quadroon," and "octoroon" — fractions of Black ancestry that the bureau considered meaningful enough to enumerate. By 1930, all of these sub-categories had collapsed into a single rule: a person with any Black ancestry at all was classified as Black, regardless of how they identified or how others perceived them. In 2000, for the first time in the census's history, respondents were permitted to select more than one racial category, a change that immediately produced a measured multiracial population of over six million people who, under the prior rules, had not existed as a statistical category. None of these changes reflected any shift in the genetic makeup of the American population. Each reflected a shift in political priorities, legal frameworks, and the social meaning of race in a particular historical moment. The categories were not measuring race — they were producing it.
+
+## Classification as Infrastructure
+
+Geoffrey Bowker and Susan Leigh Star, in their landmark study *Sorting Things Out*, argue that classification systems have what they call "moral and political dimensions" — dimensions that are normally rendered invisible precisely because classification systems work best when they appear to be simply natural and obvious. We do not, in daily life, perceive "employed" and "unemployed" as contested constructions; we experience them as descriptions of how things are. This invisibility is not accidental. Classification systems become infrastructure: they sink into the background of social life, shaping what can be said, measured, and funded without anyone having to explicitly defend the original choices.
+
+This matters enormously for anyone working with data about poverty, health, or social disadvantage. The categories that appear in your dataset were not found in nature. They were made by human beings who had interests, assumptions, and limited imaginations, working within institutional frameworks that rewarded certain kinds of legibility and penalised others. The category "low income household" conceals a cascade of prior decisions: what counts as a household, how income is defined and measured, what threshold marks the boundary between low and not-low, and whether the threshold is absolute or relative. Each decision is contestable. Each encodes a position on what poverty is and why it matters.
+
+## Who Gets to Name the Category
+
+The power differential in classification is not only about which categories exist but about who controls the process of naming. Community health researchers in the 1970s in the United States documented high rates of what they called "cultural bereavement" among Puerto Rican migrants in New York City — a form of grief-related distress rooted in displacement and loss of community that did not map cleanly onto psychiatric diagnostic categories. The formal psychiatric system, designed by and for a majority-white clinical population, had no category for this experience. Without a named category, there could be no diagnosis, no treatment code, no insurance reimbursement, and no research funding. The experience existed; the infrastructure to respond to it did not.
+
+The philosopher Ian Hacking describes what he calls "looping effects" — the feedback dynamics between a category and the people classified within it. Once a category exists and is applied to a group of people, those people begin to understand themselves partly through that category, to organise politically around it, and sometimes to contest or reshape it. The category "autistic" is an example: originally defined by clinicians without the participation of autistic people, it has been substantially revised over decades partly in response to organisation and advocacy by autistic adults who experience the clinical framing as damaging. The category is not static, and the people classified within it are not passive.
+
+## What a Category Builder Would Reveal
+
+A future interactive tool for this module would allow you to construct a simple classification system from scratch — deciding, for instance, how to categorise the labour-market status of gig economy workers. You would immediately encounter the choices: is someone who works twenty hours a week for a delivery platform "employed," "self-employed," "underemployed," or something else entirely? Each classification decision cascades into different policy implications. The interactive does not yet exist, but the exercise to run with any dataset in hand is simply to read its codebook with forensic attention — every definition, every note about how cases were assigned to categories — and ask: who made this decision, and what interests did it serve?
+
+## How This Module Connects
+
+Classification as power is a central theme in *Counting Lives* Chapters 14 and 15, which trace how British poverty statisticians constructed working-class populations as objects of governance through the act of enumeration. Path 2 Module 2 examines the geometric implications of categorical data structures — what happens to the shape of a data space when boundaries are drawn differently.

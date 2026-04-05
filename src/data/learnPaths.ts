@@ -147,11 +147,157 @@ const mathematicsOfPoverty: LearnPath = {
   ],
 };
 
+// ─── Path 3: Data Justice ─────────────────────────────────────────────────────
+
+const dataJustice: LearnPath = {
+  slug: 'data-justice',
+  title: 'Data Justice',
+  audience: 'Activists, policy workers, and community researchers',
+  estimatedTime: '~3 hours',
+  palette: 'cl',
+  modules: [
+    {
+      moduleNumber: 1,
+      title: 'Who Counts?',
+      coreConcept: 'The politics of enumeration',
+      estimatedMinutes: 18,
+    },
+    {
+      moduleNumber: 2,
+      title: 'Whose Categories?',
+      coreConcept: 'Classification as power',
+      estimatedMinutes: 18,
+    },
+    {
+      moduleNumber: 3,
+      title: 'The View from Above',
+      coreConcept: 'Legibility and state vision',
+      estimatedMinutes: 18,
+    },
+    {
+      moduleNumber: 4,
+      title: 'Indigenous Data Sovereignty',
+      coreConcept: 'CARE principles and data governance',
+      estimatedMinutes: 18,
+    },
+    {
+      moduleNumber: 5,
+      title: 'Feminist Data Gaps',
+      coreConcept: 'Gendered absences in data',
+      estimatedMinutes: 18,
+    },
+    {
+      moduleNumber: 6,
+      title: 'Algorithmic Accountability',
+      coreConcept: 'Automated decision-making and redress',
+      estimatedMinutes: 18,
+    },
+  ],
+};
+
+// ─── Path 4: TDA for Practitioners ───────────────────────────────────────────
+
+const tdaPractitioners: LearnPath = {
+  slug: 'tda-practitioners',
+  title: 'TDA for Practitioners',
+  audience: 'Graduate students and researchers with TDA background',
+  estimatedTime: '~8 hours',
+  palette: 'tda',
+  modules: [
+    {
+      moduleNumber: 1,
+      title: 'Setup and First Computation',
+      coreConcept: 'Installing the TDA Python stack and computing your first persistence diagram from a point cloud',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 2,
+      title: 'Point Cloud Preprocessing',
+      coreConcept: 'Normalisation, distance matrices, and subsampling strategies that affect TDA output',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 3,
+      title: 'Vietoris-Rips Persistent Homology',
+      coreConcept: 'Computing H₀ and H₁ persistent homology with ripser and visualising results with persim',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 4,
+      title: 'Reading Persistence Diagrams',
+      coreConcept: 'Translating birth-death coordinates into topological claims about your data',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 5,
+      title: 'Null Models and Hypothesis Testing',
+      coreConcept: 'Bootstrap and permutation approaches to deciding whether your topology is statistically significant',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 6,
+      title: 'Mapper in Practice',
+      coreConcept: 'Using the Mapper algorithm to build navigable graphs from high-dimensional welfare data',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 7,
+      title: 'Zigzag Persistence',
+      coreConcept: 'Tracking topological features across time-indexed data with zigzag filtrations',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 8,
+      title: 'Multi-Parameter Persistence',
+      coreConcept: 'Filtering a complex by two parameters simultaneously to capture density and scale together',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 9,
+      title: 'Wasserstein and Landscape Distances',
+      coreConcept: 'Computing stable distances between persistence diagrams for statistical pipelines',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 10,
+      title: 'The Markov Memory Ladder',
+      coreConcept: 'The Markov memory ladder captures how topological signature changes encode temporal dynamics in panel data',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 11,
+      title: 'Reading the Results',
+      coreConcept: 'Interpreting TDA output in a poverty-measurement context means linking topological features to social trajectories',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 12,
+      title: 'TDA and Deep Learning',
+      coreConcept: 'Incorporating topological features and topological regularisation into neural network pipelines',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 13,
+      title: 'Fairness and Topology',
+      coreConcept: 'Using TDA to detect and audit structural bias in algorithmic welfare systems',
+      estimatedMinutes: 30,
+    },
+    {
+      moduleNumber: 14,
+      title: 'Designing Your Own TDA Study',
+      coreConcept: 'A structured checklist for scoping, executing, and reporting a TDA analysis in social research',
+      estimatedMinutes: 30,
+    },
+  ],
+};
+
 // ─── Exported map ─────────────────────────────────────────────────────────────
 
 export const learnPaths: Record<string, LearnPath> = {
   'topology-social-scientists': topologySocialScientists,
   'mathematics-of-poverty': mathematicsOfPoverty,
+  'data-justice': dataJustice,
+  'tda-practitioners': tdaPractitioners,
 };
 
 export const availablePathSlugs = Object.keys(learnPaths) as Array<keyof typeof learnPaths>;

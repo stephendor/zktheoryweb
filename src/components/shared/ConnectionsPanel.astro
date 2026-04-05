@@ -1,0 +1,147 @@
+---
+/**
+ * ConnectionsPanel.astro — Task 6.3 — Agent_Integration
+ *
+ * Shared component that renders a horizontal strip of linked cards for
+ * cross-project connections at the bottom of chapter, paper, interlude,
+ * and method pages.
+ *
+ * Renders nothing when connections array is empty.
+ */
+
+interface Connection {
+  href?: string;         // omit for routes that don't exist yet
+  label: string;   // e.g. "Paper 1", "Chapter 3", "Mathematical Interlude"
+  title: string;
+  palette: 'tda' | 'cl';
+  dataTodo?: string; // sets data-todo attribute for missing routes
+}
+
+interface Props {
+  heading?: string;
+  connections: Connection[];
+}
+
+const { heading = 'Connections', connections } = Astro.props;
+---
+
+{connections.length > 0 && (
+  <nav class="connections-panel" aria-label={heading}>
+    <h2 class="connections-heading">{heading}</h2>
+    <ul class="connections-list">
+      {connections.map((conn) => (
+        <li class="connections-item">
+          {conn.href ? (
+            <a
+              href={conn.href}
+              class={`connections-card connections-card--${conn.palette}`}
+              data-todo={conn.dataTodo}
+            >
+              <span class="connections-label">{conn.label}</span>
+              <span class="connections-title">{conn.title}</span>
+            </a>
+          ) : (
+            <span
+              class={`connections-card connections-card--${conn.palette} connections-card--unavailable`}
+              aria-disabled="true"
+              data-todo={conn.dataTodo}
+            >
+              <span class="connections-label">{conn.label}</span>
+              <span class="connections-title">{conn.title}</span>
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .connections-panel {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .connections-heading {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .connections-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .connections-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    min-width: 150px;
+    max-width: 240px;
+  }
+
+  .connections-card--tda {
+    border-left: 3px solid var(--color-tda-teal);
+  }
+
+  .connections-card--tda:hover,
+  .connections-card--tda:focus-visible {
+    background-color: color-mix(in srgb, var(--color-tda-teal) 8%, transparent);
+    border-color: var(--color-tda-teal);
+    outline-color: var(--color-tda-teal);
+  }
+
+  .connections-card--cl {
+    border-left: 3px solid var(--color-cl-red);
+  }
+
+  .connections-card--cl:hover,
+  .connections-card--cl:focus-visible {
+    background-color: color-mix(in srgb, var(--color-cl-red) 8%, transparent);
+    border-color: var(--color-cl-red);
+    outline-color: var(--color-cl-red);
+  }
+
+  .connections-card--unavailable {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .connections-label {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .connections-card--tda .connections-label {
+    color: var(--color-tda-teal);
+  }
+
+  .connections-card--cl .connections-label {
+    color: var(--color-cl-red);
+  }
+
+  .connections-title {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-body);
+    line-height: var(--leading-snug);
+  }
+</style>

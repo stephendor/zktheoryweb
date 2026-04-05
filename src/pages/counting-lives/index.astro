@@ -1,8 +1,340 @@
 ---
-// TODO: Implement Counting Lives section — Task 1.x
+/**
+ * src/pages/counting-lives/index.astro — Task 6.1a / Manager fix — Phase 6
+ *
+ * Counting Lives section hub page.
+ * Fetches all chapters via getCollection('chapters'), separates the
+ * Introduction (chapter_number: 0) and Conclusion (chapter_number: 18)
+ * from the main chapter grid, and groups chapters by Part.
+ * Excludes ch-00-sample (layout template) by entry.id.
+ * Pure Astro — no React islands.
+ */
+import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+
+const allChapters = await getCollection(
+  'chapters',
+  ({ id }) => id !== 'ch-00-sample',
+);
+allChapters.sort((a, b) => a.data.chapter_number - b.data.chapter_number);
+
+const introduction = allChapters.find((c) => c.data.chapter_number === 0);
+const conclusion   = allChapters.find((c) => c.data.chapter_number === 18);
+const mainChapters = allChapters.filter(
+  (c) => c.data.chapter_number >= 1 && c.data.chapter_number <= 17,
+);
+
+const partNames: Record<string, string> = {
+  'I':   'Part I — The State Learns to Count',
+  'II':  'Part II — The Ideology of Optimisation',
+  'III': 'Part III — The Automated Poorhouse',
+  'IV':  'Part IV — Counter-Mathematics',
+};
+
+// Group chapters by part
+const parts = ['I', 'II', 'III', 'IV'] as const;
+const chaptersByPart = Object.fromEntries(
+  parts.map((p) => [p, mainChapters.filter((c) => c.data.part === p)]),
+);
+
+const statusBadge = (status: string) => {
+  const map: Record<string, string> = {
+    drafting:    'Drafting',
+    'in-review': 'In Review',
+    complete:    'Complete',
+  };
+  return map[status] ?? status;
+};
 ---
 
-<BaseLayout title="Counting Lives" section="counting-lives">
-  <h1>Counting Lives</h1>
+<BaseLayout
+  title="Counting Lives"
+  description="A political history of how states have measured poverty — from Quetelet's statistical imagination to algorithmic welfare systems, and the counter-mathematics that resists them."
+  section="counting-lives"
+>
+  <div class="cl-hub">
+
+    {/* ── Hero ── */}
+    <header class="cl-hub__hero">
+      <div class="cl-hub__hero-inner">
+        <p class="cl-hub__eyebrow">Book in Progress</p>
+        <h1 class="cl-hub__title">Counting Lives</h1>
+        <p class="cl-hub__description">
+          A political history of how states have measured poverty — from
+          Quetelet's statistical imagination to algorithmic welfare systems,
+          and the counter-mathematics that resists them.
+        </p>
+        <nav class="cl-hub__nav" aria-label="Section navigation">
+          <a href="/counting-lives/bibliography/" class="cl-hub__nav-link">Bibliography</a>
+          <a href="/counting-lives/transitions/" class="cl-hub__nav-link">Five Transitions Timeline</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="cl-hub__content" id="chapters">
+
+      {/* ── Introduction ── */}
+      {introduction && (
+        <section class="cl-hub__frontmatter" aria-label="Introduction">
+          <a href={`/counting-lives/chapters/${introduction.id}`} class="cl-hub__frontmatter-card">
+            <span class="cl-hub__frontmatter-label">Introduction</span>
+            <span class="cl-hub__frontmatter-title">{introduction.data.title}</span>
+            <span class={`cl-hub__badge cl-hub__badge--${introduction.data.status}`}>
+              {statusBadge(introduction.data.status)}
+            </span>
+          </a>
+        </section>
+      )}
+
+      {/* ── Parts grid ── */}
+      {parts.map((part) => {
+        const chapters = chaptersByPart[part];
+        if (!chapters || chapters.length === 0) return null;
+        return (
+          <section class="cl-hub__part" aria-labelledby={`part-${part}-heading`}>
+            <h2 class="cl-hub__part-heading" id={`part-${part}-heading`}>
+              {partNames[part]}
+            </h2>
+            <ol class="cl-hub__grid">
+              {chapters.map((entry) => (
+                <li>
+                  <a
+                    href={`/counting-lives/chapters/${entry.id}`}
+                    class="cl-hub__card"
+                    aria-label={`Chapter ${entry.data.chapter_number}: ${entry.data.title}`}
+                  >
+                    <span class="cl-hub__card-part">Part {part}</span>
+                    <span class="cl-hub__card-number">Chapter {entry.data.chapter_number}</span>
+                    <span class="cl-hub__card-title">{entry.data.title}</span>
+                    <span class={`cl-hub__badge cl-hub__badge--${entry.data.status}`}>
+                      {statusBadge(entry.data.status)}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+      })}
+
+      {/* ── Conclusion ── */}
+      {conclusion && (
+        <section class="cl-hub__frontmatter" aria-label="Conclusion">
+          <a href={`/counting-lives/chapters/${conclusion.id}`} class="cl-hub__frontmatter-card">
+            <span class="cl-hub__frontmatter-label">Conclusion</span>
+            <span class="cl-hub__frontmatter-title">{conclusion.data.title}</span>
+            <span class={`cl-hub__badge cl-hub__badge--${conclusion.data.status}`}>
+              {statusBadge(conclusion.data.status)}
+            </span>
+          </a>
+        </section>
+      )}
+
+    </main>
+  </div>
 </BaseLayout>
+
+<style>
+  /* ── Hub shell ────────────────────────────────────────────────────────────── */
+  .cl-hub {
+    padding-block-end: var(--space-3xl, 4rem);
+  }
+
+  /* ── Hero band ───────────────────────────────────────────────────────────── */
+  .cl-hub__hero {
+    background-color: var(--color-cl-cream, #F5F0E8);
+    color: var(--color-cl-charcoal, #2C2C2C);
+    padding-block: var(--space-2xl, 3rem);
+    border-block-end: 2px solid var(--color-cl-red, #8B2020);
+  }
+
+  .cl-hub__hero-inner {
+    max-width: 60rem;
+    margin-inline: auto;
+    padding-inline: var(--space-lg, 1.5rem);
+  }
+
+  .cl-hub__eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-cl-red, #8B2020);
+    margin-block-end: var(--space-xs, 0.5rem);
+  }
+
+  .cl-hub__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-block-end: var(--space-md, 1rem);
+  }
+
+  .cl-hub__description {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 48rem;
+    color: var(--color-cl-charcoal, #2C2C2C);
+    margin-block-end: var(--space-lg, 1.5rem);
+  }
+
+  .cl-hub__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm, 0.75rem);
+  }
+
+  .cl-hub__nav-link {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border: 1.5px solid var(--color-cl-red, #8B2020);
+    color: var(--color-cl-red, #8B2020);
+    border-radius: 3px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .cl-hub__nav-link:hover,
+  .cl-hub__nav-link:focus-visible {
+    background-color: var(--color-cl-red, #8B2020);
+    color: #fff;
+  }
+
+  /* ── Content area ────────────────────────────────────────────────────────── */
+  .cl-hub__content {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: var(--space-lg, 1.5rem);
+    padding-block-start: var(--space-2xl, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl, 3rem);
+  }
+
+  /* ── Introduction / Conclusion strip ────────────────────────────────────── */
+  .cl-hub__frontmatter-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md, 1rem);
+    padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+    background-color: var(--color-cl-cream, #F5F0E8);
+    border: 1.5px solid var(--color-cl-ochre, #C17F24);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s;
+  }
+
+  .cl-hub__frontmatter-card:hover,
+  .cl-hub__frontmatter-card:focus-visible {
+    border-color: var(--color-cl-red, #8B2020);
+  }
+
+  .cl-hub__frontmatter-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-cl-red); /* was cl-ochre; darkened for WCAG 2.1 AA contrast */
+    white-space: nowrap;
+  }
+
+  .cl-hub__frontmatter-title {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-cl-charcoal, #2C2C2C);
+  }
+
+  /* ── Part sections ───────────────────────────────────────────────────────── */
+  .cl-hub__part-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--color-cl-red, #8B2020);
+    border-block-end: 1px solid var(--color-cl-ochre, #C17F24);
+    padding-block-end: var(--space-sm, 0.75rem);
+    margin-block-end: var(--space-lg, 1.5rem);
+  }
+
+  /* ── Cards grid ──────────────────────────────────────────────────────────── */
+  .cl-hub__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-md, 1rem);
+  }
+
+  .cl-hub__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs, 0.4rem);
+    padding: var(--space-md, 1rem);
+    background-color: var(--color-surface, #fff);
+    border: 1.5px solid var(--color-border, #DDD);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .cl-hub__card:hover,
+  .cl-hub__card:focus-visible {
+    border-color: var(--color-cl-red, #8B2020);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  }
+
+  .cl-hub__card-part {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-cl-red); /* was cl-ochre; darkened for WCAG 2.1 AA contrast */
+  }
+
+  .cl-hub__card-number {
+    font-size: 0.8rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  .cl-hub__card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-cl-charcoal, #2C2C2C);
+    flex: 1;
+  }
+
+  /* ── Status badges ───────────────────────────────────────────────────────── */
+  .cl-hub__badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-block-start: var(--space-xs, 0.25rem);
+  }
+
+  .cl-hub__badge--drafting {
+    background-color: var(--color-cl-ochre-light);
+    color: var(--color-cl-charcoal); /* was cl-ochre; contrast 1.48:1 → 7.5:1 on ochre-light bg */
+  }
+
+  .cl-hub__badge--in-review {
+    background-color: #EAF3FF;
+    color: #1A5FAD;
+  }
+
+  .cl-hub__badge--complete {
+    background-color: #EAFAF0;
+    color: #1A7A3A;
+  }
+</style>
+

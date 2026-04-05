@@ -1,0 +1,65 @@
+---
+/**
+ * 404.astro — Task 6.9 — Agent_Design_System
+ *
+ * Custom not-found page. Astro serves this automatically for any URL
+ * that does not match a generated route (static output mode).
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page Not Found">
+  <div class="container-prose page-not-found">
+    <h1>404 — Page Not Found</h1>
+    <p>The page you're looking for doesn't exist or may have moved.</p>
+    <nav aria-label="Helpful links" class="not-found-nav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/counting-lives/">Counting Lives</a></li>
+        <li><a href="/tda/">Topological Data Analysis</a></li>
+        <li><a href="/learn/">Learn</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-not-found {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .page-not-found h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-neutral-body);
+    margin-bottom: var(--space-4);
+  }
+
+  .page-not-found p {
+    font-size: var(--text-lg);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-8);
+  }
+
+  .not-found-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .not-found-nav a {
+    color: var(--color-tda-teal);
+    text-decoration: underline;
+    font-size: var(--text-base);
+  }
+
+  .not-found-nav a:hover {
+    color: var(--color-neutral-body);
+  }
+</style>

@@ -3,6 +3,7 @@ title: 'The Score'
 path: 'mathematics-of-poverty'
 module_number: 6
 core_concept: 'Algorithmic scoring assigns a poverty likelihood to individuals; logistic regression and its social consequences'
+interactive_slug: 'decision-threshold-explorer'
 connections:
   chapters: [10, 11, 12]
   papers: []
@@ -56,9 +57,17 @@ Converting a predicted probability $\hat{p}$ to an actionable classification req
 
 In welfare fraud detection, a low $\tau$ minimises missed cases but flags large numbers of legitimate claimants for intrusive investigation. A high $\tau$ reduces intrusive false positives but misses more genuine cases. The welfare consequences of each error type are asymmetric: false positives impose investigation costs on innocent claimants; false negatives represent financial loss to the DWP. Routinely, $\tau$ is set to minimise the latter at the expense of the former — a policy choice embedded in a technical parameter, largely invisible to public scrutiny.
 
-## A Note on the Interactive
+## Using the Interactive: Decision Threshold Explorer
 
-This module does not yet have a dedicated interactive. A tool planned for Phase 6 will present a simplified logistic regression model trained on synthetic welfare data, letting you adjust the decision threshold τ and observe the resulting false-positive and false-negative rates across demographic sub-groups. It will make visible that the same model, with identical probability outputs, produces radically different social consequences depending on where the threshold is drawn — a policy choice embedded in a technical parameter.
+The **Decision Threshold Explorer** below presents a simplified logistic regression model trained on a synthetic welfare dataset of 300 claimants. Each claimant has been assigned a predicted probability score (0–1) by the model and a true label (genuinely high-risk or low-risk). Two demographic groups are included: Group A (majority, 200 claimants, 20% true base rate) and Group B (minority, 100 claimants, 40% true base rate with noisier model calibration due to label bias).
+
+The **metrics summary** shows four key statistics. The True Positive Rate (TPR) — the proportion of genuinely high-risk claimants correctly flagged — corresponds to the proportion of vulnerable claimants who receive attention. The False Positive Rate (FPR) — the proportion of genuinely low-risk claimants wrongly flagged — represents the burden of intrusive investigation imposed on innocent claimants. As you lower τ, TPR rises but FPR rises with it. As you raise τ, TPR falls and fewer high-risk cases are caught.
+
+The **ROC curve** plots every possible (FPR, TPR) pair across all thresholds. The orange dot marks the current τ. A perfect model would press the curve into the top-left corner; a random model produces the diagonal reference line. The Area Under the Curve (AUC) summarises overall model discrimination, independent of threshold choice.
+
+The **Group A vs Group B comparison** is the politically consequential panel. Because the model is less well-calibrated for Group B — it assigns some genuinely low-risk Group B claimants elevated scores due to historical investigatory patterns — Group B's FPR is systematically higher than Group A's at the same threshold τ. Lowering τ to improve TPR for Group B simultaneously increases FPR — imposing disproportionate false-positive burdens on the minority group. This is the mechanism that makes threshold selection a policy act with distributional consequences that a single aggregate accuracy figure cannot reveal.
+
+The threshold of τ = 0.50 shown by default is arbitrary. The DWP systems described in Chapters 10–12 do not publish their threshold values; this interactive makes visible what that omission conceals.
 
 ## How This Module Connects
 

@@ -1,8 +1,269 @@
 ---
-// TODO: Implement TDA section — Task 1.x
+/**
+ * src/pages/tda/index.astro — Task 6.1a — Agent_Infra
+ *
+ * TDA section hub page.
+ * Fetches all papers via getCollection('papers'), sorted by paper_number,
+ * and renders them as cards in a responsive grid.
+ * No TDA paper detail route exists yet — cards link to # with data-todo.
+ * Pure Astro — no React islands.
+ */
+import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+
+const allPapers = await getCollection('papers');
+allPapers.sort((a, b) => a.data.paper_number - b.data.paper_number);
+
+const stageLabels: Record<number, string> = {
+  0: 'Stage 0 — Foundations',
+  1: 'Stage 1 — Core Methods',
+  2: 'Stage 2 — Extensions',
+  3: 'Stage 3 — Applications',
+};
+
+const statusLabels: Record<string, string> = {
+  planned:      'Planned',
+  'in-progress': 'In Progress',
+  submitted:    'Submitted',
+  'in-review':  'In Review',
+  revision:     'Revision',
+  published:    'Published',
+};
 ---
 
-<BaseLayout title="Topological Data Analysis" section="tda">
-  <h1>Topological Data Analysis</h1>
+<BaseLayout
+  title="Topological Data Analysis Research Programme"
+  description="A ten-paper research programme applying persistent homology, Mapper, and related methods to poverty trajectory data from Understanding Society and the BHPS."
+  section="tda"
+>
+  <div class="tda-hub">
+
+    {/* ── Hero ── */}
+    <header class="tda-hub__hero">
+      <div class="tda-hub__hero-inner">
+        <p class="tda-hub__eyebrow">Research Programme</p>
+        <h1 class="tda-hub__title">Topological Data Analysis</h1>
+        <p class="tda-hub__description">
+          A ten-paper research programme applying persistent homology, Mapper,
+          and related methods to poverty trajectory data from Understanding
+          Society and the BHPS.
+        </p>
+        <nav class="tda-hub__nav" aria-label="Section navigation">
+          <a href="/tda/pipeline/" class="tda-hub__nav-link">Research Pipeline</a>
+          <a href="/tda/bibliography" class="tda-hub__nav-link">Bibliography</a>
+        </nav>
+      </div>
+    </header>
+
+    {/* ── Papers grid ── */}
+    <main class="tda-hub__papers" id="papers">
+      <h2 class="tda-hub__section-heading">Papers</h2>
+      <ol class="tda-hub__grid">
+        {allPapers.map((entry) => {
+          const { paper_number, title, stage, status } = entry.data;
+          const stageLabel = stageLabels[stage] ?? `Stage ${stage}`;
+          const statusLabel = statusLabels[status] ?? status;
+          return (
+            <li>
+              <a
+                href={`/tda/papers/${entry.id}`}
+                class="tda-hub__card"
+                aria-label={`Paper ${paper_number}: ${title}`}
+              >
+                <span class="tda-hub__card-stage">{stageLabel}</span>
+                <span class="tda-hub__card-number">Paper {paper_number}</span>
+                <span class="tda-hub__card-title">{title}</span>
+                <div class="tda-hub__card-badges">
+                  <span class={`tda-hub__card-badge tda-hub__card-badge--stage-${stage}`}>
+                    Stage {stage}
+                  </span>
+                  <span class={`tda-hub__card-badge tda-hub__card-badge--${status}`} aria-label={`Status: ${statusLabel}`}>
+                    {statusLabel}
+                  </span>
+                </div>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </main>
+
+  </div>
 </BaseLayout>
+
+<style>
+  /* ── Hub shell ────────────────────────────────────────────────────────────── */
+  .tda-hub {
+    padding-block-end: var(--space-3xl, 4rem);
+  }
+
+  /* ── Hero band ───────────────────────────────────────────────────────────── */
+  .tda-hub__hero {
+    background-color: var(--color-tda-warm-grey);
+    color: var(--color-tda-teal);
+    padding-block: var(--space-2xl, 3rem);
+    border-block-end: 2px solid var(--color-tda-teal);
+  }
+
+  .tda-hub__hero-inner {
+    max-width: 72ch;
+    margin-inline: auto;
+    padding-inline: var(--space-m, 1rem);
+  }
+
+  .tda-hub__eyebrow {
+    font-size: var(--text-sm, 0.875rem);
+    font-family: var(--font-sans, system-ui, sans-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-tda-teal);
+    margin-block-end: var(--space-xs, 0.5rem);
+  }
+
+  .tda-hub__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-family: var(--font-serif, Georgia, serif);
+    line-height: 1.1;
+    color: var(--color-tda-slate);
+    margin-block-end: var(--space-s, 0.75rem);
+  }
+
+  .tda-hub__description {
+    font-size: var(--text-lg, 1.125rem);
+    font-family: var(--font-serif, Georgia, serif);
+    line-height: 1.6;
+    color: var(--color-tda-slate);
+    margin-block-end: var(--space-l, 1.5rem);
+  }
+
+  /* ── Section nav ─────────────────────────────────────────────────────────── */
+  .tda-hub__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s, 0.75rem);
+  }
+
+  .tda-hub__nav-link {
+    display: inline-block;
+    padding: var(--space-2xs, 0.25rem) var(--space-s, 0.75rem);
+    border: 1px solid var(--color-tda-teal);
+    border-radius: 2px;
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-tda-teal);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .tda-hub__nav-link:hover,
+  .tda-hub__nav-link:focus-visible {
+    background-color: var(--color-tda-teal);
+    color: var(--color-tda-warm-grey);
+    outline: none;
+  }
+
+  /* ── Papers section ──────────────────────────────────────────────────────── */
+  .tda-hub__papers {
+    max-width: 90ch;
+    margin-inline: auto;
+    padding-inline: var(--space-m, 1rem);
+    padding-block-start: var(--space-2xl, 3rem);
+  }
+
+  .tda-hub__section-heading {
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: var(--text-xs, 0.75rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-tda-teal);
+    margin-block-end: var(--space-l, 1.5rem);
+  }
+
+  /* ── Responsive grid ─────────────────────────────────────────────────────── */
+  .tda-hub__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 28ch), 1fr));
+    gap: var(--space-m, 1rem);
+  }
+
+  /* ── Paper card ──────────────────────────────────────────────────────────── */
+  .tda-hub__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs, 0.25rem);
+    padding: var(--space-m, 1rem);
+    border: 1px solid var(--color-tda-teal-light);
+    border-radius: 3px;
+    background-color: var(--surface-card, var(--color-surface, #fff));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .tda-hub__card:hover,
+  .tda-hub__card:focus-visible {
+    border-color: var(--color-tda-teal);
+    box-shadow: 0 2px 8px rgba(26, 95, 106, 0.12);
+    outline: none;
+  }
+
+  .tda-hub__card-stage {
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: var(--text-xs, 0.7rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-tda-teal);
+  }
+
+  .tda-hub__card-number {
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--color-text-muted, #666);
+  }
+
+  .tda-hub__card-title {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: var(--text-base, 1rem);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-tda-slate);
+    flex: 1;
+  }
+
+  .tda-hub__card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs, 0.25rem);
+    margin-block-start: var(--space-xs, 0.4rem);
+  }
+
+  .tda-hub__card-badge {
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Stage badges */
+  .tda-hub__card-badge--stage-0 { background-color: color-mix(in srgb, var(--color-tda-slate) 15%, transparent); color: var(--color-tda-slate); }
+  .tda-hub__card-badge--stage-1 { background-color: color-mix(in srgb, var(--color-tda-teal) 15%, transparent); color: var(--color-tda-teal); }
+  /* stage-2/3 light-tint tokens failed 4.5:1 as text; use dark base tokens instead (5.8:1 / 5.1:1) */
+  .tda-hub__card-badge--stage-2 { background-color: color-mix(in srgb, var(--color-tda-teal-light) 20%, transparent); color: var(--color-tda-teal); }
+  .tda-hub__card-badge--stage-3 { background-color: color-mix(in srgb, var(--color-tda-slate-light) 20%, transparent); color: var(--color-tda-slate); }
+
+  /* Status badges */
+  .tda-hub__card-badge--planned      { background-color: color-mix(in srgb, #888 12%, transparent); color: #555; }
+  .tda-hub__card-badge--in-progress  { background-color: color-mix(in srgb, var(--color-tda-teal) 15%, transparent); color: var(--color-tda-teal); }
+  .tda-hub__card-badge--submitted    { background-color: color-mix(in srgb, var(--color-tda-slate) 15%, transparent); color: var(--color-tda-slate); }
+  .tda-hub__card-badge--in-review    { background-color: color-mix(in srgb, #c07a2a 15%, transparent); color: #8a5200; }
+  .tda-hub__card-badge--revision     { background-color: color-mix(in srgb, #8b2e2e 12%, transparent); color: #6b1a1a; }
+  .tda-hub__card-badge--published    { background-color: color-mix(in srgb, #2e7d52 15%, transparent); color: #1a5c38; }
+</style>

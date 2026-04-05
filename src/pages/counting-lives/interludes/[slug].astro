@@ -1,0 +1,115 @@
+---
+/**
+ * src/pages/counting-lives/interludes/[slug].astro — Task 6.3 — Agent_Integration
+ *
+ * Dynamic route for Counting Lives mathematical interlude pages.
+ * URL: /counting-lives/interludes/{slug}  (e.g. /counting-lives/interludes/mm1-normal-distribution)
+ *
+ * Uses interlude_slug field for URL routing (matches the slug in each
+ * interlude's frontmatter). Renders content with TwoLensesToggle island
+ * inside a .interlude-content wrapper div with data-lens="politics" default.
+ */
+
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { TwoLensesToggle } from '@components/shared/TwoLensesToggle';
+
+// ─── Static paths ──────────────────────────────────────────────────────────
+
+export async function getStaticPaths() {
+  const allInterludes = await getCollection('interludes');
+
+  return allInterludes.map((entry) => ({
+    params: { slug: entry.data.interlude_slug },
+    props: { entry },
+  }));
+}
+
+// ─── Props ─────────────────────────────────────────────────────────────────
+
+interface Props {
+  entry: CollectionEntry<'interludes'>;
+}
+
+const { entry } = Astro.props;
+const { title, status } = entry.data;
+
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={title} section="counting-lives">
+
+  {/* ════════════════════════════════════════════════════════════════════
+      HERO — interlude header band
+      ════════════════════════════════════════════════════════════════════ */}
+  <div class="interlude-hero">
+    <div class="container-prose">
+      <p class="interlude-eyebrow">Mathematical Interlude</p>
+      <h1 class="interlude-title">{title}</h1>
+      <span class={`status-badge status-${status}`} aria-label={`Status: ${status}`}>
+        {status}
+      </span>
+    </div>
+  </div>
+
+  {/* ════════════════════════════════════════════════════════════════════
+      BODY — prose content with TwoLensesToggle
+      ════════════════════════════════════════════════════════════════════ */}
+  <div class="container-prose interlude-body">
+    <div class="interlude-content prose" data-lens="politics">
+      <TwoLensesToggle client:load />
+      <Content />
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  /* ══ Hero band ═══════════════════════════════════════════════════════════ */
+  .interlude-hero {
+    background-color: var(--color-cl-cream);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-neutral-border);
+    border-left: 4px solid var(--color-cl-red);
+  }
+
+  .interlude-eyebrow {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-cl-red);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .interlude-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-neutral-body);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  /* ══ Body ════════════════════════════════════════════════════════════════ */
+  .interlude-body {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-16);
+  }
+
+  /* ══ Status badge (reuse global token pattern) ═══════════════════════════ */
+  .status-badge {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-2);
+    border-radius: 2px;
+    background-color: var(--color-neutral-subtle);
+    color: var(--color-neutral-muted);
+  }
+</style>

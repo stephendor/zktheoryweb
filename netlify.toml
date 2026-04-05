@@ -1,0 +1,67 @@
+# ─── Build ────────────────────────────────────────────────────────────────────
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# ─── Dev ──────────────────────────────────────────────────────────────────────
+
+[dev]
+  command = "npm run dev"
+  port = 4321
+  targetPort = 4321
+
+# ─── Security Headers ─────────────────────────────────────────────────────────
+# Note: Content-Security-Policy is intentionally omitted. The site uses
+# Astro's inline scripts (is:inline, module preloads) and inline styles.
+# CSP with nonce/hash support will be addressed in a future hardening pass.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+# ─── Static Asset Cache (Astro hashed bundles) ────────────────────────────────
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ─── Font Cache ───────────────────────────────────────────────────────────────
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ─── Pagefind Index Cache ─────────────────────────────────────────────────────
+# Shorter TTL — the pagefind index is regenerated with each deploy.
+
+[[headers]]
+  for = "/pagefind/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# ─── Redirects ────────────────────────────────────────────────────────────────
+# www → apex redirect. HTTP→HTTPS is enforced by Netlify automatically;
+# adding an explicit http redirect here would cause redirect loops.
+
+[[redirects]]
+  from = "https://www.zktheory.org/*"
+  to = "https://zktheory.org/:splat"
+  status = 301
+  force = true
+
+# ─── Build Hook Note ──────────────────────────────────────────────────────────
+# A Zotero build hook can be created in Netlify UI → Site Settings → Build Hooks.
+# Once created, call the hook URL from Zotero's server-side processing (e.g., via
+# a webhook or scheduled script) to trigger a rebuild whenever the bibliography
+# needs to be updated. The hook URL is a POST endpoint — no credentials required.

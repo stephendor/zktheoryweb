@@ -3,6 +3,7 @@ title: 'Point Clouds and Distance'
 path: 'topology-social-scientists'
 module_number: 2
 core_concept: 'A point cloud is a finite metric space; distance defines what it means for points to be ''near'''
+interactive_slug: 'point-cloud-explorer'
 connections:
   chapters: [2]
   papers: []
@@ -57,6 +58,18 @@ This is the set of all points within distance $\varepsilon$ of $x$. The $\vareps
 ## From Individual Points to Global Structure
 
 The power of metric-space thinking becomes visible only when we look at the global arrangement of many points simultaneously. A single point tells you nothing; ten points with a clear gap between two clusters tells you something about the population's structure; hundreds of points that form a loop in two-dimensional projection tells you that there are two distinct pathways through the deprivation landscape and that they are cyclically connected. None of these conclusions are accessible from summary statistics — they require reasoning about the collective geometry of the point cloud.
+
+## Using the Interactive: Point Cloud & Distance Explorer
+
+The **Point Cloud & Distance Explorer** below makes the ε-ball definition concrete and visceral. Three preset clouds are available: **Scattered** (12 roughly uniform points), **Two clusters** (two tight groups separated by a gap), and **Ring** (16 points on a circle, the canonical topology-revealing shape).
+
+**Click any point** to select it as the centre of the ε-ball. The ball is drawn on the chart and highlighted points — those within distance ε of the centre — are shown in orange. Points outside the ball are shown in blue. The status bar reports the count and indices of neighbours.
+
+**ε slider** controls the radius. At small ε you see only the immediate neighbourhood; drag it rightward and the ball expands, capturing more points. With the **Two clusters** preset, try finding the value of ε at which the first inter-cluster connection forms — this is precisely the scale at which the filtration begins to merge the two components.
+
+**Metric toggle** switches between Euclidean (L₂, circle ball) and Manhattan (L₁, diamond ball). The same ε, the same point, but the set of neighbours changes because the shape of "closeness" has changed. At ε = 0.35, a point diagonally situated at distance (0.2, 0.2) from the centre is inside the Euclidean ball (d₂ ≈ 0.28) but outside the Manhattan ball (d₁ = 0.40). This is not a numerical accident — it is the visual form of the metric-choice problem in social data.
+
+**Distance matrix** (collapsed by default) shows every pairwise distance. Expand it to read the exact distance between any two points. When a point is selected, its row and column are highlighted. Cell colour intensity encodes relative magnitude: darker orange = larger distance.
 
 ## How This Module Connects
 

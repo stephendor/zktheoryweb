@@ -38,9 +38,13 @@ import { useReducedMotion } from '@lib/viz/a11y/useReducedMotion';
 
 import {
   computeUCSchedule,
+  computeFiscalCostDelta,
   CURRENT_PARAMS,
   PRE_2021_PARAMS,
   MAX_EARNINGS,
+  TAPER_RATE_MIN,
+  TAPER_RATE_MAX,
+  TAPER_RATE_DEFAULT,
 } from './BenefitTaperCalculator.data';
 import type { UCResult } from './BenefitTaperCalculator.data';
 import './BenefitTaperCalculator.css';
@@ -64,6 +68,7 @@ interface BenefitTaperChartProps {
   currentSchedule: UCResult[];
   comparisonSchedule: UCResult[] | null;
   hasHousingElement: boolean;
+  /** Whether to show the pre-2021 63% reference line. Toggled by the UI checkbox; defaults to false. */
   showComparison: boolean;
   highlightedEarnings: number | null;
   reducedMotion: boolean;
@@ -560,6 +565,8 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
   const [hasHousingElement, setHasHousingElement] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
   const [highlightedEarnings, setHighlightedEarnings] = useState<number | null>(null);
+  /** Adjustable taper rate as an integer percentage (40–75). */
+  const [taperRatePct, setTaperRatePct] = useState(TAPER_RATE_DEFAULT);
   /** ARIA live-region message updated by chart hover and control changes. */
   const [liveMsg, setLiveMsg] = useState('');
 
@@ -567,17 +574,25 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
 
   // ── Derived schedules ──────────────────────────────────────────────────────
 
-  const currentSchedule = useMemo(
-    () => computeUCSchedule(CURRENT_PARAMS, hasHousingElement, SCHEDULE_STEPS),
-    [hasHousingElement],
-  );
+  /** Dynamic schedule built from the slider value. */
+  const currentSchedule = useMemo(() => {
+    const dynamicParams = { ...CURRENT_PARAMS, taperRate: taperRatePct / 100 };
+    return computeUCSchedule(dynamicParams, hasHousingElement, SCHEDULE_STEPS);
+  }, [taperRatePct, hasHousingElement]);
 
+  /** Pre-2021 63% reference schedule — always shown as a dashed reference line. */
   const comparisonSchedule = useMemo(
     () =>
       showComparison
         ? computeUCSchedule(PRE_2021_PARAMS, hasHousingElement, SCHEDULE_STEPS)
         : null,
     [showComparison, hasHousingElement],
+  );
+
+  /** Annualised fiscal cost delta relative to 55% baseline (£bn). */
+  const fiscalDelta = useMemo(
+    () => computeFiscalCostDelta(taperRatePct),
+    [taperRatePct],
   );
 
   // ── Callbacks ──────────────────────────────────────────────────────────────
@@ -592,10 +607,10 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
     const workAllowance = hasHousingElement ? 404 : 673;
     if (exhaustionResult) {
       setLiveMsg(
-        `Work allowance: £${workAllowance}. UC exhausts at £${exhaustionResult.grossEarnings.toFixed(0)} gross earnings. Net income at exhaustion: £${exhaustionResult.netIncome.toFixed(2)}.`,
+        `Taper rate: ${taperRatePct}%. Work allowance: £${workAllowance}. UC exhausts at £${exhaustionResult.grossEarnings.toFixed(0)} gross earnings.`,
       );
     }
-  }, [currentSchedule, hasHousingElement]);
+  }, [currentSchedule, hasHousingElement, taperRatePct]);
 
   // ── Derived context values for annotations / text description ─────────────
 
@@ -604,19 +619,26 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
   const exhaustionResult = currentSchedule.find((d) => d.ucAmount === 0);
   const ucExhaustsAt = exhaustionResult?.grossEarnings ?? null;
 
-  // Contextual annotation text
-  const annotationText = showComparison
-    ? `Under the 2021 reform, the taper fell from 63% to 55% — an extra 8p kept per £1 earned in the taper zone.`
-    : `At the current 55% taper, you keep 45p of every £1 earned above the work allowance threshold.`;
+  // Contextual annotation text — reflects the active slider value.
+  const keptPerPound = 100 - taperRatePct;
+  const annotationText =
+    taperRatePct === TAPER_RATE_DEFAULT
+      ? `At the current ${taperRatePct}% taper, you keep ${keptPerPound}p of every £1 earned above the work allowance threshold.`
+      : taperRatePct < TAPER_RATE_DEFAULT
+        ? `At ${taperRatePct}% — lower than the current 55% — claimants keep ${keptPerPound}p per £1, making work pay more. The estimated fiscal cost is £${Math.abs(fiscalDelta).toFixed(1)}bn/year more than the baseline.`
+        : `At ${taperRatePct}% — higher than the current 55% — claimants keep only ${keptPerPound}p per £1. The estimated saving is £${Math.abs(fiscalDelta).toFixed(1)}bn/year relative to the 55% baseline.`;
 
   // Text description for TextDescriptionToggle
   const textDescription = [
-    `Taper rate: ${Math.round(CURRENT_PARAMS.taperRate * 100)}%.`,
+    `Taper rate: ${taperRatePct}% (adjustable via slider).`,
     `Work allowance threshold applied: £${workAllowance}/month${hasHousingElement ? ' (with housing element)' : ' (no housing element)'}.`,
     `UC exhausts at approximately £${ucExhaustsAt?.toFixed(0) ?? 'N/A'} gross monthly earnings.`,
+    taperRatePct !== TAPER_RATE_DEFAULT
+      ? `Estimated fiscal delta vs 55% baseline: ${fiscalDelta >= 0 ? '+' : ''}£${fiscalDelta.toFixed(1)}bn/year.`
+      : `Taper rate matches 55% baseline — no fiscal delta.`,
     showComparison
-      ? `Comparison mode active: the pre-2021 63% taper is shown as a dashed line.`
-      : `Comparison mode inactive. Enable it to see the pre-2021 63% taper.`,
+      ? `Reference line active: the pre-2021 63% taper is shown as a dashed line.`
+      : `Reference line inactive. Enable it to compare with the pre-2021 63% taper.`,
   ].join(' ');
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -677,7 +699,7 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
 
           {/* Comparison toggle */}
           <fieldset className="btc-fieldset">
-            <legend className="btc-fieldset__legend">Comparison</legend>
+            <legend className="btc-fieldset__legend">Reference line</legend>
             <label className="btc-checkbox-label">
               <input
                 type="checkbox"
@@ -688,6 +710,55 @@ export function BenefitTaperCalculator({ className }: BenefitTaperCalculatorProp
               Show pre-2021 (63% taper)
             </label>
           </fieldset>
+
+          {/* Taper rate slider */}
+          <div className="btc-taper-control">
+            <label htmlFor="btc-taper-slider" className="btc-spotlight-label">
+              Taper rate:{' '}
+              <span className="btc-spotlight-value">{taperRatePct}%</span>
+              {taperRatePct !== TAPER_RATE_DEFAULT && (
+                <span className="btc-taper-baseline-note">
+                  {' '}(baseline: {TAPER_RATE_DEFAULT}%)
+                </span>
+              )}
+            </label>
+            <input
+              id="btc-taper-slider"
+              type="range"
+              min={TAPER_RATE_MIN}
+              max={TAPER_RATE_MAX}
+              step={1}
+              value={taperRatePct}
+              onChange={(e) => setTaperRatePct(Number(e.target.value))}
+              className="btc-slider"
+              aria-valuemin={TAPER_RATE_MIN}
+              aria-valuemax={TAPER_RATE_MAX}
+              aria-valuenow={taperRatePct}
+              aria-valuetext={`${taperRatePct} percent taper rate`}
+            />
+            <div className="btc-taper-range-labels" aria-hidden="true">
+              <span>{TAPER_RATE_MIN}% (more generous)</span>
+              <span>{TAPER_RATE_MAX}% (cheaper)</span>
+            </div>
+          </div>
+
+          {/* Fiscal cost readout — aria-live removed; AriaLiveRegion handles announcements */}
+          <div className="btc-fiscal-readout" aria-hidden="true">
+            <span className="btc-fiscal-readout__label">Fiscal cost vs 55% baseline:</span>{' '}
+            {taperRatePct === TAPER_RATE_DEFAULT ? (
+              <span className="btc-fiscal-readout__value btc-fiscal-readout__value--neutral">
+                £0bn (at baseline)
+              </span>
+            ) : fiscalDelta > 0 ? (
+              <span className="btc-fiscal-readout__value btc-fiscal-readout__value--positive">
+                +£{fiscalDelta.toFixed(1)}bn/year (more expensive)
+              </span>
+            ) : (
+              <span className="btc-fiscal-readout__value btc-fiscal-readout__value--negative">
+                −£{Math.abs(fiscalDelta).toFixed(1)}bn/year (cheaper)
+              </span>
+            )}
+          </div>
 
           {/* Earnings spotlight slider */}
           <div className="btc-spotlight-control">

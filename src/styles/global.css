@@ -15,3 +15,29 @@
 
 /* ─── Prose styles (long-form reading; scoped to .prose) ────────────────────── */
 @import './prose.css';
+/* ─── Dark mode: KaTeX math rendering override ───────────────────────────── */
+/*
+ * KaTeX ships its own colours via katex.min.css (imported above).
+ * Override text colour in dark mode so math remains readable.
+ */
+[data-theme="dark"] .katex {
+  color: var(--color-neutral-body);
+}
+/* ─── Reduced motion — WCAG 2.1 AA §2.3 ────────────────────────────────── */
+/*
+ * Suppresses all transitions and animations for users who prefer reduced
+ * motion. !important ensures this overrides individual component declarations
+ * (hamburger-bar, nav-link hover, TwoLensesToggle, etc.).
+ * Components with their own @media blocks (ExpandableCard, FigureCard, etc.)
+ * are also covered by this blanket rule.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
