@@ -10,7 +10,7 @@
  */
 
 interface Connection {
-  href: string;
+  href?: string;         // omit for routes that don't exist yet
   label: string;   // e.g. "Paper 1", "Chapter 3", "Mathematical Interlude"
   title: string;
   palette: 'tda' | 'cl';
@@ -31,14 +31,25 @@ const { heading = 'Connections', connections } = Astro.props;
     <ul class="connections-list">
       {connections.map((conn) => (
         <li class="connections-item">
-          <a
-            href={conn.href}
-            class={`connections-card connections-card--${conn.palette}`}
-            data-todo={conn.dataTodo}
-          >
-            <span class="connections-label">{conn.label}</span>
-            <span class="connections-title">{conn.title}</span>
-          </a>
+          {conn.href ? (
+            <a
+              href={conn.href}
+              class={`connections-card connections-card--${conn.palette}`}
+              data-todo={conn.dataTodo}
+            >
+              <span class="connections-label">{conn.label}</span>
+              <span class="connections-title">{conn.title}</span>
+            </a>
+          ) : (
+            <span
+              class={`connections-card connections-card--${conn.palette} connections-card--unavailable`}
+              aria-disabled="true"
+              data-todo={conn.dataTodo}
+            >
+              <span class="connections-label">{conn.label}</span>
+              <span class="connections-title">{conn.title}</span>
+            </span>
+          )}
         </li>
       ))}
     </ul>
@@ -104,6 +115,11 @@ const { heading = 'Connections', connections } = Astro.props;
     background-color: color-mix(in srgb, var(--color-cl-red) 8%, transparent);
     border-color: var(--color-cl-red);
     outline-color: var(--color-cl-red);
+  }
+
+  .connections-card--unavailable {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .connections-label {

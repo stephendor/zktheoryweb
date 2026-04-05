@@ -46,7 +46,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <!-- No-FOCT: resolves theme synchronously before CSS renders to prevent flash -->
     <script is:inline>
       (function () {
-        var s = localStorage.getItem('theme');
+        var s = null;
+        try { s = localStorage.getItem('theme'); } catch (e) { /* storage unavailable (e.g. Safari private mode) */ }
         var t = (s === 'dark' || s === 'light')
           ? s
           : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

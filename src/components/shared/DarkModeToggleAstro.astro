@@ -124,16 +124,18 @@
     const current = getTheme();
     const next: 'light' | 'dark' = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    try { localStorage.setItem('theme', next); } catch (_) { /* storage unavailable */ }
     updateAriaLabel(next);
   });
 
   // Respond to system preference changes only when user has made no explicit choice
   window
     .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', (e: MediaQueryListEvent) => {
-      if (localStorage.getItem('theme') === null) {
-        const next: 'light' | 'dark' = e.matches ? 'dark' : 'light';
+    .addEventListener('change', (evt: MediaQueryListEvent) => {
+      let stored: string | null = null;
+      try { stored = localStorage.getItem('theme'); } catch (_) { /* storage unavailable */ }
+      if (stored === null) {
+        const next: 'light' | 'dark' = evt.matches ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', next);
         updateAriaLabel(next);
       }

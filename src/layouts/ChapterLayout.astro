@@ -64,14 +64,14 @@ const paperConnections = related_tda_papers.map((n) => {
   const paper = allPapers.find((p) => p.data.paper_number === n);
   return paper
     ? { href: `/tda/papers/${paper.id}`, label: `Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
-    : { href: '#', label: `Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
+    : { label: `Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
 });
 
 const interludeConnections = interludeSlugs.map((slug) => {
   const interlude = allInterludes.find((i) => i.data.interlude_slug === slug);
   return interlude
     ? { href: `/counting-lives/interludes/${slug}`, label: 'Mathematical Interlude', title: interlude.data.title, palette: 'cl' as const }
-    : { href: '#', label: 'Mathematical Interlude', title: slug, palette: 'cl' as const, dataTodo: 'route-missing' };
+    : { label: 'Mathematical Interlude', title: slug, palette: 'cl' as const, dataTodo: 'route-missing' };
 });
 
 const { Content, headings } = await render(entry);
