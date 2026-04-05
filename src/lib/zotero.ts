@@ -46,7 +46,6 @@ export type ZoteroLibraryCache = {
   items: ZoteroItem[];
   /** key → collection name map, populated by fetchZoteroLibrary */
   collections: Record<string, string>;
-  fetchedAt: string;
 };
 
 // ─── Internal Helpers ─────────────────────────────────────────────────────────
@@ -128,7 +127,7 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
       if (res.status === 304) {
         console.log('[zotero] Items unchanged (304). Refreshing collections and returning cached items.');
         const collections = await fetchCollections();
-        writeCache({ ...cache, collections, fetchedAt: new Date().toISOString() });
+        writeCache({ ...cache, collections });
         return cache.items;
       }
 
@@ -150,7 +149,6 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
         const noChange: ZoteroLibraryCache = {
           ...cache,
           collections,
-          fetchedAt: new Date().toISOString(),
         };
         writeCache(noChange);
         return cache.items;
@@ -166,7 +164,6 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
         version: newVersion,
         items: Array.from(itemMap.values()),
         collections,
-        fetchedAt: new Date().toISOString(),
       };
       writeCache(updated);
       console.log(`[zotero] Cache updated. Total items: ${updated.items.length}`);
@@ -211,7 +208,6 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
       version: lastVersion,
       items: allItems,
       collections,
-      fetchedAt: new Date().toISOString(),
     };
     writeCache(fullCache);
     console.log(
