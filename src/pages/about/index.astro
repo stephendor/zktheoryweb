@@ -17,6 +17,12 @@ import BaseLayout from '@layouts/BaseLayout.astro';
       "@type": "Person",
       "name": "Stephen Dorling",
       "url": "https://zktheory.org/about/",
+      "identifier": "https://orcid.org/0009-0005-1387-7279",
+      "sameAs": ["https://orcid.org/0009-0005-1387-7279"],
+      "affiliation": {
+        "@type": "Organization",
+        "name": "The Open University, UK"
+      },
       "knowsAbout": ["Topological Data Analysis", "Poverty Measurement", "Welfare Policy"]
     })} />
   </Fragment>
@@ -34,7 +40,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
           <p>
             <!-- TODO: Replace the following placeholder with real positionality statement (~100 words) -->
             My research sits at the intersection of poverty measurement, welfare-state history,
-            and topological data analysis. I am a [<em>position</em>] at [<em>institution</em>],
+            and topological data analysis. I am a [<em>position</em>] at <em>The Open University, UK</em>,
             working within the [<em>department</em>]. I came to this project through a long-standing
             interest in how quantitative social science translates lived experience into data — and
             who bears the cost of that translation. The subjects of poverty measurement are not
@@ -157,8 +163,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
           </li>
           <li>
             <span class="contact-label">ORCID</span>
-            {/* TODO: Replace href with real ORCID URL, e.g. https://orcid.org/0000-0000-0000-0000 */}
-            <a href="/todo/orcid" rel="me noopener noreferrer">ORCID profile (link pending)</a>
+            <a href="https://orcid.org/0009-0005-1387-7279" rel="me noopener noreferrer">0009-0005-1387-7279</a>
           </li>
           <li>
             <span class="contact-label">GitHub</span>
@@ -172,8 +177,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
           </li>
           <li>
             <span class="contact-label">Institutional page</span>
-            {/* TODO: Replace href with real institutional profile URL */}
-            <a href="/todo/institution" rel="noopener noreferrer">Institutional profile (link pending)</a>
+            <a href="https://www.open.ac.uk" rel="noopener noreferrer">The Open University, UK</a>
           </li>
         </ul>
       </div>
