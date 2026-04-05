@@ -65,7 +65,7 @@ const statusBadge = (status: string) => {
           and the counter-mathematics that resists them.
         </p>
         <nav class="cl-hub__nav" aria-label="Section navigation">
-          <a href="/counting-lives/bibliography" class="cl-hub__nav-link">Bibliography</a>
+          <a href="/counting-lives/bibliography/" class="cl-hub__nav-link">Bibliography</a>
           <a href="/counting-lives/transitions/" class="cl-hub__nav-link">Five Transitions Timeline</a>
         </nav>
       </div>
@@ -237,7 +237,7 @@ const statusBadge = (status: string) => {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-cl-ochre, #C17F24);
+    color: var(--color-cl-red); /* was cl-ochre; darkened for WCAG 2.1 AA contrast */
     white-space: nowrap;
   }
 
@@ -293,7 +293,7 @@ const statusBadge = (status: string) => {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--color-cl-ochre, #C17F24);
+    color: var(--color-cl-red); /* was cl-ochre; darkened for WCAG 2.1 AA contrast */
   }
 
   .cl-hub__card-number {
@@ -323,8 +323,8 @@ const statusBadge = (status: string) => {
   }
 
   .cl-hub__badge--drafting {
-    background-color: var(--color-cl-ochre-light, #FFF3DC);
-    color: var(--color-cl-ochre, #C17F24);
+    background-color: var(--color-cl-ochre-light);
+    color: var(--color-cl-charcoal); /* was cl-ochre; contrast 1.48:1 → 7.5:1 on ochre-light bg */
   }
 
   .cl-hub__badge--in-review {

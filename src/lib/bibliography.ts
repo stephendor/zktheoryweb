@@ -55,7 +55,7 @@ export function getBibliographyByCollection(collectionName: string): ZoteroItem[
   }
 
   return getBibliographyItems().filter(item =>
-    item.collections.some(k => matchingKeys.has(k)),
+    (item.collections ?? []).some(k => matchingKeys.has(k)),
   );
 }
 

@@ -95,12 +95,11 @@ const allMethods = methods.length > 0 ? await getCollection('methods') : [];
 const allPapersForDeps =
   (depends_on.length > 0 || enables.length > 0) ? await getCollection('papers') : [];
 
-// Method route does not exist yet — flag each card with data-todo
 const methodConnections = methods.map((slug) => {
   const method = allMethods.find((m) => m.data.method_slug === slug);
   return method
-    ? { href: '#', label: 'Method', title: method.data.title, palette: 'tda' as const, dataTodo: 'method-route-missing' }
-    : { href: '#', label: 'Method', title: slug, palette: 'tda' as const, dataTodo: 'method-route-missing' };
+    ? { href: `/tda/methods/${slug}`, label: 'Method', title: method.data.title, palette: 'tda' as const }
+    : { href: `/tda/methods/${slug}`, label: 'Method', title: slug, palette: 'tda' as const };
 });
 
 const dependsOnConnections = depends_on.map((n) => {
@@ -264,6 +263,7 @@ const enablesConnections = enables.map((n) => {
                 const isEnabled = enables.includes(n);
                 return (
                   <div
+                    role="img"
                     class:list={[
                       'dep-node',
                       isCurrent && 'dep-node--current',
@@ -355,11 +355,15 @@ const enablesConnections = enables.map((n) => {
       ════════════════════════════════════════════════════════════════════ */}
   {(methodConnections.length > 0 || dependsOnConnections.length > 0 || enablesConnections.length > 0) && (
     <div class="paper-connections container-prose--wide">
-      <ConnectionsPanel heading="Methods Used" connections={methodConnections} />
-      <ConnectionsPanel
-        heading="Research Dependencies"
-        connections={[...dependsOnConnections, ...enablesConnections]}
-      />
+      {methodConnections.length > 0 && (
+        <ConnectionsPanel heading="Methods Used" connections={methodConnections} />
+      )}
+      {(dependsOnConnections.length > 0 || enablesConnections.length > 0) && (
+        <ConnectionsPanel
+          heading="Research Dependencies"
+          connections={[...dependsOnConnections, ...enablesConnections]}
+        />
+      )}
     </div>
   )}
 
@@ -768,7 +772,8 @@ const enablesConnections = enables.map((n) => {
 
   .legend-current { color: var(--color-tda-teal); }
   .legend-depends  { color: var(--color-tda-slate); }
-  .legend-enables  { color: var(--color-tda-teal-light); }
+  /* was tda-teal-light (3.82:1); use darker tda-teal (~5.5:1) */
+  .legend-enables  { color: var(--color-tda-teal); }
 
   /* ══ Citation & Downloads ════════════════════════════════════════════════ */
   .citation-section {
@@ -819,7 +824,7 @@ const enablesConnections = enables.map((n) => {
 
   .download-link--placeholder {
     cursor: default;
-    opacity: 0.55;
+    opacity: 0.85; /* was 0.55; raised to maintain WCAG 2.1 AA contrast (≥4.5:1) */
     pointer-events: none;
   }
 

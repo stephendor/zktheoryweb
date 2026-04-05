@@ -255,8 +255,9 @@ const statusLabels: Record<string, string> = {
   /* Stage badges */
   .tda-hub__card-badge--stage-0 { background-color: color-mix(in srgb, var(--color-tda-slate) 15%, transparent); color: var(--color-tda-slate); }
   .tda-hub__card-badge--stage-1 { background-color: color-mix(in srgb, var(--color-tda-teal) 15%, transparent); color: var(--color-tda-teal); }
-  .tda-hub__card-badge--stage-2 { background-color: color-mix(in srgb, var(--color-tda-teal-light) 20%, transparent); color: var(--color-tda-teal-light); }
-  .tda-hub__card-badge--stage-3 { background-color: color-mix(in srgb, var(--color-tda-slate-light) 20%, transparent); color: var(--color-tda-slate-light); }
+  /* stage-2/3 light-tint tokens failed 4.5:1 as text; use dark base tokens instead (5.8:1 / 5.1:1) */
+  .tda-hub__card-badge--stage-2 { background-color: color-mix(in srgb, var(--color-tda-teal-light) 20%, transparent); color: var(--color-tda-teal); }
+  .tda-hub__card-badge--stage-3 { background-color: color-mix(in srgb, var(--color-tda-slate-light) 20%, transparent); color: var(--color-tda-slate); }
 
   /* Status badges */
   .tda-hub__card-badge--planned      { background-color: color-mix(in srgb, #888 12%, transparent); color: #555; }

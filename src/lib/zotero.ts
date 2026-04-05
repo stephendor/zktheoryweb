@@ -49,7 +49,12 @@ const ZOTERO_API_BASE = 'https://api.zotero.org';
 function readCache(): ZoteroLibraryCache | null {
   try {
     const raw = readFileSync(CACHE_PATH, 'utf-8');
-    return JSON.parse(raw) as ZoteroLibraryCache;
+    const parsed = JSON.parse(raw) as ZoteroLibraryCache;
+    // Migrate older cache schemas that pre-date the collections field.
+    if (!parsed.collections || typeof parsed.collections !== 'object' || Array.isArray(parsed.collections)) {
+      parsed.collections = {};
+    }
+    return parsed;
   } catch {
     return null;
   }
@@ -80,18 +85,24 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
 
   // ── Collection fetch helper ──────────────────────────────────────────────
   async function fetchCollections(): Promise<Record<string, string>> {
-    console.log('[zotero] Fetching collections...');
-    const res = await fetch(
-      `${ZOTERO_API_BASE}/users/${userID}/collections?format=json&include=data&limit=100`,
-      { headers }
-    );
-    if (!res.ok) {
-      throw new Error(`Zotero collections API error: ${res.status} ${res.statusText}`);
-    }
-    const raw = (await res.json()) as Array<{ data: ZoteroCollection }>;
+    console.log('[zotero] Fetching collections (paginated)...');
     const map: Record<string, string> = {};
-    for (const { data } of raw) {
-      map[data.key] = data.name;
+    let start = 0;
+    const limit = 100;
+    while (true) {
+      const res = await fetch(
+        `${ZOTERO_API_BASE}/users/${userID}/collections?format=json&include=data&limit=${limit}&start=${start}`,
+        { headers }
+      );
+      if (!res.ok) {
+        throw new Error(`Zotero collections API error: ${res.status} ${res.statusText}`);
+      }
+      const raw = (await res.json()) as Array<{ data: ZoteroCollection }>;
+      for (const { data } of raw) {
+        map[data.key] = data.name;
+      }
+      if (raw.length < limit) break;
+      start += limit;
     }
     console.log(`[zotero] ${Object.keys(map).length} collection(s) fetched.`);
     return map;
@@ -107,7 +118,9 @@ export async function fetchZoteroLibrary(options?: { force?: boolean }): Promise
       );
 
       if (res.status === 304) {
-        console.log('[zotero] Cache is up to date (304). Returning cached data.');
+        console.log('[zotero] Items unchanged (304). Refreshing collections and returning cached items.');
+        const collections = await fetchCollections();
+        writeCache({ ...cache, collections, fetchedAt: new Date().toISOString() });
         return cache.items;
       }
 

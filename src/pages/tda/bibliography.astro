@@ -5,11 +5,14 @@
  * Bibliography page for the TDA section.
  * Extends BaseLayout; renders all bibliography items using the TDA palette.
  *
- * Tag filtering note: The Zotero cache contains only generic Library of Congress
- * subject headings (e.g. "Great Britain", "Poor", "History") — no project-specific
- * tags such as 'tda-methods' or 'topology' were found. The full unfiltered
- * bibliography is rendered. When the Zotero library is tagged with project-specific
- * tags, update the `filter()` call below to match them.
+ * Collection filtering: Items are selected by Zotero collection name via
+ * getBibliographyByCollection('TDA-Research'). The full unfiltered library is
+ * returned as a fallback when the 'TDA-Research' collection is absent from the
+ * cache (i.e. the cache was built before collections were populated).
+ *
+ * If the selection method changes (e.g. switching to tag-based filtering or a
+ * different collection name), update the getBibliographyByCollection() call and
+ * this comment accordingly.
  *
  * Accent: --color-tda-teal (TDA / Mathematical palette)
  */
@@ -37,8 +40,9 @@ const isFiltered = items.length < getBibliographyItems().length;
       </p>
       {!isFiltered && (
         <p class="biblio-note">
-          Showing full library ({items.length} items). Items will be filtered by
-          project tags once the Zotero library is tagged.
+          Showing full library ({items.length} items). Items are filtered by the
+          'TDA-Research' Zotero collection — if the collection is empty or not yet
+          populated in the cache, the full library is shown as a fallback.
         </p>
       )}
     </header>

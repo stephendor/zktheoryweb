@@ -57,8 +57,8 @@ const { Content } = await render(entry);
       BODY — prose content with TwoLensesToggle
       ════════════════════════════════════════════════════════════════════ */}
   <div class="container-prose interlude-body">
-    <TwoLensesToggle client:load />
     <div class="interlude-content prose" data-lens="politics">
+      <TwoLensesToggle client:load />
       <Content />
     </div>
   </div>

@@ -166,8 +166,12 @@ const statusLabels: Record<typeof status, string> = {
       ════════════════════════════════════════════════════════════════════ */}
   {(paperConnections.length > 0 || interludeConnections.length > 0) && (
     <div class="chapter-connections container-prose--wide">
-      <ConnectionsPanel heading="Related in TDA" connections={paperConnections} />
-      <ConnectionsPanel heading="Mathematical Interludes" connections={interludeConnections} />
+      {paperConnections.length > 0 && (
+        <ConnectionsPanel heading="Related in TDA" connections={paperConnections} />
+      )}
+      {interludeConnections.length > 0 && (
+        <ConnectionsPanel heading="Mathematical Interludes" connections={interludeConnections} />
+      )}
     </div>
   )}
 
