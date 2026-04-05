@@ -85,6 +85,24 @@ const statusLabels: Record<typeof status, string> = {
 ---
 
 <BaseLayout title={title} description={spine_role} section="counting-lives">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Chapter",
+      "name": title,
+      "isPartOf": {
+        "@type": "Book",
+        "name": "Counting Lives"
+      },
+      "position": chapter_number,
+      "description": spine_role,
+      "author": {
+        "@type": "Person",
+        "name": "Stephen Dorling",
+        "url": "https://zktheory.org/about/"
+      }
+    })} />
+  </Fragment>
 
   {/* ════════════════════════════════════════════════════════════════════
       HERO — full-width archival cream band

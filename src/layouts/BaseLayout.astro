@@ -36,6 +36,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:site_name" content="zktheory.org" />
+
+    <!-- Twitter/X card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    {description && <meta name="twitter:description" content={description} />}
 
     <!-- No-FOCT: resolves theme synchronously before CSS renders to prevent flash -->
     <script is:inline>
@@ -47,6 +53,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Web app manifest & theme colour -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#1A5F6A" />
+
+    <!-- Font preloads — critical body and UI fonts; reduces LCP on prose pages -->
+    <link rel="preload" href="/fonts/source-serif-4-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Print stylesheet — loaded separately so browser defers it for non-print -->
     <link rel="stylesheet" media="print" href={printCssUrl} />
@@ -60,6 +77,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         href="/writing/rss.xml"
       />
     )}
+
+    <!-- Per-layout head injections (JSON-LD, citation meta, etc.) -->
+    <slot name="head" />
   </head>
 
   <body>

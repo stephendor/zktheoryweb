@@ -60,6 +60,7 @@ const {
   abstract,
   plain_summary,
   bibtex,
+  date,
 } = entry.data;
 
 const { Content, headings } = await render(entry);
@@ -115,9 +116,33 @@ const enablesConnections = enables.map((n) => {
     ? { href: `/tda/papers/${paper.id}`, label: `Enables: Paper ${n}`, title: paper.data.title, palette: 'tda' as const }
     : { href: '#', label: `Enables: Paper ${n}`, title: `Paper ${n}`, palette: 'tda' as const, dataTodo: 'paper-not-found' };
 });
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <BaseLayout title={title} description={abstract ?? plain_summary} section="tda">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": title,
+      "description": abstract ?? plain_summary,
+      "author": {
+        "@type": "Person",
+        "name": "Stephen Dorling",
+        "url": "https://zktheory.org/about/"
+      },
+      "isPartOf": {
+        "@type": "Collection",
+        "name": "TDA Research Programme"
+      },
+      "position": paper_number
+    })} />
+    <meta name="citation_title" content={title} />
+    <meta name="citation_author" content="Dorling, Stephen" />
+    <meta name="citation_publication_date" content={date ? new Date(date).getFullYear().toString() : new Date().getFullYear().toString()} />
+    <meta name="citation_abstract_html_url" content={canonicalURL.toString()} />
+  </Fragment>
 
   {/* ════════════════════════════════════════════════════════════════════
       HERO — full-width TDA band

@@ -1,3 +1,11 @@
+/**
+ * Required environment variables (set in Netlify UI → Site Settings → Environment Variables):
+ *
+ *   ZOTERO_USER_ID  — Zotero user/group numeric ID (visible at zotero.org/settings/keys)
+ *   ZOTERO_API_KEY  — Zotero API key with read access (zotero.org/settings/keys/new)
+ *
+ * For local development, copy .env.example → .env and populate both values.
+ */
 import 'dotenv/config';
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';

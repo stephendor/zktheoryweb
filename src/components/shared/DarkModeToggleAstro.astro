@@ -1,0 +1,141 @@
+---
+/**
+ * DarkModeToggleAstro.astro — Task 6.6-follow — Agent_Design_System
+ *
+ * Vanilla JS replacement for DarkModeToggle.tsx React island.
+ * Eliminates React DOM runtime from pages that have no other React islands.
+ *
+ * Behaviours:
+ * 1. On mount: reads data-theme already set by no-FOCT inline script; syncs aria-label
+ * 2. On click: toggles data-theme on <html>, writes to localStorage, updates aria-label
+ * 3. System preference: responds to prefers-color-scheme change only when no
+ *    localStorage 'theme' key exists
+ * 4. aria-label: "Switch to dark mode" when light; "Switch to light mode" when dark
+ * 5. Icons: sun shown in light mode, moon shown in dark mode (CSS-driven — no hydration flash)
+ */
+---
+
+<button
+  id="dark-mode-toggle"
+  type="button"
+  aria-label="Switch to dark mode"
+>
+  <!-- Sun icon: shown in light mode -->
+  <svg
+    class="icon-sun"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="8" cy="8" r="3" fill="currentColor" />
+    <line x1="8"    y1="1"     x2="8"     y2="3"     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="8"    y1="13"    x2="8"     y2="15"    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="1"    y1="8"     x2="3"     y2="8"     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="13"   y1="8"     x2="15"    y2="8"     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="3.05" y1="3.05"  x2="4.46"  y2="4.46"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="11.54" y1="11.54" x2="12.95" y2="12.95" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="3.05"  y1="12.95" x2="4.46"  y2="11.54" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="11.54" y1="4.46"  x2="12.95" y2="3.05"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+  </svg>
+
+  <!-- Moon icon: shown in dark mode -->
+  <svg
+    class="icon-moon"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M13.5 9.5A6 6 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"
+      fill="currentColor"
+    />
+  </svg>
+</button>
+
+<style>
+  /* Button base styles — scoped to this component */
+  #dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; /* WCAG 2.1 §2.5.5: min 44×44px touch target */
+    height: 44px;
+    padding: var(--space-2);
+    background: transparent;
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--color-neutral-body);
+    flex-shrink: 0;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  #dark-mode-toggle:hover {
+    border-color: var(--color-neutral-muted);
+  }
+
+  #dark-mode-toggle:focus-visible {
+    outline: 2px solid var(--color-tda-teal);
+    outline-offset: 2px;
+  }
+</style>
+
+<style is:global>
+  /*
+   * Icon visibility — in is:global to avoid specificity conflicts:
+   * A scoped #dark-mode-toggle .icon-moon rule (specificity 1,2,0 with cid)
+   * would override the [data-theme="dark"] ancestor rule (specificity 1,2,0)
+   * unpredictably. Keeping all four rules global ensures correct cascade.
+   */
+
+  /* Default (light mode): show sun, hide moon */
+  #dark-mode-toggle .icon-moon { display: none; }
+  #dark-mode-toggle .icon-sun  { display: block; }
+
+  /* Dark mode: show moon, hide sun */
+  [data-theme="dark"] #dark-mode-toggle .icon-moon { display: block; }
+  [data-theme="dark"] #dark-mode-toggle .icon-sun  { display: none; }
+</style>
+
+<script>
+  const btn = document.getElementById('dark-mode-toggle') as HTMLButtonElement | null;
+
+  function getTheme(): 'light' | 'dark' {
+    return (document.documentElement.getAttribute('data-theme') as 'light' | 'dark') ?? 'light';
+  }
+
+  function updateAriaLabel(theme: 'light' | 'dark'): void {
+    btn?.setAttribute(
+      'aria-label',
+      theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
+    );
+  }
+
+  // Astro module scripts execute after DOM parsing; no DOMContentLoaded wrapper needed.
+  // Sync aria-label with theme already resolved by the no-FOCT inline script.
+  updateAriaLabel(getTheme());
+
+  // Toggle theme on click
+  btn?.addEventListener('click', () => {
+    const current = getTheme();
+    const next: 'light' | 'dark' = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateAriaLabel(next);
+  });
+
+  // Respond to system preference changes only when user has made no explicit choice
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', (e: MediaQueryListEvent) => {
+      if (localStorage.getItem('theme') === null) {
+        const next: 'light' | 'dark' = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        updateAriaLabel(next);
+      }
+    });
+</script>

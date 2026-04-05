@@ -11,6 +11,16 @@ import BaseLayout from '@layouts/BaseLayout.astro';
   description="Academic biography, curriculum vitae, research interests, and contact information."
   section="about"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Stephen Dorling",
+      "url": "https://zktheory.org/about/",
+      "knowsAbout": ["Topological Data Analysis", "Poverty Measurement", "Welfare Policy"]
+    })} />
+  </Fragment>
+
   <div class="about-page">
 
     <!-- ══ Bio ═══════════════════════════════════════════════════════════════ -->
@@ -148,7 +158,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
           <li>
             <span class="contact-label">ORCID</span>
             {/* TODO: Replace href with real ORCID URL, e.g. https://orcid.org/0000-0000-0000-0000 */}
-            <a href="/todo/orcid" rel="noopener noreferrer">ORCID profile (link pending)</a>
+            <a href="/todo/orcid" rel="me noopener noreferrer">ORCID profile (link pending)</a>
           </li>
           <li>
             <span class="contact-label">GitHub</span>

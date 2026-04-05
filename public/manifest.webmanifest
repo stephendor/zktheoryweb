@@ -1,0 +1,17 @@
+{
+  "name": "zktheory.org",
+  "short_name": "zktheory",
+  "description": "Topological data analysis and poverty measurement research",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FAFAF7",
+  "theme_color": "#1A5F6A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

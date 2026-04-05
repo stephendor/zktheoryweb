@@ -104,7 +104,10 @@
   blockquote,
   table,
   figure,
-  .bib-entry {
+  .bib-entry,
+  .ec-card,
+  .key-claims,
+  .connections-panel {
     page-break-inside: avoid;
   }
 
@@ -178,5 +181,16 @@
     --color-tda-warm-grey:   #E8E6E0;
   }
 
+
+  /* ── 12. Hide interactive components (JS/canvas — non-printable) ─────────── */
+  /*
+   * Three.js renders to <canvas>; D3 interactives on the dedicated
+   * /learn/interactives/* pages are wrapped in .interactive-page.
+   * Neither prints meaningfully, so suppress both.
+   */
+  canvas,
+  .interactive-page {
+    display: none !important;
+  }
 
 } /* end @media print */

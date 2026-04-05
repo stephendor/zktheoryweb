@@ -86,6 +86,7 @@ const papers = defineCollection({
   schema: z.object({
     title: z.string(),
     paper_number: z.number().int().min(1).max(10),
+    date: z.string().optional(),  // ISO date string e.g. "2024-03-15"; used for citation_publication_date
     stage: z.number().int().min(0).max(3),
     status: z
       .enum(['planned', 'in-progress', 'submitted', 'in-review', 'revision', 'published'])

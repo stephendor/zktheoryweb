@@ -26,6 +26,7 @@
     "@astrojs/netlify": "^7.0.6",
     "@astrojs/react": "^5.0.2",
     "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@tailwindcss/vite": "^4.2.2",

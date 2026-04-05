@@ -4,8 +4,9 @@
 // Keyboard: Escape closes menu; Tab through links; focus returns to button on close.
 // Task 2.10 — Agent_Integration: SiteSearch added to nav bar.
 // Task 6.4 — Agent_Design_System: DarkModeToggle added.
+// Task 6.6-follow — Agent_Design_System: Replaced React DarkModeToggle with vanilla-JS Astro component.
 import SiteSearch from '@components/shared/SiteSearch.astro';
-import DarkModeToggle from '@components/shared/DarkModeToggle.tsx';
+import DarkModeToggleAstro from '@components/shared/DarkModeToggleAstro.astro';
 
 const navLinks = [
   { label: 'Home',           href: '/'                },
@@ -32,7 +33,7 @@ function isActive(href: string): boolean {
 
     <SiteSearch />
 
-    <DarkModeToggle client:load />
+    <DarkModeToggleAstro />
 
     <!-- Hamburger: visible on mobile only, hidden on desktop via CSS -->
     <button
@@ -242,32 +243,6 @@ function isActive(href: string): boolean {
 
   .site-nav[data-open] .hamburger-bar:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
-  }
-
-  /* ── Dark mode toggle button ──────────────────────────────────────────── */
-  :global(.dark-mode-toggle) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;  /* WCAG 2.1 §2.5.5: min 44×44px touch target */
-    height: 44px;
-    padding: var(--space-2);
-    background: transparent;
-    border: 1px solid var(--color-neutral-border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    color: var(--color-neutral-body);
-    flex-shrink: 0;
-    transition: border-color 0.15s, color 0.15s;
-  }
-
-  :global(.dark-mode-toggle:hover) {
-    border-color: var(--color-neutral-muted);
-  }
-
-  :global(.dark-mode-toggle:focus-visible) {
-    outline: 2px solid var(--color-tda-teal);
-    outline-offset: 2px;
   }
 
   /* ── Mobile breakpoint (≤640px) ─────────────────────────────────────────── */
