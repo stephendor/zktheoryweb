@@ -126,6 +126,8 @@ export function PersistenceDiagramBuilder({ className }: PersistenceDiagramBuild
   const animFrameRef = useRef<number | null>(null);
   const animStartRef = useRef<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
   const [animSpeed, setAnimSpeed] = useState<0.5 | 1 | 2>(1);
   const reducedMotion = useReducedMotion();
 
@@ -243,16 +245,21 @@ export function PersistenceDiagramBuilder({ className }: PersistenceDiagramBuild
     setIsPlaying(false);
   }, []);
 
-  const startAnimation = useCallback(() => {
+  const startAnimation = useCallback((fromRadius = 0) => {
     if (reducedMotion) return;
+    pausedRef.current = false;
+    setPaused(false);
     stopAnimation();
-    const duration = ANIM_DURATION_MS / animSpeed;
+    const startR = fromRadius;
+    const remainingDuration =
+      (ANIM_DURATION_MS / animSpeed) * (1 - startR / Math.max(maxRadius, 1e-9));
 
     const animate = (timestamp: number) => {
+      if (pausedRef.current) { animFrameRef.current = null; return; }
       if (animStartRef.current === null) animStartRef.current = timestamp;
       const elapsed = timestamp - animStartRef.current;
-      const t = Math.min(elapsed / duration, 1);
-      setCurrentRadius(t * maxRadius);
+      const t = Math.min(elapsed / Math.max(remainingDuration, 1), 1);
+      setCurrentRadius(startR + t * (maxRadius - startR));
       if (t < 1) {
         animFrameRef.current = requestAnimationFrame(animate);
       } else {
@@ -272,6 +279,34 @@ export function PersistenceDiagramBuilder({ className }: PersistenceDiagramBuild
       stopAnimation();
     };
   }, [stopAnimation]);
+
+  // Auto-pause when OS reduced-motion preference is active.
+  useEffect(() => {
+    if (reducedMotion) {
+      pausedRef.current = true;
+      setPaused(true);
+      stopAnimation();
+    }
+  }, [reducedMotion, stopAnimation]);
+
+  const handlePauseResume = useCallback(() => {
+    if (paused) {
+      pausedRef.current = false;
+      setPaused(false);
+      setLiveMessage('Animation resumed');
+      if (isPlaying) {
+        startAnimation(currentRadius);
+      }
+    } else {
+      pausedRef.current = true;
+      setPaused(true);
+      setLiveMessage('Animation paused');
+      if (animFrameRef.current !== null) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
+    }
+  }, [paused, isPlaying, currentRadius, startAnimation]);
 
   // ---------------------------------------------------------------------------
   // Step-through (Step 2 — advance to next event radius)
@@ -379,6 +414,19 @@ export function PersistenceDiagramBuilder({ className }: PersistenceDiagramBuild
 
         {/* Controls row */}
         <div className="pdb-controls" aria-label="Filtration controls">
+
+          {/* Pause/Resume animation — always visible for WCAG 2.2.2 */}
+          <div className="pdb-pause-row">
+            <button
+              className="pdb-btn pdb-btn--pause"
+              type="button"
+              onClick={handlePauseResume}
+              aria-label={paused ? 'Resume animation' : 'Pause animation'}
+            >
+              {paused ? '\u25ba\u2009Resume animation' : '\u23f8\u2009Pause animation'}
+            </button>
+          </div>
+
           {/* Filtration slider */}
           <div className="pdb-slider-row">
             <label htmlFor="pdb-slider" className="pdb-control-label">

@@ -19,6 +19,7 @@ import { PersistenceDiagramBuilder } from './PersistenceDiagramBuilder';
 import {
   DefaultBuilder,
   NarrowViewport,
+  PausedBuilder,
 } from './PersistenceDiagramBuilder.stories.helpers';
 
 const meta: Meta<typeof PersistenceDiagramBuilder> = {
@@ -53,4 +54,21 @@ export const Default = {
 export const Narrow = {
   name: '(b) Narrow viewport — 400 px',
   render: () => React.createElement(NarrowViewport, null),
+};
+
+// --- (c) Paused initial state (reduced-motion simulation) ---
+
+export const Paused = {
+  name: '(c) Paused — reduced-motion auto-pause',
+  render: () => React.createElement(PausedBuilder, null),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Simulates prefers-reduced-motion: reduce. The component auto-pauses on mount ' +
+          'and shows the “Resume animation” button. The Pause/Resume toggle is always ' +
+          'visible regardless of OS motion preference (WCAG 2.1 §2.2.2).',
+      },
+    },
+  },
 };

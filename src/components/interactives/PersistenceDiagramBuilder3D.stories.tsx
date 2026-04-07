@@ -20,6 +20,7 @@ import {
   DefaultBuilder3D,
   NarrowViewport3D,
   WrapperDefault,
+  PausedBuilder3D,
 } from './PersistenceDiagramBuilder3D.stories.helpers';
 
 const meta: Meta<typeof PersistenceDiagramBuilder3D> = {
@@ -100,6 +101,23 @@ export const Wrapper = {
         story:
           'PersistenceDiagramBuilderWrapper: renders the 3D version when WebGL2 is ' +
           'supported and reduced-motion is not requested; falls back to the SVG version otherwise.',
+      },
+    },
+  },
+};
+
+// --- (f) Paused initial state (reduced-motion simulation) ---
+
+export const Paused = {
+  name: '(f) Paused — reduced-motion auto-pause',
+  render: () => React.createElement(PausedBuilder3D, null),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Simulates prefers-reduced-motion: reduce. The component auto-pauses on mount ' +
+          'and shows the “Resume animation” button. The Pause/Resume toggle is always ' +
+          'visible regardless of OS motion preference (WCAG 2.1 §2.2.2).',
       },
     },
   },

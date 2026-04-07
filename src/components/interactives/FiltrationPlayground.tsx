@@ -86,6 +86,7 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
   const [points, setPoints] = useState<Point2D[]>([]);
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [speedMultiplier, setSpeedMultiplier] = useState<0.5 | 1 | 2>(1);
   /** 'step' = manual; 'continuous' = RAF animation active. */
   const [mode, setMode] = useState<'step' | 'continuous'>('step');
@@ -135,6 +136,7 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
   const currentStepIdxRef = useRef(0);
   const animFrameRef = useRef<number | null>(null);
   const isPlayingRef = useRef(false);
+  const pausedRef = useRef(false);
   const lastStepTimeRef = useRef<number | null>(null);
   const speedMultiplierRef = useRef(speedMultiplier);
 
@@ -174,6 +176,10 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
    */
   const animate = useCallback((ts: number) => {
     if (!isPlayingRef.current) return;
+    if (pausedRef.current) {
+      animFrameRef.current = null;
+      return;
+    }
 
     if (lastStepTimeRef.current === null) lastStepTimeRef.current = ts;
 
@@ -202,6 +208,8 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
 
   const startAnimation = useCallback(() => {
     if (reducedMotion || isPlayingRef.current) return;
+    pausedRef.current = false;
+    setPaused(false);
     lastStepTimeRef.current = null;
     isPlayingRef.current = true;
     setIsPlaying(true);
@@ -209,9 +217,13 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
     animFrameRef.current = requestAnimationFrame(animate);
   }, [reducedMotion, animate]);
 
-  // Lock to step mode if OS reduced-motion preference is active.
+  // Lock to step mode and auto-pause if OS reduced-motion preference is active.
   useEffect(() => {
-    if (reducedMotion && isPlayingRef.current) stopAnimation();
+    if (reducedMotion) {
+      pausedRef.current = true;
+      setPaused(true);
+      if (isPlayingRef.current) stopAnimation();
+    }
   }, [reducedMotion, stopAnimation]);
 
   // Cleanup on unmount.
@@ -304,6 +316,28 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
       startAnimation();
     }
   }, [isPlaying, stopAnimation, startAnimation, currentStepIdx]);
+
+  const handlePauseResume = useCallback(() => {
+    if (paused) {
+      // Resume: clear paused flag, restart rAF loop if animation is still active.
+      pausedRef.current = false;
+      setPaused(false);
+      setLiveMessage('Animation resumed');
+      if (isPlayingRef.current) {
+        lastStepTimeRef.current = null;
+        animFrameRef.current = requestAnimationFrame(animate);
+      }
+    } else {
+      // Pause: set paused flag and cancel the pending frame.
+      pausedRef.current = true;
+      setPaused(true);
+      setLiveMessage('Animation paused');
+      if (animFrameRef.current !== null) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
+    }
+  }, [paused, animate]);
 
   // ── Prose description for TextDescriptionToggle ───────────────────────────
 
@@ -540,6 +574,18 @@ export function FiltrationPlayground({ className }: FiltrationPlaygroundProps) {
 
         {/* ── Controls ── */}
         <div className="fp-controls" aria-label="Filtration controls">
+
+          {/* Pause/Resume animation — always visible for WCAG 2.2.2 */}
+          <div className="fp-pause-row">
+            <button
+              className="fp-btn fp-btn--pause"
+              type="button"
+              onClick={handlePauseResume}
+              aria-label={paused ? 'Resume animation' : 'Pause animation'}
+            >
+              {paused ? '▶\u2009Resume animation' : '⏸\u2009Pause animation'}
+            </button>
+          </div>
 
           {/* Radius slider */}
           <div className="fp-slider-row">

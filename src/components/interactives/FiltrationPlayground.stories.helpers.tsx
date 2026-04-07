@@ -77,3 +77,43 @@ export function NarrowViewport() {
     </div>
   );
 }
+
+import React from 'react';
+
+/**
+ * Paused story wrapper — overrides window.matchMedia to simulate
+ * prefers-reduced-motion: reduce so the component auto-pauses on mount.
+ * Story-only code; not used in production.
+ */
+export function PausedStory() {
+  const origRef = React.useRef<typeof window.matchMedia | undefined>(undefined);
+
+  if (typeof window !== 'undefined' && !origRef.current) {
+    origRef.current = window.matchMedia.bind(window);
+    window.matchMedia = (q: string): MediaQueryList =>
+      q === '(prefers-reduced-motion: reduce)'
+        ? ({
+            matches: true, media: q, onchange: null,
+            addEventListener: () => {}, removeEventListener: () => {},
+            addListener: () => {}, removeListener: () => {},
+            dispatchEvent: () => true,
+          } as MediaQueryList)
+        : origRef.current!(q);
+  }
+
+  React.useEffect(() => {
+    return () => {
+      if (origRef.current) window.matchMedia = origRef.current;
+    };
+  }, []);
+
+  return (
+    <div style={{ width: '100%', maxWidth: 960, padding: '1rem' }}>
+      <p style={{ fontFamily: 'system-ui', fontSize: 13, marginBottom: '0.5rem', color: '#555' }}>
+        Simulating <code>prefers-reduced-motion: reduce</code>. The component auto-pauses
+        on mount — the &ldquo;Resume animation&rdquo; button is visible.
+      </p>
+      <FiltrationPlayground />
+    </div>
+  );
+}
