@@ -91,7 +91,10 @@ const papers = defineCollection({
     status: z
       .enum(['planned', 'in-progress', 'submitted', 'in-review', 'revision', 'published'])
       .default('planned'),
-    target_journal: z.string().optional(),
+    arxiv_id: z.string().optional(),
+    arxiv_url: z.string().url().optional(),
+    journal: z.string().optional(),
+    doi: z.string().optional(),
     depends_on: z.array(z.number().int()).default([]),
     enables: z.array(z.number().int()).default([]),
     methods: z.array(z.string()).default([]),

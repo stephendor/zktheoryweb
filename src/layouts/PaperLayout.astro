@@ -13,7 +13,7 @@
  *
  * Structure:
  *   1. Hero band (TDA palette) — paper number badge, h1 title,
- *      stage badge, status badge, target journal
+ *      stage badge, status badge, optional publication badges
  *   2. Abstract + plain-language summary
  *   3. Wide prose body — .prose main content + sticky ToC sidebar
  *      + key findings, methodology pills, compute display, dependency strip
@@ -51,7 +51,10 @@ const {
   paper_number,
   stage,
   status,
-  target_journal,
+  arxiv_id,
+  arxiv_url,
+  journal,
+  doi,
   depends_on,
   enables,
   methods,
@@ -64,6 +67,7 @@ const {
 } = entry.data;
 
 const { Content, headings } = await render(entry);
+const arxivHref = arxiv_id ? arxiv_url ?? `https://arxiv.org/abs/${arxiv_id}` : null;
 
 /* ── Stage labels ── */
 const stageLabels: Record<number, string> = {
@@ -161,12 +165,7 @@ const pubYear: number | null = date
       {/* Title */}
       <h1 class="hero-title">{title}</h1>
 
-      {/* Target journal */}
-      {target_journal && (
-        <p class="hero-journal">{target_journal}</p>
-      )}
-
-      {/* ── Meta row: stage + status badges ── */}
+      {/* ── Meta row: stage + status + publication badges ── */}
       <div class="hero-meta">
         <span class="stage-badge" aria-label={stageLabels[stage]}>
           {stageLabels[stage] ?? `Stage ${stage}`}
@@ -177,6 +176,24 @@ const pubYear: number | null = date
         >
           {statusInfo.label}
         </span>
+        {arxivHref && (
+          <a
+            href={arxivHref}
+            class="status-badge hero-meta-badge hero-meta-link hero-meta-badge--arxiv"
+            rel="noopener noreferrer"
+            aria-label={`arXiv preprint ${arxiv_id}`}
+          >
+            {`arXiv: ${arxiv_id}`}
+          </a>
+        )}
+        {journal && (
+          <span
+            class="status-badge hero-meta-badge hero-meta-badge--journal"
+            aria-label={`Journal: ${journal}`}
+          >
+            {journal}
+          </span>
+        )}
       </div>
 
     </div>
@@ -457,14 +474,6 @@ const pubYear: number | null = date
     margin: 0 0 var(--space-4) 0;
   }
 
-  .hero-journal {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-style: italic;
-    color: var(--color-neutral-muted);
-    margin: 0 0 var(--space-5) 0;
-  }
-
   .hero-meta {
     display: flex;
     flex-wrap: wrap;
@@ -496,6 +505,27 @@ const pubYear: number | null = date
     text-transform: uppercase;
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-full);
+  }
+
+  .hero-meta-badge {
+    text-decoration: none;
+  }
+
+  .hero-meta-link:hover,
+  .hero-meta-link:focus-visible {
+    text-decoration: none;
+  }
+
+  .hero-meta-badge--arxiv {
+    background-color: color-mix(in srgb, var(--color-tda-slate) 15%, transparent);
+    color: var(--color-tda-slate);
+    border: 1px solid var(--color-tda-slate);
+  }
+
+  .hero-meta-badge--journal {
+    background-color: color-mix(in srgb, var(--color-neutral-border) 35%, transparent);
+    color: var(--color-neutral-body);
+    border: 1px solid var(--color-neutral-border);
   }
 
   .status-planned {
