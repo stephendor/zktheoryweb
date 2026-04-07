@@ -45,6 +45,50 @@ const statusBadge = (status: string) => {
   };
   return map[status] ?? status;
 };
+
+// ─── Interlude data ───────────────────────────────────────────────────────────
+const allInterludes = await getCollection('interludes');
+
+// Supplementary interludes: placed in the chapter grid after their primary related chapter
+// mm35-the-cost-function → after ch.6 | uk-il1-respectable-calculus → after ch.3
+const suppByChapter = new Map<number, (typeof allInterludes)[number][]>();
+for (const il of allInterludes.filter((il) =>
+  il.data.interlude_slug === 'mm35-the-cost-function' ||
+  il.data.interlude_slug === 'uk-il1-respectable-calculus',
+)) {
+  const primary = il.data.related_chapters[0];
+  if (primary !== undefined) {
+    suppByChapter.set(primary, [...(suppByChapter.get(primary) ?? []), il]);
+  }
+}
+
+// Bridge interludes: one before each Part, per the book plan structure.
+// Index corresponds to parts array ['I','II','III','IV'].
+const bridgeInterludes = [
+  {
+    slug: 'mm1-normal-distribution',
+    label: 'MM1',
+    desc: 'The invention of the average and the construction of normality as a standard.',
+  },
+  {
+    slug: 'mm2-correlation-regression',
+    label: 'MM2',
+    desc: 'Correlation, regression, and the threshold as the bridge into the computational turn.',
+  },
+  {
+    slug: 'mm3-logistic-regression',
+    label: 'MM3',
+    desc: 'From scales to scores: eligibility thresholds and risk classification.',
+  },
+  {
+    slug: 'mm4-neural-networks',
+    label: 'MM4',
+    desc: 'From logistic regression to neural nets — why feature choice, training data, and loss functions encode values.',
+  },
+].map((def) => ({
+  ...def,
+  entry: allInterludes.find((il) => il.data.interlude_slug === def.slug),
+}));
 ---
 
 <BaseLayout
@@ -86,34 +130,71 @@ const statusBadge = (status: string) => {
         </section>
       )}
 
-      {/* ── Parts grid ── */}
-      {parts.map((part) => {
+      {/* ── Parts grid — with interlude bridges and supplementary interludes ── */}
+      {parts.map((part, idx) => {
         const chapters = chaptersByPart[part];
         if (!chapters || chapters.length === 0) return null;
+        const bridge = bridgeInterludes[idx];
         return (
-          <section class="cl-hub__part" aria-labelledby={`part-${part}-heading`}>
-            <h2 class="cl-hub__part-heading" id={`part-${part}-heading`}>
-              {partNames[part]}
-            </h2>
-            <ol class="cl-hub__grid">
-              {chapters.map((entry) => (
-                <li>
-                  <a
-                    href={`/counting-lives/chapters/${entry.id}`}
-                    class="cl-hub__card"
-                    aria-label={`Chapter ${entry.data.chapter_number}: ${entry.data.title}`}
-                  >
-                    <span class="cl-hub__card-part">Part {part}</span>
-                    <span class="cl-hub__card-number">Chapter {entry.data.chapter_number}</span>
-                    <span class="cl-hub__card-title">{entry.data.title}</span>
-                    <span class={`cl-hub__badge cl-hub__badge--${entry.data.status}`}>
-                      {statusBadge(entry.data.status)}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </section>
+          <>
+            {/* Mathematical Interlude bridge before this Part */}
+            {bridge?.entry && (
+              <div class="cl-hub__interlude-bridge">
+                <a
+                  href={`/counting-lives/interludes/${bridge.slug}`}
+                  class="cl-hub__interlude-bridge-link"
+                >
+                  <span class="cl-hub__bridge-eyebrow">Mathematical Interlude · {bridge.label}</span>
+                  <span class="cl-hub__bridge-title">{bridge.entry.data.title}</span>
+                  <span class="cl-hub__bridge-desc">{bridge.desc}</span>
+                  <span class={`cl-hub__badge cl-hub__badge--${bridge.entry.data.status}`}>
+                    {statusBadge(bridge.entry.data.status)}
+                  </span>
+                </a>
+              </div>
+            )}
+
+            <section class="cl-hub__part" aria-labelledby={`part-${part}-heading`}>
+              <h2 class="cl-hub__part-heading" id={`part-${part}-heading`}>
+                {partNames[part]}
+              </h2>
+              <ol class="cl-hub__grid">
+                {chapters.flatMap((entry) => [
+                  <li>
+                    <a
+                      href={`/counting-lives/chapters/${entry.id}`}
+                      class="cl-hub__card"
+                      aria-label={`Chapter ${entry.data.chapter_number}: ${entry.data.title}`}
+                    >
+                      <span class="cl-hub__card-part">Part {part}</span>
+                      <span class="cl-hub__card-number">Chapter {entry.data.chapter_number}</span>
+                      <span class="cl-hub__card-title">{entry.data.title}</span>
+                      <span class={`cl-hub__badge cl-hub__badge--${entry.data.status}`}>
+                        {statusBadge(entry.data.status)}
+                      </span>
+                    </a>
+                  </li>,
+                  ...(suppByChapter.get(entry.data.chapter_number) ?? []).map((il) => (
+                    <li>
+                      <a
+                        href={`/counting-lives/interludes/${il.data.interlude_slug}`}
+                        class="cl-hub__card cl-hub__card--supp-interlude"
+                        aria-label={`${il.data.type === 'uk-interlude' ? 'UK Interlude' : 'Mathematical Interlude'}: ${il.data.title}`}
+                      >
+                        <span class="cl-hub__card-supp-label">
+                          {il.data.type === 'uk-interlude' ? 'UK Interlude' : 'Mathematical Interlude'}
+                        </span>
+                        <span class="cl-hub__card-title">{il.data.title}</span>
+                        <span class={`cl-hub__badge cl-hub__badge--${il.data.status}`}>
+                          {statusBadge(il.data.status)}
+                        </span>
+                      </a>
+                    </li>
+                  )),
+                ])}
+              </ol>
+            </section>
+          </>
         );
       })}
 
@@ -335,6 +416,81 @@ const statusBadge = (status: string) => {
   .cl-hub__badge--complete {
     background-color: #EAFAF0;
     color: #1A7A3A;
+  }
+
+  /* ── Mathematical Interlude bridge strips (between Introduction/Parts) ────── */
+  .cl-hub__interlude-bridge {
+    border-inline-start: 4px solid #1A5F6A;
+    background-color: var(--color-cl-cream, #F5F0E8);
+    border-radius: 0 4px 4px 0;
+    margin-inline-start: 0.25rem;
+  }
+
+  .cl-hub__interlude-bridge-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.2rem 1rem;
+    padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.15s;
+  }
+
+  .cl-hub__interlude-bridge-link:hover,
+  .cl-hub__interlude-bridge-link:focus-visible {
+    background-color: #dde9ea;
+  }
+
+  .cl-hub__bridge-eyebrow {
+    grid-column: 1;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #1A5F6A;
+  }
+
+  .cl-hub__bridge-title {
+    grid-column: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-cl-charcoal, #2C2C2C);
+  }
+
+  .cl-hub__bridge-desc {
+    grid-column: 1;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--color-text-muted, #666);
+    padding-block-end: 0.2rem;
+  }
+
+  .cl-hub__interlude-bridge-link .cl-hub__badge {
+    grid-column: 2;
+    grid-row: 1 / 5;
+    align-self: center;
+  }
+
+  /* ── Supplementary interlude cards (inside chapter grid) ────────────────── */
+  .cl-hub__card--supp-interlude {
+    border-color: #1A5F6A;
+    border-style: dashed;
+    background-color: var(--color-cl-cream, #F5F0E8);
+  }
+
+  .cl-hub__card--supp-interlude:hover,
+  .cl-hub__card--supp-interlude:focus-visible {
+    border-color: #1A5F6A;
+    border-style: solid;
+    box-shadow: 0 2px 8px rgb(26 95 106 / 0.12);
+  }
+
+  .cl-hub__card-supp-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #1A5F6A;
   }
 </style>
 
