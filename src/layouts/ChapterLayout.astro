@@ -98,7 +98,7 @@ const statusLabels: Record<typeof status, string> = {
       "description": spine_role,
       "author": {
         "@type": "Person",
-        "name": "Stephen Dorling",
+        "name": "Stephen Dorman",
         "url": "https://zktheory.org/about/"
       }
     })} />
@@ -201,7 +201,7 @@ const statusLabels: Record<typeof status, string> = {
       <div class="chapter-nav-inner">
 
         {prevChapter ? (
-          <a href={`/counting-lives/${prevChapter.slug}/`} class="chapter-nav-link chapter-nav-prev">
+          <a href={`/counting-lives/chapters/${prevChapter.slug}/`} class="chapter-nav-link chapter-nav-prev">
             <span class="nav-direction" aria-hidden="true">←</span>
             <span class="nav-meta">Previous chapter</span>
             <span class="nav-title">
@@ -213,7 +213,7 @@ const statusLabels: Record<typeof status, string> = {
         )}
 
         {nextChapter ? (
-          <a href={`/counting-lives/${nextChapter.slug}/`} class="chapter-nav-link chapter-nav-next">
+          <a href={`/counting-lives/chapters/${nextChapter.slug}/`} class="chapter-nav-link chapter-nav-next">
             <span class="nav-direction" aria-hidden="true">→</span>
             <span class="nav-meta">Next chapter</span>
             <span class="nav-title">
