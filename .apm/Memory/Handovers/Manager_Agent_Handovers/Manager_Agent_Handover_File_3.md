@@ -14,11 +14,12 @@ active_agents: []
 - One issue per exchange — do not batch multiple tasks into a single response. User confirms after each step before you proceed.
 - Verify against actual code before fixing anything reported as a bug. Many "findings" turn out to be correct behaviour.
 - Present options as lettered choices with a clear recommendation when multiple approaches exist. User picks one then says "proceed".
-- `npm run build` is the canonical verification step after any MDX, layout, or component change. `npm test` for unit test confirmation. Always cite results (n pages, n tests, n lint errors).
+- **Verification steps:** `npm test` for unit test confirmation. `npm run lint` for lint. To verify page output locally use `npx serve dist` — do NOT use `npm run build` as the canonical verification step; the local Netlify adapter always throws `entry.mjs does not exist` and this is pre-existing/harmless. Build correctness is confirmed when tests pass and the Netlify production deploy succeeds.
 - Never create markdown documentation files unless explicitly requested by the user.
 - Commit and push each unit of work immediately after build/test verification. Do not batch commits.
 - Push fixes directly to `main` for small changes. Use a feature branch + PR for larger multi-task phases.
 - `status: 'stub'` is invalid in Zod enums — use `'drafting'` for placeholder modules.
+- **Scope discipline:** Agents must only stage and commit files directly modified by their task. Any files drifting into `git status` that are outside the task scope must be individually audited before staging. Never commit `astro.config.mjs`, `.gitignore`, or config files unless the task explicitly targets them.
 
 **User Directives (new — this session):**
 - Real contact/social data has been applied directly in the session (no formal agent task needed). Items already completed from Task 7.1 list: email (`stephen@zktheory.org`), GitHub (`https://github.com/stephendor`), Google Scholar (`https://scholar.google.co.uk/citations?user=XN2WAFgAAAAJ&hl=en`), ORCID (`https://orcid.org/0009-0005-1387-7279`), institution (`The Open University, UK`). These are now live on `main`.
@@ -39,26 +40,30 @@ active_agents: []
 **Known intentional warnings / non-issues — do not fix:**
 - `react-hooks/exhaustive-deps` warning at `PovertySimulator.tsx:340` — intentional, permitted.
 - WebKit E2E test skip for PDB 3D animation — intentional.
-- Local Netlify adapter `entry.mjs` error — pre-existing, harmless locally.
-- `PersistenceDiagramBuilder3D.tsx` is at `src/components/interactives/` (NOT `src/components/tda/`). Its animation is plain rAF, not R3F `frameloop="demand"`.
+- Local Netlify adapter `entry.mjs` error — **RESOLVED (c17362b)**. The `@astrojs/netlify` adapter was removed from `astro.config.mjs` as it is incompatible with `output: 'static'` in current versions. Headers/redirects are served from `netlify.toml` only. `npm run build` now completes cleanly both locally and on Netlify.
+- CSP `style-src 'unsafe-inline'` is intentional — required by KaTeX inline `style=` attributes on span elements; no alternative for static rehype-katex output.
+- `<script type="application/ld+json">` JSON-LD blocks are NOT executable JS and are exempt from `script-src` in CSP Level 2+. The initial Task 7.4 audit erroneously counted them (76 apparent → 10 actual executable hashes). `scripts/gen-csp-hashes.mjs` now excludes JSON-LD correctly.
+- CSP hashes: 10 unique executable inline scripts. Run `node scripts/gen-csp-hashes.mjs` after any change to BaseLayout.astro, SiteNav.astro, StickyToC.astro, glossary/index.astro, reading-lists/index.astro, or learn level-filter pages.
 
 ## Coordination Status
 
-**Current build state (main branch, as of handover):**
+**Current build state (main branch, as of 2026-04-07 session end):**
 - Pages: 127 | Tests: 429 (21 files) | Lint: 0 errors
-- Deployed: Netlify production live at zktheory.org
-- Node: 22 (netlify.toml), 22.12.0 (.nvmrc not present — Node version set only via netlify.toml)
-- Vulnerabilities: 0 (npm audit clean locally; GitHub Dependabot scan may lag)
+- `npm run build` now completes cleanly locally (Netlify adapter removed). Use `npm test` for unit tests; `npx serve dist` for local preview.
+- CSP: active in production (netlify.toml). 10 executable inline script hashes (JSON-LD correctly excluded). KaTeX requires `unsafe-inline` in style-src.
+- Deployed: Netlify production live at zktheory.org. Last successful deploy: c17362b.
+- Node: 22 (netlify.toml), 22.12.0
+- Vulnerabilities: 0
 
 **Phase 7 Task Status:**
 
 | Task | Title | Status | Notes |
 |------|-------|--------|-------|
-| 7.1 | About Page Content Pass | Partially complete | Email, GitHub, ORCID, Scholar, institution done. CV, bio, headshot, positionality still outstanding — need author-supplied content. |
-| 7.2 | Paper 1 arXiv Update | Blocked | Waiting on arXiv submission. Trigger: author notifies with submission date + BibTeX. |
-| 7.3 | rAF Animation Pause Controls | Complete | Commit f3bc7a3. 429 tests (was 420). PDB3D confirmed at `src/components/interactives/` (not `src/components/tda/`). rAF loop, not R3F frameloop. |
-| 7.4 | CSP Hardening | Not started | Agent_Infra. Nonce injection for Astro `<script is:inline>`. Check BaseLayout.astro first. |
-| 7.5 | Zotero Build Hook | Not started | Manual Netlify UI step — user action, no agent needed. |
+| 7.1 | About Page Content Pass | Partially complete | Email, GitHub, ORCID, Scholar, institution done. CV, bio, headshot, positionality still outstanding — need author-supplied content. Resuming next session. |
+| 7.2 | Paper 1 arXiv Update | Blocked | Waiting on arXiv submission. |
+| 7.3 | rAF Animation Pause Controls | Complete | Commit f3bc7a3. |
+| 7.4 | CSP Hardening | Complete | 10 hashes (corrected from 12). JSON-LD excluded. Netlify adapter removed (c17362b). Author name Dorling→Dorman fixed (253d3e2). Chapter nav hrefs fixed (253d3e2). Interludes surfaced on hub (61b36b7). |
+| 7.5 | Zotero Build Hook | Complete | zotero-library.json committed with real data (version 682). Build hook wired. Env vars set in Netlify UI. |
 
 **Producer-Consumer Dependencies (Phase 7):**
 - Tasks 7.1 and 7.3 are fully independent — can proceed in parallel if user wants.
@@ -70,9 +75,7 @@ active_agents: []
 
 ## Next Actions
 
-**Ready Assignments:**
-- **Task 7.3 → Agent_Interactive_Advanced**: Add pause/resume buttons to `FiltrationPlayground.tsx`, `PersistenceDiagramBuilder.tsx`, `PersistenceDiagramBuilder3D.tsx`. Wire `useReducedMotion()` so auto-play is suppressed when true. `aria-label` on button + `AriaLiveRegion` announcement. Vitest tests + Storybook story updates. Build, lint, test, push. Key paths: `src/components/interactives/FiltrationPlayground.tsx`, `src/components/interactives/PersistenceDiagramBuilder.tsx`, `src/components/tda/PersistenceDiagramBuilder3D.tsx` (verify exact path before assigning).
-- **Task 7.4 → Agent_Infra**: Audit `<script is:inline>` in `src/layouts/BaseLayout.astro` (the no-FOCT dark mode script is the primary one). Implement nonce injection via Astro middleware. Add CSP header to `netlify.toml`. Verify KaTeX `data:` URIs and any CDN references are covered. Run axe scan to confirm no regressions.
+**Next session:** Task 7.1 — About page remaining content (positionality statement, CV education/presentations, media kit bio, headshot). Waiting on author to supply text/image.
 - **Task 7.5 → User**: Prompt user to create a Netlify build hook in Netlify UI → Site Settings → Build Hooks → "Zotero bibliography update", then record the POST URL in `.env.example` as `NETLIFY_ZOTERO_BUILD_HOOK`.
 
 **Blocked Items:**
