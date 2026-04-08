@@ -15,14 +15,16 @@
   targetPort = 4321
 
 # ─── Security Headers ─────────────────────────────────────────────────────────
-# CSP implementation notes (Task 7.4, corrected post-audit):
+# CSP implementation notes (Task 7.4):
 #   script-src: 'self' covers dynamically loaded /pagefind/pagefind-ui.js (same-origin).
-#     10 inline scripts are covered by SHA-256 hashes (build-time deterministic).
-#     JSON-LD blocks (<script type="application/ld+json">) are NOT executable JS and are
-#     exempt from script-src in CSP Level 2+ — they were erroneously counted in the
-#     initial Task 7.4 audit (76 apparent hashes → 10 actual executable hashes).
+#     12 inline scripts are covered by SHA-256 hashes (build-time deterministic).
+#     JSON-LD blocks (<script type="application/ld+json">) are exempt from script-src.
+#     Two hashes (gMV9 = pagefind init, QJZDUlo = Astro islands bootstrap) contain '<'
+#     in their minified bodies — the gen-csp-hashes.mjs script uses non-greedy ([\s\S]*?)
+#     matching to capture them correctly. Do NOT use [^<]+ regex — it silently drops these.
 #     Run `node scripts/gen-csp-hashes.mjs` after any change to BaseLayout.astro,
-#     SiteNav.astro, StickyToC.astro, or learn/glossary/reading-list pages to regenerate.
+#     SiteNav.astro, StickyToC.astro, glossary/index.astro, reading-lists/index.astro,
+#     learn level-filter pages, or any Astro/pagefind upgrade.
 #   style-src: 'unsafe-inline' required — rehype-katex emits element-level style="" attributes.
 #   font-src: data: required — KaTeX bundles fonts as data: URIs in the compiled CSS.
 #   connect-src: 'self' — Pagefind fetch() calls load index chunks from same origin.
@@ -35,7 +37,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-/+xyHT/66E1d619A8TBWsW0/AEwypiwXAuGSgxct44Q=' 'sha256-CS50p46054pMoqXOJNMPkA0WJUae20t93peHPkHlGCM=' 'sha256-FertX8sa3cGIPdhD52i77sOpSIgXww7HfEDqoNm6Dxw=' 'sha256-QzWFZi+FLIx23tnm9SBU4aEgx4x8DsuASP07mfqol/c=' 'sha256-Q2BPg90ZMplYY+FSdApNErhpWafg2hcRRbndmvxuL/Q=' 'sha256-z7g91k+vPzsIkT/fRVSF8+Cxnw3hkBG1vHRg75iIxoQ=' 'sha256-eIXWvAmxkr251LJZkjniEK5LcPF3NkapbJepohwYRIc=' 'sha256-mizJIyesxNGRWHF5viQegEyx2wPyG3aw2dKXcpobNpI=' 'sha256-5x7NL7q7lI4TZIeYF0DHZvHvt7qAm6yIc12QFwC/NOs=' 'sha256-0NrmGlZhke9RMjaR1K2jeUrbVRvuMPo5b8HNF0IkhAo='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-/+xyHT/66E1d619A8TBWsW0/AEwypiwXAuGSgxct44Q=' 'sha256-gMV9/GpJKxhhQJsn4vHeqkPBp3zDyd8BO4L0kAXSXqk=' 'sha256-CS50p46054pMoqXOJNMPkA0WJUae20t93peHPkHlGCM=' 'sha256-FertX8sa3cGIPdhD52i77sOpSIgXww7HfEDqoNm6Dxw=' 'sha256-QzWFZi+FLIx23tnm9SBU4aEgx4x8DsuASP07mfqol/c=' 'sha256-QJZDUlo/qa5AJCrG6vHyWcatjwCeWidEHQfJc601lzw=' 'sha256-Q2BPg90ZMplYY+FSdApNErhpWafg2hcRRbndmvxuL/Q=' 'sha256-z7g91k+vPzsIkT/fRVSF8+Cxnw3hkBG1vHRg75iIxoQ=' 'sha256-eIXWvAmxkr251LJZkjniEK5LcPF3NkapbJepohwYRIc=' 'sha256-mizJIyesxNGRWHF5viQegEyx2wPyG3aw2dKXcpobNpI=' 'sha256-5x7NL7q7lI4TZIeYF0DHZvHvt7qAm6yIc12QFwC/NOs=' 'sha256-0NrmGlZhke9RMjaR1K2jeUrbVRvuMPo5b8HNF0IkhAo='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
 
 # ─── Static Asset Cache (Astro hashed bundles) ────────────────────────────────
 

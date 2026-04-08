@@ -14,13 +14,16 @@ const seen = new Map(); // hash -> first file seen
 
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
-  // Exclude type="application/ld+json" — JSON-LD is not executable JS and is
-  // exempt from script-src in CSP Level 2+. Only hash executable scripts.
-  const re = /<script(?:\s(?!type="application\/ld\+json")[^>]*)?>([^<]+)<\/script>/g;
+  // Use non-greedy ([\s\S]*?) so < characters inside minified script bodies
+  // (D3 comparisons, pagefind init, etc.) don't stop the match prematurely.
+  // Exclude type="application/ld+json" — JSON-LD is exempt from script-src.
+  const re = /<script((?:\s[^>]*)?)\s*>([\s\S]*?)<\/script>/gi;
   let m;
   while ((m = re.exec(html)) !== null) {
-    const body = m[1];
-    if (body.trim().length === 0) continue;
+    const attrs = m[1] ?? '';
+    const body = m[2];
+    if (attrs.includes('application/ld+json')) continue;
+    if (!body.trim()) continue;
     const hash = crypto.createHash('sha256').update(body).digest('base64');
     if (!seen.has(hash)) {
       seen.set(hash, path.relative('dist', file));
