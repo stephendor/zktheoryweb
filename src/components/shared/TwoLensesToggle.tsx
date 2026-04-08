@@ -14,7 +14,7 @@
  * Must be rendered inside a .interlude-content wrapper div.
  */
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 type Lens = 'politics' | 'math';
 
@@ -24,35 +24,23 @@ interface TwoLensesToggleProps {
 
 export function TwoLensesToggle({ defaultLens = 'politics' }: TwoLensesToggleProps) {
   const [activeLens, setActiveLens] = useState<Lens>(defaultLens);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const switchLens = useCallback((lens: Lens) => {
     setActiveLens(lens);
-
-    // Walk up the DOM to find the nearest .interlude-content ancestor
-    const el = buttonRef.current;
-    if (!el) return;
-    let node: HTMLElement | null = el.parentElement;
-    while (node) {
-      if (node.classList.contains('interlude-content')) {
-        node.setAttribute('data-lens', lens);
-        break;
-      }
-      node = node.parentElement;
+    // document.querySelector is more reliable than parentElement walking:
+    // Astro island wrappers (<astro-island>) insert into the DOM tree and can
+    // make the ref-based walk miss the .interlude-content ancestor.
+    const container = document.querySelector<HTMLElement>('.interlude-content');
+    if (container) {
+      container.setAttribute('data-lens', lens);
     }
   }, []);
 
-  // Set initial data-lens on mount
+  // Set the initial data-lens on mount (matches the defaultLens prop)
   useEffect(() => {
-    const el = buttonRef.current;
-    if (!el) return;
-    let node: HTMLElement | null = el.parentElement;
-    while (node) {
-      if (node.classList.contains('interlude-content')) {
-        node.setAttribute('data-lens', defaultLens);
-        break;
-      }
-      node = node.parentElement;
+    const container = document.querySelector<HTMLElement>('.interlude-content');
+    if (container) {
+      container.setAttribute('data-lens', defaultLens);
     }
   }, [defaultLens]);
 
@@ -63,7 +51,6 @@ export function TwoLensesToggle({ defaultLens = 'politics' }: TwoLensesTogglePro
       </span>
       <div className="two-lenses-control">
         <button
-          ref={buttonRef}
           type="button"
           className={`two-lenses-btn${activeLens === 'politics' ? ' two-lenses-btn--active' : ''}`}
           aria-pressed={activeLens === 'politics'}
