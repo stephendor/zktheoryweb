@@ -20,6 +20,7 @@ const chapters = defineCollection({
     threads: z.array(z.string()).default([]),
     related_tda_papers: z.array(z.number().int()).default([]),
     key_claims: z.array(z.object({ claim: z.string(), detail: z.string() })).default([]),
+    featured: z.boolean().default(false),
   }),
 });
 
@@ -110,6 +111,7 @@ const papers = defineCollection({
     abstract: z.string().optional(),
     plain_summary: z.string().optional(),
     bibtex: z.string().optional(),
+    featured: z.boolean().default(false),
   }),
 });
 

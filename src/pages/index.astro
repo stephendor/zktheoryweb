@@ -6,17 +6,35 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 
-// Recent activity: last 3 chapters by chapter_number desc, last 2 papers by paper_number desc
 const allChapters = await getCollection('chapters');
 const allPapers   = await getCollection('papers');
+const allEssays   = await getCollection('essays');
+const allNotes    = await getCollection('notes');
 
-const recentChapters = allChapters
-  .sort((a, b) => b.data.chapter_number - a.data.chapter_number)
-  .slice(0, 3);
+// Featured editorial slots
+const featuredChapter = allChapters
+  .filter(ch => ch.data.featured && ch.id !== 'ch-00-sample')
+  .at(0);
 
-const recentPapers = allPapers
-  .sort((a, b) => b.data.paper_number - a.data.paper_number)
-  .slice(0, 2);
+const featuredPaper = allPapers
+  .filter(p => p.data.featured)
+  .at(0);
+
+// Latest non-draft writing entry (essays + notes merged, sorted by date desc)
+type WritingEntry = { type: 'essay' | 'note'; slug: string; title: string; summary?: string; date: Date };
+
+const writingEntries: WritingEntry[] = [
+  ...allEssays
+    .filter(e => !e.data.draft)
+    .map(e => ({ type: 'essay' as const, slug: e.id, title: e.data.title, summary: e.data.summary, date: e.data.date })),
+  ...allNotes
+    .filter(n => !n.data.draft)
+    .map(n => ({ type: 'note' as const, slug: n.id, title: n.data.title, summary: n.data.summary, date: n.data.date })),
+];
+
+const latestWriting = writingEntries
+  .sort((a, b) => b.date.getTime() - a.date.getTime())
+  .at(0);
 ---
 
 <BaseLayout
@@ -72,36 +90,51 @@ const recentPapers = allPapers
       </div>
     </div>
   </section>
-  <!-- ── Recent activity ──────────────────────────────────────────────────── -->
+  <!-- ── Selected work & writing ─────────────────────────────────────────── -->
   <section class="activity-section" aria-labelledby="activity-heading">
     <div class="container-prose activity-inner">
-      <h2 class="activity-heading" id="activity-heading">Latest Updates</h2>
+      <h2 class="activity-heading" id="activity-heading">Selected Work &amp; Writing</h2>
 
       <ul class="activity-list">
-        {recentChapters.map((ch) => (
+        {featuredChapter && (
           <li class="activity-item">
             <span class="activity-badge activity-badge--chapter">Chapter</span>
             <div class="activity-content">
-              <a class="activity-title" href={`/counting-lives/`}>
-                Ch. {ch.data.chapter_number} — {ch.data.title}
+              <a class="activity-title" href={`/counting-lives/ch-${featuredChapter.data.chapter_number}/`}>
+                Ch. {featuredChapter.data.chapter_number} — {featuredChapter.data.title}
               </a>
-              <p class="activity-desc">{ch.data.spine_role}</p>
+              <p class="activity-desc">{featuredChapter.data.spine_role}</p>
             </div>
           </li>
-        ))}
-        {recentPapers.map((p) => (
+        )}
+        {featuredPaper && (
           <li class="activity-item">
             <span class="activity-badge activity-badge--paper">Paper</span>
             <div class="activity-content">
-              <a class="activity-title" href={`/tda/`}>
-                Paper {p.data.paper_number} — {p.data.title}
+              <a class="activity-title" href={`/tda/papers/${featuredPaper.id}/`}>
+                Paper {featuredPaper.data.paper_number} — {featuredPaper.data.title}
               </a>
-              {p.data.plain_summary && (
-                <p class="activity-desc">{p.data.plain_summary.slice(0, 100)}&hellip;</p>
+              {featuredPaper.data.plain_summary && (
+                <p class="activity-desc">{featuredPaper.data.plain_summary.slice(0, 100)}&hellip;</p>
               )}
             </div>
           </li>
-        ))}
+        )}
+        {latestWriting && (
+          <li class="activity-item">
+            <span class={`activity-badge activity-badge--${latestWriting.type}`}>
+              {latestWriting.type === 'essay' ? 'Essay' : 'Note'}
+            </span>
+            <div class="activity-content">
+              <a class="activity-title" href={`/writing/${latestWriting.slug}/`}>
+                {latestWriting.title}
+              </a>
+              {latestWriting.summary && (
+                <p class="activity-desc">{latestWriting.summary}</p>
+              )}
+            </div>
+          </li>
+        )}
       </ul>
 
       <div class="activity-footer">
