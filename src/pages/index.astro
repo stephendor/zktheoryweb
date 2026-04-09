@@ -100,7 +100,7 @@ const latestWriting = writingEntries
           <li class="activity-item">
             <span class="activity-badge activity-badge--chapter">Chapter</span>
             <div class="activity-content">
-              <a class="activity-title" href={`/counting-lives/ch-${featuredChapter.data.chapter_number}/`}>
+              <a class="activity-title" href={`/counting-lives/chapters/${featuredChapter.id}/`}>
                 Ch. {featuredChapter.data.chapter_number} — {featuredChapter.data.title}
               </a>
               <p class="activity-desc">{featuredChapter.data.spine_role}</p>
@@ -126,7 +126,7 @@ const latestWriting = writingEntries
               {latestWriting.type === 'essay' ? 'Essay' : 'Note'}
             </span>
             <div class="activity-content">
-              <a class="activity-title" href={`/writing/${latestWriting.slug}/`}>
+              <a class="activity-title" href={`/writing/${latestWriting.type === 'essay' ? 'essays' : 'notes'}/${latestWriting.slug}/`}>
                 {latestWriting.title}
               </a>
               {latestWriting.summary && (
