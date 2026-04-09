@@ -19,11 +19,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
       "url": "https://zktheory.org/about/",
       "identifier": "https://orcid.org/0009-0005-1387-7279",
       "sameAs": ["https://orcid.org/0009-0005-1387-7279"],
-      "affiliation": {
-        "@type": "Organization",
-        "name": "The Open University, UK"
-      },
-      "knowsAbout": ["Topological Data Analysis", "Poverty Measurement", "Welfare Policy"]
+      "knowsAbout": ["Topological Data Analysis", "Poverty Measurement", "Welfare Policy", "History of Mathematics"]
     })} />
   </Fragment>
 
@@ -38,14 +34,18 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         <div class="positionality-block" aria-label="Positionality statement">
           <p class="positionality-label">Positionality statement</p>
           <p>
-            <!-- TODO: Replace the following placeholder with real positionality statement (~100 words) -->
-            My research sits at the intersection of poverty measurement, welfare-state history,
-            and topological data analysis. I am a [<em>position</em>] at <em>The Open University, UK</em>,
-            working within the [<em>department</em>]. I came to this project through a long-standing
-            interest in how quantitative social science translates lived experience into data — and
-            who bears the cost of that translation. The subjects of poverty measurement are not
-            abstract. I am conscious that the analytical distance this work requires is a privilege,
-            and I have tried throughout to hold that tension honestly.
+            My research does not begin from methodological neutrality. I was born into poverty and
+            am descended from generations of Scottish working-poor. The people sorted by poverty
+            lines, counted by welfare systems, and archived in panel datasets are my people. I have
+            chosen to examine the machinery of that counting partly because I was once among the
+            counted, and partly because I think that position matters for the quality of the
+            questions one asks.
+          </p>
+          <p>
+            The TDA work is a more uncertain undertaking. I am testing whether methods from
+            algebraic topology can reveal something true about poverty trajectories that conventional
+            methods miss. I am not certain they can. I think that uncertainty is worth stating
+            publicly.
           </p>
         </div>
 
@@ -55,7 +55,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
           <ul class="interests-grid">
             <li><a href="/tda/">Topological Data Analysis</a></li>
             <li><a href="/counting-lives/">History of Poverty Measurement</a></li>
-            <li><a href="/tda/">Longitudinal Labour-Market Trajectories</a></li>
+            <li><a href="/counting-lives/">Inclusive History of Mathematics</a></li>
             <li><a href="/counting-lives/">Welfare State Comparative Analysis</a></li>
             <li><a href="/learn/">Mathematics for Social Scientists</a></li>
             <li><a href="/counting-lives/">Political Economy of Statistics</a></li>
@@ -64,90 +64,51 @@ import BaseLayout from '@layouts/BaseLayout.astro';
       </div>
     </section>
 
-    <!-- ══ CV ════════════════════════════════════════════════════════════════ -->
-    <section class="about-section about-section--alt" aria-labelledby="cv-heading">
+    <!-- ══ Background ═══════════════════════════════════════════════════════ -->
+    <section class="about-section about-section--alt" aria-labelledby="background-heading">
       <div class="container-prose">
-        <div class="cv-header">
-          <h2 class="about-h2" id="cv-heading">Curriculum Vitae</h2>
-          {/* TODO: Replace href with real PDF path when file is added to /public/ */}
-          <a href="/cv.pdf" class="cv-download" aria-label="Download CV as PDF (file not yet available)">
-            Download PDF ↓
-          </a>
-        </div>
+        <h2 class="about-h2" id="background-heading">Background</h2>
 
-        <!-- Education -->
-        <section class="cv-section" aria-labelledby="cv-education">
-          <h3 class="cv-section-heading" id="cv-education">Education</h3>
-          <dl class="cv-list">
-            <div class="cv-entry">
-              <dt class="cv-entry__meta">
-                <!-- TODO: replace years -->
-                <span class="cv-entry__year">201x–201x</span>
-                <span class="cv-entry__inst">[Institution Name]</span>
-              </dt>
-              <dd class="cv-entry__detail">
-                PhD, [Discipline] — "<em>[Thesis title placeholder]</em>"
-              </dd>
-            </div>
-            <div class="cv-entry">
-              <dt class="cv-entry__meta">
-                <span class="cv-entry__year">200x–201x</span>
-                <span class="cv-entry__inst">[Institution Name]</span>
-              </dt>
-              <dd class="cv-entry__detail">
-                MA/MSc, [Discipline] — Distinction
-              </dd>
-            </div>
-          </dl>
-        </section>
+        <p>
+          I am a Mathematics undergraduate at The Open University, where I completed a research
+          internship examining the lives of mathematicians from underrepresented backgrounds —
+          work aimed at offering a more inclusive lens on mathematical history. In the course of
+          that project I encountered Mollie Orshansky, the statistician who created the US poverty
+          line in the early 1960s. I wrote about her life and method in an undergraduate essay that
+          won the British Society for the History of Mathematics Undergraduate Essay Prize in 2025.
+        </p>
+        <p>
+          Orshansky's story opened a larger question: how had the state learned to count the poor,
+          and what had it done with that knowledge? The essay became the seed of
+          <em>Counting Lives</em>, a deeper examination of two centuries of poverty measurement —
+          its methods, its politics, and the gap between them.
+        </p>
+        <p>
+          The TDA research programme grew from a different impulse: the desire to do mathematics
+          on a problem that matters to me personally, using methods rigorous enough to say something
+          true. Whether that ambition fully succeeds is not certain. I publish the work openly and
+          in progress because I think that transparency — including the possibility of failure — is
+          more honest than waiting for certainty.
+        </p>
+        <p>
+          I have chosen to pursue both projects as an independent researcher. That choice is not
+          accidental. <em>Counting Lives</em> documents in some detail how official systems have
+          historically processed and neutralised principled attempts to measure poverty honestly.
+          I am conscious of the irony of making that argument from any institutional position.
+        </p>
 
-        <!-- Publications -->
-        <section class="cv-section" aria-labelledby="cv-publications">
-          <h3 class="cv-section-heading" id="cv-publications">Publications</h3>
-          <ul class="cv-list--plain">
-            <li>
-              Book manuscript in progress: see <a href="/counting-lives/">Counting Lives</a>
-            </li>
-            <li>
-              TDA paper series (10 papers, stages 0–3): see <a href="/tda/">Research Programme</a>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Presentations -->
-        <section class="cv-section" aria-labelledby="cv-presentations">
-          <h3 class="cv-section-heading" id="cv-presentations">Presentations</h3>
-          <dl class="cv-list">
-            <div class="cv-entry">
-              <dt class="cv-entry__meta">
-                <span class="cv-entry__year">202x</span>
-                <span class="cv-entry__inst">[Conference Name]</span>
-              </dt>
-              <dd class="cv-entry__detail">
-                "[Presentation title placeholder]"
-              </dd>
-            </div>
-            <div class="cv-entry">
-              <dt class="cv-entry__meta">
-                <span class="cv-entry__year">202x</span>
-                <span class="cv-entry__inst">[Conference Name]</span>
-              </dt>
-              <dd class="cv-entry__detail">
-                "[Presentation title placeholder]"
-              </dd>
-            </div>
-          </dl>
-        </section>
-
-        <!-- Teaching -->
-        <section class="cv-section" aria-labelledby="cv-teaching">
-          <h3 class="cv-section-heading" id="cv-teaching">Teaching</h3>
-          <ul class="cv-list--plain">
-            <li>
-              Learning paths and open modules: see <a href="/learn/">Learning</a>
-            </li>
-          </ul>
-        </section>
+        <ul class="cv-list--plain" aria-label="Honours and experience">
+          <li>
+            British Society for the History of Mathematics Undergraduate Essay Prize, 2025 —
+            essay on Mollie Orshansky
+          </li>
+          <li>
+            Research Internship, The Open University — Inclusive Mathematical History
+          </li>
+          <li>
+            BSc Mathematics, The Open University — in progress
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -173,10 +134,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             {/* Google Scholar profile */}
             <a href="https://scholar.google.co.uk/citations?user=XN2WAFgAAAAJ&hl=en" rel="noopener noreferrer">Google Scholar</a>
           </li>
-          <li>
-            <span class="contact-label">Institutional page</span>
-            <a href="https://www.open.ac.uk" rel="noopener noreferrer">The Open University, UK</a>
-          </li>
+
         </ul>
       </div>
     </section>
@@ -199,17 +157,21 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             Short biography <span class="bio-block__wordcount">(~150 words)</span>
           </h3>
           <blockquote class="bio-block__text">
-            <!-- TODO: Replace with real 150-word short bio for media / event programmes -->
-            [Author name] is a [title] at [institution], where they research the history of poverty
-            measurement and apply topological data analysis to longitudinal panel data. Their book,
-            <em>Counting Lives</em>, examines how poverty lines have functioned as political
-            instruments from Rowntree's York surveys to contemporary multidimensional indices.
-            Alongside this historical project, they lead a programme of ten linked papers applying
-            Mapper, persistent homology, and graph-neural-network methods to UK household panel data
-            from BHPS and Understanding Society. Their work appears in [journal placeholders] and has
-            been presented at [conference placeholders]. They are committed to open research and
-            publish all data, code, and intermediate results at zktheory.org. [Add institutional
-            affiliations, fellowships, or awards here. Target: 150 words total.]
+            <p>
+              Stephen Dorman is an independent researcher and Mathematics undergraduate at The Open
+              University. His work spans two interconnected projects: <em>Counting Lives</em>, a historical
+              examination of how poverty measurement has been used as a political instrument from Rowntree's
+              York surveys to contemporary multidimensional indices; and a programme of ten linked papers
+              applying topological data analysis to longitudinal poverty and employment trajectories from UK
+              household panel data.
+            </p>
+            <p>
+              He came to this work through a research internship examining underrepresented mathematicians
+              in history, from which grew an essay on Mollie Orshansky — creator of the US poverty line —
+              that won the British Society for the History of Mathematics Undergraduate Essay Prize in 2025.
+              He was born into poverty and comes from many generations of Scottish working-poor. He publishes
+              all work openly and in progress at zktheory.org.
+            </p>
           </blockquote>
         </section>
 
@@ -219,38 +181,53 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             Long biography <span class="bio-block__wordcount">(~500 words)</span>
           </h3>
           <blockquote class="bio-block__text">
-            <!-- TODO: Replace with real 500-word long bio for press / grant applications -->
             <p>
-              [Author name] is a [title] at [institution], working at the intersection of historical
-              sociology, welfare-state studies, and mathematical data analysis. Their current
-              research programme comprises two intertwined projects: a book-length historical
-              investigation into the politics of poverty measurement, and a programme of ten linked
-              papers applying topological data analysis to UK longitudinal panel data.
+              Stephen Dorman is an independent researcher and Mathematics undergraduate at The Open
+              University. His research comprises two closely linked projects: <em>Counting Lives</em>,
+              a book-length historical investigation into the politics of poverty measurement, and a
+              programme of ten linked papers applying topological data analysis to UK longitudinal
+              panel data.
             </p>
             <p>
-              The book project, <em>Counting Lives</em>, traces how poverty lines have functioned
-              as political instruments across two centuries of measurement practice — from Quetelet's
-              statistical imagination and Rowntree's dietary surveys through the post-war Beveridge
-              settlement, the rediscovery of relative poverty in the 1960s, and the turn to
-              multidimensional indices in the 1990s and 2000s. The book argues that the poverty line
-              was never a neutral scientific instrument but always a site of political contestation
-              dressed in the language of social science. [Expand: 2–3 more sentences on argument
-              and methodology.]
+              The book traces how poverty lines have functioned as political instruments across two
+              centuries of measurement practice — from Quetelet's statistical imagination and Rowntree's
+              dietary surveys through the post-war Beveridge settlement, the rediscovery of relative
+              poverty in the 1960s, and the turn to multidimensional indices in the 1990s and 2000s. Its
+              central argument is that the poverty line was never a neutral scientific instrument: it has
+              always been a site of political contestation, dressed in the language of social science.
+              The book pays particular attention to the moments at which principled measurement was
+              absorbed and redirected by the institutional systems it was meant to scrutinise.
             </p>
             <p>
-              The TDA research programme applies methods drawn from algebraic topology —
-              particularly the Mapper algorithm and persistent homology — to employment and poverty
-              trajectories drawn from the British Household Panel Survey and its successor,
-              Understanding Society. These methods reveal the topological shape of career
-              trajectories: the clusters, flares, and loops that conventional sequence-analysis
-              methods smooth away. [Expand: 2–3 sentences on key findings and contributions.]
+              The TDA research programme applies methods from algebraic topology — particularly the
+              Mapper algorithm and persistent homology — to employment and poverty trajectories drawn
+              from the British Household Panel Survey and its successor, Understanding Society. These
+              methods allow patterns in high-dimensional trajectory data to be examined without imposing
+              a predetermined model structure. The programme is a personal mathematical pursuit. Stephen
+              publishes it with explicit uncertainty about whether it will succeed, and believes that
+              transparency about the limits of a method is more useful than silence.
             </p>
             <p>
-              [Author name] received their [degree] from [institution] in [year], and their [prior
-              degree] from [institution] in [year]. They have held positions at [prior
-              institution(s)] and have received funding from [funders]. Their work has been
-              published in [journals] and presented at [conferences]. [Add: editorial roles,
-              committee memberships, public engagement. Target: 500 words total.]
+              Stephen came to this research through a process that reflects its content. A research
+              internship at The Open University, focused on the lives of mathematicians from
+              underrepresented backgrounds, led him to Mollie Orshansky — the statistician and social
+              worker who created the original US poverty line in 1963. He wrote about Orshansky's life
+              and method in an undergraduate essay that won the British Society for the History of
+              Mathematics Undergraduate Essay Prize in 2025. Orshansky's story — a working-class woman
+              who counted the poor with unusual honesty, whose work was immediately put to political uses
+              she had not intended — became the seed of <em>Counting Lives</em>.
+            </p>
+            <p>
+              Stephen was born into poverty and comes from many generations of Scottish working-poor.
+              He does not approach this subject from a position of analytical distance. The people
+              counted in panel surveys, sorted into poverty quintiles, and argued over in parliamentary
+              reports are not abstractions to him. He has chosen to pursue this research as an
+              independent researcher partly because <em>Counting Lives</em> documents how institutional
+              systems have historically neutralised attempts to measure poverty honestly, and partly
+              because he thinks the independence changes what questions it is possible to ask.
+            </p>
+            <p>
+              All research, code, and data are published openly and in progress at zktheory.org.
             </p>
           </blockquote>
         </section>
