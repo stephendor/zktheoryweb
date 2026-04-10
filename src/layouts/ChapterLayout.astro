@@ -184,12 +184,17 @@ const statusLabels: Record<typeof status, string> = {
       ════════════════════════════════════════════════════════════════════ */}
   {(paperConnections.length > 0 || interludeConnections.length > 0) && (
     <div class="chapter-connections container-prose--wide">
-      {paperConnections.length > 0 && (
-        <ConnectionsPanel heading="Related in TDA" connections={paperConnections} />
-      )}
-      {interludeConnections.length > 0 && (
-        <ConnectionsPanel heading="Mathematical Interludes" connections={interludeConnections} />
-      )}
+      <ConnectionsPanel
+        heading="Connections Forward"
+        groups={[
+          ...(paperConnections.length > 0
+            ? [{ subheading: 'TDA Research Programme', connections: paperConnections }]
+            : []),
+          ...(interludeConnections.length > 0
+            ? [{ subheading: 'Mathematical Interludes', connections: interludeConnections }]
+            : []),
+        ]}
+      />
     </div>
   )}
 

@@ -17,42 +17,84 @@ interface Connection {
   dataTodo?: string; // sets data-todo attribute for missing routes
 }
 
-interface Props {
-  heading?: string;
+interface ConnectionGroup {
+  subheading: string;
   connections: Connection[];
 }
 
-const { heading = 'Connections', connections } = Astro.props;
+interface Props {
+  heading?: string;
+  connections?: Connection[];   // flat mode (existing callers)
+  groups?: ConnectionGroup[];  // grouped mode — renders subheadings per group
+}
+
+const { heading = 'Connections', connections = [], groups } = Astro.props;
+
+const hasGroups = groups !== undefined && groups.some(g => g.connections.length > 0);
+const hasFlat   = connections.length > 0;
 ---
 
-{connections.length > 0 && (
+{(hasGroups || hasFlat) && (
   <nav class="connections-panel" aria-label={heading}>
     <h2 class="connections-heading">{heading}</h2>
-    <ul class="connections-list">
-      {connections.map((conn) => (
-        <li class="connections-item">
-          {conn.href ? (
-            <a
-              href={conn.href}
-              class={`connections-card connections-card--${conn.palette}`}
-              data-todo={conn.dataTodo}
-            >
-              <span class="connections-label">{conn.label}</span>
-              <span class="connections-title">{conn.title}</span>
-            </a>
-          ) : (
-            <span
-              class={`connections-card connections-card--${conn.palette} connections-card--unavailable`}
-              aria-disabled="true"
-              data-todo={conn.dataTodo}
-            >
-              <span class="connections-label">{conn.label}</span>
-              <span class="connections-title">{conn.title}</span>
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
+    {hasGroups ? (
+      groups!.filter(g => g.connections.length > 0).map((group) => (
+        <div class="connections-group">
+          <h3 class="connections-subheading">{group.subheading}</h3>
+          <ul class="connections-list">
+            {group.connections.map((conn) => (
+              <li class="connections-item">
+                {conn.href ? (
+                  <a
+                    href={conn.href}
+                    class={`connections-card connections-card--${conn.palette}`}
+                    data-todo={conn.dataTodo}
+                  >
+                    <span class="connections-label">{conn.label}</span>
+                    <span class="connections-title">{conn.title}</span>
+                  </a>
+                ) : (
+                  <span
+                    class={`connections-card connections-card--${conn.palette} connections-card--unavailable`}
+                    aria-disabled="true"
+                    data-todo={conn.dataTodo}
+                  >
+                    <span class="connections-label">{conn.label}</span>
+                    <span class="connections-title">{conn.title}</span>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    ) : (
+      <ul class="connections-list">
+        {connections.map((conn) => (
+          <li class="connections-item">
+            {conn.href ? (
+              <a
+                href={conn.href}
+                class={`connections-card connections-card--${conn.palette}`}
+                data-todo={conn.dataTodo}
+              >
+                <span class="connections-label">{conn.label}</span>
+                <span class="connections-title">{conn.title}</span>
+              </a>
+            ) : (
+              <span
+                class={`connections-card connections-card--${conn.palette} connections-card--unavailable`}
+                aria-disabled="true"
+                data-todo={conn.dataTodo}
+              >
+                <span class="connections-label">{conn.label}</span>
+                <span class="connections-title">{conn.title}</span>
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    )}
   </nav>
 )}
 
@@ -143,5 +185,23 @@ const { heading = 'Connections', connections } = Astro.props;
     font-size: var(--text-sm);
     color: var(--color-neutral-body);
     line-height: var(--leading-snug);
+  }
+
+  .connections-group {
+    margin-bottom: var(--space-5);
+  }
+
+  .connections-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .connections-subheading {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-neutral-muted);
+    margin: 0 0 var(--space-3) 0;
   }
 </style>
