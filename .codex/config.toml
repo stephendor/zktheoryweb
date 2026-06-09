@@ -1,0 +1,6 @@
+# zktheoryweb: lighter Codex reasoning by default for content / styling / test
+# work (the global default is xhigh, which is overkill here). Raise per-session
+# for logic-heavy or architecture work, e.g.:
+#   codex --config model_reasoning_effort=high
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
