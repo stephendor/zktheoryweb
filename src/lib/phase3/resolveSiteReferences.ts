@@ -24,7 +24,7 @@ export interface SiteRouteRegistry {
 
 export interface ReferenceResolution {
   resolved: boolean;
-  reason: 'resolved' | 'pending' | 'external' | 'missing';
+  reason: 'resolved' | 'pending' | 'external' | 'missing' | 'invalid';
 }
 
 export function createSiteRouteRegistry(
@@ -42,42 +42,47 @@ export function createSiteRouteRegistry(
   };
 }
 
+type InternalSiteReferenceKind = Exclude<SiteReference['kind'], 'external'>;
+
+const registryKeyByKind = {
+  chapter: 'chapters',
+  paper: 'papers',
+  method: 'methods',
+  interlude: 'interludes',
+  'learn-module': 'learnModules',
+  interactive: 'interactives',
+  'writing-note': 'writingNotes',
+  'writing-essay': 'writingEssays',
+} satisfies Record<InternalSiteReferenceKind, keyof SiteRouteRegistry>;
+
 function idsForKind(
   reference: SiteReference,
   registry: SiteRouteRegistry,
 ): Set<string> | null {
-  switch (reference.kind) {
-    case 'chapter':
-      return registry.chapters;
-    case 'paper':
-      return registry.papers;
-    case 'method':
-      return registry.methods;
-    case 'interlude':
-      return registry.interludes;
-    case 'learn-module':
-      return registry.learnModules;
-    case 'interactive':
-      return registry.interactives;
-    case 'writing-note':
-      return registry.writingNotes;
-    case 'writing-essay':
-      return registry.writingEssays;
-    case 'external':
-      return null;
+  if (reference.kind === 'external') {
+    return null;
   }
+
+  return registry[registryKeyByKind[reference.kind]];
 }
 
 export function resolveSiteReference(
   reference: SiteReference,
   registry: SiteRouteRegistry,
 ): ReferenceResolution {
-  if (reference.status === 'pending') {
-    return { resolved: true, reason: 'pending' };
+  const isExternalKind = reference.kind === 'external';
+  const isExternalStatus = reference.status === 'external';
+
+  if (isExternalKind || isExternalStatus) {
+    if (isExternalKind && isExternalStatus) {
+      return { resolved: true, reason: 'external' };
+    }
+
+    return { resolved: false, reason: 'invalid' };
   }
 
-  if (reference.status === 'external' || reference.kind === 'external') {
-    return { resolved: true, reason: 'external' };
+  if (reference.status === 'pending') {
+    return { resolved: true, reason: 'pending' };
   }
 
   const ids = idsForKind(reference, registry);
