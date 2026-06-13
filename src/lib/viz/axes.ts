@@ -14,7 +14,7 @@
 
 import { axisBottom, axisLeft } from 'd3-axis';
 import type { Selection } from 'd3-selection';
-import type { AxisScale } from 'd3-axis';
+import type { AxisDomain, AxisScale } from 'd3-axis';
 
 /** Shared options accepted by both axis helpers. */
 export interface AxisOptions {
@@ -39,9 +39,9 @@ const LABEL_OFFSET_Y = -50; // px left of y-axis
 /**
  * Resolve a D3 tick-format function from the AxisOptions shorthand.
  */
-function resolveTickFormat(
+function resolveTickFormat<Domain extends AxisDomain>(
   tickFormat: AxisOptions['tickFormat'],
-): ((d: number | { valueOf(): number }) => string) | null {
+): ((domainValue: Domain, index: number) => string) | null {
   switch (tickFormat) {
     case 'integer':
       return (d) => String(Math.round(Number(d)));
@@ -61,9 +61,9 @@ function resolveTickFormat(
  * @param scale     - Any D3 scale with a `domain` and `range` (continuous or band).
  * @param options   - Label and tick-format options.
  */
-export function renderXAxis(
+export function renderXAxis<Domain extends AxisDomain>(
   selection: Selection<SVGGElement, unknown, null, undefined>,
-  scale: AxisScale<number | string | Date>,
+  scale: AxisScale<Domain>,
   options: AxisOptions = {},
 ): void {
   const { label, tickFormat, tickCount } = options;
@@ -71,8 +71,8 @@ export function renderXAxis(
   const axis = axisBottom(scale);
   if (tickCount !== undefined) axis.ticks(tickCount);
 
-  const fmt = resolveTickFormat(tickFormat);
-  if (fmt) axis.tickFormat(fmt as Parameters<typeof axis.tickFormat>[0]);
+  const fmt = resolveTickFormat<Domain>(tickFormat);
+  if (fmt) axis.tickFormat(fmt);
 
   selection.call(axis);
 
@@ -102,9 +102,9 @@ export function renderXAxis(
  * @param scale     - Any D3 scale with a `domain` and `range`.
  * @param options   - Label and tick-format options.
  */
-export function renderYAxis(
+export function renderYAxis<Domain extends AxisDomain>(
   selection: Selection<SVGGElement, unknown, null, undefined>,
-  scale: AxisScale<number | string | Date>,
+  scale: AxisScale<Domain>,
   options: AxisOptions = {},
 ): void {
   const { label, tickFormat, tickCount } = options;
@@ -112,8 +112,8 @@ export function renderYAxis(
   const axis = axisLeft(scale);
   if (tickCount !== undefined) axis.ticks(tickCount);
 
-  const fmt = resolveTickFormat(tickFormat);
-  if (fmt) axis.tickFormat(fmt as Parameters<typeof axis.tickFormat>[0]);
+  const fmt = resolveTickFormat<Domain>(tickFormat);
+  if (fmt) axis.tickFormat(fmt);
 
   selection.call(axis);
 

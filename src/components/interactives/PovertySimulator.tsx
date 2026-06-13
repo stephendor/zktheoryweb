@@ -36,6 +36,7 @@ import {
   oecdEqualisationFactor,
   POPULATION_MEDIAN,
   type HouseholdParams,
+  type IncomeDataPoint,
   type ThresholdMethod,
   type Region,
 } from './PovertySimulator.data';
@@ -135,7 +136,7 @@ function ChartInner({
 }: ChartInnerProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const lineRef = useRef<d3.Selection<SVGLineElement, unknown, null, undefined> | null>(null);
-  const shadeRef = useRef<d3.Selection<SVGPathElement, unknown, null, undefined> | null>(null);
+  const shadeRef = useRef<d3.Selection<SVGPathElement, IncomeDataPoint[], null, undefined> | null>(null);
   const xScaleRef = useRef<d3.ScaleLinear<number, number> | null>(null);
   // Strip React's colon characters so the ID is safe in CSS selectors.
   const id = useId().replace(/:/g, '');

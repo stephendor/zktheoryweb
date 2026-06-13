@@ -50,12 +50,11 @@ export const WithSVGPlaceholder = {
     React.createElement(
       'div',
       { style: { width: '100%', maxWidth: 600 } },
-      React.createElement(
-        ResponsiveContainer,
-        args,
-        ({ width, height }: VizDimensions) =>
+      React.createElement(ResponsiveContainer, {
+        ...args,
+        children: ({ width, height }: VizDimensions) =>
           React.createElement(ResponsivePlaceholder, { width, height }),
-      ),
+      }),
     ),
 };
 

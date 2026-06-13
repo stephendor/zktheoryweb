@@ -35,6 +35,13 @@ export function makeFocusable(
   selection.attr('tabindex', '0').attr('role', 'img');
 }
 
+function canFocus(element: Element): element is Element & HTMLOrSVGElement {
+  return (
+    'focus' in element &&
+    typeof (element as { focus?: unknown }).focus === 'function'
+  );
+}
+
 /**
  * Build a keydown handler for arrow-key focus traversal.
  *
@@ -71,9 +78,9 @@ export function arrowKeyHandler(
     const nextIndex = (currentIndex + delta + itemArray.length) % itemArray.length;
     const nextItem = itemArray[nextIndex];
 
-    // Both HTMLElement and SVGElement implement HTMLOrSVGElement which
-    // provides .focus(). The cast is valid for any element with tabindex.
-    (nextItem as HTMLOrSVGElement).focus();
+    if (!canFocus(nextItem)) return;
+
+    nextItem.focus();
     onFocus(nextItem, nextIndex);
   };
 }
