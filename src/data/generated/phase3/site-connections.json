@@ -1,0 +1,136 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-06-13T00:00:00.000Z",
+    "exporter": {
+      "name": "manual-fixture",
+      "version": "1.0.0"
+    },
+    "sources": [
+      {
+        "sourceId": "phase3-site-connections",
+        "sourceType": "manual-fixture",
+        "label": "Phase 3 site connections"
+      }
+    ],
+    "warnings": []
+  },
+  "twoLenses": [
+    {
+      "id": "two-lenses-ch17-paper10",
+      "title": "Paper 10 and Chapter 17",
+      "status": "confirmed",
+      "mathematical": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "political": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "rationale": "Paper 10 provides the mathematical fairness frame that Chapter 17 connects to measurement ethics and political accountability.",
+      "websitePath": "/learn/two-lenses/ch-17-paper-10/",
+      "concepts": ["fairness", "measurement ethics", "poverty measurement"],
+      "sourceNoteRefs": [
+        {
+          "sourceId": "phase3-site-connections",
+          "path": "manual-curation/site-connections",
+          "title": "Phase 3 site connections"
+        }
+      ],
+      "zoteroKeys": []
+    }
+  ],
+  "derivedConnections": [
+    {
+      "id": "ch17-persistent-homology-method-used",
+      "source": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "target": {
+        "kind": "method",
+        "id": "persistent-homology",
+        "status": "resolved",
+        "label": "Persistent Homology",
+        "title": "Persistent Homology"
+      },
+      "connectionType": "method-used",
+      "confidence": "reviewed",
+      "rationale": "Chapter 17 uses persistent homology as part of the site's account of measurement structure.",
+      "origin": "manual-curation"
+    },
+    {
+      "id": "paper10-ch17-two-lenses",
+      "source": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "target": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "connectionType": "two-lenses",
+      "confidence": "confirmed",
+      "rationale": "Paper 10 and Chapter 17 form a confirmed mathematical-political pairing for the Two Lenses pathway.",
+      "origin": "manual-curation"
+    },
+    {
+      "id": "path3-module6-paper10-learning-path",
+      "source": {
+        "kind": "learn-module",
+        "id": "path3-module-6",
+        "status": "resolved",
+        "label": "Path 3 Module 6",
+        "title": "Path 3 Module 6"
+      },
+      "target": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "connectionType": "learning-path",
+      "confidence": "reviewed",
+      "rationale": "Path 3 Module 6 prepares readers for the Paper 10 fairness argument through the Data Justice route.",
+      "origin": "manual-curation"
+    }
+  ],
+  "learningPaths": [
+    {
+      "pathSlug": "data-justice",
+      "generatedModules": [
+        {
+          "moduleId": "path3-module-6",
+          "concepts": ["data justice", "fairness", "poverty measurement"],
+          "sourceNoteRefs": [
+            {
+              "sourceId": "phase3-site-connections",
+              "path": "manual-curation/site-connections",
+              "title": "Phase 3 site connections"
+            }
+          ],
+          "status": "aligned"
+        }
+      ],
+      "recommendedConnections": ["path3-module6-paper10-learning-path"],
+      "twoLensesIds": ["two-lenses-ch17-paper10"]
+    }
+  ]
+}
