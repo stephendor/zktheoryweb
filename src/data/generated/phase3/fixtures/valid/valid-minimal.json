@@ -1,0 +1,90 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-06-13T12:00:00.000Z",
+    "exporter": { "name": "manual-fixture", "version": "1.0.0" },
+    "sources": [
+      {
+        "sourceId": "tda-research",
+        "sourceType": "manual-fixture",
+        "label": "TDA Research fixture"
+      },
+      {
+        "sourceId": "counting-lives",
+        "sourceType": "manual-fixture",
+        "label": "Counting Lives fixture"
+      }
+    ],
+    "warnings": []
+  },
+  "twoLenses": [
+    {
+      "id": "fairness-and-measurement-ethics",
+      "title": "Fairness and Measurement Ethics",
+      "status": "confirmed",
+      "mathematical": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "political": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "rationale": "Paper 10 formalises fairness diagnostics while Chapter 17 frames measurement as a political obligation.",
+      "websitePath": "/learn/fairness-and-measurement-ethics/",
+      "concepts": ["fairness", "measurement ethics"],
+      "sourceNoteRefs": [
+        {
+          "sourceId": "tda-research",
+          "path": "03-Papers/P10/_project.md",
+          "title": "Paper 10 project file"
+        }
+      ],
+      "zoteroKeys": ["NOBLE2024"]
+    }
+  ],
+  "derivedConnections": [
+    {
+      "id": "ch17-paper10-two-lenses",
+      "source": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "target": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "connectionType": "two-lenses",
+      "confidence": "confirmed",
+      "rationale": "Both pages treat fairness as a mathematical and political measurement problem.",
+      "origin": "manual-fixture"
+    }
+  ],
+  "learningPaths": [
+    {
+      "pathSlug": "data-justice",
+      "generatedModules": [
+        {
+          "moduleId": "path3-module-6",
+          "concepts": ["algorithmic accountability", "fairness"],
+          "sourceNoteRefs": [],
+          "status": "aligned"
+        }
+      ],
+      "recommendedConnections": ["ch17-paper10-two-lenses"],
+      "twoLensesIds": ["fairness-and-measurement-ethics"]
+    }
+  ]
+}

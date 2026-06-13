@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-06-13T12:05:00.000Z",
+    "exporter": { "name": "manual-fixture", "version": "1.0.0" },
+    "sources": [
+      {
+        "sourceId": "manual-fixture",
+        "sourceType": "manual-fixture",
+        "label": "Manual pending reference fixture"
+      }
+    ],
+    "warnings": []
+  },
+  "twoLenses": [],
+  "derivedConnections": [
+    {
+      "id": "ch17-topology-and-justice-pending",
+      "source": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "target": {
+        "kind": "learn-module",
+        "id": "topology-and-justice",
+        "status": "pending",
+        "label": "Topology and Justice",
+        "title": "Topology and Justice"
+      },
+      "connectionType": "learning-path",
+      "confidence": "reviewed",
+      "rationale": "Chapter 17 should connect to the planned learn module once topology-and-justice is published.",
+      "origin": "manual-fixture"
+    }
+  ],
+  "learningPaths": []
+}
