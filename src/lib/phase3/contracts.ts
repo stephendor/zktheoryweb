@@ -2,22 +2,50 @@ import { z } from 'zod';
 
 const semverSchema = z.string().regex(/^\d+\.\d+\.\d+$/, 'Expected a semantic version');
 
-const isoDateTimeSchema = z
-  .string()
-  .refine((value) => !Number.isNaN(Date.parse(value)), 'Expected an ISO timestamp');
+const isoDateTimeSchema = z.iso.datetime({ message: 'Expected an ISO timestamp' });
 
+const rootRelativePathPattern = /^\/(?!\/)/;
 const rootRelativePathSchema = z
   .string()
-  .regex(/^\/(?!\/)/, 'Expected a root-relative path beginning with /');
+  .regex(rootRelativePathPattern, 'Expected a root-relative path beginning with /');
 
+const hrefSchemaMessage = 'Expected href to be a root-relative path or http(s) URL';
+const localHrefSchemaMessage =
+  'Local filesystem paths must not be used as website href values';
 const safeHrefSchema = z.string().superRefine((value, ctx) => {
   const looksLikeWindowsPath = /^[A-Za-z]:[\\/]/.test(value);
-  if (looksLikeWindowsPath) {
+  const looksLikeBackslashPath = /^\\/.test(value);
+  const looksLikeFileUrl = /^file:/i.test(value);
+
+  if (looksLikeWindowsPath || looksLikeBackslashPath || looksLikeFileUrl) {
     ctx.addIssue({
       code: 'custom',
-      message: 'Local filesystem paths must not be used as website href values',
+      message: localHrefSchemaMessage,
     });
+    return;
   }
+
+  if (rootRelativePathPattern.test(value)) {
+    return;
+  }
+
+  try {
+    const url = new URL(value);
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
+      return;
+    }
+  } catch {
+    ctx.addIssue({
+      code: 'custom',
+      message: hrefSchemaMessage,
+    });
+    return;
+  }
+
+  ctx.addIssue({
+    code: 'custom',
+    message: hrefSchemaMessage,
+  });
 });
 
 export const sourceTypeSchema = z.enum([
