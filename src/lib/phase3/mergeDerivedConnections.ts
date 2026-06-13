@@ -17,10 +17,14 @@ export interface RenderableConnection {
   title: string;
   palette: Palette;
   source: 'hand-authored' | 'generated';
-  dataTodo?: string;
+  dataTodo?: 'pending-route';
 }
 
 const keyFor = (kind: SiteReference['kind'], id: string): string => `${kind}:${id}`;
+
+function assertNever(value: never): never {
+  throw new Error(`Unhandled site reference kind: ${String(value)}`);
+}
 
 const paletteForReference = (reference: SiteReference): Palette =>
   reference.kind === 'chapter' || reference.kind === 'interlude' ? 'cl' : 'tda';
@@ -49,6 +53,8 @@ const hrefForReference = (reference: SiteReference): string | undefined => {
       return `/writing/essays/${reference.id}/`;
     case 'external':
       return reference.href;
+    default:
+      return assertNever(reference.kind);
   }
 };
 
