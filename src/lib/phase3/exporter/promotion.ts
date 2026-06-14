@@ -1,5 +1,12 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import {
+  existsSync,
+  mkdirSync,
+  renameSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
+import { randomUUID } from 'node:crypto';
+import { basename, dirname, join } from 'node:path';
 import type { Phase3Export } from '../contracts';
 import {
   readPhase3ExportFile,
@@ -25,6 +32,29 @@ function promotionErrorMessage(
     .join('; ');
 }
 
+export function writeFileAtomically(destinationPath: string, contents: string): string {
+  const destinationDir = dirname(destinationPath);
+  const tempPath = join(
+    destinationDir,
+    `.${basename(destinationPath)}.${process.pid}.${randomUUID()}.tmp`,
+  );
+
+  mkdirSync(destinationDir, { recursive: true });
+
+  try {
+    writeFileSync(tempPath, contents, 'utf-8');
+    renameSync(tempPath, destinationPath);
+  } catch (error) {
+    if (existsSync(tempPath)) {
+      unlinkSync(tempPath);
+    }
+
+    throw error;
+  }
+
+  return tempPath;
+}
+
 export function promotePhase3Candidate(
   options: PromotePhase3CandidateOptions,
 ): Phase3Export {
@@ -40,11 +70,9 @@ export function promotePhase3Candidate(
   }
 
   const promoted = validation.data ?? candidate;
-  mkdirSync(dirname(options.destinationPath), { recursive: true });
-  writeFileSync(
+  writeFileAtomically(
     options.destinationPath,
     `${JSON.stringify(promoted, null, 2)}\n`,
-    'utf-8',
   );
 
   return promoted;

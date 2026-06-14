@@ -1,15 +1,19 @@
 import {
   existsSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { Phase3Export } from '../contracts';
 import { createSiteRouteRegistry } from '../resolveSiteReferences';
-import { promotePhase3Candidate } from './promotion';
+import {
+  promotePhase3Candidate,
+  writeFileAtomically,
+} from './promotion';
 
 const registry = createSiteRouteRegistry({
   chapters: ['ch-17'],
@@ -89,5 +93,37 @@ describe('promotePhase3Candidate', () => {
       promotePhase3Candidate({ candidatePath, destinationPath, registry }),
     ).toThrow(/Cannot promote Phase 3 candidate/);
     expect(existsSync(destinationPath)).toBe(false);
+  });
+
+  it('does not overwrite an existing destination when route validation fails', () => {
+    const root = tempRoot();
+    const candidate = validExport();
+    candidate.derivedConnections[0]!.target.id = 'missing-method';
+    const candidatePath = join(root, 'candidate.json');
+    const destinationPath = join(root, 'site-connections.json');
+    const existingDestination = '{"existing":true}\n';
+    writeFileSync(candidatePath, JSON.stringify(candidate), 'utf-8');
+    writeFileSync(destinationPath, existingDestination, 'utf-8');
+
+    expect(() =>
+      promotePhase3Candidate({ candidatePath, destinationPath, registry }),
+    ).toThrow(/Cannot promote Phase 3 candidate/);
+    expect(readFileSync(destinationPath, 'utf-8')).toBe(existingDestination);
+  });
+
+  it('writes through a same-directory temp file before renaming into place', () => {
+    const root = tempRoot();
+    const destinationPath = join(root, 'site-connections.json');
+
+    const tempPath = writeFileAtomically(destinationPath, '{"ok":true}\n');
+
+    expect(dirname(tempPath)).toBe(dirname(destinationPath));
+    expect(basename(tempPath)).toContain('.site-connections.json.');
+    expect(readFileSync(destinationPath, 'utf-8')).toBe('{"ok":true}\n');
+    expect(
+      readdirSync(root).filter((entry) =>
+        entry.includes('.site-connections.json.'),
+      ),
+    ).toEqual([]);
   });
 });
