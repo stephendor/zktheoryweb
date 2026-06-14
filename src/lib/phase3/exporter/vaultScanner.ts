@@ -172,6 +172,13 @@ function normalizeCitekey(value: string): string {
   return value.trim().replace(/^@/, '').replace(/[.,;!?]+$/, '');
 }
 
+const bodyCitekeyTokenPattern = '[A-Za-z0-9][A-Za-z0-9:_./-]*\\d[A-Za-z0-9:_./-]*';
+const bracketedBodyCitekeyRegex = new RegExp(`(?:^|[;\\s])@(${bodyCitekeyTokenPattern})`, 'g');
+const inlineBodyCitekeyRegex = new RegExp(
+  `(^|[\\s([{"'])@(${bodyCitekeyTokenPattern})`,
+  'g',
+);
+
 function addBodyCitekey(citekeys: Set<string>, value: string | undefined): void {
   if (value) {
     citekeys.add(normalizeCitekey(value));
@@ -188,12 +195,12 @@ function collectCitekeys(frontmatter: Frontmatter, body: string): string[] {
 
   for (const bracket of body.matchAll(/\[([^\]\n]*@[^\]\n]*)\]/g)) {
     const citationText = bracket[1] ?? '';
-    for (const match of citationText.matchAll(/@([A-Za-z0-9][A-Za-z0-9:_./-]*)/g)) {
+    for (const match of citationText.matchAll(bracketedBodyCitekeyRegex)) {
       addBodyCitekey(citekeys, match[1]);
     }
   }
 
-  for (const match of body.matchAll(/(^|[\s([{"'])@([A-Za-z0-9][A-Za-z0-9:_./-]*\d[A-Za-z0-9:_./-]*)/g)) {
+  for (const match of body.matchAll(inlineBodyCitekeyRegex)) {
     addBodyCitekey(citekeys, match[2]);
   }
 

@@ -106,6 +106,9 @@ This note cites @carlsson2009topology and @bauer2021ripser.
       `# Citations
 
 Pandoc bracket [@bauer2021ripser; @carlsson2009topology].
+Bracketed email [person@example.com] should not count.
+Bracketed CSS [@media] should not count.
+Bracketed handle [@zktheory] should not count.
 Inline citation @zomorian2005computing appears in prose.
 Email person@example.com should not count.
 CSS @media should not count.
