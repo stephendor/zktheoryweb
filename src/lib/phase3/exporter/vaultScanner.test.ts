@@ -88,6 +88,40 @@ This note cites @carlsson2009topology and @bauer2021ripser.
     });
   });
 
+  it('parses frontmatter when markdown starts with a UTF-8 BOM', () => {
+    const root = tempRoot();
+    write(root, 'bom.md', '\uFEFF---\ntitle: BOM Title\n---\n# Body Title\n');
+
+    const result = scanVaultNotes({ root, sourceId: 'tda-research' });
+
+    expect(result.notes[0]?.title).toBe('BOM Title');
+    expect(result.notes[0]?.frontmatter).toMatchObject({ title: 'BOM Title' });
+  });
+
+  it('extracts citation citekeys without treating emails or at-rules as citations', () => {
+    const root = tempRoot();
+    write(
+      root,
+      'citations.md',
+      `# Citations
+
+Pandoc bracket [@bauer2021ripser; @carlsson2009topology].
+Inline citation @zomorian2005computing appears in prose.
+Email person@example.com should not count.
+CSS @media should not count.
+Handle @zktheory should not count.
+`,
+    );
+
+    const result = scanVaultNotes({ root, sourceId: 'tda-research' });
+
+    expect(result.notes[0]?.citekeys).toEqual([
+      'bauer2021ripser',
+      'carlsson2009topology',
+      'zomorian2005computing',
+    ]);
+  });
+
   it('preserves endpoint metadata with note source id and parsed site reference', () => {
     const root = tempRoot();
     write(

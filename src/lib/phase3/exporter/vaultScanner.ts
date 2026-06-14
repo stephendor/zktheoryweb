@@ -89,7 +89,7 @@ function markdownFiles(root: string): string[] {
 }
 
 function splitFrontmatter(text: string): { frontmatter: string | null; body: string } {
-  const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
+  const match = /^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
   if (!match) {
     return { frontmatter: null, body: text };
   }
@@ -172,6 +172,12 @@ function normalizeCitekey(value: string): string {
   return value.trim().replace(/^@/, '').replace(/[.,;!?]+$/, '');
 }
 
+function addBodyCitekey(citekeys: Set<string>, value: string | undefined): void {
+  if (value) {
+    citekeys.add(normalizeCitekey(value));
+  }
+}
+
 function collectCitekeys(frontmatter: Frontmatter, body: string): string[] {
   const citekeys = new Set<string>();
   for (const key of ['citekey', 'citekeys', 'zoteroKeys', 'zotero-keys']) {
@@ -180,10 +186,15 @@ function collectCitekeys(frontmatter: Frontmatter, body: string): string[] {
     }
   }
 
-  for (const match of body.matchAll(/@([A-Za-z0-9][A-Za-z0-9:_./-]*)/g)) {
-    if (match[1]) {
-      citekeys.add(normalizeCitekey(match[1]));
+  for (const bracket of body.matchAll(/\[([^\]\n]*@[^\]\n]*)\]/g)) {
+    const citationText = bracket[1] ?? '';
+    for (const match of citationText.matchAll(/@([A-Za-z0-9][A-Za-z0-9:_./-]*)/g)) {
+      addBodyCitekey(citekeys, match[1]);
     }
+  }
+
+  for (const match of body.matchAll(/(^|[\s([{"'])@([A-Za-z0-9][A-Za-z0-9:_./-]*\d[A-Za-z0-9:_./-]*)/g)) {
+    addBodyCitekey(citekeys, match[2]);
   }
 
   return [...citekeys].sort((left, right) => left.localeCompare(right));
