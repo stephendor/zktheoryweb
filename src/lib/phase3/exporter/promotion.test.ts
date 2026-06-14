@@ -1,4 +1,9 @@
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -64,9 +69,11 @@ describe('promotePhase3Candidate', () => {
 
     promotePhase3Candidate({ candidatePath, destinationPath, registry });
 
-    const promoted = JSON.parse(
-      readFileSync(destinationPath, 'utf-8'),
-    ) as Phase3Export;
+    const rawPromoted = readFileSync(destinationPath, 'utf-8');
+    expect(rawPromoted).toContain('\n  "manifest": {');
+    expect(rawPromoted.endsWith('\n')).toBe(true);
+
+    const promoted = JSON.parse(rawPromoted) as Phase3Export;
     expect(promoted.derivedConnections[0]?.id).toBe('ch17-ph');
   });
 
@@ -81,5 +88,6 @@ describe('promotePhase3Candidate', () => {
     expect(() =>
       promotePhase3Candidate({ candidatePath, destinationPath, registry }),
     ).toThrow(/Cannot promote Phase 3 candidate/);
+    expect(existsSync(destinationPath)).toBe(false);
   });
 });
