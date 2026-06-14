@@ -144,7 +144,6 @@ const generatedMappingCases: GeneratedMappingCase[] = [
       label: 'Learning Module',
       title: 'Fairness and Poverty Measurement',
     },
-    expectedHref: '/learn/path3-module-6/',
     expectedPalette: 'tda',
   },
   {
@@ -254,6 +253,27 @@ describe('mergeDerivedConnections', () => {
     expect(merged).toEqual([]);
   });
 
+  it('preserves unavailable metadata from hand-authored connections', () => {
+    const merged = mergeDerivedConnections(
+      [
+        {
+          targetKind: 'paper',
+          targetId: 'paper-99',
+          label: 'Paper 99',
+          title: 'Future Paper',
+          palette: 'tda',
+          dataTodo: 'paper-not-found',
+        },
+      ],
+      [],
+    );
+
+    expect(merged[0]).toMatchObject({
+      source: 'hand-authored',
+      dataTodo: 'paper-not-found',
+    });
+  });
+
   it('maps generated references to renderable connection cards', () => {
     const merged = mergeDerivedConnections([], [reviewedGenerated]);
 
@@ -293,4 +313,34 @@ describe('mergeDerivedConnections', () => {
       }
     },
   );
+
+  it('does not invent a learn-module URL when only an entry id is available', () => {
+    const merged = mergeDerivedConnections([], [
+      generatedConnectionForTarget({
+        kind: 'learn-module',
+        id: 'path3-module-6',
+        slug: 'path3-module-6',
+        status: 'resolved',
+        label: 'Learning Module',
+        title: 'Fairness and Poverty Measurement',
+      }),
+    ]);
+
+    expect(merged[0]).not.toHaveProperty('href');
+  });
+
+  it('uses an explicit learn-module href from generated data', () => {
+    const merged = mergeDerivedConnections([], [
+      generatedConnectionForTarget({
+        kind: 'learn-module',
+        id: 'path3-module-6',
+        href: '/learn/data-justice/6/',
+        status: 'resolved',
+        label: 'Learning Module',
+        title: 'Fairness and Poverty Measurement',
+      }),
+    ]);
+
+    expect(merged[0]?.href).toBe('/learn/data-justice/6/');
+  });
 });

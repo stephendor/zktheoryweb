@@ -9,6 +9,7 @@ export interface HandAuthoredConnection {
   label: string;
   title: string;
   palette: Palette;
+  dataTodo?: string;
 }
 
 export interface RenderableConnection {
@@ -44,7 +45,7 @@ const hrefForReference = (reference: SiteReference): string | undefined => {
     case 'interlude':
       return `/counting-lives/interludes/${reference.id}/`;
     case 'learn-module':
-      return reference.slug ? `/learn/${reference.slug}/` : undefined;
+      return undefined;
     case 'interactive':
       return `/learn/interactives/${reference.id}/`;
     case 'writing-note':
@@ -70,6 +71,10 @@ const handAuthoredToRenderable = (
 
   if (connection.href) {
     renderable.href = connection.href;
+  }
+
+  if (connection.dataTodo) {
+    renderable.dataTodo = connection.dataTodo;
   }
 
   return renderable;
