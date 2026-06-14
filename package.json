@@ -18,6 +18,7 @@
     "test:e2e:report": "playwright show-report",
     "fetch:zotero": "npx tsx src/lib/zotero.ts",
     "validate:phase3": "tsx scripts/validate-phase3-data.ts",
+    "verify:phase3": "npm run validate:phase3 && npm run test -- src/lib/phase3 && npm run check",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
