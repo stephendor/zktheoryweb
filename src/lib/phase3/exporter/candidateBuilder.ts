@@ -89,6 +89,10 @@ function sourceMatches(note: ScannedVaultNote, sourceId: string | undefined): bo
   return !sourceId || note.sourceId === sourceId;
 }
 
+function isValidWebsitePath(path: string | undefined): path is string {
+  return typeof path === 'string' && /^\/(?!\/)/.test(path);
+}
+
 function resolveNoteByPath(
   notes: ScannedVaultNote[],
   path: string,
@@ -123,20 +127,23 @@ function hasTwoLenses(note: ScannedVaultNote): note is NoteWithTwoLenses {
 function resolveEndpoint(
   endpoint: string | TwoLensesEndpointMetadata | undefined,
   notes: ScannedVaultNote[],
+  expectedSourceId?: string,
 ): ResolvedEndpoint | null {
   if (!endpoint) {
     return null;
   }
 
   if (typeof endpoint === 'string') {
-    const note = resolveNoteByPath(notes, endpoint);
+    const note = resolveNoteByPath(notes, endpoint, expectedSourceId);
     return note?.siteReference ? { site: note.siteReference, note } : null;
   }
+
+  const sourceId = endpoint.sourceId ?? expectedSourceId;
 
   if (endpoint.site) {
     const notePath = endpoint.path ?? endpoint.note;
     const note = notePath
-      ? resolveNoteByTitleOrPath(notes, notePath, endpoint.sourceId)
+      ? resolveNoteByTitleOrPath(notes, notePath, sourceId)
       : undefined;
 
     return {
@@ -150,7 +157,7 @@ function resolveEndpoint(
     return null;
   }
 
-  const note = resolveNoteByTitleOrPath(notes, notePath, endpoint.sourceId);
+  const note = resolveNoteByTitleOrPath(notes, notePath, sourceId);
   return note?.siteReference ? { site: note.siteReference, note } : null;
 }
 
@@ -164,23 +171,31 @@ function buildTwoLensesLink(
   notes: ScannedVaultNote[],
   warnings: Phase3Warning[],
 ): TwoLensesLink | null {
-  const mathematical = resolveEndpoint(metadata.mathematical, notes);
-  const political = resolveEndpoint(metadata.political, notes);
+  const mathematical = resolveEndpoint(metadata.mathematical, notes, 'tda-research');
+  const political = resolveEndpoint(metadata.political, notes, 'counting-lives');
   const { id, title, status, websitePath, rationale } = metadata;
+  const hasWebsitePath = requiredText(websitePath);
+  const websitePathIsValid = isValidWebsitePath(websitePath);
   const isComplete =
     requiredText(id) &&
     requiredText(title) &&
     status !== undefined &&
     mathematical !== null &&
     political !== null &&
-    requiredText(websitePath) &&
+    hasWebsitePath &&
+    websitePathIsValid &&
     requiredText(rationale);
 
   if (!isComplete) {
+    const invalidWebsitePath = hasWebsitePath && !websitePathIsValid;
     warnings.push(
       warning(
-        'two-lenses-metadata-incomplete',
-        `Two Lenses metadata is incomplete for ${sourceNote.relativePath}.`,
+        invalidWebsitePath
+          ? 'two-lenses-website-path-invalid'
+          : 'two-lenses-metadata-incomplete',
+        invalidWebsitePath
+          ? `Two Lenses websitePath must be root-relative for ${sourceNote.relativePath}.`
+          : `Two Lenses metadata is incomplete for ${sourceNote.relativePath}.`,
         sourceNote.sourceId,
       ),
     );
@@ -235,30 +250,31 @@ function buildSharedCitationConnections(
         .filter((citekey) => tdaCitekeys.has(citekey))
         .sort((left, right) => left.localeCompare(right));
 
-      const citekey = sharedCitekeys[0];
-      if (!citekey || !tdaNote.siteReference || !countingLivesNote.siteReference) {
+      if (!tdaNote.siteReference || !countingLivesNote.siteReference) {
         continue;
       }
 
-      const id = [
-        'shared-citation',
-        stableIdPart(tdaNote.siteReference.kind),
-        stableIdPart(tdaNote.siteReference.id),
-        stableIdPart(countingLivesNote.siteReference.kind),
-        stableIdPart(countingLivesNote.siteReference.id),
-        stableIdPart(citekey),
-      ].join('-');
+      for (const citekey of sharedCitekeys) {
+        const id = [
+          'shared-citation',
+          stableIdPart(tdaNote.siteReference.kind),
+          stableIdPart(tdaNote.siteReference.id),
+          stableIdPart(countingLivesNote.siteReference.kind),
+          stableIdPart(countingLivesNote.siteReference.id),
+          stableIdPart(citekey),
+        ].join('-');
 
-      if (!connections.has(id)) {
-        connections.set(id, {
-          id,
-          source: tdaNote.siteReference,
-          target: countingLivesNote.siteReference,
-          connectionType: 'shared-citation',
-          confidence: 'proposed',
-          rationale: `Both notes cite @${citekey}.`,
-          origin: 'cross-vault-linker',
-        });
+        if (!connections.has(id)) {
+          connections.set(id, {
+            id,
+            source: tdaNote.siteReference,
+            target: countingLivesNote.siteReference,
+            connectionType: 'shared-citation',
+            confidence: 'proposed',
+            rationale: `Both notes cite @${citekey}.`,
+            origin: 'cross-vault-linker',
+          });
+        }
       }
     }
   }
