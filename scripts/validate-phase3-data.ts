@@ -1,40 +1,13 @@
 import { existsSync, readdirSync, statSync } from 'node:fs';
-import { extname, join, parse, relative } from 'node:path';
+import { extname, join, relative } from 'node:path';
 import {
   readPhase3ExportFile,
   validatePhase3Export,
   type Phase3ValidationResult,
 } from '../src/lib/phase3/loadGeneratedData';
-import {
-  createSiteRouteRegistry,
-  type SiteRouteRegistry,
-} from '../src/lib/phase3/resolveSiteReferences';
+import { buildSiteRouteRegistryFromWorkspace } from '../src/lib/phase3/siteRouteRegistry';
 
 const workspaceRoot = process.cwd();
-
-function mdIdsFromDirectory(relativeDir: string): string[] {
-  const directory = join(workspaceRoot, relativeDir);
-  if (!existsSync(directory)) return [];
-
-  return readdirSync(directory, { withFileTypes: true })
-    .filter((entry) => entry.isFile())
-    .filter((entry) => ['.md', '.mdx'].includes(extname(entry.name)))
-    .map((entry) => parse(entry.name).name)
-    .sort();
-}
-
-function buildRegistryFromWorkspace(): SiteRouteRegistry {
-  return createSiteRouteRegistry({
-    chapters: mdIdsFromDirectory('src/content/counting-lives/chapters'),
-    papers: mdIdsFromDirectory('src/content/tda/papers'),
-    methods: mdIdsFromDirectory('src/content/tda/methods'),
-    interludes: mdIdsFromDirectory('src/content/counting-lives/interludes'),
-    learnModules: mdIdsFromDirectory('src/content/learn'),
-    interactives: mdIdsFromDirectory('src/content/interactives'),
-    writingNotes: mdIdsFromDirectory('src/content/writing/notes'),
-    writingEssays: mdIdsFromDirectory('src/content/writing/essays'),
-  });
-}
 
 function jsonFilesInDirectory(directory: string): string[] {
   if (!existsSync(directory)) return [];
@@ -82,7 +55,7 @@ function main(): void {
     return;
   }
 
-  const registry = buildRegistryFromWorkspace();
+  const registry = buildSiteRouteRegistryFromWorkspace(workspaceRoot);
   let totalErrors = 0;
   let totalWarnings = 0;
 
