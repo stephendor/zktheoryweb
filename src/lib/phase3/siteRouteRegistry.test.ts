@@ -44,6 +44,17 @@ describe('buildSiteRouteRegistryFromWorkspace', () => {
     expect(registry.papers.has('not-content')).toBe(false);
   });
 
+  it('excludes sample chapter ids that are not generated as chapter routes', () => {
+    const root = tempWorkspace();
+    touch(root, 'src/content/counting-lives/chapters/ch-00-sample.mdx');
+    touch(root, 'src/content/counting-lives/chapters/ch-17.mdx');
+
+    const registry = buildSiteRouteRegistryFromWorkspace(root);
+
+    expect(registry.chapters.has('ch-17')).toBe(true);
+    expect(registry.chapters.has('ch-00-sample')).toBe(false);
+  });
+
   it('returns empty sets when content directories do not exist', () => {
     const registry = buildSiteRouteRegistryFromWorkspace(tempWorkspace());
 

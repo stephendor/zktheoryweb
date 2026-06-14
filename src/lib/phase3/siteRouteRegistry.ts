@@ -19,8 +19,13 @@ function mdIdsFromDirectory(workspaceRoot: string, relativeDir: string): string[
 export function buildSiteRouteRegistryFromWorkspace(
   workspaceRoot = process.cwd(),
 ): SiteRouteRegistry {
+  const chapters = mdIdsFromDirectory(
+    workspaceRoot,
+    'src/content/counting-lives/chapters',
+  ).filter((id) => id !== 'ch-00-sample');
+
   return createSiteRouteRegistry({
-    chapters: mdIdsFromDirectory(workspaceRoot, 'src/content/counting-lives/chapters'),
+    chapters,
     papers: mdIdsFromDirectory(workspaceRoot, 'src/content/tda/papers'),
     methods: mdIdsFromDirectory(workspaceRoot, 'src/content/tda/methods'),
     interludes: mdIdsFromDirectory(
