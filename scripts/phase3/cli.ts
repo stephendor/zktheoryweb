@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { resolve } from 'node:path';
 
 export type ParsedPhase3Args = Record<string, string | boolean>;
 
@@ -32,6 +33,12 @@ export function parsePhase3Args(argv: string[]): ParsedPhase3Args {
     }
 
     const key = token.slice(2);
+    const equalsIndex = key.indexOf('=');
+    if (equalsIndex >= 0) {
+      args[key.slice(0, equalsIndex)] = key.slice(equalsIndex + 1);
+      continue;
+    }
+
     const next = argv[index + 1];
     if (next !== undefined && !next.startsWith('--')) {
       args[key] = next;
@@ -52,6 +59,10 @@ export function optionFromArgsOrEnv(
   env: Phase3Env = process.env
 ): string | undefined {
   const argValue = args[key];
+  if (argValue === true) {
+    throw new Error(`Option --${key} requires a value.`);
+  }
+
   if (typeof argValue === 'string' && argValue.trim()) {
     return argValue.trim();
   }
@@ -76,7 +87,26 @@ export function requiredOption(
 
 export function stringOption(args: ParsedPhase3Args, key: string, fallback: string): string {
   const value = args[key];
+  if (value === true) {
+    throw new Error(`Option --${key} requires a value.`);
+  }
+
   return typeof value === 'string' && value.trim() ? value.trim() : fallback;
+}
+
+function normalizedAbsolutePath(path: string): string {
+  return resolve(path).replaceAll('\\', '/').toLowerCase();
+}
+
+export function assertNotPromotedOutputPath(
+  outputPath: string,
+  promotedPath = defaultPromotedPath
+): void {
+  if (normalizedAbsolutePath(outputPath) === normalizedAbsolutePath(promotedPath)) {
+    throw new Error(
+      `Refusing to write a Phase 3 candidate to the promoted public JSON path: ${promotedPath}. Use npm run phase3:promote after reviewing a candidate instead.`
+    );
+  }
 }
 
 export function writeJson(path: string, value: unknown): void {

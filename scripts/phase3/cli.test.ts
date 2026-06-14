@@ -1,8 +1,15 @@
 import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { optionFromArgsOrEnv, parsePhase3Args, requiredOption, writeJson } from './cli';
+import {
+  assertNotPromotedOutputPath,
+  optionFromArgsOrEnv,
+  parsePhase3Args,
+  requiredOption,
+  stringOption,
+  writeJson,
+} from './cli';
 
 function tempRoot(): string {
   return mkdtempSync(join(tmpdir(), 'phase3-cli-'));
@@ -11,6 +18,13 @@ function tempRoot(): string {
 describe('parsePhase3Args', () => {
   it('parses --flag value pairs', () => {
     expect(parsePhase3Args(['--report', 'report.json', '--out', 'out.json'])).toEqual({
+      report: 'report.json',
+      out: 'out.json',
+    });
+  });
+
+  it('parses --flag=value pairs', () => {
+    expect(parsePhase3Args(['--report=report.json', '--out=out.json'])).toEqual({
       report: 'report.json',
       out: 'out.json',
     });
@@ -40,6 +54,32 @@ describe('requiredOption', () => {
   it('throws an actionable message when the option is missing', () => {
     expect(() => requiredOption({}, 'tda-vault', 'PHASE3_TDA_VAULT', {})).toThrow(
       'Missing required option --tda-vault or environment variable PHASE3_TDA_VAULT.'
+    );
+  });
+
+  it('throws an actionable message when a required option has no value', () => {
+    expect(() =>
+      requiredOption({ 'tda-vault': true }, 'tda-vault', 'PHASE3_TDA_VAULT', {
+        PHASE3_TDA_VAULT: 'from-env',
+      })
+    ).toThrow('Option --tda-vault requires a value.');
+  });
+});
+
+describe('stringOption', () => {
+  it('throws an actionable message when an optional string flag has no value', () => {
+    expect(() => stringOption({ out: true }, 'out', 'fallback.json')).toThrow(
+      'Option --out requires a value.'
+    );
+  });
+});
+
+describe('assertNotPromotedOutputPath', () => {
+  it('rejects the promoted public JSON path', () => {
+    const promotedPath = resolve('src/data/generated/phase3/site-connections.json');
+
+    expect(() => assertNotPromotedOutputPath(promotedPath, promotedPath)).toThrow(
+      'Refusing to write a Phase 3 candidate to the promoted public JSON path'
     );
   });
 });

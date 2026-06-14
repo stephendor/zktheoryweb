@@ -1,6 +1,8 @@
 import {
+  assertNotPromotedOutputPath,
   defaultCandidatePath,
   defaultFeedbackReportPath,
+  defaultPromotedPath,
   parsePhase3Args,
   requiredOption,
   stringOption,
@@ -10,7 +12,7 @@ import {
   inspectVaultSources,
   type VaultSourceConfig,
 } from '../../src/lib/phase3/exporter/sourceInventory';
-import { scanVaultNotes } from '../../src/lib/phase3/exporter/vaultScanner';
+import { scanVaultNotes, type ScanVaultResult } from '../../src/lib/phase3/exporter/vaultScanner';
 import { buildPhase3Candidate } from '../../src/lib/phase3/exporter/candidateBuilder';
 import { createRouteFeedback } from '../../src/lib/phase3/exporter/routeFeedback';
 import { buildSiteRouteRegistryFromWorkspace } from '../../src/lib/phase3/siteRouteRegistry';
@@ -24,6 +26,7 @@ const countingLivesVault = requiredOption(
 );
 const candidatePath = stringOption(args, 'out', defaultCandidatePath);
 const feedbackReportPath = stringOption(args, 'report', defaultFeedbackReportPath);
+assertNotPromotedOutputPath(candidatePath, defaultPromotedPath);
 
 const sources: VaultSourceConfig[] = [
   {
@@ -41,8 +44,15 @@ const sources: VaultSourceConfig[] = [
 ];
 
 const inventory = inspectVaultSources(sources);
-const scans = sources.map((source) =>
-  scanVaultNotes({ root: source.root, sourceId: source.sourceId })
+const scans: ScanVaultResult[] = inventory.sources.map((source) =>
+  source.available
+    ? scanVaultNotes({ root: source.localPath, sourceId: source.sourceId })
+    : {
+        sourceId: source.sourceId,
+        root: source.localPath,
+        notes: [],
+        warnings: [],
+      }
 );
 const candidate = buildPhase3Candidate({ inventory, scans });
 const feedback = createRouteFeedback(candidate, buildSiteRouteRegistryFromWorkspace(process.cwd()));
