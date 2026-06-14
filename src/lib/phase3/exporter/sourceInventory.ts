@@ -1,0 +1,187 @@
+import { existsSync, lstatSync, readdirSync, realpathSync } from 'node:fs';
+import { extname, join, relative } from 'node:path';
+import type { ExportManifest } from '../contracts';
+
+type SourceType = ExportManifest['sources'][number]['sourceType'];
+type ManifestWarning = ExportManifest['warnings'][number];
+
+export interface VaultSourceConfig {
+  sourceId: string;
+  sourceType: SourceType;
+  label: string;
+  root: string;
+  vaultMapRelativePath?: string;
+}
+
+export interface SourceInventoryDeps {
+  exists(path: string): boolean;
+  isDirectory(path: string): boolean;
+  isSymbolicLink(path: string): boolean;
+  realpath(path: string): string;
+  countMarkdownFiles(path: string): number;
+}
+
+export interface SourceInventoryEntry {
+  sourceId: string;
+  sourceType: SourceType;
+  label: string;
+  localPath: string;
+  realPath: string | null;
+  realPathDiffers: boolean;
+  linkKind: 'none' | 'symbolic-link' | 'junction-or-reparse-point';
+  available: boolean;
+  vaultMapPath: string;
+  vaultMapFound: boolean;
+  markdownFiles: number;
+  warnings: ManifestWarning[];
+}
+
+export interface SourceInventoryReport {
+  generatedAt: string;
+  sources: SourceInventoryEntry[];
+  warnings: ManifestWarning[];
+}
+
+function defaultIsDirectory(path: string): boolean {
+  try {
+    return lstatSync(path).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+function defaultIsSymbolicLink(path: string): boolean {
+  try {
+    return lstatSync(path).isSymbolicLink();
+  } catch {
+    return false;
+  }
+}
+
+function countMarkdownFiles(root: string): number {
+  let count = 0;
+
+  function visit(directory: string): void {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) {
+        if (!['.git', '.obsidian', '.trash', 'node_modules'].includes(entry.name)) {
+          visit(path);
+        }
+        continue;
+      }
+
+      if (entry.isFile() && ['.md', '.mdx'].includes(extname(entry.name))) {
+        count += 1;
+      }
+    }
+  }
+
+  visit(root);
+  return count;
+}
+
+const defaultDeps: SourceInventoryDeps = {
+  exists: existsSync,
+  isDirectory: defaultIsDirectory,
+  isSymbolicLink: defaultIsSymbolicLink,
+  realpath: (path) => realpathSync.native(path),
+  countMarkdownFiles,
+};
+
+function warning(
+  code: string,
+  message: string,
+  sourceId: string,
+): ManifestWarning {
+  return { code, message, sourceId };
+}
+
+function samePath(left: string, right: string): boolean {
+  return left.replaceAll('\\', '/').toLowerCase() === right.replaceAll('\\', '/').toLowerCase();
+}
+
+export function inspectVaultSource(
+  config: VaultSourceConfig,
+  deps: SourceInventoryDeps = defaultDeps,
+): SourceInventoryEntry {
+  const vaultMapRelativePath = config.vaultMapRelativePath ?? 'VAULT-MAP.md';
+  const vaultMapPath = join(config.root, vaultMapRelativePath);
+  const warnings: ManifestWarning[] = [];
+
+  if (!deps.exists(config.root) || !deps.isDirectory(config.root)) {
+    warnings.push(
+      warning(
+        'source-root-missing',
+        `Source root does not exist or is not a directory: ${config.root}`,
+        config.sourceId,
+      ),
+    );
+    return {
+      sourceId: config.sourceId,
+      sourceType: config.sourceType,
+      label: config.label,
+      localPath: config.root,
+      realPath: null,
+      realPathDiffers: false,
+      linkKind: 'none',
+      available: false,
+      vaultMapPath,
+      vaultMapFound: false,
+      markdownFiles: 0,
+      warnings,
+    };
+  }
+
+  const realPath = deps.realpath(config.root);
+  const realPathDiffers = !samePath(config.root, realPath);
+  const isSymbolicLink = deps.isSymbolicLink(config.root);
+  const linkKind = isSymbolicLink
+    ? 'symbolic-link'
+    : realPathDiffers
+      ? 'junction-or-reparse-point'
+      : 'none';
+  const vaultMapFound = deps.exists(vaultMapPath);
+
+  if (!vaultMapFound) {
+    warnings.push(
+      warning(
+        'vault-map-missing',
+        `VAULT-MAP.md was not found at ${vaultMapPath}`,
+        config.sourceId,
+      ),
+    );
+  }
+
+  return {
+    sourceId: config.sourceId,
+    sourceType: config.sourceType,
+    label: config.label,
+    localPath: config.root,
+    realPath,
+    realPathDiffers,
+    linkKind,
+    available: true,
+    vaultMapPath,
+    vaultMapFound,
+    markdownFiles: deps.countMarkdownFiles(config.root),
+    warnings,
+  };
+}
+
+export function inspectVaultSources(
+  configs: VaultSourceConfig[],
+  deps: SourceInventoryDeps = defaultDeps,
+  generatedAt = new Date().toISOString(),
+): SourceInventoryReport {
+  const sources = configs.map((config) => inspectVaultSource(config, deps));
+  return {
+    generatedAt,
+    sources,
+    warnings: sources.flatMap((source) => source.warnings),
+  };
+}
+
+export function relativeSourcePath(root: string, path: string): string {
+  return relative(root, path).replaceAll('\\', '/');
+}
