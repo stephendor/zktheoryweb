@@ -3,13 +3,13 @@
     "schemaVersion": "1.0.0",
     "generatedAt": "2026-06-13T00:00:00.000Z",
     "exporter": {
-      "name": "manual-fixture",
+      "name": "phase3-manual-site-seed",
       "version": "1.0.0"
     },
     "sources": [
       {
         "sourceId": "phase3-site-connections",
-        "sourceType": "manual-fixture",
+        "sourceType": "manual-curation",
         "label": "Phase 3 site connections"
       }
     ],
@@ -35,7 +35,7 @@
         "title": "Toward an Ethics of Measurement"
       },
       "rationale": "Paper 10 provides the mathematical fairness frame that Chapter 17 connects to measurement ethics and political accountability.",
-      "websitePath": "/learn/two-lenses/ch-17-paper-10/",
+      "websitePath": "/learn/",
       "concepts": ["fairness", "measurement ethics", "poverty measurement"],
       "sourceNoteRefs": [
         {

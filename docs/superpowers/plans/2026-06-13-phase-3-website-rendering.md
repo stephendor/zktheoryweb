@@ -328,7 +328,7 @@ Create `src/data/generated/phase3/site-connections.json`:
     "sources": [
       {
         "sourceId": "phase3-manual-site-seed",
-        "sourceType": "manual-fixture",
+        "sourceType": "manual-curation",
         "label": "Manual Phase 3 site rendering seed"
       }
     ],

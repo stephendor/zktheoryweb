@@ -212,6 +212,28 @@ describe('phase3ExportSchema', () => {
     expect(parsed.manifest.schemaVersion).toBe('1.0.0');
   });
 
+  it('accepts a manually curated non-fixture source', () => {
+    const parsed = phase3ExportSchema.parse({
+      ...phase3ExportFixture(),
+      manifest: {
+        ...phase3ExportFixture().manifest,
+        exporter: {
+          name: 'phase3-manual-site-seed',
+          version: '1.0.0',
+        },
+        sources: [
+          {
+            sourceId: 'phase3-site-connections',
+            sourceType: 'manual-curation',
+            label: 'Phase 3 site connections',
+          },
+        ],
+      },
+    });
+
+    expect(parsed.manifest.sources[0]?.sourceType).toBe('manual-curation');
+  });
+
   it('rejects a date-only generatedAt value', () => {
     const result = phase3ExportSchema.safeParse(phase3ExportFixture('2026-06-13'));
 

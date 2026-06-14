@@ -52,6 +52,7 @@ export const sourceTypeSchema = z.enum([
   'obsidian-vault',
   'tdl-repo',
   'manual-fixture',
+  'manual-curation',
   'zotero-cache',
 ]);
 
