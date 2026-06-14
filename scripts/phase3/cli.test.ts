@@ -30,6 +30,10 @@ describe('parsePhase3Args', () => {
     });
   });
 
+  it('preserves explicit empty --flag= values for validation', () => {
+    expect(parsePhase3Args(['--out='])).toEqual({ out: '' });
+  });
+
   it('parses boolean flags', () => {
     expect(parsePhase3Args(['--dry-run', '--report', 'report.json'])).toEqual({
       'dry-run': true,
@@ -64,11 +68,25 @@ describe('requiredOption', () => {
       })
     ).toThrow('Option --tda-vault requires a value.');
   });
+
+  it('throws an actionable message when a required option is explicitly empty', () => {
+    expect(() =>
+      requiredOption({ 'tda-vault': '' }, 'tda-vault', 'PHASE3_TDA_VAULT', {
+        PHASE3_TDA_VAULT: 'from-env',
+      })
+    ).toThrow('Option --tda-vault requires a value.');
+  });
 });
 
 describe('stringOption', () => {
   it('throws an actionable message when an optional string flag has no value', () => {
     expect(() => stringOption({ out: true }, 'out', 'fallback.json')).toThrow(
+      'Option --out requires a value.'
+    );
+  });
+
+  it('throws an actionable message when an optional string option is explicitly empty', () => {
+    expect(() => stringOption({ out: '' }, 'out', 'fallback.json')).toThrow(
       'Option --out requires a value.'
     );
   });

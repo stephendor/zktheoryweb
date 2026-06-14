@@ -63,8 +63,13 @@ export function optionFromArgsOrEnv(
     throw new Error(`Option --${key} requires a value.`);
   }
 
-  if (typeof argValue === 'string' && argValue.trim()) {
-    return argValue.trim();
+  if (typeof argValue === 'string') {
+    const trimmed = argValue.trim();
+    if (!trimmed) {
+      throw new Error(`Option --${key} requires a value.`);
+    }
+
+    return trimmed;
   }
 
   const envValue = env[envKey];
@@ -91,7 +96,16 @@ export function stringOption(args: ParsedPhase3Args, key: string, fallback: stri
     throw new Error(`Option --${key} requires a value.`);
   }
 
-  return typeof value === 'string' && value.trim() ? value.trim() : fallback;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      throw new Error(`Option --${key} requires a value.`);
+    }
+
+    return trimmed;
+  }
+
+  return fallback;
 }
 
 function normalizedAbsolutePath(path: string): string {
