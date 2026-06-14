@@ -14,11 +14,15 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import ChapterLayout from '@layouts/ChapterLayout.astro';
+import { loadPhase3RenderingData } from '@lib/phase3/renderingData';
+import { derivedConnectionsForSource } from '@lib/phase3/pageConnections';
+import type { DerivedConnection } from '@lib/phase3/contracts';
 
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
 export async function getStaticPaths() {
   const allChapters = await getCollection('chapters', ({ id }) => id !== 'ch-00-sample');
+  const phase3Data = loadPhase3RenderingData();
 
   // Sort ascending by chapter_number for correct prev/next ordering.
   allChapters.sort((a, b) => a.data.chapter_number - b.data.chapter_number);
@@ -34,10 +38,14 @@ export async function getStaticPaths() {
     const nextChapter = next
       ? { slug: next.id, title: next.data.title, chapter_number: next.data.chapter_number }
       : undefined;
+    const derivedConnections = derivedConnectionsForSource(phase3Data, {
+      kind: 'chapter',
+      id: entry.id,
+    });
 
     return {
       params: { slug: entry.id },
-      props: { entry, prevChapter, nextChapter },
+      props: { entry, prevChapter, nextChapter, derivedConnections },
     };
   });
 }
@@ -48,9 +56,15 @@ interface Props {
   entry: CollectionEntry<'chapters'>;
   prevChapter?: { slug: string; title: string; chapter_number: number };
   nextChapter?: { slug: string; title: string; chapter_number: number };
+  derivedConnections?: DerivedConnection[];
 }
 
-const { entry, prevChapter, nextChapter } = Astro.props;
+const { entry, prevChapter, nextChapter, derivedConnections } = Astro.props;
 ---
 
-<ChapterLayout entry={entry} prevChapter={prevChapter} nextChapter={nextChapter} />
+<ChapterLayout
+  entry={entry}
+  prevChapter={prevChapter}
+  nextChapter={nextChapter}
+  derivedConnections={derivedConnections}
+/>

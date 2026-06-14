@@ -15,11 +15,15 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import PaperLayout from '@layouts/PaperLayout.astro';
+import { loadPhase3RenderingData } from '@lib/phase3/renderingData';
+import { derivedConnectionsForSource } from '@lib/phase3/pageConnections';
+import type { DerivedConnection } from '@lib/phase3/contracts';
 
 // ─── Static paths ─────────────────────────────────────────────────────────────
 
 export async function getStaticPaths() {
   const allPapers = await getCollection('papers');
+  const phase3Data = loadPhase3RenderingData();
 
   // Sort ascending by paper_number for correct prev/next ordering.
   allPapers.sort((a, b) => a.data.paper_number - b.data.paper_number);
@@ -35,10 +39,14 @@ export async function getStaticPaths() {
     const nextPaper = next
       ? { slug: next.id, title: next.data.title }
       : undefined;
+    const derivedConnections = derivedConnectionsForSource(phase3Data, {
+      kind: 'paper',
+      id: entry.id,
+    });
 
     return {
       params: { slug: entry.id },
-      props: { entry, prevPaper, nextPaper },
+      props: { entry, prevPaper, nextPaper, derivedConnections },
     };
   });
 }
@@ -49,9 +57,15 @@ interface Props {
   entry: CollectionEntry<'papers'>;
   prevPaper?: { slug: string; title: string };
   nextPaper?: { slug: string; title: string };
+  derivedConnections?: DerivedConnection[];
 }
 
-const { entry, prevPaper, nextPaper } = Astro.props;
+const { entry, prevPaper, nextPaper, derivedConnections } = Astro.props;
 ---
 
-<PaperLayout entry={entry} prevPaper={prevPaper} nextPaper={nextPaper} />
+<PaperLayout
+  entry={entry}
+  prevPaper={prevPaper}
+  nextPaper={nextPaper}
+  derivedConnections={derivedConnections}
+/>

@@ -18,7 +18,7 @@ export interface RenderableConnection {
   title: string;
   palette: Palette;
   source: 'hand-authored' | 'generated';
-  dataTodo?: 'pending-route';
+  dataTodo?: string;
 }
 
 const keyFor = (kind: SiteReference['kind'], id: string): string => `${kind}:${id}`;
