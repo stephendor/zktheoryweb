@@ -73,6 +73,63 @@ describe('inspectVaultSource', () => {
     expect(entry.realPathDiffers).toBe(true);
     expect(entry.linkKind).toBe('junction-or-reparse-point');
   });
+
+  it('treats symbolic-link directory roots as available sources', () => {
+    const deps: SourceInventoryDeps = {
+      exists: () => true,
+      isDirectory: () => true,
+      isSymbolicLink: () => true,
+      realpath: () => 'C:/Users/steph/Documents/TDA-Research',
+      countMarkdownFiles: () => 3,
+    };
+
+    const entry = inspectVaultSource(
+      {
+        sourceId: 'tda-research',
+        sourceType: 'obsidian-vault',
+        label: 'TDA Research vault',
+        root: 'C:/Users/steph/TDL/vault-link',
+      },
+      deps,
+    );
+
+    expect(entry.available).toBe(true);
+    expect(entry.linkKind).toBe('symbolic-link');
+    expect(entry.markdownFiles).toBe(3);
+  });
+
+  it('records a warning when markdown counting throws', () => {
+    const deps: SourceInventoryDeps = {
+      exists: () => true,
+      isDirectory: () => true,
+      isSymbolicLink: () => false,
+      realpath: (path) => path,
+      countMarkdownFiles: () => {
+        throw new Error('EACCES: permission denied');
+      },
+    };
+
+    const entry = inspectVaultSource(
+      {
+        sourceId: 'tda-research',
+        sourceType: 'obsidian-vault',
+        label: 'TDA Research vault',
+        root: 'C:/Users/steph/TDL/vault',
+      },
+      deps,
+    );
+
+    expect(entry.available).toBe(true);
+    expect(entry.markdownFiles).toBe(0);
+    expect(entry.warnings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'markdown-count-failed',
+          sourceId: 'tda-research',
+        }),
+      ]),
+    );
+  });
 });
 
 describe('inspectVaultSources', () => {

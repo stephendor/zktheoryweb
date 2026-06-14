@@ -1,4 +1,4 @@
-import { existsSync, lstatSync, readdirSync, realpathSync } from 'node:fs';
+import { existsSync, lstatSync, readdirSync, realpathSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import type { ExportManifest } from '../contracts';
 
@@ -18,7 +18,12 @@ export interface SourceInventoryDeps {
   isDirectory(path: string): boolean;
   isSymbolicLink(path: string): boolean;
   realpath(path: string): string;
-  countMarkdownFiles(path: string): number;
+  countMarkdownFiles(path: string, sourceId: string): number | MarkdownCountResult;
+}
+
+export interface MarkdownCountResult {
+  count: number;
+  warnings: ManifestWarning[];
 }
 
 export interface SourceInventoryEntry {
@@ -42,9 +47,21 @@ export interface SourceInventoryReport {
   warnings: ManifestWarning[];
 }
 
+function warning(
+  code: string,
+  message: string,
+  sourceId: string,
+): ManifestWarning {
+  return { code, message, sourceId };
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 function defaultIsDirectory(path: string): boolean {
   try {
-    return lstatSync(path).isDirectory();
+    return statSync(path).isDirectory();
   } catch {
     return false;
   }
@@ -58,11 +75,26 @@ function defaultIsSymbolicLink(path: string): boolean {
   }
 }
 
-function countMarkdownFiles(root: string): number {
+function countMarkdownFiles(root: string, sourceId: string): MarkdownCountResult {
   let count = 0;
+  const warnings: ManifestWarning[] = [];
 
   function visit(directory: string): void {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    let entries;
+    try {
+      entries = readdirSync(directory, { withFileTypes: true });
+    } catch (error) {
+      warnings.push(
+        warning(
+          'markdown-directory-unreadable',
+          `Could not read markdown directory ${directory}: ${errorMessage(error)}`,
+          sourceId,
+        ),
+      );
+      return;
+    }
+
+    for (const entry of entries) {
       const path = join(directory, entry.name);
       if (entry.isDirectory()) {
         if (!['.git', '.obsidian', '.trash', 'node_modules'].includes(entry.name)) {
@@ -78,7 +110,7 @@ function countMarkdownFiles(root: string): number {
   }
 
   visit(root);
-  return count;
+  return { count, warnings };
 }
 
 const defaultDeps: SourceInventoryDeps = {
@@ -89,16 +121,12 @@ const defaultDeps: SourceInventoryDeps = {
   countMarkdownFiles,
 };
 
-function warning(
-  code: string,
-  message: string,
-  sourceId: string,
-): ManifestWarning {
-  return { code, message, sourceId };
-}
-
 function samePath(left: string, right: string): boolean {
   return left.replaceAll('\\', '/').toLowerCase() === right.replaceAll('\\', '/').toLowerCase();
+}
+
+function markdownCountFromResult(result: number | MarkdownCountResult): number {
+  return typeof result === 'number' ? result : result.count;
 }
 
 export function inspectVaultSource(
@@ -153,6 +181,23 @@ export function inspectVaultSource(
     );
   }
 
+  let markdownFiles = 0;
+  try {
+    const markdownCountResult = deps.countMarkdownFiles(config.root, config.sourceId);
+    markdownFiles = markdownCountFromResult(markdownCountResult);
+    if (typeof markdownCountResult !== 'number') {
+      warnings.push(...markdownCountResult.warnings);
+    }
+  } catch (error) {
+    warnings.push(
+      warning(
+        'markdown-count-failed',
+        `Could not count markdown files for ${config.root}: ${errorMessage(error)}`,
+        config.sourceId,
+      ),
+    );
+  }
+
   return {
     sourceId: config.sourceId,
     sourceType: config.sourceType,
@@ -164,7 +209,7 @@ export function inspectVaultSource(
     available: true,
     vaultMapPath,
     vaultMapFound,
-    markdownFiles: deps.countMarkdownFiles(config.root),
+    markdownFiles,
     warnings,
   };
 }
