@@ -8,19 +8,20 @@ type Phase3Warning = ExportManifest['warnings'][number];
 type Frontmatter = Record<string, unknown>;
 
 export interface TwoLensesEndpointMetadata {
-  path: string;
-  title?: string;
-  siteReference?: SiteReference;
+  note?: string;
+  path?: string;
+  sourceId?: string;
+  site?: SiteReference;
 }
 
 export interface TwoLensesMetadata {
-  id: string;
-  title: string;
-  status: 'confirmed' | 'draft';
-  mathematical: string | TwoLensesEndpointMetadata;
-  political: string | TwoLensesEndpointMetadata;
-  rationale: string;
-  websitePath: string;
+  id?: string;
+  title?: string;
+  status?: 'confirmed' | 'draft';
+  mathematical?: string | TwoLensesEndpointMetadata;
+  political?: string | TwoLensesEndpointMetadata;
+  websitePath?: string;
+  rationale?: string;
   concepts: string[];
 }
 
@@ -28,6 +29,7 @@ export interface ScannedVaultNote {
   sourceId: string;
   relativePath: string;
   title: string;
+  frontmatter: Frontmatter;
   citekeys: string[];
   siteReference?: SiteReference;
   twoLenses?: TwoLensesMetadata;
@@ -210,21 +212,23 @@ function parseEndpoint(value: unknown): string | TwoLensesEndpointMetadata | nul
     return null;
   }
 
+  const note = stringsFrom(metadata.note)[0];
   const path =
     stringsFrom(metadata.path)[0] ??
     stringsFrom(metadata.sourcePath)[0] ??
     stringsFrom(metadata.relativePath)[0];
-  if (!path) {
+  const sourceId = stringsFrom(metadata.sourceId)[0];
+  const site = parseSiteReference(metadata.site);
+
+  if (!note && !path && !sourceId && !site) {
     return null;
   }
 
-  const title = stringsFrom(metadata.title)[0];
-  const siteReference = parseSiteReference(metadata.site);
-
   return {
-    path,
-    ...(title ? { title } : {}),
-    ...(siteReference ? { siteReference } : {}),
+    ...(note ? { note } : {}),
+    ...(path ? { path } : {}),
+    ...(sourceId ? { sourceId } : {}),
+    ...(site ? { site } : {}),
   };
 }
 
@@ -245,26 +249,14 @@ function parseTwoLenses(frontmatter: Frontmatter): TwoLensesMetadata | null {
     stringsFrom(metadata['website-path'])[0] ?? stringsFrom(metadata.websitePath)[0];
   const concepts = stringsFrom(metadata.concepts);
 
-  if (
-    !id ||
-    !title ||
-    (status !== 'confirmed' && status !== 'draft') ||
-    !mathematical ||
-    !political ||
-    !rationale ||
-    !websitePath
-  ) {
-    return null;
-  }
-
   return {
-    id,
-    title,
-    status,
-    mathematical,
-    political,
-    rationale,
-    websitePath,
+    ...(id ? { id } : {}),
+    ...(title ? { title } : {}),
+    ...(status === 'confirmed' || status === 'draft' ? { status } : {}),
+    ...(mathematical ? { mathematical } : {}),
+    ...(political ? { political } : {}),
+    ...(websitePath ? { websitePath } : {}),
+    ...(rationale ? { rationale } : {}),
     concepts,
   };
 }
@@ -282,6 +274,7 @@ export function scanVaultNotes(options: ScanVaultOptions): ScanVaultResult {
       sourceId: options.sourceId,
       relativePath: relativeSourcePath(options.root, filePath),
       title: titleFrom(frontmatter, body, filePath),
+      frontmatter,
       citekeys: collectCitekeys(frontmatter, body),
       ...(siteReference ? { siteReference } : {}),
       ...(twoLenses ? { twoLenses } : {}),

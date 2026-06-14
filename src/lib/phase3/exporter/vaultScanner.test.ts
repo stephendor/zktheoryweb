@@ -76,6 +76,71 @@ This note cites @carlsson2009topology and @bauer2021ripser.
     expect(result.notes[0]?.title).toBe('Shape Difference');
   });
 
+  it('keeps parsed frontmatter on scanned notes', () => {
+    const root = tempRoot();
+    write(root, 'note.md', '---\ntitle: Frontmatter Title\ncustom: value\n---\nBody');
+
+    const result = scanVaultNotes({ root, sourceId: 'tda-research' });
+
+    expect(result.notes[0]?.frontmatter).toMatchObject({
+      title: 'Frontmatter Title',
+      custom: 'value',
+    });
+  });
+
+  it('preserves endpoint metadata with note source id and parsed site reference', () => {
+    const root = tempRoot();
+    write(
+      root,
+      'note.md',
+      `---
+title: Bridge
+two-lenses:
+  mathematical:
+    note: "04-Methods/Persistent-Homology.md"
+    sourceId: "tda-research"
+    site:
+      kind: "method"
+      id: "persistent-homology"
+      status: "resolved"
+      label: "Method"
+      title: "Persistent Homology"
+  political: "sections/Ethics.md"
+---
+Body`,
+    );
+
+    const result = scanVaultNotes({ root, sourceId: 'tda-research' });
+
+    expect(result.notes[0]?.twoLenses?.mathematical).toMatchObject({
+      note: '04-Methods/Persistent-Homology.md',
+      sourceId: 'tda-research',
+      site: { kind: 'method', id: 'persistent-homology' },
+    });
+    expect(result.notes[0]?.twoLenses?.mathematical).not.toHaveProperty('siteReference');
+  });
+
+  it('returns incomplete two lenses metadata for downstream warnings', () => {
+    const root = tempRoot();
+    write(
+      root,
+      'note.md',
+      `---
+title: Bridge
+two-lenses:
+  mathematical: "04-Methods/Persistent-Homology.md"
+---
+Body`,
+    );
+
+    const result = scanVaultNotes({ root, sourceId: 'tda-research' });
+
+    expect(result.notes[0]?.twoLenses).toMatchObject({
+      mathematical: '04-Methods/Persistent-Homology.md',
+      concepts: [],
+    });
+  });
+
   it('skips non-content directories', () => {
     const root = tempRoot();
     write(root, '.obsidian/workspace.md', '# Ignore\n');
