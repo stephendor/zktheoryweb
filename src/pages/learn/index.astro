@@ -7,7 +7,10 @@
  * Progress bar state is visual-only; Task 4.2 will wire real data.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
+import TwoLensesLinks from '@components/phase3/TwoLensesLinks.astro';
 import PathProgressBar from '@components/learn/PathProgressBar';
+import { loadPhase3RenderingData } from '@lib/phase3/renderingData';
+import { confirmedTwoLensesLinks } from '@lib/phase3/twoLensesRendering';
 
 interface PathCard {
   slug: string;
@@ -57,6 +60,9 @@ const paths: PathCard[] = [
     available: false,
   },
 ];
+
+const phase3Data = loadPhase3RenderingData();
+const twoLensesLinks = confirmedTwoLensesLinks(phase3Data);
 ---
 
 <BaseLayout
@@ -126,6 +132,8 @@ const paths: PathCard[] = [
         })}
       </ul>
     </section>
+
+    <TwoLensesLinks links={twoLensesLinks} />
 
     <section aria-label="Learning resources" class="learn-hub__resources">
       <h2 class="learn-hub__resources-heading">Resources</h2>

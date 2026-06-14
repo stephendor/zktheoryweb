@@ -38,6 +38,8 @@ import { FiltrationPlayground } from '@components/interactives/FiltrationPlaygro
 import { BenefitTaperCalculator } from '@components/interactives/BenefitTaperCalculator';
 import { TDAResultsExplorer, type PresetId, VALID_PRESET_IDS, DEFAULT_PRESET_ID } from '@components/interactives/TDAResultsExplorer';
 import { pathNumberToSlug } from '@data/learnPaths';
+import { renderableDerivedConnectionGroup } from '@lib/phase3/pageConnections';
+import type { DerivedConnection } from '@lib/phase3/contracts';
 
 interface ModuleRef {
   slug: string;
@@ -55,9 +57,16 @@ interface Props {
   prevModule?: ModuleRef;
   nextModule?: ModuleRef;
   pathModules?: PathModuleRef[];
+  derivedConnections?: DerivedConnection[];
 }
 
-const { entry, prevModule, nextModule, pathModules = [] } = Astro.props;
+const {
+  entry,
+  prevModule,
+  nextModule,
+  pathModules = [],
+  derivedConnections = [],
+} = Astro.props;
 const {
   title,
   path,
@@ -101,6 +110,17 @@ function moduleEntryIdToHref(entryId: string): string {
 function isPresetId(id: string | undefined): id is PresetId {
   return VALID_PRESET_IDS.includes(id as PresetId);
 }
+
+const moduleDerivedConnectionGroup =
+  renderableDerivedConnectionGroup(derivedConnections);
+const moduleDerivedConnections = moduleDerivedConnectionGroup?.connections ?? [];
+const hasHandAuthoredModuleConnections =
+  connections.chapters.length > 0 ||
+  connections.papers.length > 0 ||
+  connections.modules.length > 0 ||
+  connections.methods.length > 0;
+const hasModuleConnections =
+  hasHandAuthoredModuleConnections || moduleDerivedConnections.length > 0;
 ---
 
 <BaseLayout title={title} description={core_concept} section="learn">
@@ -259,8 +279,7 @@ function isPresetId(id: string | undefined): id is PresetId {
           <StickyToC headings={headings} section="learn" />
 
           {/* ── Connections ── */}
-          {(connections.chapters.length > 0 || connections.papers.length > 0 ||
-            connections.modules.length > 0 || connections.methods.length > 0) && (
+          {hasModuleConnections && (
             <div class="connections-panel">
               <hr class="sidebar-divider" aria-hidden="true" />
               <h2 class="connections-heading">Related</h2>
@@ -331,6 +350,34 @@ function isPresetId(id: string | undefined): id is PresetId {
                         >
                           {slug}
                         </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {moduleDerivedConnections.length > 0 && (
+                <div class="connections-group">
+                  <h3 class="connections-group-label">Derived</h3>
+                  <ul class="connections-list">
+                    {moduleDerivedConnections.map((connection) => (
+                      <li>
+                        {connection.href ? (
+                          <a
+                            href={connection.href}
+                            class="connections-link"
+                            data-todo={connection.dataTodo}
+                          >
+                            {connection.label}: {connection.title}
+                          </a>
+                        ) : (
+                          <span
+                            class="connections-link connections-link--unavailable"
+                            data-todo={connection.dataTodo}
+                          >
+                            {connection.label}: {connection.title}
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -592,6 +639,11 @@ function isPresetId(id: string | undefined): id is PresetId {
     outline: 2px solid var(--color-tda-teal);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
+  }
+
+  .connections-link--unavailable {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   /* ══ Progress strip ══════════════════════════════════════════════════════ */
