@@ -156,8 +156,17 @@ export function boundedNumberOption(
   return value;
 }
 
+// Windows and macOS use case-insensitive filesystems by default; Linux does
+// not. Lowercasing unconditionally made the source-root guard treat distinct
+// paths that differ only in case (e.g. /vaults/TDA vs /vaults/tda) as the same
+// directory on Linux, producing both false blocks and false passes. Fold case
+// only on the platforms where the filesystem itself does.
+const caseInsensitiveFilesystem =
+  process.platform === 'win32' || process.platform === 'darwin';
+
 function normalizedAbsolutePath(path: string): string {
-  return resolve(path).replaceAll('\\', '/').toLowerCase();
+  const normalized = resolve(path).replaceAll('\\', '/');
+  return caseInsensitiveFilesystem ? normalized.toLowerCase() : normalized;
 }
 
 function isSameOrInside(path: string, root: string): boolean {
@@ -182,6 +191,13 @@ function realpathIfExists(path: string): string | null {
   }
 }
 
+// Resolves the real path of the deepest existing ancestor and re-attaches the
+// not-yet-created tail segments literally. Segments that do not exist yet cannot
+// be symlink-resolved here; if one is later created as a symlink into a source
+// root, this projection won't see it. That residual gap is a check-then-write
+// TOCTOU which a pre-write path check cannot close — in normal operation the
+// writer creates those segments as real directories via mkdirSync, so they
+// match this projection.
 function projectedRealOutputPath(path: string): string | null {
   let current = resolve(path);
   const missingSegments: string[] = [];

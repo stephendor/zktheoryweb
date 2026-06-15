@@ -76,6 +76,22 @@ This note cites @carlsson2009topology and @bauer2021ripser.
     expect(result.notes[0]?.title).toBe('Shape Difference');
   });
 
+  it('records a warning instead of throwing when a directory cannot be read', () => {
+    const missingRoot = join(tempRoot(), 'does-not-exist');
+
+    const result = scanVaultNotes({ root: missingRoot, sourceId: 'tda-research' });
+
+    expect(result.notes).toEqual([]);
+    expect(result.warnings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'markdown-directory-unreadable',
+          sourceId: 'tda-research',
+        }),
+      ]),
+    );
+  });
+
   it('keeps parsed frontmatter on scanned notes', () => {
     const root = tempRoot();
     write(root, 'note.md', '---\ntitle: Frontmatter Title\ncustom: value\n---\nBody');
