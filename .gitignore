@@ -31,3 +31,8 @@ test-results/
 
 # Content source — local reference files, not committed
 content-source/
+
+# Phase 3 pipeline — transient working outputs (the promoted
+# src/data/generated/phase3/site-connections.json IS committed; these are not)
+reports/phase3/
+src/data/generated/phase3/candidates/
