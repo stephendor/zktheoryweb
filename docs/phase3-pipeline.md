@@ -25,20 +25,39 @@ either environment variables or CLI flags (flags win over env vars):
 | Counting Lives | `PHASE3_COUNTING_LIVES_VAULT` | `--counting-lives-vault <path>` |
 
 ```bash
-# Example (bash): set once per shell
-export PHASE3_TDA_VAULT="/c/Users/you/TDL/TDA-Research"
-export PHASE3_COUNTING_LIVES_VAULT="/c/Users/you/TDL/Counting Lives"
+# Example (bash / Git Bash): set once per shell
+export PHASE3_TDA_VAULT="/c/Users/steph/Documents/TDA-Research"
+export PHASE3_COUNTING_LIVES_VAULT="/c/Users/steph/Documents/Counting Lives/Counting Lives"
 ```
 
 ```powershell
 # Example (PowerShell)
-$env:PHASE3_TDA_VAULT = "C:/Users/you/TDL/TDA-Research"
-$env:PHASE3_COUNTING_LIVES_VAULT = "C:/Users/you/TDL/Counting Lives"
+$env:PHASE3_TDA_VAULT = "C:/Users/steph/Documents/TDA-Research"
+$env:PHASE3_COUNTING_LIVES_VAULT = "C:/Users/steph/Documents/Counting Lives/Counting Lives"
 ```
 
 **Passing flags through npm:** use `--` to forward arguments to the script, e.g.
 `npm run phase3:export:candidate -- --tda-vault "C:/path" --out custom.json`.
 Flag values accept `--key value` or `--key=value`. There are no short flags.
+
+### What drives output: the `site:` / `two-lenses:` frontmatter
+
+The pipeline only produces connections for notes that carry the metadata
+contract in their frontmatter:
+
+- **`site:`** — maps a note to a website route (`kind` + `id`, e.g. a `method`
+  or `chapter`). The cross-vault linker only proposes links between notes that
+  both have a `site:` reference, and the exporter only emits derived connections
+  for such notes.
+- **`two-lenses:`** — the explicit mathematical/political pairing the export uses
+  for the "Two Lenses" feature; only `status: confirmed` entries are exported.
+
+A vault full of notes with citations, tags, and concepts but **no `site:`
+references will produce an empty (but valid) export** — the tools run cleanly
+and report `0 two-lenses, 0 derived connections` / `0 proposals`. Instrumenting
+notes with `site:` frontmatter is the prerequisite for any output. See the
+contract in `src/lib/phase3/contracts.ts` and the vault scanner in
+`src/lib/phase3/exporter/vaultScanner.ts`.
 
 ---
 
@@ -141,8 +160,8 @@ code or generated data.
 ## End-to-end example
 
 ```bash
-export PHASE3_TDA_VAULT="/path/to/TDA-Research"
-export PHASE3_COUNTING_LIVES_VAULT="/path/to/Counting Lives"
+export PHASE3_TDA_VAULT="/c/Users/steph/Documents/TDA-Research"
+export PHASE3_COUNTING_LIVES_VAULT="/c/Users/steph/Documents/Counting Lives/Counting Lives"
 
 npm run phase3:inventory          # 1. confirm both vaults are reachable
 npm run phase3:export:candidate   # 2. build candidate + feedback report
@@ -211,3 +230,13 @@ The tools refuse a few dangerous writes:
 - **A vault note can't be read mid-scan** — the scanner now records a
   `markdown-file-unreadable` / `markdown-directory-unreadable` warning and keeps
   going; check the warnings array in the inventory/feedback output.
+- **`frontmatter-parse-error` warnings** — a note has invalid YAML frontmatter
+  (e.g. an unquoted value containing a `:` like `topic: Ch05 – …: draft`, or
+  mismatched quotes). The scanner skips that note's frontmatter and continues;
+  the note simply contributes no metadata until the YAML is fixed.
+- **`Keys with collection values will be stringified …` (stderr)** — a noisy but
+  non-fatal warning from the YAML library for unusual frontmatter key shapes.
+  Parsing still succeeds; safe to ignore.
+- **Everything runs but output is `0 two-lenses / 0 proposals`** — expected when
+  no vault note carries a `site:` reference yet. This is the most common
+  "nothing happened" case; see [What drives output](#what-drives-output-the-site--two-lenses-frontmatter).
