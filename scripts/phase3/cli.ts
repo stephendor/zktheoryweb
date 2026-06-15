@@ -1,5 +1,5 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { existsSync, mkdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
 import { resolve } from 'node:path';
 
 export type ParsedPhase3Args = Record<string, string | boolean>;
@@ -116,8 +116,91 @@ export function stringOption(args: ParsedPhase3Args, key: string, fallback: stri
   return fallback;
 }
 
+export function numberOption(
+  args: ParsedPhase3Args,
+  key: string,
+  fallback: number
+): number {
+  const rawValue = stringOption(args, key, String(fallback));
+  const value = Number(rawValue);
+
+  if (!Number.isFinite(value)) {
+    throw new Error(`Option --${key} must be a finite number.`);
+  }
+
+  return value;
+}
+
+export interface NumberOptionBounds {
+  min?: number;
+  max?: number;
+}
+
+export function boundedNumberOption(
+  args: ParsedPhase3Args,
+  key: string,
+  fallback: number,
+  bounds: NumberOptionBounds
+): number {
+  const value = numberOption(args, key, fallback);
+
+  if (bounds.min !== undefined && value < bounds.min) {
+    throw new Error(`Option --${key} must be greater than or equal to ${bounds.min}.`);
+  }
+
+  if (bounds.max !== undefined && value > bounds.max) {
+    throw new Error(`Option --${key} must be less than or equal to ${bounds.max}.`);
+  }
+
+  return value;
+}
+
 function normalizedAbsolutePath(path: string): string {
   return resolve(path).replaceAll('\\', '/').toLowerCase();
+}
+
+function isSameOrInside(path: string, root: string): boolean {
+  const normalizedPath = normalizedAbsolutePath(path);
+  const normalizedRoot = normalizedAbsolutePath(root);
+
+  return (
+    normalizedPath === normalizedRoot ||
+    normalizedPath.startsWith(`${normalizedRoot.replace(/\/+$/, '')}/`)
+  );
+}
+
+function realpathIfExists(path: string): string | null {
+  if (!existsSync(path)) {
+    return null;
+  }
+
+  try {
+    return realpathSync.native(path);
+  } catch {
+    return null;
+  }
+}
+
+function projectedRealOutputPath(path: string): string | null {
+  let current = resolve(path);
+  const missingSegments: string[] = [];
+
+  while (!existsSync(current)) {
+    const parent = dirname(current);
+    if (parent === current) {
+      return null;
+    }
+
+    missingSegments.unshift(basename(current));
+    current = parent;
+  }
+
+  const realAncestor = realpathIfExists(current);
+  if (!realAncestor) {
+    return null;
+  }
+
+  return missingSegments.length > 0 ? join(realAncestor, ...missingSegments) : realAncestor;
 }
 
 export function assertNotPromotedOutputPath(
@@ -132,7 +215,10 @@ export function assertNotPromotedOutputPath(
 }
 
 export function assertOutsideSourceRoots(outputPath: string, roots: string[]): void {
-  const normalizedOutputPath = normalizedAbsolutePath(outputPath);
+  const outputPaths = [
+    outputPath,
+    projectedRealOutputPath(outputPath),
+  ].filter((path): path is string => Boolean(path));
 
   for (const root of roots) {
     const trimmedRoot = root.trim();
@@ -140,14 +226,17 @@ export function assertOutsideSourceRoots(outputPath: string, roots: string[]): v
       continue;
     }
 
-    const normalizedRoot = normalizedAbsolutePath(trimmedRoot);
-    if (
-      normalizedOutputPath === normalizedRoot ||
-      normalizedOutputPath.startsWith(`${normalizedRoot}/`)
-    ) {
-      throw new Error(
-        `Refusing to write Phase 3 linker output inside a source root: ${outputPath}`
-      );
+    const rootPaths = [
+      trimmedRoot,
+      realpathIfExists(trimmedRoot),
+    ].filter((path): path is string => Boolean(path));
+
+    for (const candidateOutputPath of outputPaths) {
+      if (rootPaths.some((rootPath) => isSameOrInside(candidateOutputPath, rootPath))) {
+        throw new Error(
+          `Refusing to write Phase 3 linker output inside a source root: ${outputPath}`
+        );
+      }
     }
   }
 }

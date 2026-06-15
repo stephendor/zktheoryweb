@@ -1,12 +1,14 @@
-import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   assertOutsideSourceRoots,
   assertNotPromotedOutputPath,
+  boundedNumberOption,
   defaultLinkerMetadataCandidatesPath,
   defaultLinkerReportPath,
+  numberOption,
   optionFromArgsOrEnv,
   parsePhase3Args,
   requiredOption,
@@ -16,6 +18,20 @@ import {
 
 function tempRoot(): string {
   return mkdtempSync(join(tmpdir(), 'phase3-cli-'));
+}
+
+function mkdir(path: string): string {
+  mkdirSync(path, { recursive: true });
+  return path;
+}
+
+function createDirectoryLink(target: string, linkPath: string): boolean {
+  try {
+    symlinkSync(target, linkPath, process.platform === 'win32' ? 'junction' : 'dir');
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 describe('parsePhase3Args', () => {
@@ -95,6 +111,44 @@ describe('stringOption', () => {
   });
 });
 
+describe('numberOption', () => {
+  it('parses finite numeric options', () => {
+    expect(numberOption({ 'min-score': '0.75' }, 'min-score', 0.5)).toBe(0.75);
+  });
+
+  it('rejects non-finite numeric options', () => {
+    expect(() => numberOption({ 'min-score': 'Infinity' }, 'min-score', 0.5)).toThrow(
+      'Option --min-score must be a finite number.'
+    );
+  });
+});
+
+describe('boundedNumberOption', () => {
+  it('accepts values within the supplied range', () => {
+    expect(
+      boundedNumberOption({ 'min-score': '1' }, 'min-score', 0.5, { min: 0, max: 1 })
+    ).toBe(1);
+  });
+
+  it('rejects values below the supplied range', () => {
+    expect(() =>
+      boundedNumberOption({ 'min-score': '-0.01' }, 'min-score', 0.5, {
+        min: 0,
+        max: 1,
+      })
+    ).toThrow('Option --min-score must be greater than or equal to 0.');
+  });
+
+  it('rejects values above the supplied range', () => {
+    expect(() =>
+      boundedNumberOption({ 'min-score': '1.01' }, 'min-score', 0.5, {
+        min: 0,
+        max: 1,
+      })
+    ).toThrow('Option --min-score must be less than or equal to 1.');
+  });
+});
+
 describe('assertNotPromotedOutputPath', () => {
   it('rejects the promoted public JSON path', () => {
     const promotedPath = resolve('src/data/generated/phase3/site-connections.json');
@@ -124,12 +178,50 @@ describe('linker defaults and output guards', () => {
     );
   });
 
+  it('rejects linker output equal to a source root', () => {
+    const root = resolve('vaults/tda');
+
+    expect(() => assertOutsideSourceRoots(root, [root])).toThrow(
+      'Refusing to write Phase 3 linker output inside a source root'
+    );
+  });
+
   it('allows linker output beside a source root', () => {
     const parent = tempRoot();
     const root = join(parent, 'vault');
     const outputPath = join(parent, 'reports', 'cross-vault-linker.report.json');
 
     expect(() => assertOutsideSourceRoots(outputPath, [root])).not.toThrow();
+  });
+
+  it('rejects output inside the real path of a linked source root when links are available', () => {
+    const parent = tempRoot();
+    const realRoot = mkdir(join(parent, 'real-vault'));
+    const linkedRoot = join(parent, 'linked-vault');
+
+    if (!createDirectoryLink(realRoot, linkedRoot)) {
+      expect(existsSync(linkedRoot)).toBe(false);
+      return;
+    }
+
+    expect(() =>
+      assertOutsideSourceRoots(join(realRoot, 'reports', 'linker.json'), [linkedRoot])
+    ).toThrow('Refusing to write Phase 3 linker output inside a source root');
+  });
+
+  it('rejects output whose existing linked ancestor resolves inside a source root', () => {
+    const parent = tempRoot();
+    const realRoot = mkdir(join(parent, 'real-vault'));
+    const linkedRoot = join(parent, 'linked-vault');
+
+    if (!createDirectoryLink(realRoot, linkedRoot)) {
+      expect(existsSync(linkedRoot)).toBe(false);
+      return;
+    }
+
+    expect(() =>
+      assertOutsideSourceRoots(join(linkedRoot, 'new-reports', 'linker.json'), [realRoot])
+    ).toThrow('Refusing to write Phase 3 linker output inside a source root');
   });
 });
 

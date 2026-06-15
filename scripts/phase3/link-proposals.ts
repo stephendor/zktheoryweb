@@ -3,8 +3,10 @@ import { dirname } from 'node:path';
 import {
   assertNotPromotedOutputPath,
   assertOutsideSourceRoots,
+  boundedNumberOption,
   defaultLinkerMetadataCandidatesPath,
   defaultLinkerReportPath,
+  numberOption,
   parsePhase3Args,
   requiredOption,
   stringOption,
@@ -18,21 +20,6 @@ import { scanVaultNotes, type ScanVaultResult } from '../../src/lib/phase3/expor
 import { buildCrossVaultLinkerReport } from '../../src/lib/phase3/linker/proposalBuilder';
 import { renderMetadataCandidatesMarkdown } from '../../src/lib/phase3/linker/metadataCandidates';
 import type { MetadataCandidateStatus } from '../../src/lib/phase3/linker/contracts';
-
-function numberOption(
-  args: ReturnType<typeof parsePhase3Args>,
-  key: string,
-  fallback: number
-): number {
-  const rawValue = stringOption(args, key, String(fallback));
-  const value = Number(rawValue);
-
-  if (!Number.isFinite(value)) {
-    throw new Error(`Option --${key} must be a finite number.`);
-  }
-
-  return value;
-}
 
 function maxProposalsOption(args: ReturnType<typeof parsePhase3Args>): number {
   const value = numberOption(args, 'max-proposals', 50);
@@ -70,7 +57,7 @@ const metadataCandidatesPath = stringOption(
   'metadata-candidates',
   defaultLinkerMetadataCandidatesPath
 );
-const minScore = numberOption(args, 'min-score', 0.5);
+const minScore = boundedNumberOption(args, 'min-score', 0.5, { min: 0, max: 1 });
 const maxProposals = maxProposalsOption(args);
 const candidateStatus = candidateStatusOption(args);
 
@@ -95,16 +82,21 @@ const sources: VaultSourceConfig[] = [
 ];
 
 const inventory = inspectVaultSources(sources);
-const scans: ScanVaultResult[] = inventory.sources.map((source) =>
-  source.available
+const scans: ScanVaultResult[] = inventory.sources.map((source) => {
+  const scan = source.available
     ? scanVaultNotes({ root: source.localPath, sourceId: source.sourceId })
     : {
         sourceId: source.sourceId,
         root: source.localPath,
         notes: [],
         warnings: [],
-      }
-);
+      };
+
+  return {
+    ...scan,
+    warnings: [...source.warnings, ...scan.warnings],
+  };
+});
 const report = buildCrossVaultLinkerReport({
   scans,
   minScore,
