@@ -147,6 +147,18 @@ function buildProposal(
   };
 }
 
+function pathPairKey(proposal: LinkProposal): string {
+  return `${proposal.mathematical.path}\u0000${proposal.political.path}`;
+}
+
+function proposalIsBetter(candidate: LinkProposal, current: LinkProposal): boolean {
+  if (candidate.score !== current.score) {
+    return candidate.score > current.score;
+  }
+
+  return pathPairKey(candidate) < pathPairKey(current);
+}
+
 export function buildCrossVaultLinkerReport(
   options: BuildCrossVaultLinkerReportOptions,
 ): CrossVaultLinkerReport {
@@ -156,7 +168,7 @@ export function buildCrossVaultLinkerReport(
   const candidateStatus = options.candidateStatus ?? 'draft';
   const tdaNotes = notesForSource(options.scans, tdaSourceId);
   const countingLivesNotes = notesForSource(options.scans, countingLivesSourceId);
-  const proposals: LinkProposal[] = [];
+  const proposalsById = new Map<string, LinkProposal>();
   let scoredPairs = 0;
 
   for (const tdaNote of tdaNotes) {
@@ -169,11 +181,15 @@ export function buildCrossVaultLinkerReport(
         continue;
       }
 
-      proposals.push(buildProposal(tdaNote, politicalNote, score, evidence, candidateStatus));
+      const proposal = buildProposal(tdaNote, politicalNote, score, evidence, candidateStatus);
+      const current = proposalsById.get(proposal.id);
+      if (!current || proposalIsBetter(proposal, current)) {
+        proposalsById.set(proposal.id, proposal);
+      }
     }
   }
 
-  const sortedProposals = proposals
+  const sortedProposals = [...proposalsById.values()]
     .sort((left, right) => right.score - left.score || left.id.localeCompare(right.id))
     .slice(0, maxProposals);
   const bandCounts = sortedProposals.reduce(

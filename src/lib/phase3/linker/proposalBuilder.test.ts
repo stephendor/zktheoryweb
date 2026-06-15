@@ -193,6 +193,68 @@ describe('buildCrossVaultLinkerReport', () => {
     expect(report.proposals[0]?.metadataCandidate.status).toBe('confirmed');
   });
 
+  it('dedupes proposal IDs and keeps the strongest proposal', () => {
+    const sharedMethod = siteReference({
+      kind: 'method',
+      id: 'persistent-homology',
+      label: 'Method',
+      title: 'Persistent Homology',
+    });
+    const sharedChapter = siteReference({
+      kind: 'chapter',
+      id: 'ch-17',
+      label: 'Chapter 17',
+      title: 'Chapter 17',
+    });
+    const weakerTda = note({
+      sourceId: 'tda-research',
+      relativePath: 'methods/a-weaker.md',
+      title: 'Weaker Persistent Homology Note',
+      citekeys: ['sen1976'],
+      frontmatter: {},
+      siteReference: sharedMethod,
+    });
+    const strongerTda = note({
+      sourceId: 'tda-research',
+      relativePath: 'methods/z-stronger.md',
+      title: 'Stronger Persistent Homology Note',
+      citekeys: ['sen1976'],
+      frontmatter: { concepts: ['measurement'] },
+      siteReference: sharedMethod,
+    });
+    const political = note({
+      sourceId: 'counting-lives',
+      relativePath: 'chapters/ch-17.md',
+      title: 'Chapter 17',
+      citekeys: ['sen1976'],
+      frontmatter: { concepts: ['measurement'] },
+      siteReference: sharedChapter,
+    });
+
+    const report = buildCrossVaultLinkerReport({
+      scans: [
+        scan('tda-research', [weakerTda, strongerTda]),
+        scan('counting-lives', [political]),
+      ],
+      generatedAt,
+    });
+
+    expect(report.summary.scoredPairs).toBe(2);
+    expect(report.summary.proposals).toBe(1);
+    expect(report.summary.strong).toBe(1);
+    expect(report.proposals).toHaveLength(1);
+    expect(report.proposals[0]).toMatchObject({
+      id: 'link-method-persistent-homology-chapter-ch-17',
+      score: 0.8,
+      mathematical: { path: 'methods/z-stronger.md' },
+      metadataCandidate: {
+        id: 'link-method-persistent-homology-chapter-ch-17',
+        websitePath: '/writing/essays/two-lenses/link-method-persistent-homology-chapter-ch-17',
+        mathematical: { path: 'methods/z-stronger.md' },
+      },
+    });
+  });
+
   it('does not propose notes without siteReference', () => {
     const tdaWithoutSite = note({
       citekeys: ['sen1976'],
