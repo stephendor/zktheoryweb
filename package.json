@@ -17,6 +17,12 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
     "fetch:zotero": "npx tsx src/lib/zotero.ts",
+    "phase3:inventory": "tsx scripts/phase3/source-inventory.ts",
+    "phase3:export:candidate": "tsx scripts/phase3/export-candidate.ts",
+    "phase3:link:propose": "tsx scripts/phase3/link-proposals.ts",
+    "phase3:promote": "tsx scripts/phase3/promote.ts",
+    "validate:phase3": "tsx scripts/validate-phase3-data.ts",
+    "verify:phase3": "npm run validate:phase3 && npm run test -- src/lib/phase3 && npm run check",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -46,6 +52,7 @@
     "tailwindcss": "^4.2.2",
     "three": "^0.183.2",
     "typescript": "^5.9.3",
+    "yaml": "^2.8.3",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -71,7 +78,7 @@
     "vitest": "^4.1.2"
   },
   "overrides": {
-    "yaml": ">=2.8.3",
+    "yaml": "$yaml",
     "vite": ">=8.0.5"
   }
 }

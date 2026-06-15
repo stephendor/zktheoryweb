@@ -14,9 +14,13 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import ModuleLayout from '@layouts/ModuleLayout.astro';
+import { loadPhase3RenderingData } from '@lib/phase3/renderingData';
+import { derivedConnectionsForSource } from '@lib/phase3/pageConnections';
+import type { DerivedConnection } from '@lib/phase3/contracts';
 
 export async function getStaticPaths() {
   const allModules = await getCollection('learn-modules');
+  const phase3Data = loadPhase3RenderingData();
 
   // Group entries by path slug, then sort each group by module_number.
   const byPath = new Map<string, CollectionEntry<'learn-modules'>[]>();
@@ -55,10 +59,14 @@ export async function getStaticPaths() {
     const nextModule = nextEntry
       ? { slug: nextEntry.id, title: nextEntry.data.title }
       : undefined;
+    const derivedConnections = derivedConnectionsForSource(phase3Data, {
+      kind: 'learn-module',
+      id: entry.id,
+    });
 
     return {
       params: { path: pathSlug, module: String(moduleNum) },
-      props: { entry, pathModules, prevModule, nextModule },
+      props: { entry, pathModules, prevModule, nextModule, derivedConnections },
     };
   });
 }
@@ -68,9 +76,11 @@ interface Props {
   pathModules: Array<{ slug: string; title: string; status: string }>;
   prevModule?: { slug: string; title: string };
   nextModule?: { slug: string; title: string };
+  derivedConnections?: DerivedConnection[];
 }
 
-const { entry, pathModules, prevModule, nextModule } = Astro.props;
+const { entry, pathModules, prevModule, nextModule, derivedConnections } =
+  Astro.props;
 ---
 
 <ModuleLayout
@@ -78,4 +88,5 @@ const { entry, pathModules, prevModule, nextModule } = Astro.props;
   pathModules={pathModules}
   prevModule={prevModule}
   nextModule={nextModule}
+  derivedConnections={derivedConnections}
 />

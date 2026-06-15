@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-06-13T12:20:00.000Z",
+    "exporter": { "name": "manual-fixture", "version": "1.0.0" },
+    "sources": [
+      {
+        "sourceId": "manual-fixture",
+        "sourceType": "manual-fixture",
+        "label": "Manual broken reference fixture"
+      }
+    ],
+    "warnings": []
+  },
+  "twoLenses": [],
+  "derivedConnections": [
+    {
+      "id": "ch17-paper99-broken-reference",
+      "source": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "target": {
+        "kind": "paper",
+        "id": "paper-99",
+        "status": "resolved",
+        "label": "Paper 99",
+        "title": "Missing Paper Reference"
+      },
+      "connectionType": "chapter-related-paper",
+      "confidence": "confirmed",
+      "rationale": "This fixture deliberately points at a structurally valid but unresolved paper route for later semantic validation.",
+      "origin": "manual-fixture"
+    }
+  ],
+  "learningPaths": []
+}

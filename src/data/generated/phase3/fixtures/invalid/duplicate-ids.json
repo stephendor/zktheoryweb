@@ -1,0 +1,67 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-06-13T12:25:00.000Z",
+    "exporter": { "name": "manual-fixture", "version": "1.0.0" },
+    "sources": [
+      {
+        "sourceId": "manual-fixture",
+        "sourceType": "manual-fixture",
+        "label": "Manual duplicate IDs fixture"
+      }
+    ],
+    "warnings": []
+  },
+  "twoLenses": [
+    {
+      "id": "duplicate-two-lenses",
+      "title": "Duplicate Link A",
+      "status": "confirmed",
+      "mathematical": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "political": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "rationale": "This first entry is structurally valid but shares its ID with another fixture entry.",
+      "websitePath": "/learn/duplicate-link-a/",
+      "concepts": ["fairness"],
+      "sourceNoteRefs": [],
+      "zoteroKeys": []
+    },
+    {
+      "id": "duplicate-two-lenses",
+      "title": "Duplicate Link B",
+      "status": "confirmed",
+      "mathematical": {
+        "kind": "paper",
+        "id": "paper-10",
+        "status": "resolved",
+        "label": "Paper 10",
+        "title": "Topological Fairness Analysis"
+      },
+      "political": {
+        "kind": "chapter",
+        "id": "ch-17",
+        "status": "resolved",
+        "label": "Chapter 17",
+        "title": "Toward an Ethics of Measurement"
+      },
+      "rationale": "This second entry deliberately duplicates the two-lenses ID for later semantic validation.",
+      "websitePath": "/learn/duplicate-link-b/",
+      "concepts": ["measurement ethics"],
+      "sourceNoteRefs": [],
+      "zoteroKeys": []
+    }
+  ],
+  "derivedConnections": [],
+  "learningPaths": []
+}

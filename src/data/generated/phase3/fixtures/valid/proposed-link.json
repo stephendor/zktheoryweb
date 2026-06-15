@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-06-13T12:10:00.000Z",
+    "exporter": { "name": "manual-fixture", "version": "1.0.0" },
+    "sources": [
+      {
+        "sourceId": "cross-vault-linker",
+        "sourceType": "manual-fixture",
+        "label": "Cross-vault linker fixture"
+      }
+    ],
+    "warnings": []
+  },
+  "twoLenses": [],
+  "derivedConnections": [
+    {
+      "id": "mm3-logistic-regression-persistent-homology",
+      "source": {
+        "kind": "interlude",
+        "id": "mm3-logistic-regression",
+        "status": "resolved",
+        "label": "MM3",
+        "title": "Logistic Regression"
+      },
+      "target": {
+        "kind": "method",
+        "id": "persistent-homology",
+        "status": "resolved",
+        "label": "Persistent Homology",
+        "title": "Persistent Homology"
+      },
+      "connectionType": "method-used",
+      "confidence": "proposed",
+      "rationale": "The cross-vault linker proposed that the logistic regression interlude should point readers toward persistent homology as the adjacent topological method.",
+      "origin": "cross-vault-linker"
+    }
+  ],
+  "learningPaths": []
+}

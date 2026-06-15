@@ -130,7 +130,7 @@ function BandGroup({ band, xScale, rowIndex, fillColour, isActive, onActivate, o
    *   Enter (first press) — open annotation panel (prevent default navigation).
    *   Enter (second press, when already active) or Escape — navigate to detail page.
    */
-  const handleKeyDown = (e: React.KeyboardEvent<SVGAElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>) => {
     if (e.key === 'Enter') {
       if (!isActive) {
         // First Enter: open annotation; do NOT follow link yet.

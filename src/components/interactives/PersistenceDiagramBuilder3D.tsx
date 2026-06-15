@@ -1114,7 +1114,10 @@ export function PersistenceDiagramBuilder3D({
               <button
                 className="pdb-btn"
                 type="button"
-                onClick={isPlaying ? stopAnimation : startAnimation}
+                onClick={() => {
+                  if (isPlaying) stopAnimation();
+                  else startAnimation();
+                }}
                 disabled={points.length < 2}
                 aria-label={isPlaying ? 'Pause filtration animation' : 'Play filtration animation'}
               >

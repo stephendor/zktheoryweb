@@ -95,18 +95,18 @@ const PRESET_DESCRIPTIONS: Record<PresetId, string> = {
     'features are topological noise close to the diagonal. No persistent structural loop is expected.',
 };
 
-const PRESET_IDS: PresetId[] = [
+const PRESET_IDS = [
   'circle-20pts',
   'two-clusters-16pts',
   'figure-eight-11pts',
   'random-30pts',
-];
+] as const satisfies readonly PresetId[];
 
 /** The preset used when no valid `presetId` prop is supplied. */
 export const DEFAULT_PRESET_ID: PresetId = 'circle-20pts';
 
 /** All valid preset IDs — use to validate external preset strings at runtime. */
-export const VALID_PRESET_IDS: readonly PresetId[] = PRESET_IDS as const;
+export const VALID_PRESET_IDS: readonly PresetId[] = PRESET_IDS;
 
 // ---------------------------------------------------------------------------
 // Helpers
