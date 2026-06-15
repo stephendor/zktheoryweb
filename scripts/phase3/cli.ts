@@ -16,6 +16,14 @@ export const defaultInventoryReportPath = join(
   process.cwd(),
   'reports/phase3/source-inventory.json'
 );
+export const defaultLinkerReportPath = join(
+  process.cwd(),
+  'reports/phase3/cross-vault-linker.report.json'
+);
+export const defaultLinkerMetadataCandidatesPath = join(
+  process.cwd(),
+  'reports/phase3/cross-vault-linker.metadata-candidates.md'
+);
 export const defaultPromotedPath = join(
   process.cwd(),
   'src/data/generated/phase3/site-connections.json'
@@ -120,6 +128,27 @@ export function assertNotPromotedOutputPath(
     throw new Error(
       `Refusing to write a Phase 3 candidate to the promoted public JSON path: ${promotedPath}. Use npm run phase3:promote after reviewing a candidate instead.`
     );
+  }
+}
+
+export function assertOutsideSourceRoots(outputPath: string, roots: string[]): void {
+  const normalizedOutputPath = normalizedAbsolutePath(outputPath);
+
+  for (const root of roots) {
+    const trimmedRoot = root.trim();
+    if (!trimmedRoot) {
+      continue;
+    }
+
+    const normalizedRoot = normalizedAbsolutePath(trimmedRoot);
+    if (
+      normalizedOutputPath === normalizedRoot ||
+      normalizedOutputPath.startsWith(`${normalizedRoot}/`)
+    ) {
+      throw new Error(
+        `Refusing to write Phase 3 linker output inside a source root: ${outputPath}`
+      );
+    }
   }
 }
 

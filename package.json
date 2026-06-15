@@ -19,6 +19,7 @@
     "fetch:zotero": "npx tsx src/lib/zotero.ts",
     "phase3:inventory": "tsx scripts/phase3/source-inventory.ts",
     "phase3:export:candidate": "tsx scripts/phase3/export-candidate.ts",
+    "phase3:link:propose": "tsx scripts/phase3/link-proposals.ts",
     "phase3:promote": "tsx scripts/phase3/promote.ts",
     "validate:phase3": "tsx scripts/validate-phase3-data.ts",
     "verify:phase3": "npm run validate:phase3 && npm run test -- src/lib/phase3 && npm run check",

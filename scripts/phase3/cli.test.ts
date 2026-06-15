@@ -3,7 +3,10 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
+  assertOutsideSourceRoots,
   assertNotPromotedOutputPath,
+  defaultLinkerMetadataCandidatesPath,
+  defaultLinkerReportPath,
   optionFromArgsOrEnv,
   parsePhase3Args,
   requiredOption,
@@ -99,6 +102,34 @@ describe('assertNotPromotedOutputPath', () => {
     expect(() => assertNotPromotedOutputPath(promotedPath, promotedPath)).toThrow(
       'Refusing to write a Phase 3 candidate to the promoted public JSON path'
     );
+  });
+});
+
+describe('linker defaults and output guards', () => {
+  it('keeps linker report outputs under reports/phase3', () => {
+    expect(defaultLinkerReportPath.replaceAll('\\', '/')).toContain(
+      'reports/phase3/cross-vault-linker.report.json'
+    );
+    expect(defaultLinkerMetadataCandidatesPath.replaceAll('\\', '/')).toContain(
+      'reports/phase3/cross-vault-linker.metadata-candidates.md'
+    );
+  });
+
+  it('rejects linker output inside a source root', () => {
+    const root = resolve('vaults/tda');
+    const outputPath = join(root, 'reports', 'cross-vault-linker.report.json');
+
+    expect(() => assertOutsideSourceRoots(outputPath, [root])).toThrow(
+      'Refusing to write Phase 3 linker output inside a source root'
+    );
+  });
+
+  it('allows linker output beside a source root', () => {
+    const parent = tempRoot();
+    const root = join(parent, 'vault');
+    const outputPath = join(parent, 'reports', 'cross-vault-linker.report.json');
+
+    expect(() => assertOutsideSourceRoots(outputPath, [root])).not.toThrow();
   });
 });
 
