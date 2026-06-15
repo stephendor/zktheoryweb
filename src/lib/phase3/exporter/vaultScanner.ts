@@ -61,13 +61,29 @@ function relativeSourcePath(root: string, path: string): string {
   return relative(root, path).replaceAll('\\', '/');
 }
 
-function markdownFiles(root: string): string[] {
+function markdownFiles(
+  root: string,
+  sourceId: string,
+  warnings: Phase3Warning[],
+): string[] {
   const files: string[] = [];
 
   function visit(directory: string): void {
-    const entries = readdirSync(directory, { withFileTypes: true }).sort((left, right) =>
-      left.name.localeCompare(right.name),
-    );
+    let entries;
+    try {
+      entries = readdirSync(directory, { withFileTypes: true }).sort((left, right) =>
+        left.name.localeCompare(right.name),
+      );
+    } catch (error) {
+      warnings.push(
+        warning(
+          'markdown-directory-unreadable',
+          `Could not read markdown directory ${directory}: ${errorMessage(error)}`,
+          sourceId,
+        ),
+      );
+      return;
+    }
 
     for (const entry of entries) {
       const path = join(directory, entry.name);
@@ -281,23 +297,38 @@ function parseTwoLenses(frontmatter: Frontmatter): TwoLensesMetadata | null {
 
 export function scanVaultNotes(options: ScanVaultOptions): ScanVaultResult {
   const warnings: Phase3Warning[] = [];
-  const notes = markdownFiles(options.root).map((filePath): ScannedVaultNote => {
-    const text = readFileSync(filePath, 'utf-8');
-    const { frontmatter: frontmatterText, body } = splitFrontmatter(text);
-    const frontmatter = parseFrontmatter(frontmatterText, options.sourceId, warnings);
-    const siteReference = parseSiteReference(frontmatter.site);
-    const twoLenses = parseTwoLenses(frontmatter);
+  const notes = markdownFiles(options.root, options.sourceId, warnings)
+    .map((filePath): ScannedVaultNote | null => {
+      let text: string;
+      try {
+        text = readFileSync(filePath, 'utf-8');
+      } catch (error) {
+        warnings.push(
+          warning(
+            'markdown-file-unreadable',
+            `Could not read markdown file ${filePath}: ${errorMessage(error)}`,
+            options.sourceId,
+          ),
+        );
+        return null;
+      }
 
-    return {
-      sourceId: options.sourceId,
-      relativePath: relativeSourcePath(options.root, filePath),
-      title: titleFrom(frontmatter, body, filePath),
-      frontmatter,
-      citekeys: collectCitekeys(frontmatter, body),
-      ...(siteReference ? { siteReference } : {}),
-      ...(twoLenses ? { twoLenses } : {}),
-    };
-  });
+      const { frontmatter: frontmatterText, body } = splitFrontmatter(text);
+      const frontmatter = parseFrontmatter(frontmatterText, options.sourceId, warnings);
+      const siteReference = parseSiteReference(frontmatter.site);
+      const twoLenses = parseTwoLenses(frontmatter);
+
+      return {
+        sourceId: options.sourceId,
+        relativePath: relativeSourcePath(options.root, filePath),
+        title: titleFrom(frontmatter, body, filePath),
+        frontmatter,
+        citekeys: collectCitekeys(frontmatter, body),
+        ...(siteReference ? { siteReference } : {}),
+        ...(twoLenses ? { twoLenses } : {}),
+      };
+    })
+    .filter((note): note is ScannedVaultNote => note !== null);
 
   return {
     sourceId: options.sourceId,
