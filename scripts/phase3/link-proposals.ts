@@ -1,5 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { writeFileAtomically } from '../../src/lib/phase3/exporter/promotion';
 import {
   assertNotPromotedOutputPath,
   assertOutsideSourceRoots,
@@ -40,8 +39,7 @@ function candidateStatusOption(args: ReturnType<typeof parsePhase3Args>): Metada
 }
 
 function writeText(path: string, contents: string): void {
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, contents, 'utf-8');
+  writeFileAtomically(path, contents);
 }
 
 const args = parsePhase3Args(process.argv.slice(2));

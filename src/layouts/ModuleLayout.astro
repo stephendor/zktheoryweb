@@ -40,6 +40,7 @@ import { TDAResultsExplorer, type PresetId, VALID_PRESET_IDS, DEFAULT_PRESET_ID 
 import { pathNumberToSlug } from '@data/learnPaths';
 import { renderableDerivedConnectionGroup } from '@lib/phase3/pageConnections';
 import type { DerivedConnection } from '@lib/phase3/contracts';
+import type { HandAuthoredConnection } from '@lib/phase3/mergeDerivedConnections';
 
 interface ModuleRef {
   slug: string;
@@ -111,8 +112,39 @@ function isPresetId(id: string | undefined): id is PresetId {
   return VALID_PRESET_IDS.includes(id as PresetId);
 }
 
-const moduleDerivedConnectionGroup =
-  renderableDerivedConnectionGroup(derivedConnections);
+/* Hand-authored module connections, expressed as site references so generated
+   connections targeting the same chapter/paper/method are de-duplicated out of
+   the "Derived" group (matching ChapterLayout/PaperLayout behaviour). The ids
+   mirror the canonical generated ids (zero-padded ch-NN / paper-NN, raw method
+   slug). */
+const moduleHandAuthoredConnections: HandAuthoredConnection[] = [
+  ...connections.chapters.map((n) => ({
+    targetKind: 'chapter' as const,
+    targetId: `ch-${String(n).padStart(2, '0')}`,
+    label: 'Chapter',
+    title: `Chapter ${n}`,
+    palette: 'cl' as const,
+  })),
+  ...connections.papers.map((n) => ({
+    targetKind: 'paper' as const,
+    targetId: `paper-${String(n).padStart(2, '0')}`,
+    label: 'Paper',
+    title: `Paper ${n}`,
+    palette: 'tda' as const,
+  })),
+  ...connections.methods.map((slug) => ({
+    targetKind: 'method' as const,
+    targetId: slug,
+    label: 'Method',
+    title: slug,
+    palette: 'tda' as const,
+  })),
+];
+
+const moduleDerivedConnectionGroup = renderableDerivedConnectionGroup(
+  derivedConnections,
+  { handAuthored: moduleHandAuthoredConnections },
+);
 const moduleDerivedConnections = moduleDerivedConnectionGroup?.connections ?? [];
 const hasHandAuthoredModuleConnections =
   connections.chapters.length > 0 ||

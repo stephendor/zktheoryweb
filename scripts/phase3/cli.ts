@@ -1,6 +1,7 @@
-import { existsSync, mkdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, realpathSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { resolve } from 'node:path';
+import { writeFileAtomically } from '../../src/lib/phase3/exporter/promotion';
 
 export type ParsedPhase3Args = Record<string, string | boolean>;
 
@@ -242,6 +243,5 @@ export function assertOutsideSourceRoots(outputPath: string, roots: string[]): v
 }
 
 export function writeJson(path: string, value: unknown): void {
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, 'utf-8');
+  writeFileAtomically(path, `${JSON.stringify(value, null, 2)}\n`);
 }

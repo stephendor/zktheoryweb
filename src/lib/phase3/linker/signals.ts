@@ -31,7 +31,10 @@ export function normalizedTokens(text: string): string[] {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .split(/\s+/)
-    .filter((token) => token.length >= 3 && !stopwords.has(token));
+    .filter(
+      (token) =>
+        token.length >= 3 && !stopwords.has(token) && !/^\d+$/.test(token),
+    );
 
   return sorted(new Set(tokens));
 }
@@ -100,19 +103,29 @@ export function evidenceForPair(
 
   const tdaConcepts = conceptsFrom(tdaNote);
   const countingLivesConcepts = conceptsFrom(countingLivesNote);
-  const sharedConcepts = sharedValues(tdaConcepts, countingLivesConcepts).map((value) =>
+  const sharedConceptValues = sharedValues(tdaConcepts, countingLivesConcepts);
+  const sharedConcepts = sharedConceptValues.map((value) =>
     evidence('shared-concept', value, 0.25),
   );
 
+  // Tokens already accounted for by a shared concept must not be re-counted as
+  // weaker title- or broader-token evidence, otherwise a concept word that also
+  // appears in both titles (e.g. "measurement") would be scored twice.
+  const conceptTokens = new Set(sharedConceptValues.flatMap(normalizedTokens));
+
   const tdaTitleTokens = normalizedTokens(tdaNote.title);
   const countingLivesTitleTokens = normalizedTokens(countingLivesNote.title);
-  const sharedTitleTokens = sharedValues(tdaTitleTokens, countingLivesTitleTokens).map(
-    (value) => evidence('title-token', value, 0.15),
+  const sharedTitleTokenValues = sharedValues(
+    tdaTitleTokens,
+    countingLivesTitleTokens,
+  ).filter((value) => !conceptTokens.has(value));
+  const sharedTitleTokens = sharedTitleTokenValues.map((value) =>
+    evidence('title-token', value, 0.15),
   );
 
   const coveredTokens = new Set([
-    ...sharedValues(tdaTitleTokens, countingLivesTitleTokens),
-    ...sharedValues(tdaConcepts, countingLivesConcepts).flatMap(normalizedTokens),
+    ...sharedTitleTokenValues,
+    ...conceptTokens,
   ]);
   const tdaBroaderTokens = normalizedTokens(`${tdaNote.title} ${tdaConcepts.join(' ')}`);
   const countingLivesBroaderTokens = normalizedTokens(

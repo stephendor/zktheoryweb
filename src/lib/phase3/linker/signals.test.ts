@@ -36,7 +36,7 @@ describe('evidenceForPair', () => {
   it('puts shared citekey evidence before weaker token evidence and includes shared concepts', () => {
     const evidence = evidenceForPair(
       note({
-        title: 'Persistent Measurement',
+        title: 'Persistent Topological Measurement',
         citekeys: ['bauer2021ripser'],
         frontmatter: {
           concepts: ['measurement', 'persistent homology'],
@@ -46,7 +46,7 @@ describe('evidenceForPair', () => {
       note({
         sourceId: 'counting-lives',
         relativePath: 'ethics.md',
-        title: 'Ethics of Measurement',
+        title: 'Ethics of Topological Measurement',
         citekeys: ['bauer2021ripser'],
         frontmatter: {
           concepts: ['measurement', 'poverty'],
@@ -65,10 +65,54 @@ describe('evidenceForPair', () => {
       value: 'measurement',
       weight: 0.25,
     });
+    // 'topological' is shared in both titles but is not a concept, so it
+    // survives as title-token evidence.
+    expect(evidence).toContainEqual({
+      kind: 'title-token',
+      value: 'topological',
+      weight: 0.15,
+    });
     expect(evidence.find((item) => item.kind === 'shared-citekey')).toBeDefined();
     expect(evidence.findIndex((item) => item.kind === 'shared-citekey')).toBeLessThan(
       evidence.findIndex((item) => item.kind === 'title-token'),
     );
+  });
+
+  it('does not double-count a concept word that also appears in both titles', () => {
+    const evidence = evidenceForPair(
+      note({
+        title: 'Persistent Measurement',
+        frontmatter: { concepts: ['measurement'] },
+      }),
+      note({
+        sourceId: 'counting-lives',
+        relativePath: 'ethics.md',
+        title: 'Ethics of Measurement',
+        frontmatter: { concepts: ['measurement'] },
+      }),
+    );
+
+    // 'measurement' is both a shared concept and a shared title token; it must
+    // contribute a single shared-concept item, never an additional title-token
+    // or shared-token item.
+    const measurementItems = evidence.filter((item) => item.value === 'measurement');
+    expect(measurementItems).toEqual([
+      { kind: 'shared-concept', value: 'measurement', weight: 0.25 },
+    ]);
+  });
+
+  it('ignores purely numeric tokens such as shared publication years', () => {
+    const evidence = evidenceForPair(
+      note({ title: 'Topology Methods 2021', frontmatter: {} }),
+      note({
+        sourceId: 'counting-lives',
+        relativePath: 'report.md',
+        title: 'Poverty Report 2021',
+        frontmatter: {},
+      }),
+    );
+
+    expect(evidence.some((item) => item.value === '2021')).toBe(false);
   });
 });
 
