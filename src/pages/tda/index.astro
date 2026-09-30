@@ -28,6 +28,7 @@ const statusLabels: Record<string, string> = {
   'in-review':  'In Review',
   revision:     'Revision',
   published:    'Published',
+  superseded:   'Superseded',
 };
 ---
 
@@ -266,4 +267,5 @@ const statusLabels: Record<string, string> = {
   .tda-hub__card-badge--in-review    { background-color: color-mix(in srgb, #c07a2a 15%, transparent); color: #8a5200; }
   .tda-hub__card-badge--revision     { background-color: color-mix(in srgb, #8b2e2e 12%, transparent); color: #6b1a1a; }
   .tda-hub__card-badge--published    { background-color: color-mix(in srgb, #2e7d52 15%, transparent); color: #1a5c38; }
+  .tda-hub__card-badge--superseded   { background-color: transparent; color: var(--color-neutral-muted); border: 1px dashed var(--color-neutral-muted); text-decoration: line-through; }
 </style>

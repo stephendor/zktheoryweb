@@ -100,11 +100,12 @@ const statusConfig: Record<
   'in-review':   { label: 'In Review',  modifier: 'in-review' },
   revision:   { label: 'Revision',    modifier: 'revision' },
   published:  { label: 'Published',   modifier: 'published' },
+  superseded: { label: 'Superseded',  modifier: 'superseded' },
 };
 const statusInfo = statusConfig[status] ?? { label: status, modifier: 'planned' };
 
-/* ── Dependency position strip: 10 papers ── */
-const TOTAL_PAPERS = 10;
+/* ── Dependency position strip: all papers ── */
+const TOTAL_PAPERS = 12;
 const paperNodes = Array.from({ length: TOTAL_PAPERS }, (_, i) => i + 1);
 
 /* ── Cross-project connections ── */
@@ -629,6 +630,13 @@ const pubYear: number | null = date
   .status-published {
     background-color: var(--color-tda-teal);
     color: #fff;
+  }
+
+  .status-superseded {
+    background-color: transparent;
+    color: var(--color-neutral-muted);
+    border: 1px dashed var(--color-neutral-muted);
+    text-decoration: line-through;
   }
 
   /* ══ Abstracts band ══════════════════════════════════════════════════════ */

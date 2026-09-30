@@ -275,6 +275,7 @@ const STATUS_LEGEND: Array<{ status: string; label: string }> = [
   { status: 'in-review',   label: 'In Review' },
   { status: 'revision',    label: 'Under Revision' },
   { status: 'published',   label: 'Published' },
+  { status: 'superseded',  label: 'Superseded' },
 ];
 
 function StatusLegend() {
@@ -540,7 +541,7 @@ function PipelineGraphInner({ nodes, edges, width, height }: InnerProps) {
         width={width}
         height={height}
         role="img"
-        aria-label="TDA research pipeline: force-directed dependency graph of 10 papers across 4 stages"
+        aria-label={`TDA research pipeline: force-directed dependency graph of ${nodes.length} papers across 4 stages`}
       >
         <defs>
           {/*

@@ -1,0 +1,75 @@
+---
+title: 'Structured Hypothesis Testing for Persistent Homology of Longitudinal Social Data'
+paper_number: 12
+date: '2026-04-30'
+stage: 0
+status: 'in-progress'
+journal: 'Journal of the Royal Statistical Society, Series B (target)'
+depends_on: []
+enables: []
+methods:
+  - 'persistent-homology'
+  - 'markov-memory-ladder'
+datasets:
+  - 'understanding-society'
+  - 'bhps'
+compute:
+  hardware: 'CPU'
+  runtime: 'Hours'
+  cloud: false
+key_findings:
+  - claim: 'Persistent homology of longitudinal panel data can be subjected to formal hypothesis tests against explicit null models, rather than informal visual comparison.'
+    detail: 'The paper develops a testing framework built on permutation null models — including a Markov memory ladder of increasing-order nulls and survey-design-aware pool-draw nulls — so that topological signal in trajectory data can be assessed for significance with calibrated error control.'
+  - claim: 'Survey design must be carried into the topological test, not bolted on afterwards.'
+    detail: 'A spanning-individual decomposition and pool-draw construction adapt the null models to the sampling structure of longitudinal panels, so that detected topology is not an artefact of attrition, weighting, or panel rotation.'
+abstract: >
+  Topological summaries such as persistence diagrams are increasingly applied to
+  social-science data, but their use has often outpaced the inferential machinery
+  needed to decide when an observed topological feature is real. This paper develops a
+  framework for structured hypothesis testing of persistent homology computed from
+  longitudinal panel data. It formalises a ladder of permutation null models —
+  beginning with memoryless and higher-order Markov nulls — and a survey-design-aware
+  null based on pool-draw and spanning-individual constructions, together with
+  Wasserstein-distance and persistence-landscape test statistics under calibrated
+  resampling. The framework is the methodological (Series B) companion to an applied
+  treatment of UK career inequality; it is assembled from, and supersedes, the earlier
+  core persistent-homology and zigzag papers in this programme.
+plain_summary: >
+  When researchers find an interesting "shape" in data using topology, how do they know
+  it is not just noise? This paper builds the statistical tools to answer that question
+  for the kind of long-running social survey data used elsewhere in the programme. It
+  sets out how to compare an observed topological pattern against carefully constructed
+  random benchmarks that respect how the survey was actually collected, so that claims
+  about structure in people's life trajectories can be tested rather than merely
+  asserted.
+featured: true
+bibtex: |
+  @article{dorman2026structured,
+    author  = {Dorman, Stephen},
+    title   = {Structured Hypothesis Testing for Persistent Homology of Longitudinal Social Data},
+    year    = {2026},
+    journal = {Journal of the Royal Statistical Society, Series B (under preparation)},
+    note    = {In preparation}
+  }
+---
+
+> **Programme note.** This paper is the methodological (Series B) half of a companion
+> pair, assembled in April 2026 from the earlier core persistent-homology paper and the
+> zigzag paper, both of which it **supersedes** (see Papers 1–3). Its applied companion
+> is *The Geometry of UK Career Inequality* (Paper 11). Zigzag persistence appears here
+> as motivating context rather than as the paper's subject.
+
+## Overview
+
+The paper addresses a gap between practice and inference: persistent homology is now
+routinely computed from social data, but the question of *when a topological feature is
+statistically significant* has frequently been answered informally. The contribution is
+a set of explicit null models and test statistics that make the question answerable with
+calibrated error control, adapted to the sampling structure of longitudinal panels.
+
+## Status
+
+This is an active draft (in-progress, Stage 0), in lockstep revision with its Series A
+companion. Methodological details are still being finalised and reproducibility-locked;
+specific numerical results are deliberately not reported here until the manuscript
+stabilises toward submission.

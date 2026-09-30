@@ -86,12 +86,13 @@ const papers = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/tda/papers' }),
   schema: z.object({
     title: z.string(),
-    paper_number: z.number().int().min(1).max(10),
+    paper_number: z.number().int().min(1).max(12),
     date: z.string().optional(),  // ISO date string e.g. "2024-03-15"; used for citation_publication_date
     stage: z.number().int().min(0).max(3),
     status: z
-      .enum(['planned', 'in-progress', 'submitted', 'in-review', 'revision', 'published'])
+      .enum(['planned', 'in-progress', 'submitted', 'in-review', 'revision', 'published', 'superseded'])
       .default('planned'),
+    superseded_by: z.array(z.number().int()).default([]),  // paper_numbers that supersede this one
     arxiv_id: z.string().optional(),
     arxiv_url: z.string().url().optional(),
     journal: z.string().optional(),

@@ -101,6 +101,14 @@
   fill: var(--color-tda-teal, #1a5f6a);
 }
 
+/* Superseded: hollow with a dashed outline, so it reads as retired without
+   relying on colour alone */
+.pg-node--status-superseded .pg-node-circle {
+  fill: var(--color-neutral-surface, #ffffff);
+  stroke: var(--color-neutral-muted, #6b6b6b);
+  stroke-dasharray: 3 2;
+}
+
 /* ── Node text ───────────────────────────────────────────────────────────────── */
 
 .pg-node-number {
@@ -120,6 +128,11 @@
 /* Planned nodes get dark text because the fill is very light */
 .pg-node--status-planned .pg-node-number {
   fill: var(--color-tda-teal, #1a5f6a);
+}
+
+/* Superseded nodes are hollow, so they need dark text too */
+.pg-node--status-superseded .pg-node-number {
+  fill: var(--color-neutral-muted, #6b6b6b);
 }
 
 /* All other status fills are dark enough that white text reads better */
@@ -160,6 +173,7 @@
 .pg-tt-status--in-review     { color: var(--color-tda-slate, #3d5a80); }
 .pg-tt-status--revision      { color: #b87333; }
 .pg-tt-status--published     { color: var(--color-tda-teal, #1a5f6a); }
+.pg-tt-status--superseded    { color: #888; text-decoration: line-through; }
 
 /* ── Step 3: Timeline overlay ────────────────────────────────────────────────── */
 
@@ -247,6 +261,7 @@
 .pg-swatch--in-review     { background: var(--color-tda-slate, #3d5a80); border-color: var(--color-tda-slate, #3d5a80); }
 .pg-swatch--revision      { background: #b87333; border-color: #b87333; }
 .pg-swatch--published     { background: var(--color-tda-teal, #1a5f6a); border-color: var(--color-tda-teal, #1a5f6a); }
+.pg-swatch--superseded    { background: var(--color-neutral-surface, #ffffff); border: 1.5px dashed var(--color-neutral-muted, #6b6b6b); }
 
 /* ── Step 4: Keyboard focus ring ─────────────────────────────────────────────── */
 
