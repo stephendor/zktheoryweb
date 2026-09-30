@@ -30,8 +30,8 @@ const config: StorybookConfig = {
   viteFinal: async (viteConfig) => {
     viteConfig.plugins = [...(viteConfig.plugins ?? []), react(), tailwindcss()];
     // Mirror the tsconfig.json path aliases (same list as vitest.config.ts).
-    // Vite 7 does not read tsconfig `paths`; Astro resolves them itself, but
-    // Storybook's Vite build does not.
+    // Astro resolves tsconfig `paths` itself; declaring them here keeps
+    // Storybook's Vite build independent of whether Vite reads tsconfig.
     viteConfig.resolve = {
       ...(viteConfig.resolve ?? {}),
       alias: {
