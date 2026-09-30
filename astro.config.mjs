@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -12,6 +13,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://zktheory.org',
   output: 'static',
+  // Astro 7 defaults to 'jsx', which strips whitespace between inline elements
+  // in .astro templates. Keep the Astro 6 behaviour so spacing is unchanged.
+  compressHTML: true,
   integrations: [
     {
       name: 'zotero-prefetch',
@@ -26,11 +30,19 @@ export default defineConfig({
       },
     },
     react(),
+    // Astro 7 renders Markdown with Sätteri by default, which does not run
+    // remark/rehype plugins. MDX needs remark-math + rehype-katex, so it is
+    // given the unified processor explicitly.
     mdx({
-      remarkPlugins: [remarkMath],
-      rehypePlugins: [
-        [rehypeKatex, { strict: false, throwOnError: false, output: 'htmlAndMathml' }],
-      ],
+      processor: unified({
+        // Under Astro 6 straight quotes in MDX were emitted unchanged. Keep
+        // that: enabling this would curl quotes across the prose pages.
+        smartypants: false,
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [
+          [rehypeKatex, { strict: false, throwOnError: false, output: 'htmlAndMathml' }],
+        ],
+      }),
     }),
     pagefind(),
     sitemap(),

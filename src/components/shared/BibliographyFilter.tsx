@@ -26,7 +26,7 @@
 
 import { useState, useId, useMemo } from 'react';
 import type { ZoteroItem } from '@lib/zotero';
-import { formatAuthorList } from '@lib/bibliography';
+import { formatAuthorList } from '@lib/bibliographyFormat';
 import { BibTexCopyButton } from '@components/tda/BibTexCopyButton';
 import './BibliographyFilter.css';
 
