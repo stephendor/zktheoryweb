@@ -1,0 +1,30 @@
+---
+/**
+ * ExampleLink.astro
+ * List item for an example PDF on /services.
+ * Links to /services/examples/<file> only if that file exists in
+ * public/services/examples/ at build time; otherwise renders the label with a
+ * "coming soon" note, so the page never ships a broken link. Dropping the PDF
+ * into that folder is all that is needed to turn the link on.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props {
+  file: string;
+  label: string;
+}
+
+const { file, label } = Astro.props;
+const available = existsSync(join(process.cwd(), 'public', 'services', 'examples', file));
+---
+
+<li>
+  {available ? (
+    <a href={`/services/examples/${file}`}>{label} (PDF)</a>
+  ) : (
+    <>
+      {label}{' '}<span class="service-example__pending">— example PDF coming soon</span>
+    </>
+  )}
+</li>
