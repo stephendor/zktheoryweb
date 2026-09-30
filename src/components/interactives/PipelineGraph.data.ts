@@ -21,7 +21,8 @@ export type PaperStatus =
   | 'submitted'
   | 'in-review'
   | 'revision'
-  | 'published';
+  | 'published'
+  | 'superseded';
 
 export interface PipelineCompute {
   hardware?: string;
