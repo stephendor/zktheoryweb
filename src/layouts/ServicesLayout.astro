@@ -1,0 +1,172 @@
+---
+/**
+ * ServicesLayout.astro
+ * Shell for the single /services page (src/pages/services.mdx).
+ * Wraps BaseLayout and reuses the .prose system in the same wide container
+ * as PostLayout, so the page reads as part of the site rather than a rebrand.
+ *
+ * All wording and prices live in the MDX file; this layout only styles the
+ * handful of block classes the MDX uses (.services-cta, .service-segment,
+ * .service-step, .service-callout, .service-examples).
+ *
+ * No scripts, forms or third-party resources — see netlify.toml CSP.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+  };
+}
+
+const { title, description } = Astro.props.frontmatter;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container-prose--wide services-page">
+    <article class="prose services">
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .services-page {
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-12);
+  }
+
+  /* ── Headings ───────────────────────────────────────────────────────────── */
+
+  .services :global(h1) {
+    margin-top: 0;
+    margin-bottom: var(--space-6);
+  }
+
+  .services :global(h2) {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  /* ── Call to action ─────────────────────────────────────────────────────── */
+  /* Neutral text on a teal outline keeps AA contrast in both themes. */
+
+  .services :global(a.services-cta),
+  .services :global(a.services-cta:visited) {
+    display: inline-block;
+    justify-self: start; /* .prose is a grid on desktop — don't stretch */
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-neutral-body);
+    text-decoration: none;
+    padding: var(--space-3) var(--space-5);
+    border: 2px solid var(--color-tda-teal-light);
+    border-radius: var(--radius-md);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .services :global(a.services-cta:hover),
+  .services :global(a.services-cta:focus-visible) {
+    background-color: var(--color-neutral-body);
+    border-color: var(--color-neutral-body);
+    color: var(--color-neutral-bg);
+    outline: 2px solid var(--color-tda-teal-light);
+    outline-offset: 2px;
+  }
+
+  /* ── Segment and step cards ─────────────────────────────────────────────── */
+
+  .services :global(.service-segment),
+  .services :global(.service-step) {
+    background-color: var(--color-neutral-surface);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    margin-bottom: var(--space-5);
+  }
+
+  .services :global(.service-segment h3),
+  .services :global(.service-step h3) {
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    margin-top: 0;
+    margin-bottom: var(--space-3);
+  }
+
+  .services :global(.service-segment > :last-child),
+  .services :global(.service-step > :last-child) {
+    margin-bottom: 0;
+  }
+
+  /* A segment reached by deep link (#charities etc.) is picked out. */
+  .services :global(.service-segment:target) {
+    border-color: var(--color-tda-teal-light);
+    box-shadow: inset 4px 0 0 0 var(--color-tda-teal-light);
+  }
+
+  .services :global(.service-step__price) {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-neutral-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  /* ── Founding-clients callout ───────────────────────────────────────────── */
+
+  .services :global(.service-callout) {
+    border-left: 3px solid var(--color-cl-ochre);
+    padding-left: var(--space-6);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-5);
+  }
+
+  .services :global(.service-callout h3) {
+    margin-top: 0;
+  }
+
+  .services :global(.service-callout > :last-child) {
+    margin-bottom: 0;
+  }
+
+  /* ── Common questions ───────────────────────────────────────────────────── */
+
+  .services :global(.service-faq h3) {
+    font-size: var(--text-lg);
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-2);
+  }
+
+  /* ── Example list ───────────────────────────────────────────────────────── */
+
+  .services :global(.service-example__pending) {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  /* ── Contact block ──────────────────────────────────────────────────────── */
+
+  .services :global(.service-contact) {
+    font-family: var(--font-ui);
+  }
+
+  @media (max-width: 640px) {
+    .services-page {
+      padding-top: var(--space-7);
+      padding-bottom: var(--space-10);
+    }
+
+    .services :global(h1) {
+      font-size: var(--text-3xl);
+    }
+
+    .services :global(.service-segment),
+    .services :global(.service-step) {
+      padding: var(--space-5) var(--space-4);
+    }
+  }
+</style>

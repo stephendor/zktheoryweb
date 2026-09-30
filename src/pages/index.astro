@@ -141,6 +141,11 @@ const latestWriting = writingEntries
         <a href="/counting-lives/" class="activity-viewall">All chapters →</a>
         <a href="/tda/" class="activity-viewall">All papers →</a>
       </div>
+
+      <p class="services-note">
+        I also help small charities, training providers and alternative provision with
+        reporting and data analysis. <a href="/services/">Work with me →</a>
+      </p>
     </div>
   </section>
 </BaseLayout>
@@ -401,6 +406,24 @@ const latestWriting = writingEntries
 
   .activity-viewall:hover,
   .activity-viewall:focus-visible {
+    color: var(--color-neutral-body);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── Services pointer — deliberately quiet; research stays the lead ───── */
+
+  .services-note {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+    margin: var(--space-9) 0 0 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-neutral-border);
+  }
+
+  .services-note a {
+    font-weight: 600;
     color: var(--color-neutral-body);
     text-decoration: underline;
     text-underline-offset: 3px;
