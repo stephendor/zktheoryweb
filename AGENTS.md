@@ -4,15 +4,15 @@ AGENTS.md — Project Guide for zktheory.org
 
     Core Principle: The mathematics (TDA) and the politics (poverty measurement) are inseparable; design and code must reflect this duality.
 
-    Primary Stack: Astro 5.x (Content Layer), Tailwind CSS 4, React 19 (for interactive islands), TypeScript.
+    Primary Stack: Astro 7.x (Content Layer, built on Vite 8), Tailwind CSS 4, React 19 (for interactive islands), TypeScript. Requires Node 22.12 or later.
 
-    Math Rendering: Use rehype-katex for compile-time LaTeX rendering; avoid client-side MathJax.
+    Math Rendering: Use rehype-katex for compile-time LaTeX rendering; avoid client-side MathJax. Astro 7 renders Markdown with Sätteri by default, which does not run remark/rehype plugins, so MDX is configured with the unified processor (@astrojs/markdown-remark) in astro.config.mjs. Add remark/rehype plugins there.
 
 2.  Specialized Code Standards
 
     Content Architecture: Use MDX for all long-form content to allow React components inside prose.
 
-    Type Safety: Every content collection must have a strict Zod schema in src/content/config.ts matching the PRD data models.
+    Type Safety: Every content collection must have a strict Zod schema in src/content.config.ts matching the PRD data models.
 
     Styling Palette: \* Counting Lives: Use the "Archival" palette (muted reds, ochre, charcoal).
 
