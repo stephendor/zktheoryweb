@@ -65,7 +65,7 @@
     "@types/d3": "^7.4.3",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
-    "@vitejs/plugin-react": "^6.0.1",
+    "@vitejs/plugin-react": "^5.2.0",
     "eslint": "^9.39.4",
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -79,6 +79,6 @@
   },
   "overrides": {
     "yaml": "$yaml",
-    "vite": ">=8.0.5"
+    "vite": "^7.3.2"
   }
 }
