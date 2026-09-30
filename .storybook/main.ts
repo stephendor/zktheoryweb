@@ -1,3 +1,4 @@
+import path from 'path';
 import type { StorybookConfig } from '@storybook/react-vite';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
@@ -19,7 +20,7 @@ const config: StorybookConfig = {
 
   /**
    * Inject required Vite plugins:
-   * - @vitejs/plugin-react: configures OXC/JSX for .tsx/.jsx files in rolldown.
+   * - @vitejs/plugin-react: configures the JSX transform for .tsx/.jsx files.
    *   @storybook/react-vite does NOT add this automatically in v10.
    * - tailwindcss: processes `@import 'tailwindcss'` in global.css.
    *
@@ -28,6 +29,20 @@ const config: StorybookConfig = {
    */
   viteFinal: async (viteConfig) => {
     viteConfig.plugins = [...(viteConfig.plugins ?? []), react(), tailwindcss()];
+    // Mirror the tsconfig.json path aliases (same list as vitest.config.ts).
+    // Vite 7 does not read tsconfig `paths`; Astro resolves them itself, but
+    // Storybook's Vite build does not.
+    viteConfig.resolve = {
+      ...(viteConfig.resolve ?? {}),
+      alias: {
+        ...(viteConfig.resolve?.alias ?? {}),
+        '@components': path.resolve(import.meta.dirname, '../src/components'),
+        '@layouts': path.resolve(import.meta.dirname, '../src/layouts'),
+        '@lib': path.resolve(import.meta.dirname, '../src/lib'),
+        '@styles': path.resolve(import.meta.dirname, '../src/styles'),
+        '@data': path.resolve(import.meta.dirname, '../src/data'),
+      },
+    };
     // Tailwind v4's @theme is not a standard CSS at-rule; lightningcss
     // (Storybook's default CSS minifier) rejects it. Disable CSS minification
     // for Storybook — token CSS is already small and doesn't need minifying.
