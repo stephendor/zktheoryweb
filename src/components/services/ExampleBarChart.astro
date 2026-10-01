@@ -1,0 +1,86 @@
+---
+/**
+ * ExampleBarChart.astro
+ * Static SVG horizontal bar chart for the /services example reports.
+ * Same accessibility pattern as ExampleLineChart: one image with a text
+ * alternative, plus a "Chart data" disclosure on screen.
+ */
+import type { BarChartSpec } from '@data/services-examples';
+
+interface Props {
+  spec: BarChartSpec;
+  id: string;
+}
+
+const { spec, id } = Astro.props;
+
+const W = 360;
+const H = 240;
+const m = { l: 124, r: 40, t: spec.reference ? 24 : 10, b: 38 };
+const pw = W - m.l - m.r;
+const ph = H - m.t - m.b;
+const band = ph / spec.bars.length;
+const barH = band * 0.58;
+
+const xs = (v: number) => m.l + ((v - spec.xMin) / (spec.xMax - spec.xMin)) * pw;
+const yc = (i: number) => m.t + band * i + band / 2;
+---
+
+<figure class="chart" aria-labelledby={`${id}-title`}>
+  <figcaption class="chart__title" id={`${id}-title`}>{spec.title}</figcaption>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={spec.alt} class="chart__svg">
+    {spec.xTicks.map((t) => (
+      <g>
+        <line class="chart__grid" x1={xs(t)} x2={xs(t)} y1={m.t} y2={m.t + ph} />
+        <text class="chart__tick" x={xs(t)} y={m.t + ph + 12} text-anchor="middle">{t}</text>
+      </g>
+    ))}
+    {spec.bars.map((b, i) => {
+      const lines = b.label.split('\n');
+      return (
+        <g>
+          <rect
+            class:list={['chart__bar', { 'chart__bar--highlight': b.highlight }]}
+            x={m.l}
+            y={yc(i) - barH / 2}
+            width={Math.max(0, xs(b.value) - m.l)}
+            height={barH}
+          />
+          <text class="chart__tick chart__category" x={m.l - 6} y={yc(i) - ((lines.length - 1) * 10) / 2} text-anchor="end" dominant-baseline="middle">
+            {lines.map((line, j) => (
+              <tspan x={m.l - 6} dy={j === 0 ? 0 : 10}>{line}</tspan>
+            ))}
+          </text>
+          <text class="chart__end-label" x={xs(b.value) + 4} y={yc(i)} dominant-baseline="middle">{b.display}</text>
+        </g>
+      );
+    })}
+    <line class="chart__axis" x1={m.l} x2={m.l} y1={m.t} y2={m.t + ph} />
+    {spec.reference && (
+      <g>
+        <line class="chart__reference" x1={xs(spec.reference.value)} x2={xs(spec.reference.value)} y1={m.t - 4} y2={m.t + ph} />
+        <text class="chart__note" x={xs(spec.reference.value) + 3} y={m.t - 10}>{spec.reference.label}</text>
+      </g>
+    )}
+    <text class="chart__axis-label" x={m.l + pw / 2} y={H - 6} text-anchor="middle">{spec.xLabel}</text>
+  </svg>
+  <details class="chart-data">
+    <summary>Chart data</summary>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{spec.categoryHeading}</th>
+          <th scope="col">{spec.valueHeading}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {spec.bars.map((b) => (
+          <tr>
+            <th scope="row">{b.label.replace('\n', ' ')}</th>
+            <td>{b.display}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+</figure>

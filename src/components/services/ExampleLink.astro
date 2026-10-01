@@ -1,32 +1,31 @@
 ---
 /**
  * ExampleLink.astro
- * List item for an example PDF on /services.
- * Links to /services/examples/<file> only if that file exists in
- * public/services/examples/ at build time; otherwise renders the label with a
- * "coming soon" note, so the page never ships a broken link. Dropping the PDF
- * into that folder is all that is needed to turn the link on.
+ * List item for one example report on /services: a link to its accessible
+ * HTML page, plus a link to the PDF printed from that page when the PDF
+ * exists in public/services/examples/ (so no broken link ships).
+ * Content comes from src/data/services-examples.ts.
  */
 import { existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { servicesExamples } from '@data/services-examples';
 
 interface Props {
-  file: string;
-  label: string;
+  slug: string;
 }
 
-const { file, label } = Astro.props;
-const path = join(process.cwd(), 'public', 'services', 'examples', file);
-const available = existsSync(path);
-const sizeKb = available ? Math.max(1, Math.round(statSync(path).size / 1024)) : 0;
+const example = servicesExamples.find((e) => e.slug === Astro.props.slug);
+if (!example) throw new Error(`ExampleLink: no services example with slug "${Astro.props.slug}"`);
+
+const path = join(process.cwd(), 'public', 'services', 'examples', example.pdf);
+const sizeKb = existsSync(path) ? Math.max(1, Math.round(statSync(path).size / 1024)) : 0;
 ---
 
 <li>
-  {available ? (
-    <a href={`/services/examples/${file}`}>{label} (PDF, {sizeKb} KB)</a>
-  ) : (
-    <>
-      {label}{' '}<span class="service-example__pending">— example PDF coming soon</span>
-    </>
+  <a href={`/services/examples/${example.slug}/`}>{example.name}</a>
+  {sizeKb > 0 && (
+    <span class="service-example__pdf">
+      {' '}· <a href={`/services/examples/${example.pdf}`}>PDF, {sizeKb} KB<span class="sr-only"> ({example.name})</span></a>
+    </span>
   )}
 </li>

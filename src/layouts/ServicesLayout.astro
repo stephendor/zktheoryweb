@@ -142,10 +142,8 @@ const { title, description } = Astro.props.frontmatter;
 
   /* ── Example list ───────────────────────────────────────────────────────── */
 
-  .services :global(.service-example__pending) {
-    font-family: var(--font-ui);
-    font-size: var(--text-sm);
-    color: var(--color-neutral-muted);
+  .services :global(.service-example__pdf a) {
+    white-space: nowrap;
   }
 
   /* ── Contact block ──────────────────────────────────────────────────────── */
