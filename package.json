@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "build:example-pdfs": "astro build && tsx scripts/build-example-pdfs.ts",
     "preview": "astro preview",
     "check": "astro check",
     "format": "prettier --write .",

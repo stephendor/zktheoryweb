@@ -42,6 +42,9 @@ const PAGES = [
   { name: 'MM1 Interlude',     url: '/counting-lives/interludes/mm1-normal-distribution'             },
   { name: 'About',             url: '/about/'                                                        },
   { name: 'Services',          url: '/services/'                                                     },
+  { name: 'Example: charity',  url: '/services/examples/charity/'                                    },
+  { name: 'Example: training', url: '/services/examples/training-provider/'                          },
+  { name: 'Example: AP',       url: '/services/examples/alternative-provision/'                      },
 ] as const;
 
 for (const { name, url } of PAGES) {

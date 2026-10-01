@@ -1,0 +1,597 @@
+---
+/**
+ * services/examples/[slug].astro
+ * Accessible HTML version of each synthetic example report on /services.
+ * The page is also the source of the downloadable PDF: the @media print
+ * rules below lay it out as one A4 page, and scripts/build-example-pdfs.ts
+ * prints it to a tagged PDF in public/services/examples/.
+ * Content lives in src/data/services-examples.ts.
+ */
+import { existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ExampleLineChart from '@components/services/ExampleLineChart.astro';
+import ExampleBarChart from '@components/services/ExampleBarChart.astro';
+import { servicesExamples, type ServicesExample } from '@data/services-examples';
+
+export function getStaticPaths() {
+  return servicesExamples.map((example) => ({ params: { slug: example.slug }, props: { example } }));
+}
+
+interface Props {
+  example: ServicesExample;
+}
+
+const { example } = Astro.props;
+const pdfPath = join(process.cwd(), 'public', 'services', 'examples', example.pdf);
+const pdfKb = existsSync(pdfPath) ? Math.max(1, Math.round(statSync(pdfPath).size / 1024)) : 0;
+const [first, second] = example.charts;
+---
+
+<BaseLayout title={`Example ${example.name.toLowerCase()}`} description={example.description}>
+  <div class="container-viz example-page" data-pagefind-ignore="all">
+    <nav class="example-actions" aria-label="Example report">
+      <a href="/services/#see-an-example">← Back to services</a>
+      {pdfKb > 0 && <a href={`/services/examples/${example.pdf}`}>Download PDF ({pdfKb} KB)</a>}
+    </nav>
+
+    <article class="report">
+      <p class="report__banner">EXAMPLE ONLY — every organisation, person and figure on this page is made up.</p>
+
+      <h1 class="report__title">{example.heading}</h1>
+      <p class="report__subtitle">{example.subtitle}</p>
+
+      <ul class="report__tiles">
+        {example.tiles.map((t) => (
+          <li class="report__tile">
+            <span class="report__tile-value">{t.value}</span>
+            <span class="report__tile-label">{t.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="report__h2" id="report-table-heading">{example.table.title}</h2>
+      <div class="report__table-wrap" role="region" aria-labelledby="report-table-heading" tabindex="0">
+        <table class="report__table">
+          <thead>
+            <tr>{example.table.headers.map((h) => <th scope="col">{h}</th>)}</tr>
+          </thead>
+          <tbody>
+            {example.table.rows.map((row) => (
+              <tr>
+                <th scope="row">{row[0]}</th>
+                {row.slice(1).map((cell) => <td>{cell}</td>)}
+              </tr>
+            ))}
+            {example.table.total && (
+              <tr class="report__total">
+                <th scope="row">{example.table.total[0]}</th>
+                {example.table.total.slice(1).map((cell) => <td>{cell}</td>)}
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <p class="report__note">{example.table.note}</p>
+
+      <div class="report__charts">
+        {first.kind === 'line'
+          ? <ExampleLineChart spec={first} id="chart-1" />
+          : <ExampleBarChart spec={first} id="chart-1" />}
+        {second.kind === 'line'
+          ? <ExampleLineChart spec={second} id="chart-2" />
+          : <ExampleBarChart spec={second} id="chart-2" />}
+      </div>
+
+      <section class="report__checks" aria-labelledby="report-checks-heading">
+        <h2 class="report__checks-title" id="report-checks-heading">{example.checks.title}</h2>
+        <ul>
+          {example.checks.items.map((item) => (
+            <li><strong><span aria-hidden="true">▲ </span>Check:</strong> {item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <h2 class="report__h2">{example.insights.title}</h2>
+      <ol class="report__insights">
+        {example.insights.items.map((item) => <li>{item}</li>)}
+      </ol>
+
+      <p class="report__closing"><strong>What produces this.</strong> {example.closing}</p>
+
+      <p class="report__print-footer">
+        <span>Stephen Dorman | Reporting and data analysis for small organisations | stephen@zktheory.org | zktheory.org/services</span>
+        <span>Synthetic example</span>
+      </p>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ══ Page shell (screen) ═════════════════════════════════════════════════ */
+
+  .example-page {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-12);
+  }
+
+  .example-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .example-actions a {
+    color: var(--color-neutral-body);
+    text-underline-offset: 3px;
+  }
+
+  .example-actions a:focus-visible {
+    outline: 2px solid var(--color-tda-teal-light);
+    outline-offset: 2px;
+  }
+
+  /* Chart colours: inherited by the chart components via custom properties. */
+  .report {
+    --chart-primary: var(--color-tda-slate);
+    --chart-secondary: var(--color-tda-teal);
+    --chart-highlight: var(--color-cl-ochre);
+    --chart-muted: var(--color-neutral-muted);
+    --report-accent: var(--color-tda-slate);
+    --report-check: var(--color-cl-red);
+
+    font-family: var(--font-ui);
+    color: var(--color-neutral-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+
+  @media screen {
+    :global([data-theme='dark']) .report {
+      --chart-primary: var(--color-tda-slate-light);
+      --chart-secondary: var(--color-tda-teal-light);
+      --report-accent: var(--color-tda-slate-light);
+      --report-check: var(--color-cl-red-light);
+    }
+  }
+
+  .report__banner {
+    margin: 0 0 var(--space-5) 0;
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-tda-teal);
+    color: #fff;
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+
+  .report__title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .report__subtitle {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-neutral-muted);
+  }
+
+  .report__tiles {
+    list-style: none;
+    margin: 0 0 var(--space-7) 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+  }
+
+  .report__tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background-color: var(--color-neutral-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .report__tile-value {
+    font-size: var(--text-3xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--report-accent);
+  }
+
+  .report__tile-label {
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  .report__h2,
+  .report__checks-title {
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: var(--space-7) 0 var(--space-3) 0;
+  }
+
+  .report__table-wrap {
+    overflow-x: auto;
+  }
+
+  .report__table-wrap:focus-visible {
+    outline: 2px solid var(--color-tda-teal-light);
+    outline-offset: 2px;
+  }
+
+  .report__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .report__table th,
+  .report__table td {
+    text-align: left;
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-neutral-border);
+    font-weight: 400;
+  }
+
+  .report__table thead th {
+    font-weight: 700;
+    background-color: var(--color-neutral-subtle);
+    border-bottom: 2px solid var(--report-accent);
+    vertical-align: bottom;
+  }
+
+  .report__total th,
+  .report__total td {
+    font-weight: 700;
+    background-color: var(--color-neutral-subtle);
+  }
+
+  .report__note {
+    margin: var(--space-2) 0 0 0;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-neutral-muted);
+  }
+
+  .report__charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    margin: var(--space-8) 0 var(--space-6) 0;
+  }
+
+  .report__checks {
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--color-neutral-subtle);
+    border-left: 3px solid var(--color-cl-ochre);
+  }
+
+  .report__checks-title {
+    font-size: var(--text-base);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .report__checks ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .report__checks strong {
+    color: var(--report-check);
+  }
+
+  .report__insights {
+    list-style: decimal; /* Tailwind preflight removes list markers */
+    margin: 0;
+    padding-left: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .report__closing {
+    margin: var(--space-6) 0 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  .report__closing strong {
+    color: var(--color-neutral-body);
+  }
+
+  .report__print-footer {
+    display: none;
+  }
+
+  /* ══ Charts (shared by ExampleLineChart and ExampleBarChart) ═════════════ */
+
+  .report :global(.chart) {
+    margin: 0;
+  }
+
+  .report :global(.chart__title) {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-2);
+  }
+
+  .report :global(.chart__svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .report :global(.chart__svg text) {
+    font-family: var(--font-ui);
+    fill: var(--color-neutral-body);
+  }
+
+  .report :global(.chart__tick) {
+    font-size: 8.5px;
+    fill: var(--color-neutral-muted);
+  }
+
+  .report :global(.chart__svg .chart__tick) {
+    fill: var(--color-neutral-muted);
+  }
+
+  .report :global(.chart__axis-label),
+  .report :global(.chart__note),
+  .report :global(.chart__end-label) {
+    font-size: 9px;
+  }
+
+  .report :global(.chart__grid) {
+    stroke: var(--color-neutral-border);
+    stroke-width: 0.6;
+  }
+
+  .report :global(.chart__axis) {
+    stroke: var(--color-neutral-muted);
+    stroke-width: 0.8;
+  }
+
+  .report :global(.chart__line) {
+    fill: none;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  .report :global(.chart__line--dashed) {
+    stroke-dasharray: 5 3;
+  }
+
+  .report :global(.chart__series--primary) { stroke: var(--chart-primary); fill: var(--chart-primary); }
+  .report :global(.chart__series--secondary) { stroke: var(--chart-secondary); fill: var(--chart-secondary); }
+  .report :global(.chart__series--muted) { stroke: var(--chart-muted); fill: var(--chart-muted); }
+
+  .report :global(.chart__series .chart__point) {
+    stroke: none;
+  }
+
+  .report :global(.chart__series text) {
+    stroke: none;
+  }
+
+  .report :global(.chart__threshold),
+  .report :global(.chart__reference) {
+    stroke-width: 1.2;
+    stroke-dasharray: 4 3;
+  }
+
+  .report :global(.chart__threshold) { stroke: var(--chart-highlight); }
+  .report :global(.chart__reference) { stroke: var(--chart-muted); }
+
+  .report :global(.chart__bar) { fill: var(--chart-primary); }
+  .report :global(.chart__bar--highlight) { fill: var(--chart-highlight); }
+
+  .report :global(.chart-data) {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .report :global(.chart-data summary) {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-neutral-muted);
+  }
+
+  .report :global(.chart-data summary:focus-visible) {
+    outline: 2px solid var(--color-tda-teal-light);
+    outline-offset: 2px;
+  }
+
+  .report :global(.chart-data table) {
+    margin-top: var(--space-2);
+    border-collapse: collapse;
+  }
+
+  .report :global(.chart-data th),
+  .report :global(.chart-data td) {
+    text-align: left;
+    font-weight: 400;
+    padding: var(--space-1) var(--space-3) var(--space-1) 0;
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  .report :global(.chart-data thead th) {
+    font-weight: 700;
+  }
+
+  /* ══ Small screens ═══════════════════════════════════════════════════════ */
+
+  @media (max-width: 760px) {
+    .report__tiles {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .report__charts {
+      grid-template-columns: 1fr;
+    }
+
+    .report__title {
+      font-size: var(--text-3xl);
+    }
+  }
+
+  /* ══ Print: one A4 page, the source of the downloadable PDF ══════════════ */
+
+  @page {
+    size: A4;
+    margin: 12mm 15mm 16mm 15mm;
+  }
+
+  @media print {
+    :global(html),
+    :global(body) {
+      background: #fff !important;
+    }
+
+    .example-actions,
+    .report :global(.chart-data) {
+      display: none;
+    }
+
+    .example-page {
+      max-width: none;
+      padding: 0;
+    }
+
+    .report {
+      font-size: 8.6pt;
+      line-height: 1.32;
+      color: #23313f;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .report__banner {
+      font-size: 7.8pt;
+      padding: 1mm 2mm;
+      margin-bottom: 3mm;
+    }
+
+    .report__title {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 17pt;
+      color: var(--color-tda-slate);
+      margin-bottom: 1mm;
+    }
+
+    .report__subtitle {
+      font-size: 9.5pt;
+      color: var(--color-tda-teal);
+      margin-bottom: 3mm;
+    }
+
+    .report__tiles {
+      gap: 1mm;
+      margin-bottom: 3mm;
+    }
+
+    .report__tile {
+      padding: 2mm 2.5mm;
+      gap: 0.5mm;
+    }
+
+    .report__tile-value {
+      font-size: 15pt;
+    }
+
+    .report__tile-label {
+      font-size: 7.2pt;
+    }
+
+    .report__h2,
+    .report__checks-title {
+      font-family: var(--font-ui);
+      font-size: 10pt;
+      color: var(--color-tda-slate);
+      margin: 3mm 0 1.5mm 0;
+    }
+
+    .report__table th,
+    .report__table td {
+      font-size: 7.6pt;
+      padding: 0.9mm 1.4mm;
+      border: none;
+      border-bottom: 0.4pt solid #b9c8d0;
+    }
+
+    .report__table thead th {
+      border-bottom: 1pt solid var(--color-tda-slate);
+    }
+
+    .report__note {
+      font-size: 7.4pt;
+      margin-top: 1mm;
+    }
+
+    .report__charts {
+      gap: 6mm;
+      margin: 4mm 0 3mm 0;
+      break-inside: avoid;
+    }
+
+    .report :global(.chart__title) {
+      font-size: 8.5pt;
+      color: var(--color-tda-slate);
+      margin-bottom: 1mm;
+    }
+
+    .report__checks {
+      padding: 2mm 3mm;
+      break-inside: avoid;
+    }
+
+    .report__checks-title {
+      margin: 0 0 1mm 0;
+      font-size: 8pt;
+    }
+
+    .report__checks ul {
+      gap: 1mm;
+      font-size: 7.8pt;
+    }
+
+    .report__insights {
+      gap: 1mm;
+      padding-left: 5mm;
+    }
+
+    .report__closing {
+      font-size: 7.4pt;
+      margin-top: 2.5mm;
+    }
+
+    .report__print-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 4mm;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      padding-top: 1.5mm;
+      border-top: 0.8pt solid var(--color-tda-teal);
+      font-size: 7.2pt;
+      color: var(--color-neutral-muted);
+    }
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+/**
+ * ExampleLineChart.astro
+ * Static SVG line chart for the /services example reports. Rendered at build
+ * time with no client JavaScript. The SVG is one image with a text
+ * alternative (spec.alt), which Chromium carries into the tagged PDF as the
+ * figure's alt text. On screen, a "Chart data" disclosure gives the exact
+ * values as a table.
+ */
+import { formatValue, type LineChartSpec } from '@data/services-examples';
+
+interface Props {
+  spec: LineChartSpec;
+  id: string;
+}
+
+const { spec, id } = Astro.props;
+
+const W = 360;
+const H = 240;
+const m = { l: 40, r: 70, t: 14, b: spec.xLabel ? 38 : 24 };
+const pw = W - m.l - m.r;
+const ph = H - m.t - m.b;
+const n = spec.categories.length;
+
+const x = (i: number) => m.l + (n === 1 ? pw / 2 : (i * pw) / (n - 1));
+const y = (v: number) => m.t + ph - ((v - spec.yMin) / (spec.yMax - spec.yMin)) * ph;
+const path = (values: number[]) =>
+  values.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+---
+
+<figure class="chart" aria-labelledby={`${id}-title`}>
+  <figcaption class="chart__title" id={`${id}-title`}>{spec.title}</figcaption>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={spec.alt} class="chart__svg">
+    {spec.yTicks.map((t) => (
+      <g>
+        <line class="chart__grid" x1={m.l} x2={m.l + pw} y1={y(t)} y2={y(t)} />
+        <text class="chart__tick" x={m.l - 6} y={y(t)} text-anchor="end" dominant-baseline="middle">{t}</text>
+      </g>
+    ))}
+    <line class="chart__axis" x1={m.l} x2={m.l + pw} y1={m.t + ph} y2={m.t + ph} />
+    {spec.categories.map((c, i) => (
+      <text class="chart__tick" x={x(i)} y={m.t + ph + 12} text-anchor="middle">{c}</text>
+    ))}
+    <text
+      class="chart__axis-label"
+      transform={`translate(10 ${m.t + ph / 2}) rotate(-90)`}
+      text-anchor="middle"
+    >{spec.yLabel}</text>
+    {spec.xLabel && (
+      <text class="chart__axis-label" x={m.l + pw / 2} y={H - 6} text-anchor="middle">{spec.xLabel}</text>
+    )}
+    {spec.threshold && (
+      <g>
+        <line
+          class="chart__threshold"
+          x1={m.l}
+          x2={m.l + pw}
+          y1={y(spec.threshold.value)}
+          y2={y(spec.threshold.value)}
+        />
+        <text class="chart__note" x={m.l + pw} y={y(spec.threshold.value) - 5} text-anchor="end">
+          {spec.threshold.label}
+        </text>
+      </g>
+    )}
+    {spec.series.map((s) => {
+      const lx = x(n - 1) + 7;
+      const ly = y(s.values[n - 1]);
+      const offset = ((s.endLabel.length - 1) * 11) / 2;
+      return (
+        <g class={`chart__series chart__series--${s.tone}`}>
+          <path class:list={['chart__line', { 'chart__line--dashed': s.dashed }]} d={path(s.values)} />
+          {!s.dashed && s.values.map((v, i) => <circle class="chart__point" cx={x(i)} cy={y(v)} r="2.6" />)}
+          <text class="chart__end-label" x={lx} y={ly - offset} dominant-baseline="middle">
+            {s.endLabel.map((line, i) => (
+              <tspan x={lx} dy={i === 0 ? 0 : 11}>{line}</tspan>
+            ))}
+          </text>
+        </g>
+      );
+    })}
+  </svg>
+  <details class="chart-data">
+    <summary>Chart data</summary>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{spec.categoryHeading}</th>
+          {spec.series.map((s) => <th scope="col">{s.name}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {spec.categories.map((c, i) => (
+          <tr>
+            <th scope="row">{c}</th>
+            {spec.series.map((s) => <td>{formatValue(s.values[i], spec.format)}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+</figure>
