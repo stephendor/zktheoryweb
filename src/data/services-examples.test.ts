@@ -1,6 +1,7 @@
 /**
- * Checks for the /services example reports:
- *  - every committed example PDF is tagged (structure tree, marked content,
+ * Checks for the printable /services documents (example reports, free
+ * checklists, service sheets):
+ *  - every committed PDF is tagged (structure tree, marked content,
  *    document language) and exactly one page, so an untagged replacement
  *    (e.g. a ReportLab export) fails here instead of shipping;
  *  - every totals row in the data adds up from its rows.
@@ -8,6 +9,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { servicesExamples } from './services-examples';
+import { servicesDocuments } from './services-documents';
 
 function pdfProblems(pdf: string): string[] {
   const problems: string[] = [];
@@ -24,7 +26,7 @@ function parseCount(cell: string): number | null {
   return /^-?\d+$/.test(clean) ? Number(clean) : null;
 }
 
-describe('services example PDFs', () => {
+describe('services document PDFs', () => {
   it('flags an untagged PDF (negative control)', () => {
     const untagged = '%PDF-1.4\n1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n3 0 obj << /Type /Page >> endobj';
     expect(pdfProblems(untagged)).toEqual([
@@ -34,9 +36,13 @@ describe('services example PDFs', () => {
     ]);
   });
 
-  for (const example of servicesExamples) {
-    it(`${example.pdf} is a tagged single page`, () => {
-      const pdf = readFileSync(join(process.cwd(), 'public', 'services', 'examples', example.pdf)).toString('latin1');
+  it('covers all nine documents', () => {
+    expect(servicesDocuments).toHaveLength(9);
+  });
+
+  for (const doc of servicesDocuments) {
+    it(`${doc.pdf} is a tagged single page`, () => {
+      const pdf = readFileSync(join(process.cwd(), 'public', doc.pdf)).toString('latin1');
       expect(pdfProblems(pdf)).toEqual([]);
     });
   }

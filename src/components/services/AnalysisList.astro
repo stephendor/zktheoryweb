@@ -1,0 +1,25 @@
+---
+/**
+ * AnalysisList.astro
+ * The "Focused analysis" list on /services, from src/data/services-resources.ts,
+ * so the prices shown here always match the service sheets.
+ */
+import DocLinks from '@components/services/DocLinks.astro';
+import { serviceSheets } from '@data/services-resources';
+
+const priceRange = (price: string) => price.replace(/\s*fixed price$/i, '');
+---
+
+<ul class="service-analysis">
+  {serviceSheets.map((s) => (
+    <li>
+      <strong>{s.title}</strong> — {priceRange(s.price)}. {s.summary}{' '}
+      <DocLinks
+        page={`/services/sheets/${s.slug}/`}
+        pdf={`services/sheets/${s.pdf}`}
+        label="Details"
+        context={s.title}
+      />
+    </li>
+  ))}
+</ul>

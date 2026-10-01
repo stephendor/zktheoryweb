@@ -1,0 +1,189 @@
+---
+/**
+ * services/sheets/[slug].astro
+ * Service sheets for the fixed-price "Focused analysis" pieces linked from
+ * /services#analysis. Each page is also the source of its one-page PDF in
+ * public/services/sheets/ (printed by scripts/build-example-pdfs.ts).
+ * Content: src/data/services-resources.ts.
+ */
+import ServicesDocLayout from '@layouts/ServicesDocLayout.astro';
+import { serviceSheets, type ServiceSheet } from '@data/services-resources';
+
+export function getStaticPaths() {
+  return serviceSheets.map((sheet) => ({ params: { slug: sheet.slug }, props: { sheet } }));
+}
+
+interface Props {
+  sheet: ServiceSheet;
+}
+
+const { sheet } = Astro.props;
+
+/** "Your data. I work from …" → bold first sentence. */
+const [dataLead, ...dataRest] = sheet.data_statement.split('. ');
+---
+
+<ServicesDocLayout
+  title={sheet.title}
+  description={`${sheet.lead} ${sheet.price}.`}
+  pdf={`services/sheets/${sheet.pdf}`}
+  backHref="/services/#analysis"
+  backLabel="Back to services"
+  footerLeft="Stephen Dorman | Reporting and data analysis for small organisations | Dorset and remote UK"
+  footerRight="stephen@zktheory.org | zktheory.org/services"
+>
+  <p class="doc-kicker">{sheet.kicker}</p>
+  <h1 class="doc-title">{sheet.title}</h1>
+  <p class="doc-lead">{sheet.lead}</p>
+
+  <div class="sheet__pair">
+    <section aria-labelledby="for-whom">
+      <h2 class="doc-h2" id="for-whom">Who it's for</h2>
+      <ul class="doc-list">{sheet.for_whom.map((t) => <li>{t}</li>)}</ul>
+    </section>
+    <section aria-labelledby="question">
+      <h2 class="doc-h2" id="question">The question it answers</h2>
+      <p class="sheet__text">{sheet.question}</p>
+    </section>
+  </div>
+
+  <section aria-labelledby="you-get">
+    <h2 class="doc-h2" id="you-get">What you get</h2>
+    <ul class="doc-list">{sheet.what_you_get.map((t) => <li>{t}</li>)}</ul>
+  </section>
+
+  <div class="sheet__pair">
+    <section aria-labelledby="i-need">
+      <h2 class="doc-h2" id="i-need">What I need from you</h2>
+      <ul class="doc-list">{sheet.what_i_need.map((t) => <li>{t}</li>)}</ul>
+    </section>
+    <section aria-labelledby="how">
+      <h2 class="doc-h2" id="how">How it works</h2>
+      <ul class="doc-list">{sheet.how_it_works.map((t) => <li>{t}</li>)}</ul>
+    </section>
+  </div>
+
+  <section class="sheet__finding" aria-labelledby="finding">
+    <h2 class="sheet__box-title" id="finding">Example finding</h2>
+    <p class="sheet__finding-text">{sheet.example_finding}</p>
+    <p class="sheet__small">{sheet.example_note}</p>
+  </section>
+
+  <section class="sheet__price" aria-labelledby="price">
+    <h2 class="sheet__price-title" id="price">{sheet.price}</h2>
+    <p class="sheet__text">{sheet.price_note}</p>
+    <p class="sheet__text"><strong>Best time:</strong> {sheet.best_time}</p>
+  </section>
+
+  <p class="sheet__text sheet__data"><strong>{dataLead}.</strong> {dataRest.join('. ')}</p>
+
+  <p class="sheet__text">
+    <strong>Next step:</strong> email <a href={`mailto:stephen@zktheory.org?subject=${encodeURIComponent(sheet.title)}`}>stephen@zktheory.org</a>
+    with a line about what you need and when it's due. I'll reply within two working days with whether I can help and a fixed price.
+  </p>
+</ServicesDocLayout>
+
+<style>
+  .sheet__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+  }
+
+  .sheet__text {
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .sheet__text a {
+    color: var(--color-neutral-body);
+    font-weight: 700;
+    text-underline-offset: 3px;
+  }
+
+  .sheet__finding,
+  .sheet__price {
+    margin-top: var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--color-neutral-subtle);
+  }
+
+  .sheet__finding {
+    border-left: 3px solid var(--color-cl-ochre);
+  }
+
+  .sheet__box-title {
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .sheet__finding-text {
+    margin: 0 0 var(--space-2) 0;
+    font-style: italic;
+  }
+
+  .sheet__small {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  .sheet__price {
+    margin-bottom: var(--space-5);
+  }
+
+  .sheet__price-title {
+    font-family: var(--font-ui);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .sheet__price > :last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 760px) {
+    .sheet__pair {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  @media print {
+    .sheet__pair {
+      gap: 6mm;
+    }
+
+    .sheet__text {
+      margin-bottom: 2mm;
+    }
+
+    .sheet__finding,
+    .sheet__price {
+      margin-top: 4mm;
+      padding: 2.5mm 4mm;
+      break-inside: avoid;
+    }
+
+    .sheet__price {
+      margin-bottom: 3mm;
+    }
+
+    .sheet__box-title {
+      font-size: 8.6pt;
+      margin-bottom: 1.5mm;
+    }
+
+    .sheet__small {
+      font-size: 7.4pt;
+    }
+
+    .sheet__price-title {
+      font-size: 14pt;
+      color: var(--color-tda-slate);
+      margin-bottom: 1.5mm;
+    }
+  }
+</style>

@@ -45,6 +45,12 @@ const PAGES = [
   { name: 'Example: charity',  url: '/services/examples/charity/'                                    },
   { name: 'Example: training', url: '/services/examples/training-provider/'                          },
   { name: 'Example: AP',       url: '/services/examples/alternative-provision/'                      },
+  { name: 'Checklist: funder', url: '/services/resources/funder-trustee-reporting-checklist/'         },
+  { name: 'Checklist: ILR',    url: '/services/resources/apprenticeship-pre-submission-checklist/'    },
+  { name: 'Sheet: impact',     url: '/services/sheets/impact-evidence-pack/'                          },
+  { name: 'Sheet: survey',     url: '/services/sheets/survey-analysis/'                               },
+  { name: 'Sheet: SAR',        url: '/services/sheets/sar-data-pack/'                                 },
+  { name: 'Sheet: outcomes',   url: '/services/sheets/commissioner-outcome-report/'                   },
 ] as const;
 
 for (const { name, url } of PAGES) {
