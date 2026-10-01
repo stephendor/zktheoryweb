@@ -373,7 +373,7 @@ export const servicesExamples: ServicesExample[] = [
       items: [
         'Placements P-07, P-12 and P-19: attendance below 70% for three consecutive weeks. For discussion at review — no automatic action taken.',
         'Placement P-23: attendance fell from 92% to 61% in the last two weeks. Earlier than the three-week rule, flagged for a conversation.',
-        'Registers missing for 2 sessions (Hillside School, 9 and 16 Oct). Hillside has 8 more sessions invoiced than delivered — resolve before the invoice goes out.',
+        'Registers missing for 2 group sessions at Hillside School (9 and 16 Oct), covering 8 placement sessions. Hillside has 8 more sessions invoiced than delivered — resolve before the invoice goes out.',
       ],
     },
     insights: {
@@ -381,7 +381,7 @@ export const servicesExamples: ServicesExample[] = [
       items: [
         'Attendance has drifted below the 80% threshold since late September. The fall is concentrated in four placements, not spread across the provision.',
         'School referrals that arrive with a transition plan sustain attendance far more often (78%) than those without (52%). That is a concrete ask to put to referring schools.',
-        'Invoices match delivery for two of three commissioners. The Hillside variance is explained by the missing registers — fixing them keeps the invoice defensible.',
+        'Invoices match delivery for two of three commissioners. The Hillside variance is the 8 placement sessions on the two missing registers — fixing them keeps the invoice defensible.',
       ],
     },
     closing:
