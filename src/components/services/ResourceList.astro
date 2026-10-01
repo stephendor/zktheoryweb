@@ -1,0 +1,20 @@
+---
+/**
+ * ResourceList.astro
+ * The "Free resources" list on /services, from src/data/services-resources.ts.
+ */
+import DocLinks from '@components/services/DocLinks.astro';
+import { checklists } from '@data/services-resources';
+---
+
+<ul class="service-examples">
+  {checklists.map((c) => (
+    <li>
+      <DocLinks
+        page={`/services/resources/${c.slug}/`}
+        pdf={`services/resources/${c.pdf}`}
+        label={c.linkLabel}
+      />: {c.summary}
+    </li>
+  ))}
+</ul>

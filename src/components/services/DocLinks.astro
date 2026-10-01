@@ -1,0 +1,31 @@
+---
+/**
+ * DocLinks.astro
+ * "<page link> · PDF, NN KB" — the link pair used on /services for every
+ * printable document (examples, checklists, service sheets). The PDF link
+ * appears only when the file exists under public/, so no broken link ships.
+ */
+import { existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props {
+  /** HTML page, e.g. "/services/resources/x/". */
+  page: string;
+  /** PDF path under public/, e.g. "services/resources/x.pdf". */
+  pdf: string;
+  label: string;
+  /** Screen-reader context appended to both links when `label` is generic. */
+  context?: string;
+}
+
+const { page, pdf, label, context } = Astro.props;
+const path = join(process.cwd(), 'public', pdf);
+const sizeKb = existsSync(path) ? Math.max(1, Math.round(statSync(path).size / 1024)) : 0;
+const srSuffix = context ?? label;
+---
+
+<a href={page}>{label}{context && <span class="sr-only"> ({context})</span>}</a>{sizeKb > 0 && (
+  <span class="service-example__pdf">
+    {' '}· <a href={`/${pdf}`}>PDF, {sizeKb} KB<span class="sr-only"> ({srSuffix})</span></a>
+  </span>
+)}

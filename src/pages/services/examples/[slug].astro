@@ -2,14 +2,11 @@
 /**
  * services/examples/[slug].astro
  * Accessible HTML version of each synthetic example report on /services.
- * The page is also the source of the downloadable PDF: the @media print
- * rules below lay it out as one A4 page, and scripts/build-example-pdfs.ts
- * prints it to a tagged PDF in public/services/examples/.
- * Content lives in src/data/services-examples.ts.
+ * ServicesDocLayout supplies the page shell and the one-page A4 print view
+ * that scripts/build-example-pdfs.ts prints to a tagged PDF in
+ * public/services/examples/. Content lives in src/data/services-examples.ts.
  */
-import { existsSync, statSync } from 'node:fs';
-import { join } from 'node:path';
-import BaseLayout from '@layouts/BaseLayout.astro';
+import ServicesDocLayout from '@layouts/ServicesDocLayout.astro';
 import ExampleLineChart from '@components/services/ExampleLineChart.astro';
 import ExampleBarChart from '@components/services/ExampleBarChart.astro';
 import { servicesExamples, type ServicesExample } from '@data/services-examples';
@@ -23,19 +20,19 @@ interface Props {
 }
 
 const { example } = Astro.props;
-const pdfPath = join(process.cwd(), 'public', 'services', 'examples', example.pdf);
-const pdfKb = existsSync(pdfPath) ? Math.max(1, Math.round(statSync(pdfPath).size / 1024)) : 0;
 const [first, second] = example.charts;
 ---
 
-<BaseLayout title={`Example ${example.name.toLowerCase()}`} description={example.description}>
-  <div class="container-viz example-page" data-pagefind-ignore="all">
-    <nav class="example-actions" aria-label="Example report">
-      <a href="/services/#see-an-example">← Back to services</a>
-      {pdfKb > 0 && <a href={`/services/examples/${example.pdf}`}>Download PDF ({pdfKb} KB)</a>}
-    </nav>
-
-    <article class="report">
+<ServicesDocLayout
+  title={`Example ${example.name.toLowerCase()}`}
+  description={example.description}
+  pdf={`services/examples/${example.pdf}`}
+  backHref="/services/#see-an-example"
+  backLabel="Back to services"
+  footerLeft="Stephen Dorman | Reporting and data analysis for small organisations | stephen@zktheory.org | zktheory.org/services"
+  footerRight="Synthetic example"
+>
+    <div class="report">
       <p class="report__banner">EXAMPLE ONLY — every organisation, person and figure on this page is made up.</p>
 
       <h1 class="report__title">{example.heading}</h1>
@@ -98,44 +95,10 @@ const [first, second] = example.charts;
       </ol>
 
       <p class="report__closing"><strong>What produces this.</strong> {example.closing}</p>
-
-      <p class="report__print-footer">
-        <span>Stephen Dorman | Reporting and data analysis for small organisations | stephen@zktheory.org | zktheory.org/services</span>
-        <span>Synthetic example</span>
-      </p>
-    </article>
-  </div>
-</BaseLayout>
+    </div>
+</ServicesDocLayout>
 
 <style>
-  /* ══ Page shell (screen) ═════════════════════════════════════════════════ */
-
-  .example-page {
-    padding-top: var(--space-7);
-    padding-bottom: var(--space-12);
-  }
-
-  .example-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-4);
-    margin-bottom: var(--space-6);
-    font-family: var(--font-ui);
-    font-size: var(--text-sm);
-    font-weight: 600;
-  }
-
-  .example-actions a {
-    color: var(--color-neutral-body);
-    text-underline-offset: 3px;
-  }
-
-  .example-actions a:focus-visible {
-    outline: 2px solid var(--color-tda-teal-light);
-    outline-offset: 2px;
-  }
-
   /* Chart colours: inherited by the chart components via custom properties. */
   .report {
     --chart-primary: var(--color-tda-slate);
@@ -144,11 +107,6 @@ const [first, second] = example.charts;
     --chart-muted: var(--color-neutral-muted);
     --report-accent: var(--color-tda-slate);
     --report-check: var(--color-cl-red);
-
-    font-family: var(--font-ui);
-    color: var(--color-neutral-body);
-    font-size: var(--text-base);
-    line-height: var(--leading-normal);
   }
 
   @media screen {
@@ -312,10 +270,6 @@ const [first, second] = example.charts;
     color: var(--color-neutral-body);
   }
 
-  .report__print-footer {
-    display: none;
-  }
-
   /* ══ Charts (shared by ExampleLineChart and ExampleBarChart) ═════════════ */
 
   .report :global(.chart) {
@@ -448,35 +402,11 @@ const [first, second] = example.charts;
     }
   }
 
-  /* ══ Print: one A4 page, the source of the downloadable PDF ══════════════ */
-
-  @page {
-    size: A4;
-    margin: 12mm 15mm 16mm 15mm;
-  }
+  /* ══ Print (page setup and footer come from ServicesDocLayout) ═══════════ */
 
   @media print {
-    :global(html),
-    :global(body) {
-      background: #fff !important;
-    }
-
-    .example-actions,
     .report :global(.chart-data) {
       display: none;
-    }
-
-    .example-page {
-      max-width: none;
-      padding: 0;
-    }
-
-    .report {
-      font-size: 8.6pt;
-      line-height: 1.32;
-      color: #23313f;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
     }
 
     .report__banner {
@@ -579,19 +509,5 @@ const [first, second] = example.charts;
       margin-top: 2.5mm;
     }
 
-    .report__print-footer {
-      display: flex;
-      justify-content: space-between;
-      gap: 4mm;
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: 0;
-      padding-top: 1.5mm;
-      border-top: 0.8pt solid var(--color-tda-teal);
-      font-size: 7.2pt;
-      color: var(--color-neutral-muted);
-    }
   }
 </style>

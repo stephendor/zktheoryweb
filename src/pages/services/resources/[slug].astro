@@ -1,0 +1,190 @@
+---
+/**
+ * services/resources/[slug].astro
+ * Free checklists linked from /services#resources. Each page is also the
+ * source of its one-page PDF in public/services/resources/ (printed by
+ * scripts/build-example-pdfs.ts). Content: src/data/services-resources.ts.
+ *
+ * Items are one ordered list per section, numbered continuously, each with
+ * an empty tick box drawn in CSS so it prints as a box to tick by hand.
+ */
+import ServicesDocLayout from '@layouts/ServicesDocLayout.astro';
+import { checklists, type Checklist } from '@data/services-resources';
+
+export function getStaticPaths() {
+  return checklists.map((checklist) => ({ params: { slug: checklist.slug }, props: { checklist } }));
+}
+
+interface Props {
+  checklist: Checklist;
+}
+
+const { checklist } = Astro.props;
+const starts = checklist.sections.map((_, i) =>
+  checklist.sections.slice(0, i).reduce((n, s) => n + s.items.length, 1)
+);
+---
+
+<ServicesDocLayout
+  title={checklist.title}
+  description={`${checklist.lead} A free one-page checklist; no sign-up.`}
+  pdf={`services/resources/${checklist.pdf}`}
+  backHref="/services/#resources"
+  backLabel="Back to services"
+  footerLeft="Free to use and share. Stephen Dorman | Reporting and data analysis for small organisations | stephen@zktheory.org | zktheory.org/services"
+>
+  <p class="doc-kicker">{checklist.kicker}</p>
+  <h1 class="doc-title">{checklist.title}</h1>
+  <p class="doc-lead">{checklist.lead}</p>
+
+  <div class="checklist">
+    {checklist.sections.map((section, i) => (
+      <section class="checklist__section" aria-labelledby={`section-${i}`}>
+        <h2 class="checklist__heading" id={`section-${i}`}>{section.heading}</h2>
+        <ol class="checklist__items" start={starts[i]}>
+          {section.items.map((item) => (
+            <li>
+              <strong>{item.label}</strong> {item.detail}
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+
+  <div class="checklist__after">
+    <section aria-labelledby="score-heading">
+      <h2 class="doc-h2" id="score-heading">How did you score?</h2>
+      <ul class="checklist__scores">
+        {checklist.scoring.map((s) => (
+          <li><strong>{s.band}</strong> {s.meaning}</li>
+        ))}
+      </ul>
+    </section>
+    <section aria-labelledby="questions-heading">
+      <h2 class="doc-h2" id="questions-heading">Three questions for your next team meeting</h2>
+      <ol class="doc-list">
+        {checklist.questions.map((q) => <li>{q}</li>)}
+      </ol>
+    </section>
+  </div>
+
+  <p class="checklist__note">{checklist.note}</p>
+</ServicesDocLayout>
+
+<style>
+  .checklist__section {
+    margin-bottom: var(--space-4);
+  }
+
+  .checklist__heading {
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-neutral-subtle);
+    border-left: 3px solid var(--color-tda-teal);
+  }
+
+  .checklist__items {
+    list-style: decimal inside; /* number follows the tick box */
+    margin: 0;
+    padding: 0;
+  }
+
+  .checklist__items li {
+    position: relative;
+    padding: var(--space-2) var(--space-3) var(--space-2) 2.4rem;
+    border-bottom: 1px solid var(--color-neutral-border);
+  }
+
+  /* Empty tick box: decorative, drawn so it prints as a box to tick. */
+  .checklist__items li::before {
+    content: '';
+    position: absolute;
+    left: var(--space-3);
+    top: 0.7em;
+    width: 0.9em;
+    height: 0.9em;
+    border: 1.5px solid var(--color-neutral-muted);
+    border-radius: 2px;
+  }
+
+  .checklist__items li::marker {
+    font-weight: 700;
+  }
+
+  .checklist__after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    margin-top: var(--space-5);
+    padding: var(--space-2) var(--space-5) var(--space-5);
+    background-color: var(--color-neutral-subtle);
+  }
+
+  .checklist__scores {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .checklist__note {
+    margin: var(--space-5) 0 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-neutral-muted);
+  }
+
+  @media (max-width: 760px) {
+    .checklist__after {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  @media print {
+    .checklist__section {
+      margin-bottom: 0;
+      break-inside: avoid;
+    }
+
+    .checklist__heading {
+      font-size: 8.6pt;
+      padding: 1mm 2mm;
+      margin-top: 1.5mm;
+    }
+
+    .checklist__items li {
+      padding: 1.1mm 2mm 1.1mm 8mm;
+      border-bottom: 0.4pt solid #b9c8d0;
+    }
+
+    .checklist__items li::before {
+      left: 2mm;
+      top: 1.5mm;
+      width: 3mm;
+      height: 3mm;
+      border-width: 0.8pt;
+    }
+
+    .checklist__after {
+      gap: 6mm;
+      margin-top: 4mm;
+      padding: 1mm 4mm 3mm;
+      break-inside: avoid;
+    }
+
+    .checklist__scores {
+      gap: 1mm;
+    }
+
+    .checklist__note {
+      font-size: 7.4pt;
+      margin-top: 3mm;
+    }
+  }
+</style>

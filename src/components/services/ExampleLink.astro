@@ -1,13 +1,11 @@
 ---
 /**
  * ExampleLink.astro
- * List item for one example report on /services: a link to its accessible
- * HTML page, plus a link to the PDF printed from that page when the PDF
- * exists in public/services/examples/ (so no broken link ships).
+ * List item for one example report on /services: its accessible HTML page
+ * and, when it exists, the PDF printed from it.
  * Content comes from src/data/services-examples.ts.
  */
-import { existsSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import DocLinks from '@components/services/DocLinks.astro';
 import { servicesExamples } from '@data/services-examples';
 
 interface Props {
@@ -16,16 +14,12 @@ interface Props {
 
 const example = servicesExamples.find((e) => e.slug === Astro.props.slug);
 if (!example) throw new Error(`ExampleLink: no services example with slug "${Astro.props.slug}"`);
-
-const path = join(process.cwd(), 'public', 'services', 'examples', example.pdf);
-const sizeKb = existsSync(path) ? Math.max(1, Math.round(statSync(path).size / 1024)) : 0;
 ---
 
 <li>
-  <a href={`/services/examples/${example.slug}/`}>{example.name}</a>
-  {sizeKb > 0 && (
-    <span class="service-example__pdf">
-      {' '}· <a href={`/services/examples/${example.pdf}`}>PDF, {sizeKb} KB<span class="sr-only"> ({example.name})</span></a>
-    </span>
-  )}
+  <DocLinks
+    page={`/services/examples/${example.slug}/`}
+    pdf={`services/examples/${example.pdf}`}
+    label={example.name}
+  />
 </li>

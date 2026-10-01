@@ -1,0 +1,228 @@
+---
+/**
+ * ServicesDocLayout.astro
+ * Shell for the printable one-page documents linked from /services:
+ * example reports, free checklists and service sheets.
+ *
+ * On screen: the normal site page with a back link and a "Download PDF" link.
+ * In print: one A4 page with a footer line, no site chrome. That print view
+ * is what scripts/build-example-pdfs.ts turns into each tagged PDF, so the
+ * PDF and the HTML page always carry the same content.
+ *
+ * Shared document typography (.doc-kicker, .doc-title, .doc-lead, .doc-h2,
+ * .doc-list) lives here; each page adds styles for its own blocks.
+ */
+import { existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** PDF path under public/, e.g. "services/resources/x.pdf". */
+  pdf: string;
+  backHref: string;
+  backLabel: string;
+  footerLeft: string;
+  footerRight?: string;
+}
+
+const { title, description, pdf, backHref, backLabel, footerLeft, footerRight } = Astro.props;
+const pdfPath = join(process.cwd(), 'public', pdf);
+const pdfKb = existsSync(pdfPath) ? Math.max(1, Math.round(statSync(pdfPath).size / 1024)) : 0;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container-viz doc-page" data-pagefind-ignore="all">
+    <nav class="doc-actions" aria-label="Document">
+      <a href={backHref}>← {backLabel}</a>
+      {pdfKb > 0 && <a href={`/${pdf}`}>Download PDF ({pdfKb} KB)</a>}
+    </nav>
+
+    <article class="doc">
+      <slot />
+
+      <p class="doc__print-footer">
+        <span>{footerLeft}</span>
+        {footerRight && <span>{footerRight}</span>}
+      </p>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ══ Screen ══════════════════════════════════════════════════════════════ */
+
+  .doc-page {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-12);
+  }
+
+  .doc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .doc-actions a {
+    color: var(--color-neutral-body);
+    text-underline-offset: 3px;
+  }
+
+  .doc-actions a:focus-visible,
+  .doc :global(a:focus-visible) {
+    outline: 2px solid var(--color-tda-teal-light);
+    outline-offset: 2px;
+  }
+
+  .doc {
+    --doc-accent: var(--color-tda-slate);
+    --doc-accent-2: var(--color-tda-teal);
+
+    font-family: var(--font-ui);
+    color: var(--color-neutral-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+
+  @media screen {
+    :global([data-theme='dark']) .doc {
+      --doc-accent: var(--color-tda-slate-light);
+      --doc-accent-2: var(--color-tda-teal-light);
+    }
+  }
+
+  .doc :global(.doc-kicker) {
+    margin: 0 0 var(--space-2) 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--doc-accent-2);
+  }
+
+  .doc :global(.doc-title) {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .doc :global(.doc-lead) {
+    margin: 0 0 var(--space-6) 0;
+    font-size: var(--text-lg);
+    color: var(--color-neutral-muted);
+  }
+
+  .doc :global(.doc-h2) {
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: var(--space-6) 0 var(--space-2) 0;
+  }
+
+  .doc :global(.doc-list) {
+    list-style: disc; /* Tailwind preflight removes list markers */
+    margin: 0;
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .doc :global(ol.doc-list) {
+    list-style: decimal;
+  }
+
+  .doc__print-footer {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .doc :global(.doc-title) {
+      font-size: var(--text-3xl);
+    }
+  }
+
+  /* ══ Print: one A4 page, the source of the PDF ═══════════════════════════ */
+
+  @page {
+    size: A4;
+    margin: 12mm 15mm 16mm 15mm;
+  }
+
+  @media print {
+    :global(html),
+    :global(body) {
+      background: #fff !important;
+    }
+
+    .doc-actions {
+      display: none;
+    }
+
+    .doc-page {
+      max-width: none;
+      padding: 0;
+    }
+
+    .doc {
+      font-size: 8.6pt;
+      line-height: 1.32;
+      color: #23313f;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .doc :global(.doc-kicker) {
+      font-size: 7.6pt;
+      margin-bottom: 1mm;
+    }
+
+    .doc :global(.doc-title) {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 19pt;
+      color: var(--color-tda-slate);
+      margin-bottom: 1mm;
+    }
+
+    .doc :global(.doc-lead) {
+      font-size: 9.5pt;
+      color: var(--color-tda-teal);
+      margin-bottom: 3mm;
+    }
+
+    .doc :global(.doc-h2) {
+      font-family: var(--font-ui);
+      font-size: 10pt;
+      color: var(--color-tda-slate);
+      margin: 3mm 0 1.5mm 0;
+    }
+
+    .doc :global(.doc-list) {
+      gap: 0.6mm;
+      padding-left: 4mm;
+    }
+
+    .doc__print-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 4mm;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      padding-top: 1.5mm;
+      border-top: 0.8pt solid var(--color-tda-teal);
+      font-size: 7.2pt;
+      color: var(--color-neutral-muted);
+    }
+  }
+</style>
