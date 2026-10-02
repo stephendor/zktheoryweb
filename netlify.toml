@@ -26,6 +26,8 @@
 #     SiteNav.astro, StickyToC.astro, glossary/index.astro, reading-lists/index.astro,
 #     learn level-filter pages, or any Astro/Vite/pagefind upgrade (the minifier
 #     changes between Vite majors, which changes the emitted script bodies).
+#     `npm run build` runs scripts/check-csp-hashes.mjs after the Astro build and
+#     fails the deploy if any emitted inline-script hash is missing from this list.
 #   style-src: 'unsafe-inline' required — rehype-katex emits element-level style="" attributes.
 #   font-src: data: required — KaTeX bundles fonts as data: URIs in the compiled CSS.
 #   connect-src: 'self' — Pagefind fetch() calls load index chunks from same origin.
