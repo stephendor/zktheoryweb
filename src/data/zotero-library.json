@@ -1,5 +1,5 @@
 {
-  "version": 682,
+  "version": 1806,
   "items": [
     {
       "key": "692VLFHW",
@@ -1637,7 +1637,7 @@
     },
     {
       "key": "2NIUX3DP",
-      "version": 274,
+      "version": 1776,
       "itemType": "journalArticle",
       "title": "The Problem of Alien Immigration into Great Britain, Illustrated by an Examination of Russian and Polish Jewish Children",
       "creators": [
@@ -1668,7 +1668,7 @@
       "seriesText": "",
       "journalAbbreviation": "",
       "DOI": "10.1111/j.1469-1809.1925.tb02037.x",
-      "citationKey": "pearson1925problemalienimmigration",
+      "citationKey": "pearson1925problemalienimmigrationi",
       "url": "https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1925.tb02037.x",
       "accessDate": "2026-03-29T13:48:16Z",
       "PMID": "",
@@ -1688,7 +1688,7 @@
       ],
       "relations": {},
       "dateAdded": "2026-03-29T13:48:16Z",
-      "dateModified": "2026-03-29T13:48:16Z"
+      "dateModified": "2026-08-10T02:42:11Z"
     },
     {
       "key": "73QU2LH7",
@@ -2710,7 +2710,7 @@
     },
     {
       "key": "5MTB4JCR",
-      "version": 221,
+      "version": 1672,
       "itemType": "book",
       "title": "William Beveridge: a biography",
       "creators": [
@@ -2736,7 +2736,7 @@
       "numPages": "511",
       "ISBN": "978-0-19-820685-9",
       "DOI": "",
-      "citationKey": "harrisWilliamBeveridgeBiography1997",
+      "citationKey": "harris1997beveridge",
       "url": "",
       "accessDate": "",
       "ISSN": "",
@@ -2771,7 +2771,7 @@
       ],
       "relations": {},
       "dateAdded": "2026-03-26T18:19:51Z",
-      "dateModified": "2026-03-26T18:35:34Z"
+      "dateModified": "2026-08-09T18:55:34Z"
     },
     {
       "key": "WULXDKWD",
@@ -2888,7 +2888,7 @@
     },
     {
       "key": "W4XXAFAW",
-      "version": 218,
+      "version": 1674,
       "itemType": "book",
       "title": "Seeing like a state: how certain schemes to improve the human condition have failed",
       "creators": [
@@ -2914,7 +2914,7 @@
       "numPages": "445",
       "ISBN": "978-0-300-07815-2 978-0-300-24675-9",
       "DOI": "",
-      "citationKey": "scottSeeingStateHow2020",
+      "citationKey": "scott1998seeing",
       "url": "",
       "accessDate": "",
       "ISSN": "",
@@ -2932,11 +2932,11 @@
       ],
       "relations": {},
       "dateAdded": "2026-03-26T18:16:59Z",
-      "dateModified": "2026-03-26T18:34:59Z"
+      "dateModified": "2026-08-09T18:56:00Z"
     },
     {
       "key": "KZQA9GZ6",
-      "version": 217,
+      "version": 1673,
       "itemType": "book",
       "title": "Trust in numbers: the pursuit of objectivity in science and public life",
       "creators": [
@@ -2962,7 +2962,7 @@
       "numPages": "310",
       "ISBN": "978-0-691-20841-1",
       "DOI": "",
-      "citationKey": "porterTrustNumbersPursuit2020",
+      "citationKey": "porter1995trust",
       "url": "",
       "accessDate": "",
       "ISSN": "",
@@ -3005,7 +3005,7 @@
       ],
       "relations": {},
       "dateAdded": "2026-03-26T18:17:56Z",
-      "dateModified": "2026-03-26T18:34:30Z"
+      "dateModified": "2026-08-09T18:55:46Z"
     },
     {
       "key": "GQEW9SVY",
@@ -12005,6 +12005,3482 @@
       "relations": {},
       "dateAdded": "2026-04-05T09:37:35Z",
       "dateModified": "2026-04-05T09:37:35Z"
+    },
+    {
+      "key": "BBDHZYP9",
+      "version": 1806,
+      "itemType": "book",
+      "title": "Measuring the Mind: Education and Psychology in England c.1860–c.1990",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Adrian",
+          "lastName": "Wooldridge"
+        }
+      ],
+      "abstractNote": "The central claim of Measuring the Mind is that, contrary to popular opinion, the psychologists who dominated educational policy-making between the wars were educational progressives and political radicals. They argued that education should reflect the requirements of children rather than the convenience of adults, and regarded intelligence testing as an instrument of child-centred education. These psychologists owed their political inspiration to the meritocratic ideal and lost popularity with the waning of this ideal after the war. Four main themes dominate the discussion: the emergence of educational psychology as a distinct discipline; the recent history of ideas about children's mental development; the role of experts in formulating educational policy; and the rise and fall of the measurement of merit.",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "1",
+      "date": "1994-11-10",
+      "publisher": "Cambridge University Press",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "978-0-521-02618-5 978-0-521-39515-1 978-0-511-65999-7",
+      "DOI": "10.1017/CBO9780511659997",
+      "citationKey": "wooldridge1994measuring",
+      "url": "https://www.cambridge.org/core/product/identifier/9780511659997/type/book",
+      "accessDate": "2026-08-28T10:59:16Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Measuring the Mind",
+      "language": "",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "https://www.cambridge.org/core/terms",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:59:16Z",
+      "dateModified": "2026-08-28T10:59:16Z"
+    },
+    {
+      "key": "2N8L7LAW",
+      "version": 1801,
+      "parentItem": "XMNSSAAR",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-28T10:57:37Z",
+      "url": "https://www.herasight.com/blog/pgt-p",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "pgt-p.html",
+      "md5": "547ab189932dc66a822db9e076178e6f",
+      "mtime": 1787914657070,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:57:37Z",
+      "dateModified": "2026-08-28T10:57:37Z"
+    },
+    {
+      "key": "XMNSSAAR",
+      "version": 1799,
+      "itemType": "webpage",
+      "title": "What Is PGT-P? Polygenic Embryo Screening Explained",
+      "creators": [],
+      "abstractNote": "PGT-P (preimplantation genetic testing for polygenic conditions) is a genetic test that evaluates embryos for risk of common diseases using polygenic risk scores.",
+      "websiteTitle": "Herasight",
+      "websiteType": "",
+      "date": "2026-02-18T00:00:00.000Z",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "2026what",
+      "url": "https://www.herasight.com/blog/pgt-p",
+      "accessDate": "2026-08-28T10:57:32Z",
+      "shortTitle": "What Is PGT-P?",
+      "language": "en",
+      "rights": "",
+      "extra": "Section: IVF & PGT guides",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:57:32Z",
+      "dateModified": "2026-08-28T10:57:32Z"
+    },
+    {
+      "key": "3V4WAR2Y",
+      "version": 1798,
+      "parentItem": "HZ95P7TS",
+      "itemType": "attachment",
+      "linkMode": "linked_url",
+      "title": "Google Books Link",
+      "accessDate": "2026-08-28T10:57:16Z",
+      "url": "https://books.google.co.uk/books?id=s4CKqxi6yWIC",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:57:16Z",
+      "dateModified": "2026-08-28T10:57:16Z"
+    },
+    {
+      "key": "HZ95P7TS",
+      "version": 1797,
+      "itemType": "book",
+      "title": "The Bell Curve: Intelligence and Class Structure in American Life",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Richard J.",
+          "lastName": "Herrnstein"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Charles",
+          "lastName": "Murray"
+        }
+      ],
+      "abstractNote": "The controversial book linking intelligence to class and race in modern society, and what public policy can do to mitigate socioeconomic differences in IQ, birth rate, crime, fertility, welfare, and poverty.",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "2010-05-11",
+      "publisher": "Simon and Schuster",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "916",
+      "ISBN": "978-1-4391-3491-7",
+      "DOI": "",
+      "citationKey": "herrnstein2010bell",
+      "url": "",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "The Bell Curve",
+      "language": "en",
+      "libraryCatalog": "Google Books",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Google-Books-ID: s4CKqxi6yWIC",
+      "tags": [
+        {
+          "tag": "History / General",
+          "type": 1
+        },
+        {
+          "tag": "Social Science / Demography",
+          "type": 1
+        },
+        {
+          "tag": "Social Science / General",
+          "type": 1
+        },
+        {
+          "tag": "Social Science / Social Classes & Economic Disparity",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:57:16Z",
+      "dateModified": "2026-08-28T10:57:16Z"
+    },
+    {
+      "key": "BR4GN82D",
+      "version": 1796,
+      "itemType": "book",
+      "title": "Cyril Burt, psychologist",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "L. S. (Leslie Spencer)",
+          "lastName": "Hearnshaw"
+        },
+        {
+          "creatorType": "contributor",
+          "name": "Internet Archive"
+        }
+      ],
+      "abstractNote": "Includes indexes; Bibliography: p. [353]-360",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "1979",
+      "publisher": "Ithaca, N.Y. : Cornell University Press",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "402",
+      "ISBN": "978-0-8014-1244-8",
+      "DOI": "",
+      "citationKey": "hearnshaw1979cyril",
+      "url": "http://archive.org/details/cyrilburtpsychol00lshe",
+      "accessDate": "2026-08-28T10:54:50Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "eng",
+      "libraryCatalog": "Internet Archive",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [
+        {
+          "tag": "Burt, Cyril Lodowic, Sir, 1883-1971",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:54:50Z",
+      "dateModified": "2026-08-28T10:54:50Z"
+    },
+    {
+      "key": "52EXEBDL",
+      "version": 1791,
+      "parentItem": "G6TZ4Q8U",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Cyril Burt, Psychologist: Amazon.co.uk: Hearnshaw, Leslie Spenser: 9780801412448: Books",
+      "accessDate": "2026-08-28T10:52:47Z",
+      "url": "https://www.amazon.co.uk/Cyril-Psychologist-Leslie-Spenser-Hearnshaw/dp/0801412447",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "0801412447.html",
+      "md5": "227162163c9ab65ea825623ebfb16c2d",
+      "mtime": 1787914367056,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:52:47Z",
+      "dateModified": "2026-08-28T10:52:47Z"
+    },
+    {
+      "key": "9DLAU9T2",
+      "version": 1788,
+      "parentItem": "TSHWTMNG",
+      "itemType": "attachment",
+      "linkMode": "linked_url",
+      "title": "Google Books Link",
+      "accessDate": "2026-08-28T10:52:01Z",
+      "url": "https://books.google.co.uk/books?id=O2uO2JkRelMC",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:52:01Z",
+      "dateModified": "2026-08-28T10:52:01Z"
+    },
+    {
+      "key": "TSHWTMNG",
+      "version": 1787,
+      "itemType": "book",
+      "title": "The Science and Politics of I.Q.",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Leon J.",
+          "lastName": "Kamin"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "1974",
+      "publisher": "L. Erlbaum Associates",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "198",
+      "ISBN": "978-0-470-45574-6",
+      "DOI": "",
+      "citationKey": "kamin1974science",
+      "url": "",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Google Books",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Google-Books-ID: O2uO2JkRelMC",
+      "tags": [
+        {
+          "tag": "Education / Educational Psychology",
+          "type": 1
+        },
+        {
+          "tag": "Education / General",
+          "type": 1
+        },
+        {
+          "tag": "Psychology / Cognitive Psychology & Cognition",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:52:01Z",
+      "dateModified": "2026-08-28T10:52:01Z"
+    },
+    {
+      "key": "EAJJ3LWN",
+      "version": 1786,
+      "itemType": "journalArticle",
+      "title": "Use of preimplantation genetic testing for polygenic disorders (PGT-P): an Ethics Committee opinion",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Sigal",
+          "lastName": "Klipstein"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Sina",
+          "lastName": "Abhari"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Paula",
+          "lastName": "Amato"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Aishwarya",
+          "lastName": "Arjunan"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Tolulope",
+          "lastName": "Bakare"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Kim",
+          "lastName": "Bergman"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Michelle",
+          "lastName": "Bayefsky"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Zeki",
+          "lastName": "Beyhan"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Katherine",
+          "lastName": "Cameron"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Susan",
+          "lastName": "Crockin"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jessica",
+          "lastName": "Goldstein"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Insoo",
+          "lastName": "Hyun"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jennifer",
+          "lastName": "Kawwass"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jeanne",
+          "lastName": "O’Brien"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Torie",
+          "lastName": "Comeaux Plowden"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Gwendolyn",
+          "lastName": "Quinn"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Robert",
+          "lastName": "Rebar"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jared",
+          "lastName": "Robins"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Chevis N.",
+          "lastName": "Shannon"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Sean",
+          "lastName": "Tipton"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Clarisa",
+          "lastName": "Gracia"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Robert",
+          "lastName": "Brannigan"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Rebecca",
+          "lastName": "Flyckt"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Karl",
+          "lastName": "Hansen"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Tarun",
+          "lastName": "Jain"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Suleena",
+          "lastName": "Kalra"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Bruce",
+          "lastName": "Pier"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Torie C.",
+          "lastName": "Plowden"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Denny",
+          "lastName": "Sakkas"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Suneeta",
+          "lastName": "Senapati"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Ryan",
+          "lastName": "Smith"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Mark",
+          "lastName": "Trolice"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "Fertility and Sterility",
+      "publisher": "",
+      "place": "",
+      "date": "01/2026",
+      "volume": "125",
+      "issue": "1",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "24-30",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "Fertility and Sterility",
+      "DOI": "10.1016/j.fertnstert.2025.10.023",
+      "citationKey": "klipstein2026use",
+      "url": "https://linkinghub.elsevier.com/retrieve/pii/S0015028225020059",
+      "accessDate": "2026-08-28T10:50:20Z",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "00150282",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Use of preimplantation genetic testing for polygenic disorders (PGT-P)",
+      "language": "en",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:50:20Z",
+      "dateModified": "2026-08-28T10:50:20Z"
+    },
+    {
+      "key": "PJ8G7MAJ",
+      "version": 1785,
+      "itemType": "book",
+      "title": "Inequality by Design: Cracking the Bell Curve Myth",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Claude S.",
+          "lastName": "Fischer"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Michael",
+          "lastName": "Hout"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Martín Sánchez",
+          "lastName": "Jankowski"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Samuel R.",
+          "lastName": "Lucas"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Ann",
+          "lastName": "Swidler"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Kim",
+          "lastName": "Voss"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "2020-11-10",
+      "publisher": "Princeton University Press",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "978-0-691-22150-2",
+      "DOI": "10.2307/j.ctv173f0f1",
+      "citationKey": "fischer2020inequality",
+      "url": "http://www.jstor.org/stable/10.2307/j.ctv173f0f1",
+      "accessDate": "2026-08-28T10:50:06Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Inequality by Design",
+      "language": "",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:50:06Z",
+      "dateModified": "2026-08-28T10:50:06Z"
+    },
+    {
+      "key": "23HVD5GR",
+      "version": 1784,
+      "itemType": "book",
+      "title": "Cyril BurtFraud or Framed?",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "N. J.",
+          "lastName": "Mackintosh"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "1995-07-13",
+      "publisher": "Oxford University Press",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "978-0-19-852336-9",
+      "DOI": "10.1093/acprof:oso/9780198523369.001.0001",
+      "citationKey": "mackintosh1995cyril",
+      "url": "https://academic.oup.com/book/9577",
+      "accessDate": "2026-08-28T10:49:54Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:49:54Z",
+      "dateModified": "2026-08-28T10:49:54Z"
+    },
+    {
+      "key": "25Z36A56",
+      "version": 1783,
+      "itemType": "journalArticle",
+      "title": "THE GENETIC DETERMINATION OF DIFFERENCES IN INTELLIGENCE: A STUDY OF MONOZYGOTIC TWINS REARED TOGETHER AND APART",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Cyril",
+          "lastName": "Burt"
+        }
+      ],
+      "abstractNote": "In the course of a series of investigations into various aspects of mental inheritance an intensive study has been made of so‐called ‘identical’ twins. The cases examined fall into two main groups: first, those reared together in their parents' homes; secondly, those separated in early infancy, and brought up apart. With the latter, despite wide differences in environmental conditions, the correlations for intelligence, unlike those for school attainments, prove to be surprisingly high. It is argued that this implies that ‘intelligence’, when adequately assessed, is largely dependent on genetic constitution. Supplementary correlations from other groups (dizygotic twins, siblings reared together and apart, first and second cousins, and other related pairs) confirm this conclusion.",
+      "publicationTitle": "British Journal of Psychology",
+      "publisher": "",
+      "place": "",
+      "date": "05/1966",
+      "volume": "57",
+      "issue": "1-2",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "137-153",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "British J of Psychology",
+      "DOI": "10.1111/j.2044-8295.1966.tb01014.x",
+      "citationKey": "burt1966genetic",
+      "url": "https://bpspsychub.onlinelibrary.wiley.com/doi/10.1111/j.2044-8295.1966.tb01014.x",
+      "accessDate": "2026-08-28T10:49:36Z",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "0007-1269, 2044-8295",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "THE GENETIC DETERMINATION OF DIFFERENCES IN INTELLIGENCE",
+      "language": "en",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "http://onlinelibrary.wiley.com/termsAndConditions#vor",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:49:36Z",
+      "dateModified": "2026-08-28T10:49:36Z"
+    },
+    {
+      "key": "JI3GUJG2",
+      "version": 1781,
+      "itemType": "journalArticle",
+      "title": "PROBLEM OF ALIEN IMMIGRATION",
+      "creators": [],
+      "abstractNote": "The articles published by the Annals of Eugenics (1925–1954) have been made available online as an historical archive intended for scholarly use. The work of eugenicists was often pervaded by prejudice against racial, ethnic and disabled groups. The online publication of this material for scholarly research purposes is not an endorsement of those views nor a promotion of eugenics in any way.",
+      "publicationTitle": "Annals of Eugenics",
+      "publisher": "",
+      "place": "",
+      "date": "10/1925",
+      "volume": "1",
+      "issue": "2",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "56-127",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "Annals of Eugenics",
+      "DOI": "10.1111/j.1469-1809.1925.tb02038.x",
+      "citationKey": "pearson1925problemalienimmigrationii",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1469-1809.1925.tb02038.x",
+      "accessDate": "2026-08-28T10:48:43Z",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "2050-1420, 2050-1439",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "http://onlinelibrary.wiley.com/termsAndConditions#vor",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:48:43Z",
+      "dateModified": "2026-08-28T10:49:09Z"
+    },
+    {
+      "key": "526RM66H",
+      "version": 1780,
+      "parentItem": "JI3GUJG2",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Full Text",
+      "accessDate": "2026-08-28T10:48:52Z",
+      "url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1469-1809.1925.tb02038.x",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "1925 - PROBLEM OF ALIEN IMMIGRATION.pdf",
+      "md5": "7700d5851249b12d75ce095395071266",
+      "mtime": 1787914132275,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-28T10:48:52Z",
+      "dateModified": "2026-08-28T10:48:52Z"
+    },
+    {
+      "key": "UAX2SNCR",
+      "version": 1774,
+      "itemType": "document",
+      "title": "Speech to the Pre-School Playgroups Association",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Keith",
+          "lastName": "Joseph"
+        }
+      ],
+      "abstractNote": "",
+      "type": "",
+      "date": "29 June 1972",
+      "publisher": "",
+      "place": "Church House, Westminster",
+      "DOI": "",
+      "citationKey": "joseph1972speech",
+      "url": "https://wellcomecollection.org/works/dqdjahsx",
+      "accessDate": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:56:56Z",
+      "dateModified": "2026-08-10T00:58:05Z"
+    },
+    {
+      "key": "FR7WJEHD",
+      "version": 1766,
+      "itemType": "statute",
+      "nameOfAct": "Mental Deficiency Act 1913",
+      "creators": [
+        {
+          "creatorType": "author",
+          "name": "United Kingdom Parliament"
+        }
+      ],
+      "abstractNote": "",
+      "code": "",
+      "codeNumber": "",
+      "publicLawNumber": "",
+      "dateEnacted": "1913",
+      "pages": "",
+      "section": "",
+      "session": "",
+      "history": "",
+      "DOI": "",
+      "citationKey": "unitedkingdomparliament1913mental",
+      "url": "https://www.legislation.gov.uk/ukpga/Geo5/3-4/28/enacted",
+      "accessDate": "2026-08-10T00:47:37Z",
+      "shortTitle": "",
+      "language": "eng",
+      "rights": "",
+      "extra": "3 & 4 Geo. 5 c. 28",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:47:37Z",
+      "dateModified": "2026-08-10T00:54:05Z"
+    },
+    {
+      "key": "2CE8NFLX",
+      "version": 1759,
+      "parentItem": "U9VNYPR5",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-10T00:49:49Z",
+      "url": "https://wellcomecollection.org/works/dqdjahsx/items",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "items.html",
+      "md5": "c0c9944a145d0053d90fe5d338eac90a",
+      "mtime": 1786322988996,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:49:49Z",
+      "dateModified": "2026-08-10T00:49:49Z"
+    },
+    {
+      "key": "U9VNYPR5",
+      "version": 1757,
+      "itemType": "webpage",
+      "title": "Speech by Sir Keith Joseph, Secretary of State for Social Services 'The Cycle of Deprivation' with covering letter",
+      "creators": [],
+      "abstractNote": "",
+      "websiteTitle": "Wellcome Collection",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "speech",
+      "url": "https://wellcomecollection.org/works/dqdjahsx/items",
+      "accessDate": "2026-08-10T00:49:47Z",
+      "shortTitle": "",
+      "language": "en",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:49:47Z",
+      "dateModified": "2026-08-10T00:49:47Z"
+    },
+    {
+      "key": "VGCJLXIQ",
+      "version": 1765,
+      "parentItem": "FR7WJEHD",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PDF",
+      "accessDate": "2026-08-10T00:47:11Z",
+      "url": "https://www.legislation.gov.uk/ukpga/Geo5/3-4/28/pdfs/ukpga_19130028_en.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "United Kingdom Parliament - 1913 - Mental Deficiency Act 1913.pdf",
+      "md5": "a1201aad276b3629ffe41504abb99649",
+      "mtime": 1786322831556,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:47:11Z",
+      "dateModified": "2026-08-10T00:48:14Z"
+    },
+    {
+      "key": "4A8RHP4A",
+      "version": 1752,
+      "parentItem": "FR7WJEHD",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-10T00:47:42Z",
+      "url": "https://www.legislation.gov.uk/ukpga/Geo5/3-4/28/enacted",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "enacted.html",
+      "md5": "e18f172025c183c64d4d232396cf8e15",
+      "mtime": 1786322862742,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:47:42Z",
+      "dateModified": "2026-08-10T00:47:42Z"
+    },
+    {
+      "key": "GYPQE837",
+      "version": 1744,
+      "itemType": "book",
+      "title": "Life and Labour of the People",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Charles",
+          "lastName": "Booth"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "1",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "1889",
+      "publisher": "",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "",
+      "DOI": "",
+      "citationKey": "booth1889life",
+      "url": "",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:32:58Z",
+      "dateModified": "2026-08-10T00:33:22Z"
+    },
+    {
+      "key": "T2MY5YH3",
+      "version": 1740,
+      "itemType": "webpage",
+      "title": "Wood Report (1929)",
+      "creators": [],
+      "abstractNote": "",
+      "websiteTitle": "",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "wood",
+      "url": "https://education-uk.org/documents/wood/wood1929.html",
+      "accessDate": "2026-08-10T00:11:25Z",
+      "shortTitle": "",
+      "language": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-10T00:11:25Z",
+      "dateModified": "2026-08-10T00:11:25Z"
+    },
+    {
+      "key": "USA97NVS",
+      "version": 1738,
+      "itemType": "book",
+      "title": "Essays in eugenics",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Francis",
+          "lastName": "Galton"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "1909",
+      "publisher": "",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "",
+      "DOI": "",
+      "citationKey": "galton1909essays",
+      "url": "",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T23:41:09Z",
+      "dateModified": "2026-08-09T23:41:34Z"
+    },
+    {
+      "key": "Y5TZP8XW",
+      "version": 1735,
+      "itemType": "book",
+      "title": "Inquiries into Human Faculty and Its Development",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Francis",
+          "lastName": "Galton"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "1883",
+      "publisher": "",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "",
+      "DOI": "",
+      "citationKey": "galton1883inquiries",
+      "url": "",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T23:34:55Z",
+      "dateModified": "2026-08-09T23:35:35Z"
+    },
+    {
+      "key": "4GJ4F5ZY",
+      "version": 1730,
+      "parentItem": "YYZIR5VN",
+      "itemType": "attachment",
+      "linkMode": "imported_file",
+      "title": "PDF",
+      "accessDate": "",
+      "url": "",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Goldstein - 2014 - Creating Consumers.pdf",
+      "md5": "923da4f59e462cca4d0f2bf821613fdf",
+      "mtime": 1786308388163,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:46:41Z",
+      "dateModified": "2026-08-09T20:46:41Z"
+    },
+    {
+      "key": "WS7KXGHI",
+      "version": 1728,
+      "itemType": "book",
+      "title": "A History of Feminist and Gender Economics",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Giandomenica",
+          "lastName": "Becchio"
+        }
+      ],
+      "abstractNote": "This book offers a historical exploration of the genesis of feminist economics and gender economics, as well as their theoretical and methodological differences. Its narrative also serves to embed both within a broader cultural context. Although both feminist economics and gender neoclassical economics belong to the cultural process related to the central role of the political economy in promoting women’s emancipation and empowerment, they differ in many aspects. Feminist economics, mainly inf",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "2020",
+      "publisher": "",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "",
+      "DOI": "",
+      "citationKey": "becchio2020history",
+      "url": "https://www.routledge.com/A-History-of-Feminist-and-Gender-Economics/Becchio/p/book/9781032086798",
+      "accessDate": "2026-08-09T20:42:13Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:42:13Z",
+      "dateModified": "2026-08-09T20:45:01Z"
+    },
+    {
+      "key": "YYZIR5VN",
+      "version": 1724,
+      "itemType": "book",
+      "title": "Creating Consumers",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Carolyn",
+          "lastName": "Goldstein"
+        }
+      ],
+      "abstractNote": "Home economics emerged at the turn of the twentieth century as a movement to train women to be more efficient household managers. At the same moment, America...",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "December 01, 2014",
+      "publisher": "The University of North Carolina Press",
+      "place": "",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "",
+      "DOI": "",
+      "citationKey": "goldstein2014creating",
+      "url": "https://uncpress.org/9781469622149/creating-consumers/",
+      "accessDate": "2026-08-09T20:42:34Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en-US",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:42:34Z",
+      "dateModified": "2026-08-09T20:44:10Z"
+    },
+    {
+      "key": "P3Z6ABLT",
+      "version": 1719,
+      "parentItem": "YYZIR5VN",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-09T20:42:42Z",
+      "url": "https://uncpress.org/9781469622149/creating-consumers/",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "creating-consumers.html",
+      "md5": "b49c24ac83bb30c259c5acbae3cbc89f",
+      "mtime": 1786308162375,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:42:42Z",
+      "dateModified": "2026-08-09T20:42:42Z"
+    },
+    {
+      "key": "UNQ2VARH",
+      "version": 1714,
+      "parentItem": "WS7KXGHI",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-09T20:42:19Z",
+      "url": "https://www.routledge.com/A-History-of-Feminist-and-Gender-Economics/Becchio/p/book/9781032086798",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "9781032086798.html",
+      "md5": "c1e2b6b9de37170043769d609f64080f",
+      "mtime": 1786308139678,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:42:19Z",
+      "dateModified": "2026-08-09T20:42:19Z"
+    },
+    {
+      "key": "PIIBFFP6",
+      "version": 1710,
+      "parentItem": "ACKBSQFF",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Full Text PDF",
+      "accessDate": "2026-08-09T20:41:26Z",
+      "url": "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/59F5DF4FCB70A362734A8E9890CE2E28/S1053837220000115a.pdf/div-class-title-ellen-richards-s-home-economics-movement-and-the-birth-of-the-economics-of-consumption-div.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Philippy - 2021 - ELLEN RICHARDS’S HOME ECONOMICS MOVEMENT AND THE BIRTH OF THE ECONOMICS OF CONSUMPTION.pdf",
+      "md5": "064fe343592770a308071b8088840b57",
+      "mtime": 1786308086452,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:41:26Z",
+      "dateModified": "2026-08-09T20:41:26Z"
+    },
+    {
+      "key": "ACKBSQFF",
+      "version": 1708,
+      "itemType": "journalArticle",
+      "title": "ELLEN RICHARDS’S HOME ECONOMICS MOVEMENT AND THE BIRTH OF THE ECONOMICS OF CONSUMPTION",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "David",
+          "lastName": "Philippy"
+        }
+      ],
+      "abstractNote": "In 1899, MIT chemist Ellen H. Richards (1842–1911) instigated a series of annual “Lake Placid Conferences” (1899–1908) that became known as the foundation of the home economics movement. Richards’s first interest was in improving the household’s well-being by using sanitary and nutrition sciences, an objective that was passed on to the movement. However, by the 1920s, home economists rather identified their field of expertise as the “science of consumption,” emphasizing the idea of “rational consumption.” My aim in this article is to give an account of how this shift in focus came about, by telling the story of the home economics movement founded by Richards. I examine how the movement problematized consumption by highlighting its relationship, and perception of itself, regarding economics. I argue that the concept of consumption was central to the structuring of the movement from its beginning and allowed home economists to claim it as their field of expertise because, as they believed, economists were not addressing the issue.",
+      "publicationTitle": "Journal of the History of Economic Thought",
+      "publisher": "",
+      "place": "",
+      "date": "2021/09",
+      "volume": "43",
+      "issue": "3",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "378-400",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "10.1017/S1053837220000115",
+      "citationKey": "philippy2021ellen",
+      "url": "https://www.cambridge.org/core/journals/journal-of-the-history-of-economic-thought/article/ellen-richardss-home-economics-movement-and-the-birth-of-the-economics-of-consumption/59F5DF4FCB70A362734A8E9890CE2E28",
+      "accessDate": "2026-08-09T20:41:25Z",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "1053-8372, 1469-9656",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Cambridge University Press",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T20:41:25Z",
+      "dateModified": "2026-08-09T20:41:25Z"
+    },
+    {
+      "key": "XZCLSD7E",
+      "version": 1707,
+      "itemType": "webpage",
+      "title": "Benefit and pension rates 2025 to 2026",
+      "creators": [],
+      "abstractNote": "",
+      "websiteTitle": "GOV.UK",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "dwp2024benefitpensionrates",
+      "url": "https://www.gov.uk/government/publications/benefit-and-pension-rates-2025-to-2026/benefit-and-pension-rates-2025-to-2026",
+      "accessDate": "2026-08-09T19:24:13Z",
+      "shortTitle": "",
+      "language": "en",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:24:13Z",
+      "dateModified": "2026-08-09T19:31:50Z"
+    },
+    {
+      "key": "38JYWHF6",
+      "version": 1704,
+      "parentItem": "XZCLSD7E",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-09T19:24:18Z",
+      "url": "https://www.gov.uk/government/publications/benefit-and-pension-rates-2025-to-2026/benefit-and-pension-rates-2025-to-2026",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "benefit-and-pension-rates-2025-to-2026.html",
+      "md5": "277df5b3b8057c934279f4816028442a",
+      "mtime": 1786303458386,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:24:18Z",
+      "dateModified": "2026-08-09T19:24:18Z"
+    },
+    {
+      "key": "9L8PXC9C",
+      "version": 1700,
+      "parentItem": "26EBUQ6H",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PDF",
+      "accessDate": "2026-08-09T19:08:07Z",
+      "url": "https://dn720303.ca.archive.org/0/items/economicsofhouse00reid/economicsofhouse00reid.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Reid - Economics of household production.pdf",
+      "md5": "a7f50b4d1d0f4b7d6302ce143916a26c",
+      "mtime": 1786302487100,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:08:07Z",
+      "dateModified": "2026-08-09T19:08:09Z"
+    },
+    {
+      "key": "26EBUQ6H",
+      "version": 1698,
+      "itemType": "journalArticle",
+      "title": "Economics of household production",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Margaret G",
+          "lastName": "Reid"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "",
+      "publisher": "",
+      "place": "",
+      "date": "",
+      "volume": "",
+      "issue": "",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "",
+      "citationKey": "reideconomics",
+      "url": "",
+      "accessDate": "",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Zotero",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:08:08Z",
+      "dateModified": "2026-08-09T19:08:09Z"
+    },
+    {
+      "key": "L9VQCBQJ",
+      "version": 1696,
+      "parentItem": "TMIVN8SJ",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PDF",
+      "accessDate": "2026-08-09T19:03:20Z",
+      "url": "https://www.ssa.gov/policy/docs/ssb/v51n10/v51n10p22.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Orshansky - Commentary The Poverty Measure.pdf",
+      "md5": "e9a40df8eb0e008e47965e4b1e674bf5",
+      "mtime": 1786302200812,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:03:20Z",
+      "dateModified": "2026-08-09T19:03:47Z"
+    },
+    {
+      "key": "BPBVKNDC",
+      "version": 1689,
+      "parentItem": "PZVRA77S",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-09T19:00:09Z",
+      "url": "https://www.census.gov/topics/income-poverty/poverty/guidance/poverty-measures.html",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "poverty-measures.html",
+      "md5": "cb9a25cf89fc4e19103e0a295c5ddbe9",
+      "mtime": 1786302009043,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:00:09Z",
+      "dateModified": "2026-08-09T19:00:09Z"
+    },
+    {
+      "key": "PZVRA77S",
+      "version": 1687,
+      "itemType": "webpage",
+      "title": "How the Census Bureau Measures Poverty",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "US Census",
+          "lastName": "Bureau"
+        }
+      ],
+      "abstractNote": "Learn how poverty thresholds are assigned and what sources of income are used to determine poverty status.",
+      "websiteTitle": "Census.gov",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "bureauhow",
+      "url": "https://www.census.gov/topics/income-poverty/poverty/guidance/poverty-measures.html",
+      "accessDate": "2026-08-09T19:00:02Z",
+      "shortTitle": "",
+      "language": "en",
+      "rights": "",
+      "extra": "Section: Government",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T19:00:02Z",
+      "dateModified": "2026-08-09T19:00:02Z"
+    },
+    {
+      "key": "VVTAI628",
+      "version": 1685,
+      "parentItem": "WA4VUYYJ",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-09T18:59:02Z",
+      "url": "https://www.congress.gov/crs-product/R44780",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "R44780.html",
+      "md5": "2d4d0e95f950995aeb447b81a3995ccb",
+      "mtime": 1786301942259,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T18:59:02Z",
+      "dateModified": "2026-08-09T18:59:02Z"
+    },
+    {
+      "key": "WA4VUYYJ",
+      "version": 1683,
+      "itemType": "webpage",
+      "title": "An Introduction to Poverty Measurement",
+      "creators": [],
+      "abstractNote": "",
+      "websiteTitle": "",
+      "websiteType": "legislation",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "introduction",
+      "url": "https://www.congress.gov/crs-product/R44780",
+      "accessDate": "2026-08-09T18:58:56Z",
+      "shortTitle": "",
+      "language": "eng",
+      "rights": "Text is government work",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T18:58:56Z",
+      "dateModified": "2026-08-09T18:58:56Z"
+    },
+    {
+      "key": "LA2YESQK",
+      "version": 1682,
+      "parentItem": "RZEY6VCW",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "2026-00755.pdf",
+      "accessDate": "2026-08-09T18:57:05Z",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-15/pdf/2026-00755.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "2026-00755.pdf",
+      "md5": "f294eda1ed08c10d69998f0d1c1674be",
+      "mtime": 1786301825628,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T18:57:05Z",
+      "dateModified": "2026-08-09T18:57:36Z"
+    },
+    {
+      "key": "23QJBLH9",
+      "version": 1677,
+      "parentItem": "RZEY6VCW",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-08-09T18:56:54Z",
+      "url": "https://www.federalregister.gov/documents/2026/01/15/2026-00755/annual-update-of-the-hhs-poverty-guidelines",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "annual-update-of-the-hhs-poverty-guidelines.html",
+      "md5": "f3722b9c7258d7bd971072f597a5c702",
+      "mtime": 1786301814881,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T18:56:54Z",
+      "dateModified": "2026-08-09T18:56:54Z"
+    },
+    {
+      "key": "RZEY6VCW",
+      "version": 1675,
+      "itemType": "webpage",
+      "title": "Annual Update of the HHS Poverty Guidelines",
+      "creators": [],
+      "abstractNote": "This notice provides an update of the Department of Health and Human Services (HHS) poverty guidelines to account for last calendar year's increase in prices as measured by the Consumer Price Index.",
+      "websiteTitle": "Federal Register",
+      "websiteType": "",
+      "date": "2026-01-15",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "2026annual",
+      "url": "https://www.federalregister.gov/documents/2026/01/15/2026-00755/annual-update-of-the-hhs-poverty-guidelines",
+      "accessDate": "2026-08-09T18:56:50Z",
+      "shortTitle": "",
+      "language": "en",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T18:56:50Z",
+      "dateModified": "2026-08-09T18:56:50Z"
+    },
+    {
+      "key": "FQ2JT8IS",
+      "version": 1669,
+      "itemType": "journalArticle",
+      "title": "Counting the Poor: Another Look at the Poverty Profile",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Mollie",
+          "lastName": "Orshansky"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "Social Security Bulletin",
+      "publisher": "",
+      "place": "",
+      "date": "1965",
+      "volume": "28",
+      "issue": "1",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "",
+      "citationKey": "orshansky1965counting",
+      "url": "",
+      "accessDate": "",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Zotero",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:09:39Z",
+      "dateModified": "2026-08-09T17:10:35Z"
+    },
+    {
+      "key": "EQ6KDIYD",
+      "version": 1660,
+      "parentItem": "XMSTIH6R",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PDF",
+      "accessDate": "2026-08-09T17:09:39Z",
+      "url": "https://www.ssa.gov/policy/docs/ssb/v28n1/v28n1p3.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Orshansky - 6#ounting the Poor Another Look at the Poverty Profile.pdf",
+      "md5": "cfde2f7efcd7943c57a110a88824e58a",
+      "mtime": 1786295379510,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:09:39Z",
+      "dateModified": "2026-08-09T17:09:43Z"
+    },
+    {
+      "key": "RITG2WJE",
+      "version": 1670,
+      "parentItem": "FQ2JT8IS",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "v28n1p3.pdf",
+      "accessDate": "2026-08-09T17:09:36Z",
+      "url": "https://www.ssa.gov/policy/docs/ssb/v28n1/v28n1p3.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Orshansky - 1965 - Counting the Poor Another Look at the Poverty Profile.pdf",
+      "md5": "cfde2f7efcd7943c57a110a88824e58a",
+      "mtime": 1786295376174,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:09:36Z",
+      "dateModified": "2026-08-09T17:09:41Z"
+    },
+    {
+      "key": "IJ74LWMK",
+      "version": 1655,
+      "parentItem": "HPM8KGSU",
+      "itemType": "attachment",
+      "linkMode": "linked_url",
+      "title": "PubMed entry",
+      "accessDate": "2026-08-09T17:08:20Z",
+      "url": "http://www.ncbi.nlm.nih.gov/pubmed/1",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:08:20Z",
+      "dateModified": "2026-08-09T17:08:20Z"
+    },
+    {
+      "key": "7KELGXKU",
+      "version": 1653,
+      "parentItem": "AU6ANITE",
+      "itemType": "attachment",
+      "linkMode": "linked_url",
+      "title": "PubMed entry",
+      "accessDate": "2026-08-09T17:08:20Z",
+      "url": "http://www.ncbi.nlm.nih.gov/pubmed/28",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:08:20Z",
+      "dateModified": "2026-08-09T17:08:20Z"
+    },
+    {
+      "key": "HPM8KGSU",
+      "version": 1654,
+      "itemType": "journalArticle",
+      "title": "Formate assay in body fluids: application in methanol poisoning",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "A. B.",
+          "lastName": "Makar"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "K. E.",
+          "lastName": "McMartin"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "M.",
+          "lastName": "Palese"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "T. R.",
+          "lastName": "Tephly"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "Biochemical Medicine",
+      "publisher": "",
+      "place": "",
+      "date": "1975-06",
+      "volume": "13",
+      "issue": "2",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "117-126",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "Biochem Med",
+      "DOI": "10.1016/0006-2944(75)90147-7",
+      "citationKey": "makar1975formate",
+      "url": "",
+      "accessDate": "",
+      "PMID": "1",
+      "PMCID": "",
+      "ISSN": "0006-2944",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Formate assay in body fluids",
+      "language": "eng",
+      "libraryCatalog": "PubMed",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [
+        {
+          "tag": "Aldehyde Oxidoreductases",
+          "type": 1
+        },
+        {
+          "tag": "Animals",
+          "type": 1
+        },
+        {
+          "tag": "Body Fluids",
+          "type": 1
+        },
+        {
+          "tag": "Carbon Dioxide",
+          "type": 1
+        },
+        {
+          "tag": "Formates",
+          "type": 1
+        },
+        {
+          "tag": "Haplorhini",
+          "type": 1
+        },
+        {
+          "tag": "Humans",
+          "type": 1
+        },
+        {
+          "tag": "Hydrogen-Ion Concentration",
+          "type": 1
+        },
+        {
+          "tag": "Kinetics",
+          "type": 1
+        },
+        {
+          "tag": "Methanol",
+          "type": 1
+        },
+        {
+          "tag": "Methods",
+          "type": 1
+        },
+        {
+          "tag": "Pseudomonas",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:08:19Z",
+      "dateModified": "2026-08-09T17:08:19Z"
+    },
+    {
+      "key": "AU6ANITE",
+      "version": 1652,
+      "itemType": "journalArticle",
+      "title": "Letter: Duration of action of AH8165",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "J. A.",
+          "lastName": "Thornton"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "M. J.",
+          "lastName": "Harrison"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "British Journal of Anaesthesia",
+      "publisher": "",
+      "place": "",
+      "date": "1975-09",
+      "volume": "47",
+      "issue": "9",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "1033",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "Br J Anaesth",
+      "DOI": "10.1093/bja/47.9.1033",
+      "citationKey": "thornton1975letter",
+      "url": "",
+      "accessDate": "",
+      "PMID": "28",
+      "PMCID": "",
+      "ISSN": "0007-0912",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Letter",
+      "language": "eng",
+      "libraryCatalog": "PubMed",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [
+        {
+          "tag": "Dose-Response Relationship, Drug",
+          "type": 1
+        },
+        {
+          "tag": "Hemodynamics",
+          "type": 1
+        },
+        {
+          "tag": "Humans",
+          "type": 1
+        },
+        {
+          "tag": "Pyridinium Compounds",
+          "type": 1
+        },
+        {
+          "tag": "Time Factors",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-08-09T17:08:19Z",
+      "dateModified": "2026-08-09T17:08:19Z"
+    },
+    {
+      "key": "JCVEFJLX",
+      "version": 1649,
+      "parentItem": "RPIYE9YK",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-07-31T17:40:35Z",
+      "url": "http://arxiv.org/abs/2607.28584",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "2607.html",
+      "md5": "d79ec5fcd9ec3250a7fdff0267002afd",
+      "mtime": 1785519635912,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-31T17:40:35Z",
+      "dateModified": "2026-07-31T17:40:35Z"
+    },
+    {
+      "key": "5X4CEFX7",
+      "version": 1648,
+      "parentItem": "RPIYE9YK",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Preprint PDF",
+      "accessDate": "2026-07-31T17:40:35Z",
+      "url": "http://arxiv.org/pdf/2607.28584v1",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Helfer - 2026 - Set-theoretic universes and paradoxes in 2-topoi.pdf",
+      "md5": "c94387882c557cd731de5a7fc4b1133a",
+      "mtime": 1785519635874,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-31T17:40:35Z",
+      "dateModified": "2026-07-31T17:40:35Z"
+    },
+    {
+      "key": "IPRIS2LW",
+      "version": 1647,
+      "parentItem": "RPIYE9YK",
+      "itemType": "note",
+      "note": "Comment: 105 pages",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-31T17:40:34Z",
+      "dateModified": "2026-07-31T17:40:34Z"
+    },
+    {
+      "key": "RPIYE9YK",
+      "version": 1644,
+      "itemType": "preprint",
+      "title": "Set-theoretic universes and paradoxes in 2-topoi",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Joseph",
+          "lastName": "Helfer"
+        }
+      ],
+      "abstractNote": "This paper continues the development of (elementary) 2-topos theory, a foundational theory based on an axiomatization of the 2-category of categories. We prove that any 2-topos contains a model of intuitionistic ZF set theory, and we use this to show that, if appropriate size restraints are not imposed, then a Burali-Forti type paradox can be deduced from the 2-topos axioms. The set-theoretic universe is produced as a special case of a general construction giving an internal category of models in a 2-topos of an arbitrary finite higher-order theory, which in turn is carried out using a notion of \"topos sketch\". As a byproduct of our construction, we also make contact with the subject of \"algebraic set theory\", introducing a novel approach to the construction of set-theoretic universes from a \"category of classes\".",
+      "genre": "",
+      "repository": "arXiv",
+      "archiveID": "arXiv:2607.28584",
+      "place": "",
+      "date": "2026-07-30",
+      "series": "",
+      "seriesNumber": "",
+      "DOI": "10.48550/arXiv.2607.28584",
+      "citationKey": "helfer2026settheoretic",
+      "url": "http://arxiv.org/abs/2607.28584",
+      "accessDate": "2026-07-31T17:40:34Z",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "arXiv.org",
+      "callNumber": "",
+      "rights": "",
+      "extra": "arXiv:2607.28584 [math.CT]",
+      "tags": [
+        {
+          "tag": "Mathematics - Category Theory",
+          "type": 1
+        },
+        {
+          "tag": "Mathematics - Logic",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "3YY2DRZH"
+      ],
+      "relations": {},
+      "dateAdded": "2026-07-31T17:40:34Z",
+      "dateModified": "2026-07-31T17:40:34Z"
+    },
+    {
+      "key": "ALZYY7JZ",
+      "version": 1640,
+      "parentItem": "M9BZNBEN",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Preprint PDF",
+      "accessDate": "2026-07-22T11:54:48Z",
+      "url": "http://arxiv.org/pdf/2508.02723v1",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Borde and Bronstein - 2025 - Mathematical Foundations of Geometric Deep Learning.pdf",
+      "md5": "aa50abc608a1cc6bdec21b65ebb30110",
+      "mtime": 1784721287084,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:48Z",
+      "dateModified": "2026-07-22T11:54:48Z"
+    },
+    {
+      "key": "LIJUR4LA",
+      "version": 1637,
+      "parentItem": "M9BZNBEN",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-07-22T11:54:32Z",
+      "url": "http://arxiv.org/abs/2508.02723",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "2508.html",
+      "md5": "26c62fe3ed1d4b6506a30f877bdcdfde",
+      "mtime": 1784721272910,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:32Z",
+      "dateModified": "2026-07-22T11:54:32Z"
+    },
+    {
+      "key": "M9BZNBEN",
+      "version": 1635,
+      "itemType": "preprint",
+      "title": "Mathematical Foundations of Geometric Deep Learning",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Haitz Sáez de Ocáriz",
+          "lastName": "Borde"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Michael",
+          "lastName": "Bronstein"
+        }
+      ],
+      "abstractNote": "We review the key mathematical concepts necessary for studying Geometric Deep Learning.",
+      "genre": "",
+      "repository": "arXiv",
+      "archiveID": "arXiv:2508.02723",
+      "place": "",
+      "date": "2025-08-01",
+      "series": "",
+      "seriesNumber": "",
+      "DOI": "10.48550/arXiv.2508.02723",
+      "citationKey": "borde2025mathematical",
+      "url": "http://arxiv.org/abs/2508.02723",
+      "accessDate": "2026-07-22T11:54:30Z",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "arXiv.org",
+      "callNumber": "",
+      "rights": "",
+      "extra": "arXiv:2508.02723 [cs.LG]",
+      "tags": [
+        {
+          "tag": "Computer Science - Artificial Intelligence",
+          "type": 1
+        },
+        {
+          "tag": "Computer Science - Machine Learning",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "3YY2DRZH"
+      ],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:31Z",
+      "dateModified": "2026-07-22T11:54:31Z"
+    },
+    {
+      "key": "YWF4W8SJ",
+      "version": 1633,
+      "parentItem": "EPY4LPRB",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Preprint PDF",
+      "accessDate": "2026-07-22T11:54:31Z",
+      "url": "http://arxiv.org/pdf/2104.13478v2",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Bronstein et al. - 2021 - Geometric Deep Learning Grids, Groups, Graphs, Geodesics, and Gauges.pdf",
+      "md5": "1df2e2440de76c0cb8bfd5f83e1db369",
+      "mtime": 1784721271585,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:31Z",
+      "dateModified": "2026-07-22T11:54:31Z"
+    },
+    {
+      "key": "XDH2LMPE",
+      "version": 1632,
+      "parentItem": "M9BZNBEN",
+      "itemType": "note",
+      "note": "Comment: 78 pages",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:31Z",
+      "dateModified": "2026-07-22T11:54:31Z"
+    },
+    {
+      "key": "I4ZGK7YZ",
+      "version": 1634,
+      "parentItem": "EPY4LPRB",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-07-22T11:54:15Z",
+      "url": "http://arxiv.org/abs/2104.13478",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "2104.html",
+      "md5": "e8bafe84eada3d62e0fcd7c242b01d9b",
+      "mtime": 1784721255271,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:15Z",
+      "dateModified": "2026-07-22T11:54:15Z"
+    },
+    {
+      "key": "F6QJBBYD",
+      "version": 1629,
+      "parentItem": "EPY4LPRB",
+      "itemType": "note",
+      "note": "Comment: 156 pages. Work in progress -- comments welcome!",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:13Z",
+      "dateModified": "2026-07-22T11:54:13Z"
+    },
+    {
+      "key": "EPY4LPRB",
+      "version": 1627,
+      "itemType": "preprint",
+      "title": "Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Michael M.",
+          "lastName": "Bronstein"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Joan",
+          "lastName": "Bruna"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Taco",
+          "lastName": "Cohen"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Petar",
+          "lastName": "Veličković"
+        }
+      ],
+      "abstractNote": "The last decade has witnessed an experimental revolution in data science and machine learning, epitomised by deep learning methods. Indeed, many high-dimensional learning tasks previously thought to be beyond reach -- such as computer vision, playing Go, or protein folding -- are in fact feasible with appropriate computational scale. Remarkably, the essence of deep learning is built from two simple algorithmic principles: first, the notion of representation or feature learning, whereby adapted, often hierarchical, features capture the appropriate notion of regularity for each task, and second, learning by local gradient-descent type methods, typically implemented as backpropagation. While learning generic functions in high dimensions is a cursed estimation problem, most tasks of interest are not generic, and come with essential pre-defined regularities arising from the underlying low-dimensionality and structure of the physical world. This text is concerned with exposing these regularities through unified geometric principles that can be applied throughout a wide spectrum of applications. Such a 'geometric unification' endeavour, in the spirit of Felix Klein's Erlangen Program, serves a dual purpose: on one hand, it provides a common mathematical framework to study the most successful neural network architectures, such as CNNs, RNNs, GNNs, and Transformers. On the other hand, it gives a constructive procedure to incorporate prior physical knowledge into neural architectures and provide principled way to build future architectures yet to be invented.",
+      "genre": "",
+      "repository": "arXiv",
+      "archiveID": "arXiv:2104.13478",
+      "place": "",
+      "date": "2021-05-02",
+      "series": "",
+      "seriesNumber": "",
+      "DOI": "10.48550/arXiv.2104.13478",
+      "citationKey": "bronstein2021geometrica",
+      "url": "http://arxiv.org/abs/2104.13478",
+      "accessDate": "2026-07-22T11:54:13Z",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Geometric Deep Learning",
+      "language": "",
+      "libraryCatalog": "arXiv.org",
+      "callNumber": "",
+      "rights": "",
+      "extra": "arXiv:2104.13478 [cs.LG]",
+      "tags": [
+        {
+          "tag": "Computer Science - Artificial Intelligence",
+          "type": 1
+        },
+        {
+          "tag": "Computer Science - Computational Geometry",
+          "type": 1
+        },
+        {
+          "tag": "Computer Science - Computer Vision and Pattern Recognition",
+          "type": 1
+        },
+        {
+          "tag": "Computer Science - Machine Learning",
+          "type": 1
+        },
+        {
+          "tag": "Statistics - Machine Learning",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "3YY2DRZH"
+      ],
+      "relations": {},
+      "dateAdded": "2026-07-22T11:54:13Z",
+      "dateModified": "2026-07-22T11:54:13Z"
+    },
+    {
+      "key": "7YU9YJ6W",
+      "version": 1625,
+      "itemType": "webpage",
+      "title": "PETLS: PErsistent Topological Laplacian Software — petls 1.0.0 documentation",
+      "creators": [],
+      "abstractNote": "",
+      "websiteTitle": "",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "petls",
+      "url": "https://www.benjones-math.com/software/PETLS/",
+      "accessDate": "2026-07-03T15:38:04Z",
+      "shortTitle": "",
+      "language": "",
+      "rights": "",
+      "extra": "Bibtex entry from webpage:@misc{jones2025petlspersistenttopologicallaplacian,\n    title={PETLS: PErsistent Topological Laplacian Software},\n    author={Benjamin Jones and Guo-Wei Wei},\n    year={2025},\n    eprint={2508.11560},\n    archivePrefix={arXiv},\n    primaryClass={math.AT},\n    url={https://arxiv.org/abs/2508.11560},\n}",
+      "tags": [],
+      "collections": [
+        "3YY2DRZH"
+      ],
+      "relations": {},
+      "dateAdded": "2026-07-03T15:38:04Z",
+      "dateModified": "2026-07-03T15:39:10Z"
+    },
+    {
+      "key": "YZKVL46C",
+      "version": 1626,
+      "parentItem": "7YU9YJ6W",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PETLS: PErsistent Topological Laplacian Software — petls 1.0.0 documentation",
+      "accessDate": "2026-07-03T15:38:09Z",
+      "url": "https://www.benjones-math.com/software/PETLS/",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "PETLS.html",
+      "md5": "751a1223fc3253e360fd085d35991245",
+      "mtime": 1783093089097,
+      "lastRead": 1783097647,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-03T15:38:09Z",
+      "dateModified": "2026-07-03T15:38:09Z"
+    },
+    {
+      "key": "U8WFEH4N",
+      "version": 1615,
+      "itemType": "computerProgram",
+      "title": "rivetTDA/rivet",
+      "creators": [],
+      "abstractNote": "RIVET is a tool for Topological Data Analysis, in particular two-parameter persistent homology.",
+      "seriesTitle": "",
+      "versionNumber": "",
+      "date": "2026-04-12T09:13:51Z",
+      "system": "",
+      "company": "RIVET",
+      "place": "",
+      "programmingLanguage": "C++",
+      "rights": "GPL-3.0",
+      "citationKey": "2026rivettda",
+      "url": "https://github.com/rivetTDA/rivet",
+      "accessDate": "2026-07-03T13:10:46Z",
+      "DOI": "",
+      "ISBN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "libraryCatalog": "GitHub",
+      "callNumber": "",
+      "shortTitle": "",
+      "extra": "original-date: 2017-03-28T17:30:49Z",
+      "tags": [
+        {
+          "tag": "algebraic-topology",
+          "type": 1
+        },
+        {
+          "tag": "data-science",
+          "type": 1
+        },
+        {
+          "tag": "data-visualization",
+          "type": 1
+        },
+        {
+          "tag": "persistent-homology",
+          "type": 1
+        },
+        {
+          "tag": "topological-data-analysis",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "3YY2DRZH"
+      ],
+      "relations": {},
+      "dateAdded": "2026-07-03T13:10:46Z",
+      "dateModified": "2026-07-03T13:10:46Z"
+    },
+    {
+      "key": "ICBRRML8",
+      "version": 1611,
+      "parentItem": "4LFFZNEN",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Preprint PDF",
+      "accessDate": "2026-07-03T12:08:13Z",
+      "url": "http://arxiv.org/pdf/2510.14710v2",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Schindler and Barahona - 2026 - MCbiF Measuring Topological Autocorrelation in Multiscale Clusterings via 2-Parameter Persistent Ho.pdf",
+      "md5": "ad5325b4b9e7f6e0b616920ef70daba0",
+      "mtime": 1783080493358,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-03T12:08:13Z",
+      "dateModified": "2026-07-03T12:08:13Z"
+    },
+    {
+      "key": "4LFFZNEN",
+      "version": 1607,
+      "itemType": "preprint",
+      "title": "MCbiF: Measuring Topological Autocorrelation in Multiscale Clusterings via 2-Parameter Persistent Homology",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Juni",
+          "lastName": "Schindler"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Mauricio",
+          "lastName": "Barahona"
+        }
+      ],
+      "abstractNote": "Datasets often possess an intrinsic multiscale structure with meaningful descriptions at different levels of coarseness. Such datasets are naturally described as multi-resolution clusterings, i.e., not necessarily hierarchical sequences of partitions across scales. To analyse and compare such sequences, we use tools from topological data analysis and define the Multiscale Clustering Bifiltration (MCbiF), a 2-parameter filtration of abstract simplicial complexes that encodes cluster intersection patterns across scales. The MCbiF is a complete invariant of (non-hierarchical) sequences of partitions and can be interpreted as a higher-order extension of Sankey diagrams, which reduce to dendrograms for hierarchical sequences. We show that the multiparameter persistent homology (MPH) of the MCbiF yields a finitely presented and block decomposable module, and its stable Hilbert functions characterise the topological autocorrelation of the sequence of partitions. In particular, at dimension zero, the MPH captures violations of the refinement order of partitions, whereas at dimension one, the MPH captures higher-order inconsistencies between clusters across scales. We then demonstrate through experiments the use of MCbiF Hilbert functions as interpretable topological feature maps for downstream machine learning tasks, and show that MCbiF feature maps outperform both baseline features and representation learning methods on regression and classification tasks for non-hierarchical sequences of partitions. We also showcase an application of MCbiF to real-world data of non-hierarchical wild mice social grouping patterns across time.",
+      "genre": "",
+      "repository": "arXiv",
+      "archiveID": "arXiv:2510.14710",
+      "place": "",
+      "date": "2026-03-31",
+      "series": "",
+      "seriesNumber": "",
+      "DOI": "10.48550/arXiv.2510.14710",
+      "citationKey": "schindler2026mcbif",
+      "url": "http://arxiv.org/abs/2510.14710",
+      "accessDate": "2026-07-03T12:08:07Z",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "MCbiF",
+      "language": "",
+      "libraryCatalog": "arXiv.org",
+      "callNumber": "",
+      "rights": "",
+      "extra": "arXiv:2510.14710 [math.AT]",
+      "tags": [
+        {
+          "tag": "Computer Science - Machine Learning",
+          "type": 1
+        },
+        {
+          "tag": "Mathematics - Algebraic Topology",
+          "type": 1
+        },
+        {
+          "tag": "Physics - Data Analysis, Statistics and Probability",
+          "type": 1
+        }
+      ],
+      "collections": [
+        "3YY2DRZH"
+      ],
+      "relations": {},
+      "dateAdded": "2026-07-03T12:08:07Z",
+      "dateModified": "2026-07-03T12:08:10Z"
+    },
+    {
+      "key": "EZLVRANG",
+      "version": 1612,
+      "parentItem": "4LFFZNEN",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-07-03T12:08:09Z",
+      "url": "http://arxiv.org/abs/2510.14710",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "2510.html",
+      "md5": "2d2fea6a445005649799b4d03ae0f105",
+      "mtime": 1783080489034,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-03T12:08:09Z",
+      "dateModified": "2026-07-03T12:08:09Z"
+    },
+    {
+      "key": "EVAI4BZC",
+      "version": 1610,
+      "parentItem": "4LFFZNEN",
+      "itemType": "note",
+      "note": "Comment: Published as a conference paper at 14th International Conference on Learning Representations (ICLR 2026): https://openreview.net/forum?id=E7D6uybODJ",
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-07-03T12:08:07Z",
+      "dateModified": "2026-07-03T12:08:07Z"
+    },
+    {
+      "key": "ZAMJST9N",
+      "version": 1605,
+      "parentItem": "B7S8GNCS",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-06-22T17:17:14Z",
+      "url": "https://prospect.org/1994/04/01/making-poor-count/",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "making-poor-count.html",
+      "md5": "7fbf59ebb3f38ce5dbe2066c5e401163",
+      "mtime": 1782148634261,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:17:14Z",
+      "dateModified": "2026-06-22T17:17:14Z"
+    },
+    {
+      "key": "B7S8GNCS",
+      "version": 1603,
+      "itemType": "blogPost",
+      "title": "Making the Poor Count",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Deborah",
+          "lastName": "Stone"
+        }
+      ],
+      "abstractNote": "The poverty line came from a woman with a passion and a memory.",
+      "blogTitle": "The American Prospect",
+      "websiteType": "",
+      "date": "1994-04-01T18:48:00+00:00",
+      "DOI": "",
+      "citationKey": "stone1994making",
+      "url": "https://prospect.org/1994/04/01/making-poor-count/",
+      "accessDate": "2026-06-22T17:17:02Z",
+      "ISSN": "",
+      "shortTitle": "",
+      "language": "en-US",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:17:02Z",
+      "dateModified": "2026-06-22T17:17:02Z"
+    },
+    {
+      "key": "2VKLGU3P",
+      "version": 1602,
+      "itemType": "webpage",
+      "title": "Mollie Orshansky, Statistician, Dies at 91 - New York Times",
+      "creators": [],
+      "abstractNote": "Mollie Orshansky developed the federal poverty line, a measurement that shaped decades of social policy and welfare programs.",
+      "websiteTitle": "archive.ph",
+      "websiteType": "",
+      "date": "2013-01-30T14:41:53Z",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "2013mollie",
+      "url": "https://archive.ph/qGwcc",
+      "accessDate": "2026-06-22T17:16:09Z",
+      "shortTitle": "",
+      "language": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:16:09Z",
+      "dateModified": "2026-06-22T17:16:09Z"
+    },
+    {
+      "key": "5UQV9PGB",
+      "version": 1600,
+      "parentItem": "DKESGTV7",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "orshansky.pdf",
+      "accessDate": "2026-06-22T17:14:55Z",
+      "url": "https://www.census.gov/content/dam/Census/library/working-papers/1997/demo/orshansky.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Fisher - The Development of the Orshansky Poverty Thresholds and Their Subsequent History as the Official U.S.pdf",
+      "md5": "c6f5e42ac3a0f269bbb1f21cb05695f9",
+      "mtime": 1782148495609,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:14:55Z",
+      "dateModified": "2026-06-22T17:14:59Z"
+    },
+    {
+      "key": "DKESGTV7",
+      "version": 1598,
+      "itemType": "journalArticle",
+      "title": "The Development of the Orshansky Poverty Thresholds and Their Subsequent History as the Official U.S. Poverty Measure",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Gordon M",
+          "lastName": "Fisher"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "",
+      "publisher": "",
+      "place": "",
+      "date": "",
+      "volume": "",
+      "issue": "",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "",
+      "citationKey": "fisherdevelopment",
+      "url": "",
+      "accessDate": "",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Zotero",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:14:58Z",
+      "dateModified": "2026-06-22T17:14:58Z"
+    },
+    {
+      "key": "2PSUTTRT",
+      "version": 1596,
+      "parentItem": "ZLWKNM7S",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-06-22T17:13:00Z",
+      "url": "https://www.ssa.gov/policy/docs/ssb/v68n3/v68n3p79.html",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "v68n3p79.html",
+      "md5": "68bbd9d4e58d45638828cd5cb3e2d624",
+      "mtime": 1782148380410,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:13:00Z",
+      "dateModified": "2026-06-22T17:13:00Z"
+    },
+    {
+      "key": "ZLWKNM7S",
+      "version": 1594,
+      "itemType": "webpage",
+      "title": "Remembering Mollie Orshansky—The Developer of the Poverty Thresholds",
+      "creators": [],
+      "abstractNote": "Social Security Administration Research, Statistics, and Policy Analysis",
+      "websiteTitle": "Social Security Administration Research, Statistics, and Policy Analysis",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "remembering",
+      "url": "https://www.ssa.gov/policy/docs/ssb/v68n3/v68n3p79.html",
+      "accessDate": "2026-06-22T17:12:55Z",
+      "shortTitle": "",
+      "language": "en",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:12:55Z",
+      "dateModified": "2026-06-22T17:12:55Z"
+    },
+    {
+      "key": "PFDU6VRN",
+      "version": 1592,
+      "parentItem": "75L8JIF3",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "content.pdf",
+      "accessDate": "2026-06-22T17:10:30Z",
+      "url": "https://books.googleusercontent.com/books/content?req=AKW5QacqBL5o8Ws8gAaUq73YyVyDXXNqjTvQ_j8xxxyZsusgqrIERp1DqEeolBtcmzH1TtFapstzN2FR2jU4SUBDFZ7yofpl6q0NrZfu7AYx_m8Y_ZRb6ajuzzi-xDu3C-nAzhC1yZ2qFuLNBd_kdSG-4_xGFR1PbkG62zMk_cCfst1DFZiJs_BQM2AmRbKJo-a_EXsdaq3stqfrbIxss2WteOHFApSDqwchCkTm5V6HeEJn0Vg6Fs5rny6VcviSAE0S_v22jE9N",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "The Measure of Poverty.pdf",
+      "md5": "bb8ecb5c843b6e5cf68993b5b67252cf",
+      "mtime": 1782148230210,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:10:30Z",
+      "dateModified": "2026-06-22T17:10:36Z"
+    },
+    {
+      "key": "75L8JIF3",
+      "version": 1591,
+      "itemType": "journalArticle",
+      "title": "The Measure of Poverty",
+      "creators": [],
+      "abstractNote": "",
+      "publicationTitle": "",
+      "publisher": "",
+      "place": "",
+      "date": "",
+      "volume": "",
+      "issue": "",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "",
+      "citationKey": "measure",
+      "url": "",
+      "accessDate": "",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Zotero",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:10:34Z",
+      "dateModified": "2026-06-22T17:10:34Z"
+    },
+    {
+      "key": "2ZJH675F",
+      "version": 1587,
+      "parentItem": "W9WF8X95",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-06-22T17:09:22Z",
+      "url": "http://aspe.hhs.gov/chronological-bibliography-mollie-orshanskys-publications",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "utf-8",
+      "filename": "chronological-bibliography-mollie-orshanskys-publications.html",
+      "md5": "14f8e0628990c4959b8cb4da2fe5b038",
+      "mtime": 1782148162526,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:09:22Z",
+      "dateModified": "2026-06-22T17:09:22Z"
+    },
+    {
+      "key": "W9WF8X95",
+      "version": 1585,
+      "itemType": "webpage",
+      "title": "A Chronological Bibliography of Mollie Orshansky’s Publications",
+      "creators": [],
+      "abstractNote": "A Chronological Bibliography of Mollie Orshansky’s Publications (Including Congressional Testimony) Compiled and annotated by Gordon M. Fisher",
+      "websiteTitle": "ASPE",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "chronological",
+      "url": "http://aspe.hhs.gov/chronological-bibliography-mollie-orshanskys-publications",
+      "accessDate": "2026-06-22T17:09:15Z",
+      "shortTitle": "",
+      "language": "en",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:09:15Z",
+      "dateModified": "2026-06-22T17:09:18Z"
+    },
+    {
+      "key": "FZXE3IRN",
+      "version": 1582,
+      "parentItem": "3Z9JSPGD",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Snapshot",
+      "accessDate": "2026-06-22T17:08:47Z",
+      "url": "https://www.aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/mollie-orshansky-her-career-achievements-publications",
+      "note": "",
+      "contentType": "text/html",
+      "charset": "",
+      "filename": "Mollie Orshansky Her Career, Achievements, and Pu.html",
+      "md5": "c0527c4568f8ecd4416eadf91550ee6c",
+      "mtime": 1782148127162,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:08:47Z",
+      "dateModified": "2026-06-22T17:08:47Z"
+    },
+    {
+      "key": "3Z9JSPGD",
+      "version": 1581,
+      "itemType": "webpage",
+      "title": "Mollie Orshansky: Her Career, Achievements, and Publications",
+      "creators": [],
+      "abstractNote": "Mollie Orshansky in 1967 Social Security Administration History Archives [Full sized image] Contents",
+      "websiteTitle": "ASPE",
+      "websiteType": "",
+      "date": "",
+      "publisher": "",
+      "place": "",
+      "DOI": "",
+      "citationKey": "mollie",
+      "url": "http://www.aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/mollie-orshansky-her-career-achievements-publications",
+      "accessDate": "2026-06-22T17:08:28Z",
+      "shortTitle": "Mollie Orshansky",
+      "language": "en",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-06-22T17:08:39Z",
+      "dateModified": "2026-06-22T17:08:39Z"
+    },
+    {
+      "key": "YA7W9XX6",
+      "version": 1576,
+      "parentItem": "HWAVWP9G",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "Full Text PDF",
+      "accessDate": "2026-06-13T10:36:51Z",
+      "url": "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/F9276E4F3B0D4E39CCD985DF45A26F36/S0147547925000055a.pdf/div-class-title-remembering-rochdale-the-cooperative-movement-and-the-post-enclosure-atlantic-div.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "O’Connor - 2026 - Remembering Rochdale The Cooperative Movement and the Post-Enclosure Atlantic.pdf",
+      "md5": "f5a915b0fb3ecd2933c7b2212c535400",
+      "mtime": 1781347011511,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-13T10:36:51Z",
+      "dateModified": "2026-06-13T10:36:51Z"
+    },
+    {
+      "key": "HWAVWP9G",
+      "version": 1574,
+      "itemType": "journalArticle",
+      "title": "Remembering Rochdale: The Cooperative Movement and the Post-Enclosure Atlantic",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Eve",
+          "lastName": "O’Connor"
+        }
+      ],
+      "abstractNote": "The English weavers who organized what would become a flourishing cooperative business in 1844 remain famous worldwide. In the second half of the nineteenth century, their story traveled through a newly international labor press, inspiring workers to build cooperatives in the template set forth by the so-called “Rochdale Pioneers.” While scholars have detailed the Rochdale model’s impact on the cooperative movement itself, historians have missed its significance as a vector for wider changes in working-class politics. Drawing on cooperative movement literature and organizational records, this essay traces the transnational circulation of the Rochdale story from Britain to the United States from the mid-nineteenth to the early twentieth century. I explore how the Rochdale method’s influence simultaneously standardized cooperative practices, and reflected a protracted shift in anti-capitalist struggles. Against the backdrop of land dispossession and anti-labor violence, the Rochdale experiment captured hopes for a cooperative economic strategy fit to survive in the modern era. Focusing on the rise of consumers’ cooperation in the United States, I show how organizers mobilized a cooperative vision for a post-enclosure world—one consistent with the structure, if not the spirit, of private property and commodity markets. This article explores how the cooperative movement became a vital site for reimagining economic autonomy as industrial capitalism conscripted ever more people into wage labor.",
+      "publicationTitle": "International Labor and Working-Class History",
+      "publisher": "",
+      "place": "",
+      "date": "2026/04",
+      "volume": "109",
+      "issue": "",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "124-141",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "10.1017/S0147547925000055",
+      "citationKey": "oconnor2026remembering",
+      "url": "https://www.cambridge.org/core/journals/international-labor-and-working-class-history/article/remembering-rochdale-the-cooperative-movement-and-the-postenclosure-atlantic/F9276E4F3B0D4E39CCD985DF45A26F36",
+      "accessDate": "2026-06-13T10:36:49Z",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "0147-5479, 1471-6445",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Remembering Rochdale",
+      "language": "en",
+      "libraryCatalog": "Cambridge University Press",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [
+        {
+          "tag": "United States",
+          "type": 1
+        },
+        {
+          "tag": "capitalism",
+          "type": 1
+        },
+        {
+          "tag": "commons",
+          "type": 1
+        },
+        {
+          "tag": "cooperatives",
+          "type": 1
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-06-13T10:36:49Z",
+      "dateModified": "2026-06-13T10:36:49Z"
+    },
+    {
+      "key": "9MIEKL2H",
+      "version": 1573,
+      "itemType": "journalArticle",
+      "title": "The Value of Everything: Making and Taking in the Global Economy",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Mariana",
+          "lastName": "Mazzucato"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "",
+      "publisher": "",
+      "place": "",
+      "date": "",
+      "volume": "",
+      "issue": "",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "",
+      "citationKey": "mazzucatovalue",
+      "url": "",
+      "accessDate": "",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "en",
+      "libraryCatalog": "Zotero",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-10T15:37:17Z",
+      "dateModified": "2026-06-10T15:37:18Z"
+    },
+    {
+      "key": "LEUZM2ET",
+      "version": 1565,
+      "parentItem": "9MIEKL2H",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PDF",
+      "accessDate": "2026-06-10T15:37:15Z",
+      "url": "https://issc.al.uw.edu.pl/wp-content/uploads/sites/2/2022/05/The-Value-of-Everything.-Making-and-Taking-in-the-Global-Economy-by-Mariana-Mazzucato.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Mazzucato - The Value of Everything Making and Taking in the Global Economy.pdf",
+      "md5": "01c54953b432f76172521c552f0b5520",
+      "mtime": 1781105835899,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-10T15:37:15Z",
+      "dateModified": "2026-06-10T15:37:18Z"
+    },
+    {
+      "key": "YW2BBLJF",
+      "version": 1572,
+      "itemType": "journalArticle",
+      "title": "The Care Manifesto",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "The Care",
+          "lastName": "Collective"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jamie",
+          "lastName": "Hakim"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Jo",
+          "lastName": "Littler"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Catherine",
+          "lastName": "Rottenberg"
+        },
+        {
+          "creatorType": "author",
+          "firstName": "Lynne",
+          "lastName": "Segal"
+        }
+      ],
+      "abstractNote": "",
+      "publicationTitle": "",
+      "publisher": "",
+      "place": "",
+      "date": "",
+      "volume": "",
+      "issue": "",
+      "section": "",
+      "partNumber": "",
+      "partTitle": "",
+      "pages": "",
+      "series": "",
+      "seriesTitle": "",
+      "seriesText": "",
+      "journalAbbreviation": "",
+      "DOI": "",
+      "citationKey": "collectivecare",
+      "url": "",
+      "accessDate": "",
+      "PMID": "",
+      "PMCID": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "Zotero",
+      "callNumber": "",
+      "rights": "",
+      "extra": "",
+      "tags": [],
+      "collections": [
+        "KN9TUB59"
+      ],
+      "relations": {},
+      "dateAdded": "2026-06-10T15:37:12Z",
+      "dateModified": "2026-06-10T15:37:16Z"
+    },
+    {
+      "key": "S9KFLJTR",
+      "version": 1564,
+      "parentItem": "YW2BBLJF",
+      "itemType": "attachment",
+      "linkMode": "imported_url",
+      "title": "PDF",
+      "accessDate": "2026-06-10T15:37:00Z",
+      "url": "https://www.powerinstitute.org.au/sites/default/files/2024-05/The%20Care%20Collective%20-%20The%20Care%20Manifesto%20%282020%29.pdf",
+      "note": "",
+      "contentType": "application/pdf",
+      "charset": "",
+      "filename": "Collective et al. - The Care Manifesto.pdf",
+      "md5": "c49145cfe43ac5f69f66cde41fdf48d3",
+      "mtime": 1781105820685,
+      "tags": [],
+      "relations": {},
+      "dateAdded": "2026-06-10T15:37:00Z",
+      "dateModified": "2026-06-10T15:37:16Z"
+    },
+    {
+      "key": "5T2H2NIN",
+      "version": 1555,
+      "itemType": "report",
+      "title": "The Stephen Lawrence Inquiry: Report of an Inquiry by Sir William Macpherson of Cluny",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "William",
+          "lastName": "Macpherson"
+        }
+      ],
+      "abstractNote": "",
+      "reportNumber": "",
+      "reportType": "",
+      "institution": "",
+      "place": "",
+      "date": "1999-02",
+      "seriesTitle": "",
+      "seriesNumber": "",
+      "pages": "",
+      "DOI": "",
+      "ISBN": "",
+      "citationKey": "macpherson1999inquiry",
+      "url": "https://assets.publishing.service.gov.uk/media/5a82419040f0b62305b91f49/4262.pdf",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Citation Key: macpherson1999inquiry",
+      "tags": [
+        {
+          "tag": "Ch11"
+        },
+        {
+          "tag": "Macpherson"
+        },
+        {
+          "tag": "institutional-racism"
+        },
+        {
+          "tag": "policing"
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T17:16:08Z",
+      "dateModified": "2026-05-28T21:41:01Z"
+    },
+    {
+      "key": "AW4HEP43",
+      "version": 1554,
+      "itemType": "report",
+      "title": "Trapped in the Matrix: Secrecy, stigma and bias in the Met's Gangs Database",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "",
+          "lastName": "Amnesty International UK"
+        }
+      ],
+      "abstractNote": "",
+      "reportNumber": "",
+      "reportType": "",
+      "institution": "",
+      "place": "",
+      "date": "2018-05",
+      "seriesTitle": "",
+      "seriesNumber": "",
+      "pages": "",
+      "DOI": "",
+      "ISBN": "",
+      "citationKey": "amnesty2018trapped",
+      "url": "https://media.amnesty.org.uk/documents/Trapped20in20the20Matrix20Amnesty20report.pdf",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Citation Key: amnesty2018trapped",
+      "tags": [
+        {
+          "tag": "Ch11"
+        },
+        {
+          "tag": "Gangs-Matrix"
+        },
+        {
+          "tag": "Metropolitan-Police"
+        },
+        {
+          "tag": "racialised-surveillance"
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T17:16:14Z",
+      "dateModified": "2026-05-28T21:40:26Z"
+    },
+    {
+      "key": "94ZMH854",
+      "version": 1553,
+      "itemType": "report",
+      "title": "Royal Commission into the Robodebt Scheme",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Catherine",
+          "lastName": "Holmes"
+        }
+      ],
+      "abstractNote": "",
+      "reportNumber": "",
+      "reportType": "",
+      "institution": "",
+      "place": "",
+      "date": "2023-07-07",
+      "seriesTitle": "",
+      "seriesNumber": "",
+      "pages": "",
+      "DOI": "",
+      "ISBN": "",
+      "citationKey": "robodebtroyalcommission2023",
+      "url": "https://www.royalcommission.gov.au/robodebt/report",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Citation Key: robodebtroyalcommission2023\nAlternative citekey: holmes2023robodebt (if personal-author form preferred)",
+      "tags": [
+        {
+          "tag": "Australia"
+        },
+        {
+          "tag": "Ch11"
+        },
+        {
+          "tag": "automated-decision-making"
+        },
+        {
+          "tag": "robodebt"
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T17:19:14Z",
+      "dateModified": "2026-05-28T21:39:28Z"
+    },
+    {
+      "key": "LS6MLMHG",
+      "version": 1551,
+      "itemType": "book",
+      "title": "Law Enforcement Use of Predictive Policing Approaches: Proceedings of a Workshop",
+      "creators": [
+        {
+          "creatorType": "editor",
+          "firstName": "Erin Hammers",
+          "lastName": "Forstag"
+        },
+        {
+          "creatorType": "author",
+          "name": "Committee on Law and Justice"
+        },
+        {
+          "creatorType": "author",
+          "name": "Computer Science and Telecommunications Board"
+        },
+        {
+          "creatorType": "author",
+          "name": "Division of Behavioral and Social Sciences and Education"
+        },
+        {
+          "creatorType": "author",
+          "name": "National Academies of Sciences, Engineering, and Medicine"
+        }
+      ],
+      "abstractNote": "",
+      "series": "",
+      "seriesNumber": "",
+      "volume": "",
+      "numberOfVolumes": "",
+      "edition": "",
+      "date": "2025-01-28",
+      "publisher": "National Academies Press",
+      "place": "Washington, D.C.",
+      "originalDate": "",
+      "originalPublisher": "",
+      "originalPlace": "",
+      "format": "",
+      "numPages": "",
+      "ISBN": "978-0-309-72918-5",
+      "DOI": "10.17226/28036",
+      "citationKey": "committeeonlawandjustice2025law",
+      "url": "https://www.nationalacademies.org/publications/28036",
+      "accessDate": "2026-05-28T21:37:49Z",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "Law Enforcement Use of Predictive Policing Approaches",
+      "language": "",
+      "libraryCatalog": "DOI.org (Crossref)",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Pages: 28036",
+      "tags": [],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T21:37:49Z",
+      "dateModified": "2026-05-28T21:37:49Z"
+    },
+    {
+      "key": "HCT3KRVI",
+      "version": 1550,
+      "itemType": "webpage",
+      "title": "Law Enforcement Use of Predictive Policing Approaches National Academies of Sciences, Engineering, and Medicine. 2025. Law Enforcement Use of Predictive Policing Approaches: Proceedings of a Workshop. Washington, DC: The National Academies Press. https://doi.org/10.17226/28036.",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "",
+          "lastName": "National Academies of Sciences, Engineering, and Medicine"
+        }
+      ],
+      "abstractNote": "",
+      "websiteTitle": "",
+      "websiteType": "",
+      "date": "2025",
+      "publisher": "",
+      "place": "",
+      "DOI": "https://doi.org/10.17226/28036 National Academies of Sciences, Engineering, and Medicine. 2025. Law Enforcement Use of Predictive Policing Approaches: Proceedings of a Workshop. Washington, DC: The National Academies Press. https://doi.org/10.17226/28036.",
+      "citationKey": "nationalacademies2025",
+      "url": "https://www.nationalacademies.org/read/28036/chapter/4",
+      "accessDate": "",
+      "shortTitle": "",
+      "language": "",
+      "rights": "",
+      "extra": "Citation Key: nationalacademies2025",
+      "tags": [
+        {
+          "tag": "Ch11"
+        },
+        {
+          "tag": "predictive-policing"
+        },
+        {
+          "tag": "risk-assessment"
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T17:19:34Z",
+      "dateModified": "2026-05-28T21:37:43Z"
+    },
+    {
+      "key": "KJGAEFWS",
+      "version": 1547,
+      "itemType": "report",
+      "title": "Baroness Casey Review: An independent review into the standards of behaviour and internal culture of the Metropolitan Police Service",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Louise",
+          "lastName": "Casey"
+        }
+      ],
+      "abstractNote": "",
+      "reportNumber": "",
+      "reportType": "",
+      "institution": "",
+      "place": "",
+      "date": "2023-03",
+      "seriesTitle": "",
+      "seriesNumber": "",
+      "pages": "",
+      "DOI": "",
+      "ISBN": "",
+      "citationKey": "casey2023review",
+      "url": "https://www.met.police.uk/SysSiteAssets/media/downloads/met/about-us/baroness-casey-review/update-march-2023/baroness-casey-review-march-2023a.pdf",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Citation Key: casey2023review",
+      "tags": [
+        {
+          "tag": "Ch11"
+        },
+        {
+          "tag": "Metropolitan-Police"
+        },
+        {
+          "tag": "institutional-culture"
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T17:20:46Z",
+      "dateModified": "2026-05-28T21:34:51Z"
+    },
+    {
+      "key": "6UKWZD5A",
+      "version": 1546,
+      "itemType": "thesis",
+      "title": "Patrolling the Future: Unintended Consequences of Predictive Policing in Chicago",
+      "creators": [
+        {
+          "creatorType": "author",
+          "firstName": "Yiying",
+          "lastName": "Jiao"
+        }
+      ],
+      "abstractNote": "",
+      "thesisType": "",
+      "university": "",
+      "place": "",
+      "date": "2020",
+      "series": "",
+      "seriesNumber": "",
+      "numPages": "",
+      "DOI": "",
+      "ISBN": "",
+      "citationKey": "jiao2020unintended",
+      "url": "https://sites.duke.edu/econhonors/files/2020/05/jiao2020.pdf",
+      "accessDate": "",
+      "ISSN": "",
+      "archive": "",
+      "archiveLocation": "",
+      "shortTitle": "",
+      "language": "",
+      "libraryCatalog": "",
+      "callNumber": "",
+      "rights": "",
+      "extra": "Citation Key: jiao2020unintended",
+      "tags": [
+        {
+          "tag": "Ch11"
+        },
+        {
+          "tag": "Chicago"
+        },
+        {
+          "tag": "SSL"
+        },
+        {
+          "tag": "predictive-policing"
+        }
+      ],
+      "collections": [],
+      "relations": {},
+      "dateAdded": "2026-05-28T17:20:54Z",
+      "dateModified": "2026-05-28T21:31:57Z"
     }
   ],
   "collections": {
