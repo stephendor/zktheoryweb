@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
-    "build:example-pdfs": "astro build && tsx scripts/build-example-pdfs.ts",
+    "prebuild": "node scripts/check-overrides.mjs",
+    "build": "astro build && npm run verify:dist",
+    "verify:dist": "node scripts/check-csp-hashes.mjs && node scripts/check-client-bundle.mjs",
+    "build:example-pdfs": "npm run build && tsx scripts/build-example-pdfs.ts",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "node scripts/check-overrides.mjs && astro check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
@@ -75,11 +77,20 @@
     "happy-dom": "^20.8.9",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
+    "semver": "^7.8.5",
     "storybook": "^10.3.4",
     "tsx": "^4.21.0",
     "vitest": "^4.1.2"
   },
   "overrides": {
     "yaml": "$yaml"
-  }
+  },
+  "overrideRangeExceptions": [
+    {
+      "override": "yaml",
+      "owner": "yaml-language-server",
+      "installed": "2.8.3",
+      "reason": "yaml-language-server pins yaml 2.7.1 exactly; the override forces the root-declared ^2.8.3 (same major, security fix). Re-review if either side changes."
+    }
+  ]
 }
