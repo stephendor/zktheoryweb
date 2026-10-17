@@ -18,6 +18,7 @@ import { checkOverrides } from './check-overrides.mjs';
 import { checkCspHashes } from './check-csp-hashes.mjs';
 // @ts-expect-error plain .mjs module without type declarations
 import { checkClientBundle, NON_VENDOR_BUDGET_BYTES } from './check-client-bundle.mjs';
+import { shouldRefreshZotero, zoteroBuildStart } from '../src/lib/zotero-build-hook';
 
 const REPO = path.resolve(__dirname, '..');
 const tmpRoots: string[] = [];
@@ -289,5 +290,38 @@ describe('check-client-bundle', () => {
       }
     );
     expect(run.status).toBe(1);
+  });
+});
+
+// A verification build must not rewrite the tracked Zotero cache (obs
+// 2026-10-05-build-mutates-tracked-zotero-cache): the refresh is opt-in.
+describe('zotero build hook', () => {
+  it('does not refresh the tracked cache without an explicit opt-in', async () => {
+    const cache = path.join(REPO, 'src/data/zotero-library.json');
+    const before = fs.existsSync(cache) ? fs.readFileSync(cache) : null;
+    let called = 0;
+    const ran = await zoteroBuildStart({ ZOTERO_USER_ID: 'u', ZOTERO_API_KEY: 'k' }, async () => {
+      called += 1;
+    }, () => undefined);
+    expect(ran).toBe(false);
+    expect(called).toBe(0);
+    const after = fs.existsSync(cache) ? fs.readFileSync(cache) : null;
+    expect(after).toEqual(before);
+  });
+
+  it('refreshes when asked for, and on Netlify', async () => {
+    for (const env of [{ ZOTERO_REFRESH: '1' }, { NETLIFY: 'true' }]) {
+      let called = 0;
+      expect(await zoteroBuildStart(env, async () => { called += 1; }, () => undefined)).toBe(true);
+      expect(called).toBe(1);
+    }
+    expect(shouldRefreshZotero({ ZOTERO_REFRESH: '0' })).toBe(false);
+    expect(shouldRefreshZotero({ NETLIFY: 'false' })).toBe(false);
+  });
+
+  it('astro.config.mjs routes its build hook through the opt-in gate', () => {
+    const config = fs.readFileSync(path.join(REPO, 'astro.config.mjs'), 'utf8');
+    expect(config).toContain('zoteroBuildStart(process.env, () => fetchZoteroLibrary())');
+    expect(config).not.toMatch(/'astro:build:start':[^}]*\n\s*await fetchZoteroLibrary\(\)/);
   });
 });

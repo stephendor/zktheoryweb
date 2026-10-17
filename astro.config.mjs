@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { fetchZoteroLibrary } from './src/lib/zotero.ts';
+import { zoteroBuildStart } from './src/lib/zotero-build-hook.ts';
 import pagefind from 'astro-pagefind';
 import sitemap from '@astrojs/sitemap';
 
@@ -20,9 +21,11 @@ export default defineConfig({
     {
       name: 'zotero-prefetch',
       hooks: {
+        // Opt-in (ZOTERO_REFRESH=1, or Netlify): a verification build must not rewrite the
+        // tracked src/data/zotero-library.json. See src/lib/zotero-build-hook.ts.
         'astro:build:start': async () => {
           try {
-            await fetchZoteroLibrary();
+            await zoteroBuildStart(process.env, () => fetchZoteroLibrary());
           } catch (err) {
             console.warn('[zotero] Build hook: unexpected error —', err);
           }
