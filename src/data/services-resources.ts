@@ -327,7 +327,7 @@ export const serviceSheets: ServiceSheet[] = [
       'What does each project, service or placement really cost once rent, management, admin and other shared costs are fairly shared out, and what does that mean per participant, per session and per outcome?',
     what_you_get: [
       'Full cost of each project or service: direct costs plus a fair, explained share of core costs',
-      'Cost per participant, per session and per outcome, using your own activity and outcome records',
+      'Cost per participant, per session and per outcome, for each count you record (cost per outcome needs outcome counts)',
       'Where core costs are under-recovered: the gap between what funders pay for and what delivery actually costs',
       'For placements: the full cost of a placement day or session, to compare with what you charge',
       'A 2–3 page summary with charts and plain-English commentary, plus the workbook so you can update it next year',
