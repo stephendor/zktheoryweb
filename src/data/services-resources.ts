@@ -270,23 +270,23 @@ export const serviceSheets: ServiceSheet[] = [
     slug: 'impact-evidence-pack',
     pdf: 'impact-evidence-pack.pdf',
     kicker: 'For charities and community groups',
-    summary: 'The figures your next bid or renewal needs.',
+    summary: 'The figures for your end-of-grant report, renewal or next bid, checked against your records.',
     title: 'Impact evidence pack',
-    lead: 'The figures your next bid or renewal needs, drawn from the records you already keep.',
+    lead: 'The figures for your end-of-grant report, renewal or next bid, drawn from the records you already keep.',
     for_whom: [
-      'Small charities and community groups with a funding application or renewal coming up',
-      'Trustees preparing the annual report',
+      'Charities and community groups reaching the end of a grant period, or with a renewal or new application coming up',
+      'Trustees preparing the annual report or an annual impact report',
       'Organisations whose impact figures are scattered across several spreadsheets',
     ],
     question:
-      'What difference has our work made, who has it reached, and what does it cost to achieve an outcome? Answered with figures a funder can check.',
+      'What did we deliver (outputs), what changed for people (outcomes), who did we reach, and what does each outcome cost? Answered with figures a funder can check.',
     what_you_get: [
-      'Reach and trends: people, sessions and activity by project, site and month, against your targets',
-      'Outcomes: what changed for the people you work with, using the measures you already record',
+      'Outputs and reach: people, sessions and activity by project, site and month, against your targets',
+      'Outcomes: what changed for the people you work with, using the measures you already record, or the ones in your logic model or theory of change if you have one',
       'Cost per participant and per outcome by project, from your own finance figures',
       'Volunteer contribution: hours given and their equivalent value',
-      'A 3–4 page evidence pack with charts and plain-English commentary, plus the figures in a spreadsheet you can reuse',
-      'A short paragraph for each key figure you can paste straight into an application',
+      'A 3–4 page evidence pack with charts and plain-English commentary that works as an end-of-grant report and can be reused with several funders, plus the figures in a spreadsheet you can reuse',
+      'A short paragraph for each key figure you can paste straight into an application or your case for support',
     ],
     what_i_need: [
       'Your activity or attendance records (spreadsheet exports are fine)',
@@ -302,13 +302,58 @@ export const serviceSheets: ServiceSheet[] = [
     ],
     price: '£600–£950 fixed price',
     price_note:
-      'Price depends on the number of projects and data sources, and is confirmed before any work starts. Invoiced on booking, payable on delivery.',
+      'Price depends on the number of projects and data sources, and is confirmed before any work starts. Unlike a report written from an interview, every figure is checked against your records and you keep the workbook. Invoiced on booking, payable on delivery. No VAT is added.',
     example_finding:
       'Across three projects, the lunch club reached the most people but the advice service produced outcomes at less than half the cost per outcome — a much stronger case for the renewal than headcount alone.',
     example_note: 'Illustrative example only, not a client result.',
-    best_time: '6–8 weeks before a funding deadline or the annual report.',
+    best_time: 'At the end of a grant period, or 6–8 weeks before a funding deadline or the annual report.',
     data_statement:
       "Your data. I work from summary figures and anonymised records. I don't need names or personal details; if a piece of work ever needs record-level data, we agree exactly what, how it's handled and when it's deleted, in writing, before anything is shared.",
+  },
+  {
+    slug: 'full-cost-analysis',
+    pdf: 'full-cost-analysis.pdf',
+    kicker: 'For charities, community groups and alternative provision',
+    summary:
+      'What each project or placement really costs, including its fair share of core costs, for core-cost and full-cost-recovery requests.',
+    title: 'Full cost and cost-per-outcome analysis',
+    lead: 'What each project really costs to run, including its fair share of core costs, so you can ask for it.',
+    for_whom: [
+      'Charities preparing a core-costs or full-cost-recovery request',
+      'Organisations whose grants pay for projects but not the overheads that make them possible',
+      'Alternative provision providers setting or reviewing the price of a placement',
+    ],
+    question:
+      'What does each project, service or placement really cost once rent, management, admin and other shared costs are fairly shared out, and what does that mean per participant, per session and per outcome?',
+    what_you_get: [
+      'Full cost of each project or service: direct costs plus a fair, explained share of core costs',
+      'Cost per participant, per session and per outcome, for each count you record (cost per outcome needs outcome counts)',
+      'Where core costs are under-recovered: the gap between what funders pay for and what delivery actually costs',
+      'For placements: the full cost of a placement day or session, to compare with what you charge',
+      'A 2–3 page summary with charts and plain-English commentary, plus the workbook so you can update it next year',
+      'A short costed paragraph you can drop into a core-costs or full-cost-recovery application',
+    ],
+    what_i_need: [
+      'Your latest annual or management accounts',
+      'A list of projects or services and which costs belong to each (a rough split is fine to start)',
+      'Activity counts: participants, sessions or placement days per project',
+      'Any outcome counts you already record',
+    ],
+    how_it_works: [
+      '20-minute call to agree the projects and how shared costs will be split',
+      'You share your accounts and summary activity figures',
+      'Summary and workbook delivered within 7 working days',
+      'One round of changes and a 30-minute walk-through included',
+    ],
+    price: '£350–£600 fixed price',
+    price_note:
+      'Depends on the number of projects and cost centres, and is confirmed before any work starts. Invoiced on booking, payable on delivery. No VAT is added.',
+    example_finding:
+      'The youth project looked cheap at £18 a session in the grant budget. With its share of rent, supervision and admin included it cost £31 a session, and the difference had been quietly covered from reserves for two years.',
+    example_note: 'Illustrative example only, not a client result.',
+    best_time: "Before a core-costs application or contract renewal, or when setting next year's prices.",
+    data_statement:
+      'Your data. This uses your accounts and summary activity counts only. No names or personal details are needed.',
   },
   {
     slug: 'survey-analysis',
@@ -345,7 +390,7 @@ export const serviceSheets: ServiceSheet[] = [
     ],
     price: '£350–£750 fixed price',
     price_note:
-      'Depends on the number of responses and the amount of written comment. Confirmed before work starts. Invoiced on booking, payable on delivery.',
+      'Depends on the number of responses and the amount of written comment. Confirmed before work starts. Invoiced on booking, payable on delivery. No VAT is added.',
     example_finding:
       'Overall satisfaction was 86%, but among people who had used the service for less than three months it was 61%. The early weeks were where people were being lost — something the headline figure hid completely.',
     example_note: 'Illustrative example only, not a client result.',
@@ -388,7 +433,7 @@ export const serviceSheets: ServiceSheet[] = [
     ],
     price: '£750–£1,200 fixed price',
     price_note:
-      'Depends on learner numbers and the number of systems. Confirmed before work starts. Invoiced on booking, payable on delivery.',
+      'Depends on learner numbers and the number of systems. Confirmed before work starts. Invoiced on booking, payable on delivery. No VAT is added.',
     example_finding:
       "The provider's overall achievement rate was close to national, but 16–18 learners on one standard were 14 points below. Most of the gap came from withdrawals in the first 12 weeks at two employers.",
     example_note: 'Illustrative example only, not a client result.',
@@ -432,7 +477,7 @@ export const serviceSheets: ServiceSheet[] = [
     ],
     price: '£600–£950 fixed price',
     price_note:
-      'Depends on the number of commissioners and placements. Confirmed before work starts. Invoiced on booking, payable on delivery.',
+      'Depends on the number of commissioners and placements. Confirmed before work starts. Invoiced on booking, payable on delivery. No VAT is added.',
     example_finding:
       'Placements that arrived with a transition plan from the referring school sustained attendance far more often than those without — a concrete, evidence-based request to put to every referring school.',
     example_note: 'Illustrative example only, not a client result.',
