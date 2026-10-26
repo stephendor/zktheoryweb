@@ -48,6 +48,8 @@ const PAGES = [
   { name: 'Checklist: funder', url: '/services/resources/funder-trustee-reporting-checklist/'         },
   { name: 'Checklist: ILR',    url: '/services/resources/apprenticeship-pre-submission-checklist/'    },
   { name: 'Sheet: impact',     url: '/services/sheets/impact-evidence-pack/'                          },
+  { name: 'Sheet: need',       url: '/services/sheets/need-and-reach-analysis/'                       },
+  { name: 'Sheet: scores',     url: '/services/sheets/outcome-measure-analysis/'                      },
   { name: 'Sheet: full cost',  url: '/services/sheets/full-cost-analysis/'                            },
   { name: 'Sheet: survey',     url: '/services/sheets/survey-analysis/'                               },
   { name: 'Sheet: SAR',        url: '/services/sheets/sar-data-pack/'                                 },

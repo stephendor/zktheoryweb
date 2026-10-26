@@ -86,7 +86,7 @@ const MONTHS = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', '
 
 const CLOSING_TAIL =
   'It runs from the spreadsheets and exports the organisation already uses. ' +
-  'The first step is a £295 Reporting & Insight Review — details at zktheory.org/services.';
+  'The first step is a £345 Reporting & Insight Review — details at zktheory.org/services.';
 
 export const servicesExamples: ServicesExample[] = [
   {
