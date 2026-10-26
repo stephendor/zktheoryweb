@@ -36,8 +36,8 @@ describe('services document PDFs', () => {
     ]);
   });
 
-  it('covers all ten documents', () => {
-    expect(servicesDocuments).toHaveLength(10);
+  it('covers all twelve documents', () => {
+    expect(servicesDocuments).toHaveLength(12);
   });
 
   for (const doc of servicesDocuments) {

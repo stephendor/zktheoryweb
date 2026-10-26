@@ -156,7 +156,7 @@ export const checklists: Checklist[] = [
       'Which figure would be hardest for someone else to reproduce next month?',
       'What should trustees see as a known issue rather than discover as a surprise?',
     ],
-    note: "This checklist is a practical guide, not accounting, audit or legal advice. You don't need to share any personal data to use it. If you'd like help, the £295 Reporting & Insight Review looks at one of your reports in detail: zktheory.org/services.",
+    note: "This checklist is a practical guide, not accounting, audit or legal advice. You don't need to share any personal data to use it. If you'd like help, the £345 Reporting & Insight Review looks at one of your reports in detail: zktheory.org/services.",
   },
   {
     slug: 'apprenticeship-pre-submission-checklist',
@@ -309,6 +309,92 @@ export const serviceSheets: ServiceSheet[] = [
     best_time: 'At the end of a grant period, or 6–8 weeks before a funding deadline or the annual report.',
     data_statement:
       "Your data. I work from summary figures and anonymised records. I don't need names or personal details; if a piece of work ever needs record-level data, we agree exactly what, how it's handled and when it's deleted, in writing, before anything is shared.",
+  },
+  {
+    slug: 'need-and-reach-analysis',
+    pdf: 'need-and-reach-analysis.pdf',
+    kicker: 'For charities, community groups and alternative provision',
+    summary: 'Who you reach compared with where the need is, from official figures for your area.',
+    title: 'Need and reach analysis',
+    lead: 'The need in your area and the people you reach, side by side, in figures a funder will recognise.',
+    for_whom: [
+      'Charities and community groups writing a bid that asks for evidence of need',
+      'Organisations planning outreach, or deciding where to run a new session or site',
+      'Alternative provision providers showing commissioners which communities their placements serve',
+    ],
+    question:
+      'How great is the need where we work, is our service reaching the neighbourhoods and groups where it is greatest, and where are the gaps?',
+    what_you_get: [
+      'A profile of need in your area from official sources: deprivation, income, child poverty, health and education, compared with county and national figures',
+      'Your reach set against it: participants by neighbourhood and level of deprivation, compared with the local population',
+      'The gaps: areas of high need where few people use your service, and groups that are under-represented',
+      'A 3–4 page summary with maps, charts and plain-English commentary, plus the workbook so you can update it',
+      'A short paragraph on local need, with its sources, that you can paste straight into an application',
+    ],
+    what_i_need: [
+      'The area you work in (towns, wards or local authority)',
+      'Participant counts by neighbourhood, made on your own computer with a lookup workbook I provide',
+      'Any age or other breakdowns you already record, as counts',
+      'Which bid or plan this is for, and the deadline',
+    ],
+    how_it_works: [
+      '20-minute call to agree the area and the comparisons',
+      'You run the lookup workbook and send me the counts',
+      'Summary and workbook delivered within 7 working days',
+      'One round of changes included',
+    ],
+    price: '£500–£850 fixed price',
+    price_note:
+      'Depends on the size of the area and the number of services or sites compared. Confirmed before work starts. Invoiced on booking, payable on delivery. No VAT is added.',
+    example_finding:
+      'Six in ten participants came from the most deprived fifth of neighbourhoods in the county, against one in six residents. But one high-need estate two miles from the venue had almost no participants — the obvious focus for outreach in the next bid.',
+    example_note: 'Illustrative example only, not a client result.',
+    best_time: 'Before a bid that asks for evidence of need, or when deciding where to offer a new service.',
+    data_statement:
+      'Your data. Postcodes never leave your organisation. The lookup workbook turns them into counts by neighbourhood on your own computer, and I receive only those counts. Counts below a set threshold are combined into larger areas or left out before anything is sent. No names or personal details are needed.',
+  },
+  {
+    slug: 'outcome-measure-analysis',
+    pdf: 'outcome-measure-analysis.pdf',
+    kicker: 'For charities and alternative provision',
+    summary: 'Whether your before-and-after scores show real change, how much, and for whom.',
+    title: 'Outcome measure analysis',
+    lead: 'Whether the change in your before-and-after scores is real, how large it is, and who it is happening for.',
+    for_whom: [
+      'Charities using wellbeing or progress measures such as WEMWBS, the Outcomes Star or their own scales',
+      'Alternative provision and tuition providers recording SDQ, Boxall Profile, attendance or attainment at start and review',
+      'Organisations whose funders ask for outcomes, not just numbers through the door',
+    ],
+    question:
+      "Did people's scores improve by more than chance and measurement error would explain, by how much, and does the change differ by group, programme or length of involvement?",
+    what_you_get: [
+      'Change on each measure: the average change, how large it is in standard terms (effect size) and how sure we can be',
+      "Reliable change: how many people improved, stayed the same or got worse by more than the measure's margin of error, where the measure supports it",
+      'Who benefits most: change by group, site, programme or sessions attended, with small samples flagged',
+      'Follow-up: how many people have both a start and a follow-up score, and whether those without one differ',
+      'A 3–4 page report with charts and plain-English commentary, plus the workbook so you can rerun it next year',
+    ],
+    what_i_need: [
+      'Start and follow-up scores for each person, pseudonymised (participant codes, not names)',
+      'Which measure each score comes from, and when it was taken',
+      'Any groupings to compare, such as site, programme or sessions attended',
+    ],
+    how_it_works: [
+      '30-minute call to agree the measures and comparisons',
+      'Secure transfer of pseudonymised scores under a written data agreement',
+      'Report and workbook delivered within 10 working days',
+      'One round of changes included',
+    ],
+    price: '£600–£950 fixed price',
+    price_note:
+      'Depends on the number of measures and comparisons. Confirmed before work starts. Invoiced on booking, payable on delivery. No VAT is added.',
+    example_finding:
+      "The average wellbeing score rose by only a few points, which looked modest. But four in ten participants improved by more than the measure's margin of error, fewer than one in ten got worse, and almost all of the reliable improvement came from people who attended eight or more sessions.",
+    example_note: 'Illustrative example only, not a client result.',
+    best_time:
+      'At the end of a programme or grant period, or once at least 20 people have both a start and a follow-up score.',
+    data_statement:
+      'Your data. This work uses pseudonymised scores (codes, not names). That is still personal data, and wellbeing and mental-health measures are special-category (health) data, so it runs only under a written data processing agreement. You confirm first that your lawful basis covers using the scores for this analysis, including sending them to me, and that you have a condition for processing special-category data (UK GDPR Articles 6 and 9). You stay in control, data is held in an agreed secure location, used only for this work, and deleted at the end.',
   },
   {
     slug: 'full-cost-analysis',
