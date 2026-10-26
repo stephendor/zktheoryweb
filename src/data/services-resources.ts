@@ -351,7 +351,7 @@ export const serviceSheets: ServiceSheet[] = [
     example_note: 'Illustrative example only, not a client result.',
     best_time: 'Before a bid that asks for evidence of need, or when deciding where to offer a new service.',
     data_statement:
-      'Your data. Postcodes never leave your organisation. The lookup workbook turns them into counts by neighbourhood on your own computer, and I receive only those counts. No names or personal details are needed.',
+      'Your data. Postcodes never leave your organisation. The lookup workbook turns them into counts by neighbourhood on your own computer, and I receive only those counts. Counts below a set threshold are combined into larger areas or left out before anything is sent. No names or personal details are needed.',
   },
   {
     slug: 'outcome-measure-analysis',
@@ -394,7 +394,7 @@ export const serviceSheets: ServiceSheet[] = [
     best_time:
       'At the end of a programme or grant period, or once at least 20 people have both a start and a follow-up score.',
     data_statement:
-      'Your data. This work uses pseudonymised scores (codes, not names). That is still personal data, and wellbeing and mental-health measures are special-category (health) data, so it runs only under a written data processing agreement and only where you already have a lawful basis for recording the scores. You stay in control, data is held in an agreed secure location, used only for this work, and deleted at the end.',
+      'Your data. This work uses pseudonymised scores (codes, not names). That is still personal data, and wellbeing and mental-health measures are special-category (health) data, so it runs only under a written data processing agreement. You confirm first that your lawful basis covers using the scores for this analysis, including sending them to me, and that you have a condition for processing special-category data (UK GDPR Articles 6 and 9). You stay in control, data is held in an agreed secure location, used only for this work, and deleted at the end.',
   },
   {
     slug: 'full-cost-analysis',
