@@ -26,7 +26,7 @@ Vault paths below are relative to each vault root.
 | P3 | paper | paper-04 | tda-research | 03-Papers/P04-Multipers/ | resolved | ✅ | Titles match ("Multi-Parameter…"). |
 | P4 | paper | paper-10 | tda-research | 03-Papers/P10-Topological-Fairness/ | resolved | ✅ | Titles match. Also the math anchor for a Two Lenses pair. |
 | P5 | interlude | mm3-logistic-regression | counting-lives | 01 - Manuscript/MM-Interludes/MM3 - Logistic Regression and Classification.md | resolved | ✅ | In-vault Two Lenses math lens. |
-| P6 | chapter | ch-10 | counting-lives | 01 - Manuscript/Part III - The Automated Poorhouse/Ch10 - Risk Scores and Redlining/Ch10 - Risk Scores and Redlining.md | resolved | ⚠️ | Folder also has `manuscript.md` + `Index.md` — confirm which note is canonical. Political lens of the pair. |
+| P6 | chapter | ch-10 | counting-lives | 01 - Manuscript/Part III - The Automated Poorhouse/Ch10 - Risk Scores and Redlining/Ch10 - Risk Scores and Redlining.md | resolved | ✅ | Canonical note is `Ch10 - Risk Scores and Redlining.md` (open decision 3, resolved 2026-10-27). Political lens of the pair. |
 
 **Pilot Two Lenses pair (in-vault, no cross-vault sourceId needed):**
 
