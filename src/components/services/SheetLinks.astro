@@ -1,0 +1,29 @@
+---
+/**
+ * SheetLinks.astro
+ * The "Details" links for a bundle on /services: one DocLinks pair per
+ * service sheet it includes, looked up in src/data/services-resources.ts so
+ * the titles and PDFs always match the sheets themselves.
+ */
+import DocLinks from '@components/services/DocLinks.astro';
+import { serviceSheets } from '@data/services-resources';
+
+interface Props {
+  /** Service sheet slugs, in the order to list them. */
+  slugs: string[];
+}
+
+const sheets = Astro.props.slugs.map((slug) => {
+  const sheet = serviceSheets.find((s) => s.slug === slug);
+  if (!sheet) throw new Error(`SheetLinks: no service sheet with slug "${slug}"`);
+  return sheet;
+});
+---
+
+<ul class="service-bundle__sheets" aria-label="Sheets included">
+  {sheets.map((s) => (
+    <li>
+      <DocLinks page={`/services/sheets/${s.slug}/`} pdf={`services/sheets/${s.pdf}`} label={s.title} />
+    </li>
+  ))}
+</ul>
