@@ -26,7 +26,7 @@ Vault paths below are relative to each vault root.
 | P3 | paper | paper-04 | tda-research | 03-Papers/P04-Multipers/ | resolved | ✅ | Titles match ("Multi-Parameter…"). |
 | P4 | paper | paper-10 | tda-research | 03-Papers/P10-Topological-Fairness/ | resolved | ✅ | Titles match. Also the math anchor for a Two Lenses pair. |
 | P5 | interlude | mm3-logistic-regression | counting-lives | 01 - Manuscript/MM-Interludes/MM3 - Logistic Regression and Classification.md | resolved | ✅ | In-vault Two Lenses math lens. |
-| P6 | chapter | ch-10 | counting-lives | 01 - Manuscript/Part III - The Automated Poorhouse/Ch10 - Risk Scores and Redlining/Ch10 - Risk Scores and Redlining.md | resolved | ⚠️ | Folder also has `manuscript.md` + `Index.md` — confirm which note is canonical. Political lens of the pair. |
+| P6 | chapter | ch-10 | counting-lives | 01 - Manuscript/Part III - The Automated Poorhouse/Ch10 - Risk Scores and Redlining/Ch10 - Risk Scores and Redlining.md | resolved | ✅ | Canonical note is `Ch10 - Risk Scores and Redlining.md` (open decision 3, resolved 2026-10-27). Political lens of the pair. |
 
 **Pilot Two Lenses pair (in-vault, no cross-vault sourceId needed):**
 
@@ -70,16 +70,17 @@ Vault paths below are relative to each vault root.
 ## Chapters — ch-01 … ch-17 (clean by number)
 
 Vault folders `Ch01`…`Ch17` map to site `ch-01`…`ch-17` by number (titles confirmed match).
-Each folder's canonical note (named `ChNN - Title.md`) carries the `site:` block — confirm
-vs `manuscript.md` per folder. Draft state (for the editorial "should this be visible?" gate):
+Each folder's canonical note is `ChNN - Title.md` (decided 2026-10-27, open decision 3);
+it carries the `site:` block. `manuscript.md` (Longform compile, no frontmatter) and
+`Index.md` (Longform scene config) do not. ch-01–04 are tagged; the rest are not yet. Draft state (for the editorial "should this be visible?" gate):
 ch-01–11 and ch-14 are drafted; ch-12/13 have gaps; ch-15/16/17 are stubs.
 
 | site.id | site title | vault sourceId | vault folder |
 |---|---|---|---|
-| ch-01 | The Statistician's Stomach | counting-lives | Part I…/Ch01-Statistician's Stomach |
-| ch-02 | The Eugenic Ledger | counting-lives | Part I…/Ch02-The Eugenic Ledger |
-| ch-03 | From Poor Law to Social Insurance | counting-lives | Part I…/Ch03-From Poor Law to Social Insurance |
-| ch-04 | The Grocery List as Resistance | counting-lives | Part I…/Ch04-The Grocery List as Resistance |
+| ch-01 | The Statistician's Stomach | counting-lives | 01 - Manuscript/Part I - The State Learns to Count/Ch01-Statistician's Stomach/Ch01 - The Statistician's Stomach.md ✅ `site:` added |
+| ch-02 | The Eugenic Ledger | counting-lives | 01 - Manuscript/Part I - The State Learns to Count/Ch02-The Eugenic Ledger/Ch02 - The Eugenic Ledger.md ✅ `site:` added |
+| ch-03 | From Poor Law to Social Insurance | counting-lives | 01 - Manuscript/Part I - The State Learns to Count/Ch03-From Poor Law to Social Insurance/Ch03 - From Poor Law to Social Insurance.md ✅ `site:` added |
+| ch-04 | The Grocery List as Resistance | counting-lives | 01 - Manuscript/Part I - The State Learns to Count/Ch04-The Grocery List as Resistance/Ch04 - The Grocery List as Resistance.md ✅ `site:` added |
 | ch-05 | Cybernetics and Control | counting-lives | Part II…/Ch05-Cybernetics and Control |
 | ch-06 | The RAND Corporation's Poor | counting-lives | Part II…/Ch06-The RAND Corporation's Poor |
 | ch-07 | PayPal's Philosophers | counting-lives | Part II…/Ch07-Paypal's Philosophers |
@@ -121,6 +122,6 @@ ch-01–11 and ch-14 are drafted; ch-12/13 have gaps; ch-15/16/17 are stubs.
 
 1. **Markov ladder identity** — method `markov-memory-ladder` vs paper `paper-01` (or both, via a derived connection)?
 2. **Persistent-homology source** — give P01-Core-VR-PH its own `paper-*` route, or leave PH as a site-authored method page only?
-3. **Canonical chapter note** — `ChNN - Title.md` vs `manuscript.md` as the `site:`-bearing file.
+3. ~~**Canonical chapter note**~~ — **Resolved 2026-10-27:** `ChNN - Title.md` carries the `site:` block (the only typed `type: chapter` note per folder; `manuscript.md` has no frontmatter). Applies to P6 (ch-10) too.
 4. **Interlude duplicates** — `MMn` notes vs the `MM-Interlude-B/C/D` notes: which is canonical per id.
 5. **Two Lenses `website-path`** — the intended `/learn/...` route for the pilot pair.
