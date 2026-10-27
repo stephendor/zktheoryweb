@@ -4,95 +4,237 @@ chapter_number: 2
 part: "I"
 part_number: 1
 transition: 1
-spine_role: "This chapter demonstrates how the statistical methods that would become the backbone of twentieth-century social science were forged in the crucible of eugenics, encoding racial and gendered hierarchies into the mathematics of measurement itself."
+spine_role: "This chapter follows the normal curve, regression, and correlation through Francis Galton's and Karl Pearson's eugenic research programme — from the threepenny Anthropometric Laboratory to the 1925 study of Jewish schoolchildren and the interwar 'social problem group' — to show how quantitative form made political hierarchies of worth sound like findings about the people being ranked."
 status: drafting
 key_figures:
   - "Francis Galton"
   - "Karl Pearson"
   - "Adolphe Quetelet"
-  - "Charles Spearman"
-  - "Cyril Burt"
+  - "Alice Lee"
+  - "Margaret Moul"
+  - "Charles Booth"
 mathematical_concepts:
   - "normal distribution"
+  - "standardised score (z-score)"
   - "regression to the mean"
   - "correlation coefficient"
-  - "factor analysis"
-  - "eugenics"
 interludes:
   - "mm1-normal-distribution"
   - "mm2-correlation-regression"
 threads:
-  - scottish-thread
   - gender-thread
-related_tda_papers:
-  - 1
+related_tda_papers: []
 key_claims:
-  - claim: "Correlation and regression were eugenic tools before they were social-scientific ones"
-    detail: "Francis Galton developed the concept of correlation and Karl Pearson formalised regression analysis not as neutral statistical techniques but as instruments for studying the heritability of human 'fitness' — a project inseparable from racial and class hierarchy."
-  - claim: "The Biometric Laboratory produced the measurement infrastructure of modern social science"
-    detail: "Pearson's Biometric Laboratory at University College London was the first institution to apply statistical methods to social data at scale, creating precedents for data collection, cleaning, and inference that outlasted the eugenic programme itself."
-  - claim: "Women appeared in the eugenic ledger primarily as reproductive vessels"
-    detail: "Galton's and Pearson's data collection systematically reduced women to their fertility rates and the heritable qualities of their offspring, encoding a gendered measurement bias that persisted long after eugenics itself was discredited."
-  - claim: "Statistical legitimacy laundered political programmes"
-    detail: "The mathematical sophistication of Biometric methods gave eugenic claims a scientific authority that obscured their ideological foundations — a dynamic of laundering through quantification that recurs throughout the subsequent history of poverty measurement."
-  - claim: "The Scottish Enlightenment tradition shaped the moral framework of early eugenics"
-    detail: "Galton's framework of 'natural ability' drew on a tradition of Scottish moral philosophy that linked civic virtue to heritable character — connecting the eugenic project to a longer history of Scottish social inquiry into the conditions of human improvement."
+  - claim: "Measurement is not ranking"
+    detail: "Galton's Anthropometric Laboratory kept a duplicate of every visitor's card, building a reference distribution. A position in that distribution became a judgment of worth only when Galton's hereditary programme supplied the interpretation; the instruments did not."
+  - claim: "Galton made the average a failure"
+    detail: "Quetelet used the normal curve to describe a population's centre and scatter. In Hereditary Genius (1869) Galton turned the same curve into a grading system, with the eminent above, the 'degenerate' below, and 'mediocrity' in the middle."
+  - claim: "Regression to the mean does not compel eugenics"
+    detail: "Regression toward the mean is a property of any imperfect correlation. Galton read it as a case for selective breeding; that was an interpretive choice the mathematics left entirely open."
+  - claim: "Statistical form relocates a political decision"
+    detail: "Pearson and Moul's 1925 study of children at the Jews' Free School and the Wood Committee's 1929 'social problem group' each made a prior decision about who must justify their membership or their claim on the state, then presented the answer as the output of measurement."
 ---
+
+import Sidenote from '@components/shared/Sidenote.astro';
 
 ## Synopsis
 
-The mathematical tools that govern welfare, credit, policing, and algorithmic classification in the twenty-first century were not invented to describe human populations neutrally. They were invented to rank them. Francis Galton's normal distribution, regression to the mean, and correlation coefficient, and Karl Pearson's formal statistical machinery, were designed to answer a specific eugenic question: how do you measure hereditary worth, identify the superior and inferior tails of the human distribution, and build the scientific case for selective breeding? The mathematical grammar they produced — normal curve, z-score, regression line, correlation matrix — is now so embedded in every quantitative discipline that its eugenic origins have become invisible. The chapter's argument is not that the tools should be abandoned — they are genuinely powerful — but that power and neutrality are not the same thing, and that the grammar we inherited encodes the questions it was built to answer.
+In 1884, nine thousand visitors to a South Kensington exhibition paid threepence each to have their bodies measured, and left a duplicate of their results in Francis Galton's files. This chapter follows what Galton, and then Karl Pearson, did with such records. The normal curve, regression to the mean, and the correlation coefficient were real mathematical achievements, and they are still in daily use. But they were developed inside a research programme whose question was hereditary worth: who was eminent, who was mediocre, who was degenerate, and what should be done about it. Again and again, the mathematics described a pattern and the programme supplied a verdict — turning the middle of a distribution into "mediocrity," a regression line into a case for selective breeding, a group of London schoolchildren into evidence about whether Jewish migrants should be admitted, and the poorest stratum of the city into a hereditary "residuum." None of these steps was compelled by the arithmetic. That is the point: quantitative form can make a political hierarchy sound like neutral evidence, and the decisions that turn measurement into hierarchy have to be found and named.
 
-## 1. The Sixpenny Laboratory
+## 1. The Threepenny Laboratory: Science as Ideology at South Kensington
 
-In the summer of 1884, visitors to the International Health Exhibition at South Kensington could, for threepence, learn exactly what kind of body they had. The Anthropometric Laboratory occupied a narrow corridor fitted with instruments that Francis Galton had designed to measure the British public: height, weight, arm span, grip strength, visual acuity, colour sense, hearing, the highest audible note. You paid your fee, submitted to seventeen tests, and received a card with your measurements. What the pamphlet noted only in passing was that a duplicate was "preserved for statistical purposes." One card went home as a souvenir. The other went into Galton's files. By the end of the exhibition's run, "no less than 9,337" visitors had passed through, as Galton's own account records.
+In the summer of 1884, visitors to the International Health Exhibition at South Kensington could, for threepence, learn exactly what kind of body they had. The Anthropometric Laboratory occupied a corridor fitted with instruments that Galton had designed, commissioned, or adapted to measure the British public. You paid, submitted to a battery of tests, and received a card printed with your results: height standing and sitting, arm span, weight, strength of pull and squeeze, breathing power, swiftness of blow, visual acuity, colour sense, judgment of eye, hearing, and the highest audible note. The card was yours to keep. What the pamphlet noted only in passing was that a duplicate was "preserved for statistical purposes."<sup aria-describedby="sn-1">1</sup>
 
-The dual-card system accomplished something that required no explanation in the pamphlet. Each duplicate card was a data point in a population distribution that the visitor had never consented to join. A grip strength of forty-seven pounds meant nothing to Galton as a fact about one person; it meant everything as a coordinate in a ranked population order — a position the visitor experienced as measurement but which the laboratory was constructing as hierarchy. The instruments did not argue; they measured. And measurement, in late-Victorian culture, carried an authority that argument could not match. Theodore Porter's phrase for this is the "technology of distance": numbers gain authority not because they are accurate but because they are impersonal, substituting mechanical rule-following for personal judgment at the moment the ideology needs to disappear.
+<Sidenote number={1}>Galton, *On the Anthropometric Laboratory at the Late International Health Exhibition* (1884).</Sidenote>
 
-Measurement is not ranking. To measure a person's height is to produce a number; to rank that height is to place that person in a distribution and assign them a position relative to everyone else. The first operation is descriptive. The second requires a prior decision about what the distribution means — whether the tails are merely unusual or are, in some stronger sense, better and worse. Galton had made that decision before the laboratory opened. The corridor at South Kensington was where the decision was made to look inevitable.
+One card went home as a souvenir. The other went into Galton's files.
+
+By the end of the exhibition, "no less than 9,337" visitors had passed through. Galton's pamphlet emphasised "the great simplicity of the instruments and methods" and presented the laboratory as a demonstration of technique — educated entertainment, a fairground stall dressed in the authority of brass instruments and printed data.<sup aria-describedby="sn-2">2</sup> The visitor received a quantified version of their own body. Galton kept the material from which population-level comparisons could later be made.
+
+<Sidenote number={2}>Galton 1884.</Sidenote>
+
+### The instruments of legibility
+
+The seventeen tests were not a random selection of bodily attributes. They were chosen to capture traits Galton believed, or hoped, would correlate with what he called "natural ability" — the quality he had been trying to pin down statistically since *Hereditary Genius* fifteen years earlier. The sensory tests followed a bet he had set out the year before in *Inquiries into Human Faculty*: "the more perceptive the senses are of difference, the larger is the field upon which our judgment and intelligence can act."<sup aria-describedby="sn-3">3</sup> The apparatus made sensory acuity a candidate proxy for intelligence. Whether that relationship held was a separate empirical question the instrument list could not answer.
+
+<Sidenote number={3}>Galton, *Inquiries into Human Faculty and Its Development* (1883), p. 19.</Sidenote>
+
+Visitors moved through the corridor station by station, each test administered in moments. The pamphlet boasted that the whole battery took minutes and that the apparatus was portable and the procedure reproducible. This was measurement designed for throughput: Galton wanted a dataset large enough to construct population norms, which meant reducing each body to a row of standardised numbers. James C. Scott's word for this operation is *legibility* — the reorganisation of complex social life into simplified, standard categories that can be centrally observed.<sup aria-describedby="sn-4">4</sup> Nine thousand particular bodies, each with its own history of nutrition, labour, and illness, entered the corridor and emerged as rows in a ledger. The ledger did not record circumstances. It recorded measurements that could be compared.
+
+<Sidenote number={4}>Scott, *Seeing Like a State* (1998), pp. 2–3.</Sidenote>
+
+This is the move a visitor could easily miss. Measurement produces a number; comparison places it against a chosen reference population; a hierarchy emerges only when someone treats the comparison as evidence of better or worse. The normal curve does not say what its tails mean. Galton's wider programme did.<sup aria-describedby="sn-5">5</sup>
+
+<Sidenote number={5}>MacKenzie, *Statistics in Britain, 1865–1930* (1981).</Sidenote>
+
+### The duplicate card
+
+Most accounts treat the souvenir card as the object of interest — an early "quantified self." But the card that mattered was the one the visitor never saw again. A visitor who read a grip strength of forty-seven pounds understood it, if at all, as a fact about themselves. To Galton it was one point in a distribution, to be aggregated with thousands of others in the search for patterned variation. Ian Hacking's argument that statistical categories bring new kinds of people into being clarifies what the duplicate accomplished: the cards made a reference distribution possible, and once an institution treats a distribution as a norm, it can identify deviations and attach claims to them.<sup aria-describedby="sn-6">6</sup> The cards alone did not establish hereditary fitness. Without archived, comparable observations, though, Galton could not have made the population-wide comparisons his programme needed.
+
+<Sidenote number={6}>Hacking, "Making Up People" (1986), pp. 231–32.</Sidenote>
+
+### Entertainment as authority
+
+The arrangement solved, in a single installation, a problem that would trouble large-scale data collection for the next century and a half: how to get a large population to submit to measurement. Galton made it entertaining, and charged a fee low enough to draw thousands while signalling that the experience had value. The fee made the visitor a customer. You paid; you were measured; you received your card; you left. The analytical work depended on the duplicate left behind.
+
+Theodore Porter calls quantification a "technology of distance": numbers gain authority because they are impersonal, substituting rule-following for personal judgment.<sup aria-describedby="sn-7">7</sup> The laboratory was that thesis in physical form. A dynamometer records grip strength regardless of who squeezes it, and the number carries no trace of the decision that made grip strength worth recording. By the time the numbers appeared in Galton's publications — arranged in distributions, analysed for correlations, read as evidence of hereditary pattern — they had passed through the impersonal authority of mechanical measurement. To contest the conclusions you had to contest the numbers; to contest the numbers you had to contest the instruments; and the instruments were described in meticulous detail in the pamphlet, for anyone who cared to look.
+
+<Sidenote number={7}>Porter, *Trust in Numbers* (1995), p. ix.</Sidenote>
+
+When the exhibition closed, Galton moved the apparatus to the South Kensington Museum. The move changed the laboratory from a curiosity into an institution with a durable archive. After Galton's death in 1911, the Galton Laboratory for National Eugenics at University College London, directed by Karl Pearson, gave biometric methods a permanent home.<sup aria-describedby="sn-8">8</sup> The laboratory's own findings were thin, and largely inconclusive on whether sensory acuity tracked intelligence. Its contribution was structural: it showed that voluntary participation, mechanical measurement, and aggregation could yield a reference distribution. Donald MacKenzie's central argument is that Galton's and Pearson's statistical innovations were co-produced with the eugenic questions they addressed. The corridor makes that co-production visible: the instruments built the archive; the programme supplied the hereditary reading.
+
+<Sidenote number={8}>MacKenzie 1981.</Sidenote>
 
 ## 2. From Quetelet's Average to Galton's Hierarchy
 
-Adolphe Quetelet had introduced the normal distribution to social statistics in 1835, arguing that human physical and social traits scattered around a population mean in the same bell-shaped curve that described observational errors in astronomy. His *homme moyen* — the average man — was a descriptive construct: the stable centre of gravity around which individual variation fluctuated. Deviations from the mean were noise, not pathology. The curve was a pattern observed in populations, not a judgment on persons.
+Before Galton, the normal curve belonged to Adolphe Quetelet. In 1835 the Belgian astronomer published *Sur l'homme et le développement de ses facultés*, proposing a social physics: measure a human trait across a large enough population — height, chest circumference, the yearly propensity to commit crimes — and the distribution would follow the same bell curve astronomers used to model observational error. Its mean was *l'homme moyen*, the average man, around whom individual deviations scattered with lawful regularity.<sup aria-describedby="sn-9">9</sup>
 
-Galton inherited Quetelet's curve and performed a transformation that is mathematically subtle and politically enormous. He made the average a failure. In *Hereditary Genius* (1869), the normal distribution is no longer a description of how a population scatters around its centre. It is a grading system. The right tail contains the eminent; the left tail, the degenerate; the middle is mediocrity — not the most common condition of a healthy population but the place where ordinary people settle when nothing lifts them above the mean. Galton was explicit about the symmetry: "eminently gifted men are raised as much above mediocrity as idiots are depressed below it."
+<Sidenote number={9}>Quetelet, *Sur l'homme et le développement de ses facultés, ou essai de physique sociale* (1835).</Sidenote>
 
-The mathematical object is the same curve Quetelet had used. The interpretive framework is entirely different. Quetelet's average man was a centre of gravity; Galton's mediocre man was a measure of what the population wasted by failing to breed selectively. The curve does not tell you whether the tails are pathological. The curve is a shape. The pathology is a decision. Galton made the decision and embedded it so deeply in the mathematical form that the decision and the mathematics became inseparable — which is, as Donald MacKenzie argues, precisely the point.
+Quetelet's concept was descriptive. He wanted to explain why murder rates, marriage rates, and even the number of letters reaching the Paris dead-letter office held steady from year to year. Deviations from the mean were what astronomers took them to be: fluctuation around a signal. He sometimes drifted towards idealisation — Alain Desrosières describes his average man as "a kind of prudent centrist, who avoided every conceivable form of excess" — but the drift was secondary.<sup aria-describedby="sn-10">10</sup> Quetelet did not build a politics on the tails of his distribution.
 
-## 3. Regression as Destiny
+<Sidenote number={10}>Desrosières, *The Politics of Large Numbers* (1998).</Sidenote>
 
-Galton's most consequential mathematical discovery began with sweet peas. He distributed packets of seeds of varying sizes, grew the offspring, and observed that exceptionally large seeds produced offspring that were, on average, larger than the population mean but smaller than their parents — a tendency he called "regression toward mediocrity." He confirmed the same pattern in human height data. The mathematical relationship was expressible as a line: parent value on one axis, offspring value on the other, the best-fitting line sloping toward the mean with a slope less than one.
+### The transformation
 
-The mathematical finding is genuine and still in use. Regression to the mean is a statistical phenomenon that occurs whenever two measurements are imperfectly correlated, and it has nothing inherently to do with genetics. A student who scores exceptionally well on one examination will, on average, score less exceptionally on the next, whether or not both tests measure the same ability. What Galton did with this genuine finding was read it as a warning and a policy imperative: without selective breeding, the exceptional qualities of one generation are diluted in the next, and the population cannot hold its gains. The mathematical finding described a tendency. The conclusion — that the tendency constituted a case for eugenics — was an ideological choice that the mathematics did not compel.
+Galton inherited the curve and performed a transformation that was mathematically slight and politically enormous. He made the average a failure.
 
-Karl Pearson formalised what Galton had found informally, deriving the mathematics of regression and correlation from first principles and producing the product-moment correlation coefficient *r* in 1896. The formula is elegant; the interpretation is deceptively simple. What the correlation coefficient does not contain is any information about why a relationship exists — whether it is genetic, environmental, social, or some combination. Pearson's own work consistently blurred this distinction, treating strong correlations between parental and offspring physical characteristics as evidence of hereditary determination. The slide from association to determination is the critical move of the entire Galtonian tradition, and it happened inside the mathematics itself.
+His word was "mediocrity" — from *mediocritas*, the middle state, already shadowed in English by inadequacy. In *Hereditary Genius* (1869), the normal distribution is a grading system. The right tail holds the eminent; the left, the degenerate; the middle is not the commonest condition of a healthy population but the place ordinary people settle when nothing lifts them. Galton was explicit about the symmetry: "eminently gifted men are raised as much above mediocrity as idiots are depressed below it."<sup aria-describedby="sn-11">11</sup> The mathematical object was Quetelet's. The interpretation was new. Quetelet's average man was a centre of gravity; Galton's mediocre man measured what the population wasted by failing to breed selectively. A normal curve does not tell us whether its tails are pathological. The curve is a shape; pathology is a decision.
 
-## 4. The Colonial Ledger
+<Sidenote number={11}>Galton, *Hereditary Genius* (1869), p. 36.</Sidenote>
 
-The anthropometric laboratory ranked individuals within a British population. *Hereditary Genius* ranked families within a class. The eugenic project's next extension was to rank entire populations against each other — to apply the same mathematical grammar to the question of which races were fit to govern, which to labour, and which to be displaced. This was not a later corruption of Galton's method. In 1873, Galton published a letter in *The Times* titled "Africa for the Chinese," proposing that British colonial policy should encourage large-scale Chinese settlement on the East African coast because the Chinese were, in his assessment, more industrious and reproductively vigorous, and would "supplant the inferior Negro race." The argument was not one of military conquest or economic interest but of hereditary quality: the displacement of one population by another was a statistical upgrade.
+### Counting privilege
 
-Karl Pearson's 1925 study of Jewish immigrant children in East London is the paradigm case of the method's colonial application in the domestic context. Published in the first issue of *Annals of Eugenics*, whose stated goal was "the scientific treatment of racial problems in man," the study compared Jewish children from South-East London schools — drawn from neighbourhoods of extreme poverty, recent migration, and linguistic displacement — against a group of "native" British children from more affluent areas. Pearson and his co-author Margaret Moul found small differences in physical and teacher-rated mental characteristics and concluded: "Taken on the average, and regarding both sexes, this alien Jewish population is somewhat inferior physically and mentally to the native population." The statistical finding — a small difference in group means — was converted into a policy recommendation — racial exclusion — by the same mechanism that operated throughout the Galtonian tradition: the treatment of a ranked distribution as a fact about nature that policy must respect.
+*Hereditary Genius* drew its "eminent" men from biographical dictionaries, legal records, lists of Royal Society fellows, senior clergy, commanders, statesmen, and literary figures, then counted how often they had eminent fathers, sons, brothers, and nephews. Eminence clustered in families more than chance predicted; Galton inferred that "natural ability" was inherited. Stephen Jay Gould identified the two foundational errors: *reification*, treating eminence — a designation conferred by institutions — as a measurable property of individuals; and *ranking*, arranging human beings on a single scale from degenerate to eminent and letting the curve make the scale look natural.<sup aria-describedby="sn-12">12</sup>
 
-The study did not control for socioeconomic conditions, nutrition, housing quality, or the effects of recent migration and linguistic displacement. The comparison groups were not comparable. The inference from group means to hereditary racial characteristics was unjustified on Pearson's own terms. None of this diminished its authority, because its authority did not derive from its methodology. It derived from its form: numbers, tables, distributions, and the name of Karl Pearson.
+<Sidenote number={12}>Gould, *The Mismeasure of Man* (1981).</Sidenote>
 
-## 5. The Residuum
+The sample was built by the conclusion it was meant to support. A man became a judge because his father was a barrister, because his grandfather had the money to educate his sons, because the family owned property whose income paid for the credentials Galton counted as evidence of natural ability. To call this hereditary genius is to mistake the social reproduction of a class for the biological transmission of a trait. MacKenzie is careful to concede that Galton's arithmetic was competent. His point is that the questions, categories, and interpretation came from Galton's position — independently wealthy, a grandson of Erasmus Darwin, educated at Trinity College, Cambridge — studying the heritability of elite status from inside the elite, through the elite's own institutions.<sup aria-describedby="sn-13">13</sup>
 
-The distinction between the deserving and undeserving poor was as old as the English Poor Law. The 1834 Poor Law Amendment Act formalised it through the workhouse test: relief was offered only under conditions deliberately unpleasant enough that anyone capable of self-support would choose labour over the workhouse. The eugenic tradition took this familiar moral distinction and performed the same transformation it had performed on Quetelet's curve: it gave the distinction a scientific form. The "residuum" — a term in circulation among Charles Booth, Alfred Marshall, and late-Victorian social commentators — designated a stratum of the urban poor who were not merely poor despite their habits but constitutionally different: members of the degenerate left tail, whose poverty was hereditary and therefore irremediable by social reform.
+<Sidenote number={13}>MacKenzie 1981.</Sidenote>
 
-This relocation of the deserving/undeserving distinction from the domain of moral judgment to the domain of statistical fact had a specific political consequence: it removed the distinction from the domain of political contestation. If the residuum was a hereditary category, then welfare policy could not change it. If the left tail was biological, then redistribution was futile. The mathematics prescribed the limits of what could be done for them — which was, not coincidentally, consistent with what the political class was prepared to do. The 1909 Royal Commission on the Poor Laws, the 1913 Mental Deficiency Act, and the interwar literature on the "social problem group" all deployed this vocabulary, treating poverty in its most severe and persistent forms as evidence of constitutional incapacity rather than structural condition.
+### The invisible women
 
-## 6. The Ledger's Long Life
+The dataset of *Hereditary Genius* is entirely male, because its categories of eminence — judges, statesmen, commanders, men of science, divines — were closed to Victorian women. Women appear in the pedigree tables only as connective tissue: the mothers, wives, and daughters through whom eminent lineages pass. Galton's 1897 paper on "The Average Contribution of each several Ancestor to the total Heritage of the Offspring" treated maternal and paternal inheritance symmetrically — each parent a quarter, each grandparent a sixteenth.<sup aria-describedby="sn-14">14</sup> The algebra was gender-neutral. The data was not. Women were necessary to the equations as transmitters of hereditary value and absent from the evidence as bearers of their own ability. The ranked distribution of British genius was a ranked distribution of British men, generalised to humanity by silence rather than argument.
 
-The eugenic statistical tradition did not end with the Second World War. It went underground. Charles Spearman's 1904 extraction of a general intelligence factor *g* from the correlation matrix of schoolchildren's test scores provided the psychometric instrument that replaced Galton's anthropometric measurements: a latent variable, formally extracted from observed correlations, reified as a real biological property of individuals, used to rank populations as efficiently as any dynamometer. Cyril Burt's mid-century twin studies, which produced suspiciously precise heritability coefficients and fuelled the 11-plus sorting of British children into educational tracks, were demonstrated to be fraudulent after his death in 1971. The educational system those numbers had helped justify survived the fraud's exposure.
+<Sidenote number={14}>Galton, "The Average Contribution of each several Ancestor to the total Heritage of the Offspring," *Proceedings of the Royal Society* (1897).</Sidenote>
 
-The Pioneer Fund, incorporated in 1937 with an explicitly eugenic charter, maintained the institutional infrastructure that kept the hereditarian research programme alive. It funded Arthur Jensen, whose 1969 *Harvard Educational Review* article argued that racial gaps in IQ were substantially genetic and that compensatory education was futile; J. Philippe Rushton, who constructed racial hierarchies based on cognitive and reproductive characteristics; and Richard Lynn, who compiled international IQ datasets for the same purpose. Seventeen of the sources cited in *The Bell Curve*'s most controversial chapter were authors who had received Pioneer Fund grants.
+### Distance from the mean
 
-*The Bell Curve* (1994) is Galton's argument restated in the idiom of late-twentieth-century social science: a normally distributed cognitive capacity, high heritability estimates derived from twin and adoption studies, and the conclusion that social programmes aimed at closing gaps in outcomes are largely futile because the distribution is substantially fixed by genetics. The regression tables replaced the pedigree charts. The core claim did not change. Stephen Jay Gould named the foundational errors precisely: reification, treating a mathematical abstraction as a biological reality; and ranking, compressing multidimensional human variation onto a single ascending scale. Both errors were present in 1869. In 1994 they were embedded in an appendix of statistical methodology that required technical expertise to contest.
+The modern z-score makes the distinction concrete, though Galton never used the term. It is a standardised distance from a reference mean, not a rank in itself. A test score of 85, in a reference group with mean 70 and standard deviation 10, has a z-score of $(85 - 70)/10 = 1.5$. If the reference distribution is roughly normal, that corresponds to about the ninety-third percentile. The calculation becomes a ranking only when an institution chooses the reference population and treats relative position as evidence of ability, need, or worth. Galton's political move was to make distance from the mean signify mediocrity, eminence, or degeneracy. The arithmetic did not dictate that meaning.
+
+Mathematical form mattered for another reason. An opinion about hereditary ability can be met with other opinions. A published dataset with expected and observed rates shifts the dispute onto technical ground, where only readers able to interrogate the method can challenge it. And a statistical finding is portable: it can be cited in a report and applied in another country. Eugenic institutions and advocates later carried Galton's vocabulary into pedigree work at the Eugenics Record Office at Cold Spring Harbor, campaigns for immigration restriction, and American sterilisation policy — though each of those projects required its own funding, legal authority, and political choices, not a single automatic chain of causation from 1869.<sup aria-describedby="sn-15">15</sup> The form travels. Institutions decide what it will authorise.
+
+<Sidenote number={15}>Kevles, *In the Name of Eugenics* (1995); Porter 1995.</Sidenote>
+
+## 3. Regression as Destiny: The Mathematical Case for Selective Breeding
+
+Galton's most consequential mathematical discovery began with sweet peas. In the late 1870s he sent packets of seeds of different sizes to friends and correspondents, asked them to grow the plants, and measured the seeds they returned. Large seeds produced offspring that were, on average, larger than the population mean — but not as large as their parents. Small seeds produced small offspring, less extremely so. Extreme values in one generation produced less extreme values in the next. Galton called this "regression toward mediocrity." He found the same pattern in human height: unusually tall parents had children who were on average shorter than themselves, unusually short parents children who were taller. Plot parent against offspring and the fitted line slopes towards the mean with a slope less than one. That paired prediction does not mean the population as a whole is converging on a single height.
+
+The finding is genuine and still in use. Regression to the mean is a statistical phenomenon, not a biological one: it appears in any paired measurement whose correlation is less than perfect. A student who scores exceptionally well on one exam will, on average, score less exceptionally on the next. A city with an unusually high crime rate one year will, on average, have a lower rate the next, whether or not any policy has changed. That is what we know now. What Galton chose to know was different.
+
+### The eugenic reading
+
+Galton read regression as a warning. If the children of exceptional parents are less exceptional, the gains of one generation are diluted in the next; without intervention, the population stays centred on mediocrity. If superior individuals bred with one another rather than with the average, the regression line would steepen and the right tail thicken. The programme he proposed — for which he coined the word "eugenics" in *Inquiries into Human Faculty* in 1883 — was the systematic encouragement of reproduction among the "fit" and its discouragement among the "unfit."<sup aria-describedby="sn-16">16</sup> The mathematical justification was regression. The political programme was breeding. Nothing in the slope of a parent–offspring line says that the extremes ought to be preserved or amplified. A tendency can be lamented, celebrated, or simply noted. Galton lamented it, and the lament was not in the data. It was in a reader whose place at the top of the Victorian class hierarchy gave him a personal interest in the conclusion that the top of the distribution was where value lay.
+
+<Sidenote number={16}>Galton 1883.</Sidenote>
+
+### Pearson's formalisation
+
+Karl Pearson gave Galton's graphical work an algebraic form. His 1896 memoir described the task as an expansion of Galton's ideas, "particularly their application to the problem of bi-parental inheritance," and developed general treatments of regression and the product-moment correlation coefficient *r*.<sup aria-describedby="sn-17">17</sup> The coefficient runs from −1 through 0 to +1. A correlation of 0.5 between parent and offspring height means that taller-than-average parents tend to have taller-than-average children while leaving much of the variation unexplained. It cannot say why — whether the relationship is genetic, environmental, social, or all three.
+
+<Sidenote number={17}>Pearson, "Mathematical Contributions to the Theory of Evolution. III. Regression, Heredity, and Panmixia," *Philosophical Transactions of the Royal Society A* (1896), pp. 255, 259, 265.</Sidenote>
+
+Pearson's paper nonetheless called the correlation of parent and offspring organs "the mathematical measure of heredity." It worked with averages and probabilities for large classes, because the causes acting on any one person were too complex to treat exactly — a population-level framing that suited a programme intent on measuring hereditary resemblance. He modelled correlation through normal-correlation surfaces, while cautioning that such a surface was "only an approximation."<sup aria-describedby="sn-18">18</sup> A Pearson coefficient can now be calculated without that assumption, and it remains a one-number summary of linear association, not a proof of mechanism. The historical question is why the first extended formal treatment made hereditary resemblance its central problem, and what kinds of policy claim that made easier to frame.
+
+<Sidenote number={18}>Pearson 1896, pp. 255–56, 259, 298.</Sidenote>
+
+### The Biometric Laboratory and Alice Lee
+
+Pearson's base was the Biometric Laboratory at University College London, established with Galton's support. He founded *Biometrika* in 1901 as its journal. With collaborators including Alice Lee, the laboratory computed correlations and regressions for father–son, father–daughter, mother–son, and mother–daughter pairs, turning family relations into an apparatus for estimating hereditary transmission. In those 1903 tables, mothers' measurements matter because they enter a calculation of descent.<sup aria-describedby="sn-19">19</sup>
+
+<Sidenote number={19}>Pearson and Lee, "On the Laws of Inheritance in Man: I. Inheritance of Physical Characters," *Biometrika* (1903).</Sidenote>
+
+Lee's own 1901 study complicates any simple account of the laboratory's gendered division of labour. The paper was hers — Pearson wrote that its reductions and inferences were "substantially her work." She used correlation and regression to test the claim that skull capacity tracked intellectual power, measuring thirty-five living anatomists, twenty-five University College staff, and thirty women of Bedford College. Her conclusion was unequivocal: "no marked correlation between skull capacity and intellectual power" in either sex.<sup aria-describedby="sn-20">20</sup> The result did not end craniometry or redirect the laboratory. It made a narrower and more important point: the same apparatus could disconfirm a claim that animated it. Which relationships to measure, and what to conclude from them, remained political choices.
+
+<Sidenote number={20}>Lee, "Data for the Problem of Evolution in Man. VI. A First Study of the Correlation of the Human Skull," *Philosophical Transactions of the Royal Society A* (1901), pp. 225, 255–59.</Sidenote>
+
+### The tool and its afterlife
+
+The product-moment coefficient is now one of the most widely used statistical tools in the world. A public-health researcher correlates air pollution with asthma admissions; a labour economist, years of education with lifetime earnings; a welfare analyst, benefit sanctions with employment outcomes. The coefficient is taught as a technique rather than a history, and its early place in a hereditary programme has receded from view. MacKenzie's conclusion is blunt: "Without eugenics, statistical theory would not have developed in the way it did in Britain — and indeed might not have developed at all, at least till much later."<sup aria-describedby="sn-21">21</sup> That history does not make a welfare analyst a eugenicist. It does make one question unavoidable for any correlation put before an institution: what does this one-number summary make visible, what does it conceal, and what decision is about to be made from it?
+
+<Sidenote number={21}>MacKenzie 1981, p. 221.</Sidenote>
+
+## 4. The Colonial Ledger: Ranking at Imperial Scale
+
+The laboratory ranked individuals within a population; *Hereditary Genius* ranked families within a class. Eugenic thought also supplied a language for ranking groups against one another — who was fit to govern, to labour, to settle, or to be excluded. Two episodes show it at work at different scales. They are not one uninterrupted programme, and the people they classified were not interchangeable. What links them is a shared move: treating a political decision about membership, territory, and power as an assessment of a population's capacities.
+
+### "Africa for the Chinese"
+
+In 1873 Galton published a letter in *The Times* under the title "Africa for the Chinese." He proposed that British policy encourage large-scale Chinese settlement on the East African coast, where Chinese settlers would "supplant the inferior Negro race" and make supposedly unproductive territory productive.<sup aria-describedby="sn-22">22</sup> The letter is advocacy, not a statistical study. Its importance is that it makes the hierarchy behind the later measurements unusually explicit. Two peoples become entries in an imperial calculation, assigned unequal capacities for industry, settlement, and reproduction, and the displacement of one by the other is entered as an improvement in the civilisational account. The laboratory and the letter do not mechanically produce each other. Both make human worth appear available for technical assessment, and both turn that assessment into a proposed order of administration.
+
+<Sidenote number={22}>Galton, "Africa for the Chinese," *The Times*, 5 June 1873.</Sidenote>
+
+### When the imperial grammar came home
+
+Pearson and Margaret Moul's 1925 study did not concern a colonial population. It examined Russian and Polish Jewish children in London, and its declared question was metropolitan: whether Britain should permit what the authors called indiscriminate immigration, and on what grounds it might discriminate. The paper framed this as a problem of "national eugenics," asking whether prospective migrants should meet standards of physique and mentality.<sup aria-describedby="sn-23">23</sup>
+
+<Sidenote number={23}>Pearson and Moul, "The Problem of Alien Immigration into Great Britain, Illustrated by an Examination of Russian and Polish Jewish Children," Part I, *Annals of Eugenics* 1(1) (1925), pp. 5–8.</Sidenote>
+
+The authors assembled dossiers on about 600 boys and nearly as many girls at the Jews' Free School in Aldgate, combining school, medical, and home-visitor schedules. They recorded bodies, family circumstances, and teachers' assessments of intelligence on the Biometric Laboratory's scale, which the article presented as a measure of innate mental power rather than acquired knowledge. The children were classified as "alien" even though, by the paper's own count, 71.7 per cent had been born in England and were English nationals in law.<sup aria-describedby="sn-24">24</sup> A socially and historically situated group of schoolchildren was converted into a racial population whose alleged properties bore on the admission of others.
+
+<Sidenote number={24}>Pearson and Moul 1925, Part I, pp. 9–11.</Sidenote>
+
+The study did make comparisons — with London County Council schools in good districts, poor districts, and London as a whole, and with material from Leeds. The troubling point is what the comparisons were made to carry. When the authors found similar growth patterns among Jewish children in London and Leeds, they read the result as evidence against Franz Boas's account of environmental modification and for racial growth curves. The force of environment was present in the material; the interpretive framework decided what counted as an explanation. Part I ends by saying that a more favourable judgment might follow only if the children proved markedly superior in intelligence to native Gentiles.<sup aria-describedby="sn-25">25</sup> The standard had been set before the intelligence data were reported: in a crowded country, admission was to be earned by superiority. Part II supplied the notorious verdict: "Taken on the average, and regarding both sexes, this alien Jewish population is somewhat inferior physically and mentally to the native population."<sup aria-describedby="sn-26">26</sup>
+
+<Sidenote number={25}>Pearson and Moul 1925, Part I, pp. 25–28, 51.</Sidenote>
+
+<Sidenote number={26}>Pearson and Moul 1925, Part II, *Annals of Eugenics* 1(2), pp. 125–26.</Sidenote>
+
+### A method chosen for its answer
+
+The paper had a method: schedules, medical examinations, anthropometry, school records, comparative tables, correlations between parental literacy and children's intelligence, age and growth. Its defect lay in the policy rule that organised all of it. The children were asked to bear a burden no resident population bears — to show that they, or the migrants they were made to stand for, were superior enough to merit entry. Tables can record patterns. They cannot decide whether a political community should attach rights and belonging to those patterns.
+
+The authors were candid about their self-understanding. The immigration question, they wrote, could be resolved only in the "cold light of statistical inquiry," and the Galton Laboratory had no political, religious, or social prejudice.<sup aria-describedby="sn-27">27</sup> The passage performs objectivity as well as claiming it. In Porter's terms the political decision was not erased but relocated: the choice to make physique, mentality, and presumed hereditary capacity into entry criteria was made before any calculation began, and once the question took statistical form, debate was channelled towards samples, measures, and coefficients. The children at the Jews' Free School entered the record as cases — assessments, examinations, family data, and home visits clipped into dossiers and reduced to distributions that spoke in the name of immigration policy. Their authority came from numbers, categories, the institutional standing of the Galton Laboratory, and the name of Karl Pearson.
+
+<Sidenote number={27}>Pearson and Moul 1925, Part I, p. 8; Porter 1995.</Sidenote>
+
+## 5. The Residuum: When Statistics Meets the Poor Law
+
+Galton's *Essays in Eugenics* (1909) contains a small act of translation. He took Charles Booth's Class A from the survey of East London and placed it in "the lowermost third of our 'v and below'."<sup aria-describedby="sn-28">28</sup> A category of urban insecurity had become a location in a hereditary distribution.
+
+<Sidenote number={28}>Galton, *Essays in Eugenics* (1909), p. 20.</Sidenote>
+
+English Poor Law administration had long separated those held unable to work from those treated as unwilling, so poverty was always a moral question as well as a material one. Booth's *Life and Labour of the People* supplied a precursor, though not a biological theory. He called Class A "the lowest class," its number "beyond enumeration," and wrote that it was "now hereditary to a very considerable extent" — yet the surrounding pages treat the class as shaped by economic conditions, charity, and movement between classes.<sup aria-describedby="sn-29">29</sup> The hereditary phrase cannot bear the eugenic reading on its own. Galton supplied that reading, and eugenic writers recast the *residuum* — a stigmatised stratum of the urban poor — as constitutionally different from the respectable working class: poor because they supposedly lacked the hereditary capacity to sustain themselves, with children who would be poor for the same reason.
+
+<Sidenote number={29}>Booth, *Life and Labour of the People* (1889), pp. 37–38.</Sidenote>
+
+### The statistical move
+
+Under the old Poor Law the distinction between deserving and undeserving was made by people: magistrates, relieving officers, workhouse masters who saw applicants face to face and formed judgments about their character and circumstances. Those judgments were inconsistent, local, and contestable. A relieving officer in one parish might grant outdoor relief to a family that his counterpart in the next would send to the workhouse. To central administration the inconsistency was the system's weakness. To applicants it was also its humanity, because an inconsistent system can be appealed to, argued with, persuaded.
+
+Eugenic writers proposed to stabilise the inconsistency through classification and measurement. If the residuum was a hereditary category, identifiable by position in a distribution of hereditary quality, then the old moral distinction could be presented as a matter of data, and the relieving officer's judgment — with all its inconsistency and all its capacity for mercy — subordinated to a statistician's ranking. This is Porter's depoliticisation at its most consequential. A question that parishes had argued about and administered differently became a statistical fact removed from contestation. If the residuum was hereditary, welfare could not change it. If the left tail was biological, redistribution was futile. The mathematics was made to prescribe the limits of what could be done.
+
+### Royal Commission, Mental Deficiency Act, Wood Committee
+
+Eugenic writers took up the debates around the 1909 Royal Commission on the Poor Laws, which divided into a Majority Report recommending a reformed Poor Law and a Minority Report, drafted principally by Beatrice Webb, calling for its abolition and replacement by social services. Neither report was a eugenic programme. Eugenicists nonetheless supplied a vocabulary — the residuum, the degenerate, the social problem group — and a style of inference that represented a political distinction as a scientific one. The Mental Deficiency Act 1913 created four statutory classes — "idiots," "imbeciles," "feeble-minded persons," and "moral imbeciles" — and, in prescribed circumstances, enabled institutional placement, guardianship, and supervision.<sup aria-describedby="sn-30">30</sup> Its categories did not derive formally from a normal curve, but it drew social classification into the same administrative effort: converting a contested position into a condition for the state to manage.
+
+<Sidenote number={30}>Mental Deficiency Act 1913 (3 & 4 Geo. 5 c. 28), ss. 1–3, 30.</Sidenote>
+
+The interwar descendant was the "social problem group," a category used by eugenicists and, increasingly, by mainstream social-policy researchers to designate families alleged to account for a disproportionate share of pauperism, crime, mental deficiency, and public expenditure. The Wood Committee's 1929 report, issued jointly by the Board of Education and the Board of Control, described a "subnormal or social problem group, representing approximately 10 per cent of the whole population," and drew the hereditary inference at once: "the dull children of the present generation … are the potential parents of many feeble-minded in the next generation."<sup aria-describedby="sn-31">31</sup> The ten per cent was a claim about a constructed social group, not an estimate that one person in ten met the statutory definition of mental deficiency. That is exactly what a percentage does: it turns a contested category into a population object that can be counted, costed, and administered.
+
+<Sidenote number={31}>Board of Education and Board of Control, *Report of the Mental Deficiency Committee* (Wood Report, 1929), p. 93.</Sidenote>
+
+The sequence recurs. A moral distinction is recast as a statistical category; the category is named — residuum, social problem group; the name is attached to a number — ten per cent, the left tail, a calculable burden; the number is published in a report, the report is cited, and policy proceeds as though the category were a fact rather than a construction. Who decided that this was a category, who drew the line, and what evidence showed that the line tracked biology rather than political preference all recede from view.
+
+### The long shadow
+
+After 1945, poverty debates used different categories, and later accounts should not be collapsed into eugenic language. Keith Joseph's 1972 account of a "cycle of deprivation," for example, arose in a different political setting and used a different vocabulary.<sup aria-describedby="sn-32">32</sup> The normal curve's left tail, the residuum, the social problem group, and the underclass are historically distinct, not steps in a single institutional lineage. Each can, however, turn poverty into a property of a group and make state intervention look like population management rather than social provision.
+
+<Sidenote number={32}>Joseph, speech to the Pre-School Playgroups Association, 29 June 1972.</Sidenote>
+
+The claim that the poor are a different kind of people predates statistics. What the eugenic ledger added was a mathematical grammar — the ranked distribution, the hereditary inference, the statistical authority — that moved contestation onto the data, definitions, and distributions that produced the ranking. A relieving officer's judgment could be challenged by a neighbour's testimony. A position in a ranked distribution can be challenged only by contesting the category, its evidence, and its calculation: resources those assigned to its left tail seldom possess.
 
 ### Connection Forward
 
 Chapter 3 follows the actuarial revolution — the moment when the welfare state replaced the Poor Law's moral assessment with the contribution record and the eligibility threshold. Where the eugenic tradition ranked populations and drew policy conclusions from the rank, the actuarial tradition classified them and derived entitlements from the classification. Both operations translated political decisions into mathematical form; the political decisions they embedded were different, and so were the exclusions they produced.
-
-### Connection Forward
-
-Chapter 3 traces the disruption of the eugenic consensus by the catastrophe of the First World War and the political pressures that produced the Beveridge welfare settlement — but shows how the arithmetic of the normal working life carried forward assumptions that eugenics had made legible.
