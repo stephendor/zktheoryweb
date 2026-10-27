@@ -5,11 +5,13 @@ import { buildSiteRouteRegistryFromWorkspace } from '../../src/lib/phase3/siteRo
 const args = parsePhase3Args(process.argv.slice(2));
 const candidatePath = stringOption(args, 'candidate', defaultCandidatePath);
 const promotedPath = stringOption(args, 'out', defaultPromotedPath);
+const allowDrop = args['allow-drop'] === true;
 
 const promoted = promotePhase3Candidate({
   candidatePath,
   destinationPath: promotedPath,
   registry: buildSiteRouteRegistryFromWorkspace(process.cwd()),
+  allowDrop,
 });
 
 console.log(

@@ -59,6 +59,14 @@ notes with `site:` frontmatter is the prerequisite for any output. See the
 contract in `src/lib/phase3/contracts.ts` and the vault scanner in
 `src/lib/phase3/exporter/vaultScanner.ts`.
 
+A `site:` block alone emits nothing. A derived connection needs a TDA-Research
+note and a Counting Lives note, both with `site:`, that share at least one
+citekey **in the same note** (the exporter compares each note's own citekeys;
+it does not follow links to other notes). The canonical chapter notes
+(`ChNN - Title.md`) carry no citekeys — their citations live in the chapter's
+`sections/` notes — so adding `site:` to a chapter note produces no derived
+connections on its own.
+
 ---
 
 ## The two loops
@@ -139,9 +147,28 @@ no errors, writes the promoted file the website actually reads.
 
 - `--candidate <path>` — candidate to promote (default matches `export:candidate --out`)
 - `--out <path>` — promoted file (default `src/data/generated/phase3/site-connections.json`)
+- `--allow-drop` — overwrite even when the candidate drops entries the current
+  promoted file holds (see below)
 
 Promotion is atomic (temp file + rename) and refuses to run if validation finds
 errors.
+
+It also refuses (writing nothing) when the candidate would **drop** anything the
+current promoted file holds: a `twoLenses[].id`, a `derivedConnections[].id`,
+a `learningPaths[].pathSlug`, or a manifest source with
+`sourceType: "manual-curation"` whose `sourceId` the candidate's manifest does
+not also list. It also refuses if the current file exists but is not a valid
+Phase 3 export. The error lists every id that would be dropped.
+
+This matters because the committed file can contain hand-curated entries (the
+`phase3-manual-site-seed`, e.g. the confirmed Two Lenses pair
+`two-lenses-ch17-paper10`) that no vault note produces, and some of which (the
+`persistent-homology` method link, the `path3-module-6` learn-module link) have
+no vault source at all. A vault export can never reproduce them, so promoting it
+would silently erase them while `validate:phase3` still passes. Promotion does
+not merge: either add the missing entries to the candidate, or pass
+`--allow-drop` once you have confirmed the loss is intended, then review
+`git diff src/data/generated/phase3/site-connections.json` before committing.
 
 ### `npm run validate:phase3` — gate before commit
 
@@ -211,6 +238,12 @@ The tools refuse a few dangerous writes:
   file is only ever updated through `phase3:promote`.
 - **No promotion of invalid data.** `phase3:promote` validates against the route
   registry and throws (writing nothing) if any error-level issue is found.
+- **No silent loss of promoted entries.** `phase3:promote` throws (writing
+  nothing) if the candidate lacks any Two Lenses id, derived connection id or
+  learning-path slug in the current promoted file, or drops its
+  `manual-curation` source. `validate:phase3` checks only that a file is
+  valid, so it cannot catch this — an empty export is valid. Override with
+  `--allow-drop` only for a deliberate removal.
 
 ---
 
@@ -224,6 +257,9 @@ The tools refuse a few dangerous writes:
 - **`Refusing to write Phase 3 linker output inside a source root`** — your
   `--report`/`--metadata-candidates` path points inside a vault; choose a path
   under `reports/`.
+- **`Refusing to promote Phase 3 candidate: it would drop entries …`** — the
+  candidate lacks entries the committed file holds (often the hand-curated seed).
+  Add them to the candidate, or pass `--allow-drop` if the removal is intended.
 - **Promotion throws with validation errors** — open the feedback report from
   `export:candidate`; the same route-resolution errors block promotion. Fix the
   vault metadata or the target route, re-export, and promote again.
