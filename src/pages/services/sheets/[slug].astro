@@ -21,6 +21,7 @@ const { sheet } = Astro.props;
 
 /** "Your data. I work from …" → bold first sentence. */
 const [dataLead, ...dataRest] = sheet.data_statement.split('. ');
+const [licenceLead, ...licenceRest] = sheet.licence_note?.split('. ') ?? [];
 ---
 
 <ServicesDocLayout
@@ -76,6 +77,7 @@ const [dataLead, ...dataRest] = sheet.data_statement.split('. ');
   </section>
 
   <p class="sheet__text sheet__data"><strong>{dataLead}.</strong> {dataRest.join('. ')}</p>
+  {licenceLead && <p class="sheet__text"><strong>{licenceLead}.</strong> {licenceRest.join('. ')}</p>}
 
   <p class="sheet__text">
     <strong>Next step:</strong> email <a href={`mailto:stephen@zktheory.org?subject=${encodeURIComponent(sheet.title)}`}>stephen@zktheory.org</a>

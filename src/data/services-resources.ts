@@ -43,6 +43,8 @@ export interface ServiceSheet {
   example_note: string;
   best_time: string;
   data_statement: string;
+  /** Optional line after the data statement, e.g. "Licences. …" (first sentence bold). */
+  licence_note?: string;
 }
 
 export const checklists: Checklist[] = [
@@ -325,7 +327,7 @@ export const serviceSheets: ServiceSheet[] = [
     question:
       'How great is the need where we work, is our service reaching the neighbourhoods and groups where it is greatest, and where are the gaps?',
     what_you_get: [
-      'A profile of need in your area from official sources: deprivation, income, child poverty, health and education, compared with county and national figures',
+      'A profile of need in your area from official sources: deprivation, income, child poverty, health and education, compared with county and national figures (England; other UK nations on request, as each uses its own deprivation measure)',
       'Your reach set against it: participants by neighbourhood and level of deprivation, compared with the local population',
       'The gaps: areas of high need where few people use your service, and groups that are under-represented',
       'A 3–4 page summary with maps, charts and plain-English commentary, plus the workbook so you can update it',
@@ -375,13 +377,13 @@ export const serviceSheets: ServiceSheet[] = [
       'A 3–4 page report with charts and plain-English commentary, plus the workbook so you can rerun it next year',
     ],
     what_i_need: [
-      'Start and follow-up scores for each person, pseudonymised (participant codes, not names)',
+      'Start and follow-up scores, entered into a scoring workbook I provide that runs on your own computer',
       'Which measure each score comes from, and when it was taken',
       'Any groupings to compare, such as site, programme or sessions attended',
     ],
     how_it_works: [
       '30-minute call to agree the measures and comparisons',
-      'Secure transfer of pseudonymised scores under a written data agreement',
+      'You run the scoring workbook and send me the summary tables it produces',
       'Report and workbook delivered within 10 working days',
       'One round of changes included',
     ],
@@ -394,7 +396,9 @@ export const serviceSheets: ServiceSheet[] = [
     best_time:
       'At the end of a programme or grant period, or once at least 20 people have both a start and a follow-up score.',
     data_statement:
-      'Your data. This work uses pseudonymised scores (codes, not names). That is still personal data, and wellbeing and mental-health measures are special-category (health) data, so it runs only under a written data processing agreement. You confirm first that your lawful basis covers using the scores for this analysis, including sending them to me, and that you have a condition for processing special-category data (UK GDPR Articles 6 and 9). You stay in control, data is held in an agreed secure location, used only for this work, and deleted at the end.',
+      "Your data. Scores never leave your organisation. The scoring workbook works out each person's change on your own computer and produces summary tables. I receive only those tables, and groups below a set size are combined or left out, so no figure points to one person. No names, codes or individual scores are sent. If you need analysis the summary tables can't support, we can discuss a pseudonymised route under a written data processing agreement.",
+    licence_note:
+      "Licences. You need to hold any licence or registration your measure requires, such as for WEMWBS, the SDQ, the Boxall Profile or the Outcomes Star. I analyse your scores; I don't supply the measure.",
   },
   {
     slug: 'full-cost-analysis',
