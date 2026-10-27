@@ -36,3 +36,7 @@ content-source/
 # src/data/generated/phase3/site-connections.json IS committed; these are not)
 reports/phase3/
 src/data/generated/phase3/candidates/
+
+# Running list of vault / Zotero follow-ups from vault-to-site sessions
+# (local working notes, not committed)
+followups/
