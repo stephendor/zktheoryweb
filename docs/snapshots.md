@@ -26,7 +26,7 @@ file inside `public/s/`: everything there is served.
 
    Every PDF is checked first: the name must be safe and the file must start with `%PDF-`. If any file
    fails, nothing is copied. Each file is then copied to its own new token folder. The CSV has the columns
-   `file,token,url`.
+   `file,token,url,organisation`, with `organisation` left blank for you to fill in.
 
 4. Keep the CSV, and any note of which organisation got which link, **outside the repo** (for example in the
    CRM). The repo must never hold the organisation-to-link map.

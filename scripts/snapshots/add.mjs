@@ -3,8 +3,9 @@
  *
  * Each PDF is copied to public/s/<token>/<filename>.pdf, where <token> is 10
  * crypto-random characters from [a-z0-9] that no existing folder uses. A CSV
- * of file,token,url is printed to stdout. The organisation-to-link map is
- * never written into the repo: keep the CSV outside it.
+ * of file,token,url,organisation is printed to stdout, with organisation left
+ * blank to fill in by hand. The organisation-to-link map is never written into
+ * the repo: keep the CSV outside it.
  *
  * Usage: node scripts/snapshots/add.mjs <folder-of-pdfs> [--dry-run]
  * See docs/snapshots.md.
@@ -94,7 +95,10 @@ export function addSnapshots(
 }
 
 export function toCsv(rows) {
-  return ['file,token,url', ...rows.map((r) => `${r.file},${r.token},${r.url}`)].join('\n');
+  // organisation is left blank: filled in by hand, outside the repo.
+  return ['file,token,url,organisation', ...rows.map((r) => `${r.file},${r.token},${r.url},`)].join(
+    '\n'
+  );
 }
 
 const invokedDirectly =

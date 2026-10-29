@@ -110,7 +110,9 @@ describe('add.mjs', () => {
       expect(fs.existsSync(path.join(out, r.token, r.file))).toBe(true);
       expect(r.url).toBe(`https://zktheory.org/s/${r.token}/${r.file}`);
     }
-    expect(toCsv(rows).split('\n')[0]).toBe('file,token,url');
+    const csv = toCsv(rows).split('\n');
+    expect(csv[0]).toBe('file,token,url,organisation');
+    expect(csv[1]).toBe(`${rows[0].file},${rows[0].token},${rows[0].url},`);
   });
 
   it('NEGATIVE CONTROL: refuses a non-PDF and copies nothing', () => {
@@ -148,6 +150,12 @@ describe('retire.mjs', () => {
     const rows = addSnapshots(src, { snapshotDir: out });
     const tokens = tokensFromCsv(toCsv(rows));
     expect(tokens).toEqual(rows.map((r: { token: string }) => r.token));
+    // A hand-filled organisation column (even with commas) does not shift the token column.
+    const filled = toCsv(rows)
+      .split('\n')
+      .map((l: string, i: number) => (i ? `${l}"Example Trust, Dorset"` : l))
+      .join('\n');
+    expect(tokensFromCsv(filled)).toEqual(tokens);
 
     retireSnapshots([tokens[0]], { snapshotDir: out });
     expect(fs.readdirSync(out)).toEqual([tokens[1]]);
