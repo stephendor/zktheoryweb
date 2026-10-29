@@ -19,8 +19,8 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 interface Props {
   title: string;
   description: string;
-  /** PDF path under public/, e.g. "services/resources/x.pdf". */
-  pdf: string;
+  /** PDF path under public/, e.g. "services/resources/x.pdf". Omit for a page with no PDF. */
+  pdf?: string;
   backHref: string;
   backLabel: string;
   footerLeft: string;
@@ -28,8 +28,9 @@ interface Props {
 }
 
 const { title, description, pdf, backHref, backLabel, footerLeft, footerRight } = Astro.props;
-const pdfPath = join(process.cwd(), 'public', pdf);
-const pdfKb = existsSync(pdfPath) ? Math.max(1, Math.round(statSync(pdfPath).size / 1024)) : 0;
+const pdfPath = pdf ? join(process.cwd(), 'public', pdf) : '';
+const pdfKb =
+  pdfPath && existsSync(pdfPath) ? Math.max(1, Math.round(statSync(pdfPath).size / 1024)) : 0;
 ---
 
 <BaseLayout title={title} description={description}>
