@@ -9,7 +9,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { CC_FILES } from './config';
-import { compute, load } from './pipeline';
+import { compute, load, loadGrants, type LoadedData } from './pipeline';
 
 const tmpRoots: string[] = [];
 afterAll(() => {
@@ -247,5 +247,74 @@ describe('dorset-vcs pipeline', () => {
     await expect(load(dir, lookup)).rejects.toThrow(
       /missing column\(s\) latest_income[\s\S]*Header found/
     );
+  });
+});
+
+describe('dorset-vcs funder concentration', () => {
+  const GRANT_HEADER =
+    'Identifier,Title,Currency,Amount Awarded,Award Date,Recipient Org:Charity Number,Funding Org:Identifier,Funding Org:Name';
+
+  it('loads GBP grants in the window for known charities, once per Identifier', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'grants-'));
+    tmpRoots.push(dir);
+    const a = path.join(dir, 'a.csv');
+    const b = path.join(dir, 'b.csv');
+    fs.writeFileSync(
+      a,
+      [
+        GRANT_HEADER,
+        'g1,"A grant, with a comma",GBP,1000,2022-05-01,1000001,F1,Funder one',
+        'g2,x,GBP,3000,2023-05-01,1000001,F2,Funder two',
+        'g3,x,EUR,9999,2023-05-01,1000001,F3,Euro funder', // not GBP
+        'g4,x,GBP,9999,2019-05-01,1000001,F3,Too early',
+        'g5,x,GBP,9999,2025-05-01,1000001,F3,Too late',
+        'g6,x,GBP,9999,2022-05-01,9999999,F3,Not in area',
+      ].join('\n') + '\n'
+    );
+    fs.writeFileSync(
+      b,
+      [GRANT_HEADER, 'g2,x,GBP,3000,2023-05-01,1000001,F2,Funder two'].join('\n') + '\n'
+    );
+    const grants = await loadGrants([a, b], new Set(['1000001']));
+    expect(Object.fromEntries(grants.get('1000001')!)).toEqual({ F1: 1000, F2: 3000 });
+    expect(grants.size).toBe(1);
+  });
+
+  it('reports quartiles of the top funder share, withheld below 5 charities', () => {
+    const charities = Array.from({ length: 7 }, (_, i) => ({
+      org: String(i),
+      regNo: String(2000000 + i),
+      lad: 'E06000059',
+      type: 'CIO',
+      // Six in the £100k–£1.5m band, one above it.
+      latestIncome: i === 6 ? 2_000_000 : 200_000,
+    }));
+    const data: LoadedData = {
+      extractDate: '2026-10-29',
+      postcodeLookup: 'x',
+      charities,
+      partA: new Map(),
+      history: new Map(),
+      classification: [],
+    };
+    // Top funder shares: 100, 90, 75, 60, 50, 40 (%); the out-of-band charity is ignored.
+    const splits = [[100], [90, 10], [75, 25], [60, 40], [50, 50], [40, 30, 30], [100]];
+    const grants = new Map(
+      splits.map((amounts, i) => [
+        String(2000000 + i),
+        new Map(amounts.map((v, j) => [`F${j}`, v * 1000])),
+      ])
+    );
+    const f = compute(data, 'T', grants).funders!;
+    expect(f.charitiesInBand).toBe(6);
+    expect(f.withGrants).toBe(6);
+    expect(f.topFunderShare).toEqual({ p25: 53, median: 68, p75: 86 }); // whole percentages
+    expect(f.mostlyOneFunder).toBe(null); // 4 charities over 50%: withheld
+    expect(f.medianFunders).toBe(2);
+
+    const few = compute(data, 'T', new Map([...grants].slice(0, 4))).funders!;
+    expect(few.withGrants).toBeNull();
+    expect(few.topFunderShare).toEqual({ p25: null, median: null, p75: null });
+    expect(compute(data, 'T').funders).toBeNull();
   });
 });

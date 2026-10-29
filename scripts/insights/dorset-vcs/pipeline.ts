@@ -15,6 +15,7 @@ import {
   median,
   num,
   pct,
+  quantileSorted,
   readDelimited,
   readFieldNames,
   readHeader,
@@ -26,10 +27,12 @@ import {
   suppressStat,
   type Row,
 } from '../lib';
-import { AREAS, CC_FILES, COLS, INCOME_BANDS, REGISTERED, TREND_YEARS } from './config';
+import { AREAS, CC_FILES, COLS, GRANTS, INCOME_BANDS, REGISTERED, TREND_YEARS } from './config';
 
 export interface Charity {
   org: string;
+  /** Registered charity number, used to match 360Giving grants. */
+  regNo: string;
   lad: string;
   type: string;
   latestIncome: number | null;
@@ -106,6 +109,7 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
     if (!lad) continue;
     charities.push({
       org: r[c.org],
+      regNo: r[c.regNo],
       lad,
       type: r[c.type] || 'Not stated',
       latestIncome: num(r[c.latestIncome]),
@@ -188,9 +192,75 @@ function countShares(labels: string[], whole: number, partition: boolean): Count
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
+/** Recorded grant value by charity number and funder. */
+export type GrantsByCharity = Map<string, Map<string, number>>;
+
+/**
+ * Read 360Giving (GrantNav) CSVs: GBP grants awarded in the GRANTS window to
+ * the given charity numbers, summed by funder. A grant in more than one file
+ * (same Identifier) is counted once.
+ */
+export async function loadGrants(
+  paths: string[],
+  charityNos: Set<string>
+): Promise<GrantsByCharity> {
+  const g = GRANTS.cols;
+  const seen = new Set<string>();
+  const out: GrantsByCharity = new Map();
+  for (const path of paths) {
+    requireColumns(path, await readHeader(path, ','), Object.values(g));
+    for await (const r of readDelimited(path, ',')) {
+      if (seen.has(r[g.id])) continue;
+      seen.add(r[g.id]);
+      const no = r[g.charityNo].replace(/\D/g, '');
+      const year = Number(r[g.date].slice(0, 4));
+      const amount = num(r[g.amount]);
+      if (!charityNos.has(no) || r[g.currency] !== 'GBP' || amount === null || amount <= 0)
+        continue;
+      if (year < GRANTS.fromYear || year > GRANTS.toYear) continue;
+      const byFunder = out.get(no) ?? new Map<string, number>();
+      byFunder.set(r[g.funder], (byFunder.get(r[g.funder]) ?? 0) + amount);
+      out.set(no, byFunder);
+    }
+  }
+  return out;
+}
+
+function funderConcentration(charities: Charity[], grants: GrantsByCharity) {
+  const inBand = charities.filter(
+    (c) =>
+      c.latestIncome !== null &&
+      c.latestIncome >= GRANTS.incomeMin &&
+      c.latestIncome < GRANTS.incomeMax
+  );
+  const shares: number[] = [];
+  const funderCounts: number[] = [];
+  for (const c of inBand) {
+    const byFunder = grants.get(c.regNo);
+    if (!byFunder) continue;
+    const amounts = [...byFunder.values()];
+    shares.push((100 * Math.max(...amounts)) / amounts.reduce((a, b) => a + b, 0));
+    funderCounts.push(amounts.length);
+  }
+  const sorted = [...shares].sort((a, b) => a - b);
+  const q = (p: number) => roundTo(suppressStat(sorted.length, quantileSorted(sorted, p)), 1);
+  const mostly = shares.filter((s) => s > 50).length;
+  return {
+    window: `${GRANTS.fromYear} to ${GRANTS.toYear}`,
+    charitiesInBand: inBand.length,
+    withGrants: suppressCount(shares.length),
+    topFunderShare: { p25: q(0.25), median: q(0.5), p75: q(0.75) },
+    mostlyOneFunder: shares.length < 5 ? null : suppressCount(mostly),
+    mostlyOneFunderShare:
+      shares.length < 5 || suppressCount(mostly) === null ? null : pct(mostly, shares.length),
+    medianFunders: suppressStat(funderCounts.length, median(funderCounts)),
+  };
+}
+
 export function compute(
   data: LoadedData,
-  generatedAt = new Date().toISOString()
+  generatedAt = new Date().toISOString(),
+  grants: GrantsByCharity | null = null
 ): DorsetVcsInsight {
   const { charities } = data;
   const incomes = charities.map((c) => c.latestIncome).filter((v): v is number => v !== null);
@@ -288,11 +358,17 @@ export function compute(
     ),
     classification: { what: byType('what'), who: byType('who'), how: byType('how') },
     areas,
+    funders: grants ? funderConcentration(charities, grants) : null,
     methods: [
       'Registered charities on the Charity Commission register for England and Wales whose contact postcode is in the Dorset Council (E06000059) or Bournemouth, Christchurch and Poole Council (E06000058) area, matched to local authorities with ONS postcode data. Linked charities are counted with their main charity.',
       "Income bands and totals use each charity's latest reported income on the register.",
       `The five-year trend covers financial years ending ${years[0]} to ${lastYear}. It follows the same ${cohort.length.toLocaleString('en-GB')} charities through every year: those with an annual return for each of the five years. (The register keeps each charity's last five returns, so charities that have already filed for ${extractYear} are not included.)`,
       `Government funding comes from each charity's latest Part A of the annual return, for a year ending in ${extractYear - 2} or later: whether it reports government contracts or grants, and the income from them. Part A is filed only by charities above the annual return income threshold, so this covers ${partA.length.toLocaleString('en-GB')} charities. Volunteer numbers come from the same returns.`,
+      ...(grants
+        ? [
+            `Funder concentration covers charities with latest income from £100,000 to under £1.5 million and at least one grant recorded in 360Giving data for ${GRANTS.fromYear} to ${GRANTS.toYear} (downloaded from GrantNav, matched by charity number). For each charity it is the share of its recorded grant value that came from its largest funder.`,
+          ]
+        : []),
       'Classifications are those charities choose on the register: what they do, who they help and how. A charity can choose several, so shares add up to more than 100%.',
       'Any count below 5, and any figure based on fewer than 5 charities, is withheld. Totals are rounded to the nearest £100,000 and medians to the nearest £1,000.',
     ],
@@ -300,6 +376,11 @@ export function compute(
       'Registered charities only: unregistered groups, community interest companies and exempt or excepted charities are not included.',
       'A charity is placed by its contact postcode, which may not be where it works.',
       'Figures use the latest year each charity has filed, and some returns are late, so recent years are incomplete.',
+      ...(grants
+        ? [
+            '360Giving holds only grants that funders choose to publish, so a charity with other funders may look more reliant on one funder than it is.',
+          ]
+        : []),
       'Some national charities have their contact address in the area, so total income and volunteer numbers include work done across the country. Medians are the better guide to a typical local charity.',
     ],
   };

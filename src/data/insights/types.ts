@@ -55,6 +55,20 @@ export interface DorsetVcsInsight {
   legalForm: CountShare[];
   classification: { what: CountShare[]; who: CountShare[]; how: CountShare[] };
   areas: DorsetVcsArea[];
+  /** Funder concentration from 360Giving grants; null when no grants file was given. */
+  funders: {
+    window: string;
+    /** In-area charities with latest income £100k to £1.5m. */
+    charitiesInBand: number;
+    /** Of those, charities with at least one recorded grant in the window. */
+    withGrants: number | null;
+    /** Quartiles of the share (%) of each charity's recorded grant value from its largest funder. */
+    topFunderShare: { p25: number | null; median: number | null; p75: number | null };
+    /** Charities with more than half their recorded grant value from one funder. */
+    mostlyOneFunder: number | null;
+    mostlyOneFunderShare: number | null;
+    medianFunders: number | null;
+  } | null;
   methods: string[];
   limits: string[];
 }
