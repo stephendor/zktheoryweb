@@ -117,6 +117,23 @@ export function suppressCount(n: number): number | null {
   return n > 0 && n < SUPPRESS_BELOW ? null : n;
 }
 
+/**
+ * Suppress a set of counts that add up to a published total. Small counts
+ * are withheld first; if that leaves exactly one non-zero cell withheld, it
+ * could be worked out from the total, so the next smallest non-zero count
+ * is withheld too.
+ */
+export function suppressPartition(raw: number[]): (number | null)[] {
+  const out: (number | null)[] = raw.map(suppressCount);
+  const hidden = raw.filter((n, i) => n > 0 && out[i] === null).length;
+  if (hidden === 1) {
+    const shown = raw.map((n, i) => ({ n, i })).filter(({ n, i }) => n > 0 && out[i] !== null);
+    shown.sort((a, b) => a.n - b.n);
+    if (shown[0]) out[shown[0].i] = null;
+  }
+  return out;
+}
+
 /** A statistic over `n` organisations, withheld when n is below the threshold. */
 export function suppressStat(n: number, value: number): number | null {
   return n < SUPPRESS_BELOW ? null : value;

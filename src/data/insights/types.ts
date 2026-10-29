@@ -28,7 +28,7 @@ export interface DorsetVcsInsight {
   postcodeLookup: string;
   totals: {
     charities: number;
-    withIncome: number;
+    withIncome: number | null;
     noIncomeReported: number | null;
     /** £, rounded to the nearest £100,000. */
     totalIncome: number | null;
