@@ -2,12 +2,16 @@
 layout: ../layouts/ServicesLayout.astro
 title: "Reporting and data analysis for small organisations"
 description: "Reliable reporting, monitoring and evaluation data, and practical analysis for small charities, training providers and alternative provision in Dorset and across the UK. Fixed prices, no VAT, no personal data needed to start."
+professionalService: true
 ---
 
 import ExampleLink from '@components/services/ExampleLink.astro';
 import ResourceList from '@components/services/ResourceList.astro';
 import AnalysisList from '@components/services/AnalysisList.astro';
 import SheetLinks from '@components/services/SheetLinks.astro';
+import { mailtos } from '@data/services-contact';
+
+export const OFSTED_EIF = 'https://www.gov.uk/government/news/ofsted-confirms-changes-to-education-inspection-and-unveils-new-look-report-cards';
 
 # Reporting and data analysis for small organisations
 
@@ -15,7 +19,7 @@ import SheetLinks from '@components/services/SheetLinks.astro';
 
 Most small organisations produce the same figures several times over: for funders, for trustees, for commissioners, for inspection. Each time, someone rebuilds a spreadsheet, chases missing numbers and hopes the totals agree. I turn that into one checked, repeatable process that runs on the systems you already use — and then use the data to show you something you didn't know.
 
-<a class="services-cta" href="mailto:stephen@zktheory.org?subject=Reporting%20and%20analysis%20enquiry">Email me about a report →</a>
+<div class="services-ctas"><a class="services-cta" href={mailtos.enquiry}>Email me about a report →</a><a class="services-cta--quiet" href={mailtos.freeSummary}>Ask for a free one-page summary of your organisation →</a></div>
 
 ## What you get
 
@@ -31,6 +35,8 @@ Funders renew organisations that can show what changed, with figures that hold u
 - **Measures that fit your monitoring and evaluation**: if you have a logic model or theory of change, I build the measures from it; if not, we start from what you already record. Where the forms themselves are the problem, I redesign them to collect what you need and nothing more.
 - **Evidence of need and of change**: who you reach compared with where the need is in your area, from official deprivation figures, and whether before-and-after scores such as wellbeing measures show real change. [Need and reach analysis](/services/sheets/need-and-reach-analysis/) · [Outcome measure analysis](/services/sheets/outcome-measure-analysis/)
 
+<p class="service-free"><a href={mailtos.freeSummaryCharity}>Ask for a free one-page summary for your charity</a></p>
+
 </section>
 
 <section class="service-segment" id="training-providers" aria-labelledby="training-providers-heading">
@@ -40,6 +46,9 @@ Funders renew organisations that can show what changed, with figures that hold u
 - **A pre-submission check every month**: learners whose planned end dates, breaks in learning or off-the-job hours don't match across your systems, listed before the ILR goes in.
 - **Funding forecast against actuals**: expected and actual earnings by month and standard, with learners drifting past planned end dates flagged early.
 - **Retention and achievement analysis**: where withdrawals concentrate by standard, employer, cohort and caseload, compared with national rates — ready for your self-assessment.
+- **Results by learner group**: achievement and retention for groups such as learners with SEND, disadvantaged learners or care-experienced learners, from summary tables, for the inclusion area in <a href={OFSTED_EIF}>Ofsted's renewed inspection framework</a>, used for further education and skills inspections from 10 November 2025.
+
+<p class="service-free"><a href={mailtos.freeSummaryTrainingProvider}>Ask for a free one-page summary for your training provider</a></p>
 
 </section>
 
@@ -52,6 +61,9 @@ Funders renew organisations that can show what changed, with figures that hold u
 - **Analysis for commissioning conversations**: which referral routes and placement patterns go with sustained attendance and successful moves on, and hours delivered against hours commissioned and invoiced.
 - **Progress that stands up**: whether attendance, attainment, SDQ or Boxall Profile scores show real change during a placement, and for which groups of pupils. [Outcome measure analysis](/services/sheets/outcome-measure-analysis/)
 - **The true cost of a placement**: what a placement day or session really costs once core costs are included, to compare with what you charge. [Full cost analysis](/services/sheets/full-cost-analysis/) · [Commissioner bundle](#bundles)
+- **Results by group of pupils**: attendance and progress for groups such as pupils with SEND, disadvantaged pupils or care-experienced pupils, from summary tables, for the inclusion area in <a href={OFSTED_EIF}>Ofsted's renewed inspection framework</a>.
+
+<p class="service-free"><a href={mailtos.freeSummaryAlternativeProvision}>Ask for a free one-page summary for your alternative provision</a></p>
 
 </section>
 
@@ -151,6 +163,48 @@ If work under a bank of days needs pseudonymised records, we sign a data process
 
 I use the tools you already have — Excel, Google Sheets, your MIS or CRM exports — rather than asking you to buy new software.
 
+<h2 id="free">Free for small organisations</h2>
+
+Three things you can have at no cost and with no obligation. Ask by email; there's nothing to sign up to.
+
+<section class="service-segment" id="free-summary" aria-labelledby="free-summary-heading">
+
+<h3 id="free-summary-heading">A one-page summary of your published figures</h3>
+
+Built from public data only, so I don't need anything from you except your organisation's name and number.
+
+- **Charities:** five years of income and spending, where your funding comes from, and a few questions your trustees may find useful, from the Charity Commission register and 360Giving.
+- **Training providers:** three years of your published achievement rates by age and standard, against national rates, from the Department for Education's figures.
+- **Alternative provision:** the published picture for the council areas you work in: education, health and care plans, children educated outside school, and severe absence.
+
+<p class="service-free"><a href={mailtos.freeSummary}>Ask for your free one-page summary</a></p>
+
+</section>
+
+<section class="service-segment" id="free-deprivation-check" aria-labelledby="free-deprivation-heading">
+
+<h3 id="free-deprivation-heading">A free deprivation check: a spreadsheet you keep</h3>
+
+Paste in the postcodes of the people you work with. The spreadsheet shows how many live in England's most deprived 20% of neighbourhoods, compared with everyone who lives in your area, and gives you a sentence ready for a bid.
+
+Your postcodes never leave your computer: there are no macros and no links. It currently covers Dorset, BCP and Somerset, and Wiltshire and Swindon. I send it by email when you ask.
+
+The paid [need and reach analysis](/services/sheets/need-and-reach-analysis/) goes further: neighbourhood by neighbourhood, where the gaps are, and a full profile of local need.
+
+<p class="service-free"><a href="/services/resources/deprivation-check/">How the deprivation check works</a> · <a href={mailtos.deprivationCheck}>Ask for the free deprivation check</a></p>
+
+</section>
+
+<section class="service-segment" id="resources" aria-labelledby="free-checklists-heading">
+
+<h3 id="free-checklists-heading">Checklists</h3>
+
+Practical checklists you can use straight away. Free to use and share.
+
+<ResourceList />
+
+</section>
+
 ## See an example
 
 Each example is built entirely on made-up data. Read it on the page, or download it as a one-page PDF.
@@ -161,11 +215,15 @@ Each example is built entirely on made-up data. Read it on the page, or download
   <ExampleLink slug="alternative-provision" />
 </ul>
 
-<h2 id="resources">Free resources</h2>
+<h2 id="networks">For networks, funders and support organisations</h2>
 
-Practical checklists you can use straight away. Free to use and share; no sign-up.
+If you support charities or training providers, I can offer your members something useful at no cost to you or them.
 
-<ResourceList />
+- **A free 45-minute online session** for your members: "Funder and trustee reporting without the scramble", or for provider networks, "Know your numbers before the ILR does".
+- **A ready-to-paste bulletin item** offering your members the free one-page summary and the free deprivation check.
+- **Free one-page summaries for your member providers**, built from their published figures.
+
+<a class="services-cta" href={mailtos.networks}>Email me about a session or bulletin item →</a>
 
 ## About
 
@@ -204,6 +262,18 @@ No. I'm not VAT-registered, so no VAT is added to any price. That matters for mo
 ### Can we fund this from a grant?
 
 Many charities include this kind of work in applications for organisational development or core costs. I can give you a costed paragraph for your application. Check your funder's criteria first. If you're asking a funder for core costs, the full cost analysis gives you the figures to justify the request.
+
+### What's in the free summary, and what does it cost?
+
+It's free. It's one page built from public data only: the Charity Commission register and 360Giving for charities, the Department for Education's published achievement rates for training providers, or the published figures for your council areas for alternative provision. I don't need any of your internal data. I send it by email, and you choose whether to reply.
+
+### Is the deprivation check really free?
+
+Yes. It's a spreadsheet you keep, and it gives you the headline: how many of the people you work with live in England's most deprived neighbourhoods. The paid [need and reach analysis](/services/sheets/need-and-reach-analysis/) adds the detail.
+
+### Can you help with the impact section of our trustees' report?
+
+Yes. The [impact evidence pack](/services/sheets/impact-evidence-pack/) gives you outputs, outcomes, reach and volunteer hours, checked against your records, in a form you can lift into the report.
 
 ### How do we pay?
 
