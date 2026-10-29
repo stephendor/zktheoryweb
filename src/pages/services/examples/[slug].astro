@@ -10,6 +10,7 @@ import ServicesDocLayout from '@layouts/ServicesDocLayout.astro';
 import ExampleLineChart from '@components/services/ExampleLineChart.astro';
 import ExampleBarChart from '@components/services/ExampleBarChart.astro';
 import { servicesExamples, type ServicesExample } from '@data/services-examples';
+import '@styles/services-charts.css';
 
 export function getStaticPaths() {
   return servicesExamples.map((example) => ({ params: { slug: example.slug }, props: { example } }));
@@ -32,7 +33,7 @@ const [first, second] = example.charts;
   footerLeft="Stephen Dorman | Reporting and data analysis for small organisations | stephen@zktheory.org | zktheory.org/services"
   footerRight="Synthetic example"
 >
-    <div class="report">
+    <div class="report services-charts">
       <p class="report__banner">EXAMPLE ONLY — every organisation, person and figure on this page is made up.</p>
 
       <h1 class="report__title">{example.heading}</h1>
@@ -99,20 +100,13 @@ const [first, second] = example.charts;
 </ServicesDocLayout>
 
 <style>
-  /* Chart colours: inherited by the chart components via custom properties. */
   .report {
-    --chart-primary: var(--color-tda-slate);
-    --chart-secondary: var(--color-tda-teal);
-    --chart-highlight: var(--color-cl-ochre);
-    --chart-muted: var(--color-neutral-muted);
     --report-accent: var(--color-tda-slate);
     --report-check: var(--color-cl-red);
   }
 
   @media screen {
     :global([data-theme='dark']) .report {
-      --chart-primary: var(--color-tda-slate-light);
-      --chart-secondary: var(--color-tda-teal-light);
       --report-accent: var(--color-tda-slate-light);
       --report-check: var(--color-cl-red-light);
     }
@@ -270,122 +264,6 @@ const [first, second] = example.charts;
     color: var(--color-neutral-body);
   }
 
-  /* ══ Charts (shared by ExampleLineChart and ExampleBarChart) ═════════════ */
-
-  .report :global(.chart) {
-    margin: 0;
-  }
-
-  .report :global(.chart__title) {
-    font-weight: 700;
-    font-size: var(--text-sm);
-    margin-bottom: var(--space-2);
-  }
-
-  .report :global(.chart__svg) {
-    display: block;
-    width: 100%;
-    height: auto;
-    overflow: visible;
-  }
-
-  .report :global(.chart__svg text) {
-    font-family: var(--font-ui);
-    fill: var(--color-neutral-body);
-  }
-
-  .report :global(.chart__tick) {
-    font-size: 8.5px;
-    fill: var(--color-neutral-muted);
-  }
-
-  .report :global(.chart__svg .chart__tick) {
-    fill: var(--color-neutral-muted);
-  }
-
-  .report :global(.chart__axis-label),
-  .report :global(.chart__note),
-  .report :global(.chart__end-label) {
-    font-size: 9px;
-  }
-
-  .report :global(.chart__grid) {
-    stroke: var(--color-neutral-border);
-    stroke-width: 0.6;
-  }
-
-  .report :global(.chart__axis) {
-    stroke: var(--color-neutral-muted);
-    stroke-width: 0.8;
-  }
-
-  .report :global(.chart__line) {
-    fill: none;
-    stroke-width: 2;
-    stroke-linejoin: round;
-  }
-
-  .report :global(.chart__line--dashed) {
-    stroke-dasharray: 5 3;
-  }
-
-  .report :global(.chart__series--primary) { stroke: var(--chart-primary); fill: var(--chart-primary); }
-  .report :global(.chart__series--secondary) { stroke: var(--chart-secondary); fill: var(--chart-secondary); }
-  .report :global(.chart__series--muted) { stroke: var(--chart-muted); fill: var(--chart-muted); }
-
-  .report :global(.chart__series .chart__point) {
-    stroke: none;
-  }
-
-  .report :global(.chart__series text) {
-    stroke: none;
-  }
-
-  .report :global(.chart__threshold),
-  .report :global(.chart__reference) {
-    stroke-width: 1.2;
-    stroke-dasharray: 4 3;
-  }
-
-  .report :global(.chart__threshold) { stroke: var(--chart-highlight); }
-  .report :global(.chart__reference) { stroke: var(--chart-muted); }
-
-  .report :global(.chart__bar) { fill: var(--chart-primary); }
-  .report :global(.chart__bar--highlight) { fill: var(--chart-highlight); }
-
-  .report :global(.chart-data) {
-    margin-top: var(--space-2);
-    font-size: var(--text-sm);
-  }
-
-  .report :global(.chart-data summary) {
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--color-neutral-muted);
-  }
-
-  .report :global(.chart-data summary:focus-visible) {
-    outline: 2px solid var(--color-tda-teal-light);
-    outline-offset: 2px;
-  }
-
-  .report :global(.chart-data table) {
-    margin-top: var(--space-2);
-    border-collapse: collapse;
-  }
-
-  .report :global(.chart-data th),
-  .report :global(.chart-data td) {
-    text-align: left;
-    font-weight: 400;
-    padding: var(--space-1) var(--space-3) var(--space-1) 0;
-    border-bottom: 1px solid var(--color-neutral-border);
-  }
-
-  .report :global(.chart-data thead th) {
-    font-weight: 700;
-  }
-
   /* ══ Small screens ═══════════════════════════════════════════════════════ */
 
   @media (max-width: 760px) {
@@ -405,10 +283,6 @@ const [first, second] = example.charts;
   /* ══ Print (page setup and footer come from ServicesDocLayout) ═══════════ */
 
   @media print {
-    .report :global(.chart-data) {
-      display: none;
-    }
-
     .report__banner {
       font-size: 7.8pt;
       padding: 1mm 2mm;
