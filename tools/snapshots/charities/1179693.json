@@ -1,0 +1,86 @@
+{
+ "name": "Community Connections",
+ "number": "1179693",
+ "description": "Sturminster Newton, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-06-30",
+  "income": 174154,
+  "expenditure": 161907,
+  "government_grants": 13035,
+  "government_grant_sources": 3,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 12,
+  "trustees": 7
+ },
+ "history": [
+  {
+   "year_end": "2020-12-31",
+   "income": 98000,
+   "expenditure": 65000
+  },
+  {
+   "year_end": "2021-12-31",
+   "income": 94687,
+   "expenditure": 95453
+  },
+  {
+   "year_end": "2022-12-31",
+   "income": 110376,
+   "expenditure": 111151
+  },
+  {
+   "year_end": "2023-12-31",
+   "income": 88429,
+   "expenditure": 113724
+  },
+  {
+   "year_end": "2025-06-30",
+   "income": 174154,
+   "expenditure": 161907
+  }
+ ],
+ "grantnav": {
+  "period": "2019–2024",
+  "count": 11,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 4,
+    "total": 54759.0
+   },
+   {
+    "funder": "Freemasons' Charity",
+    "grants": 1,
+    "total": 15000.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 2,
+    "total": 10000.0
+   },
+   {
+    "funder": "Grocers' Charity",
+    "grants": 1,
+    "total": 5000.0
+   },
+   {
+    "funder": "Foyle Foundation",
+    "grants": 1,
+    "total": 4000.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 1,
+    "total": 1332.09
+   },
+   {
+    "funder": "Woodward Charitable Trust",
+    "grants": 1,
+    "total": 750.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1179693: annual return for the year to 2025-06-30 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (11 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

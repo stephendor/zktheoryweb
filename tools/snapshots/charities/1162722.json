@@ -1,0 +1,91 @@
+{
+ "name": "The Rendezvous, Sherborne",
+ "number": "1162722",
+ "description": "Sherborne, Dorset",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 265441,
+  "expenditure": 281651,
+  "government_grants": 24905,
+  "government_grant_sources": 4,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 40,
+  "trustees": 4
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 185352,
+   "expenditure": 161371
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 157303,
+   "expenditure": 197772
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 311450,
+   "expenditure": 237276
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 270749,
+   "expenditure": 234819
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 265441,
+   "expenditure": 281651
+  }
+ ],
+ "grantnav": {
+  "period": "2016–2026",
+  "count": 24,
+  "funders": [
+   {
+    "funder": "Henry Smith Foundation",
+    "grants": 1,
+    "total": 72200.0
+   },
+   {
+    "funder": "BBC Children in Need",
+    "grants": 3,
+    "total": 59529.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 2,
+    "total": 52250.0
+   },
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 3,
+    "total": 47818.0
+   },
+   {
+    "funder": "Somerset Community Foundation",
+    "grants": 7,
+    "total": 35233.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 5,
+    "total": 19500.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 5000.0
+   },
+   {
+    "funder": "Woodward Charitable Trust",
+    "grants": 2,
+    "total": 1500.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1162722: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (24 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

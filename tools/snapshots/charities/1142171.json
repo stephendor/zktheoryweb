@@ -1,0 +1,96 @@
+{
+ "name": "Access Dorset",
+ "number": "1142171",
+ "description": "Bournemouth",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-09-30",
+  "income": 151077,
+  "expenditure": 181058,
+  "government_grants": 0,
+  "government_grant_sources": 0,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 25,
+  "trustees": 4
+ },
+ "history": [
+  {
+   "year_end": "2021-09-30",
+   "income": 215269,
+   "expenditure": 196369
+  },
+  {
+   "year_end": "2022-09-30",
+   "income": 164801,
+   "expenditure": 205523
+  },
+  {
+   "year_end": "2023-09-30",
+   "income": 174333,
+   "expenditure": 204401
+  },
+  {
+   "year_end": "2024-09-30",
+   "income": 148296,
+   "expenditure": 177483
+  },
+  {
+   "year_end": "2025-09-30",
+   "income": 151077,
+   "expenditure": 181058
+  }
+ ],
+ "grantnav": {
+  "period": "2014–2026",
+  "count": 32,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 5,
+    "total": 550000.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 7,
+    "total": 256113.0
+   },
+   {
+    "funder": "Tudor Trust",
+    "grants": 2,
+    "total": 71000.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 3,
+    "total": 70000.0
+   },
+   {
+    "funder": "People's Health Trust",
+    "grants": 2,
+    "total": 48032.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 9,
+    "total": 47756.08
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 40000.0
+   },
+   {
+    "funder": "Postcode Local Trust",
+    "grants": 1,
+    "total": 25000.0
+   },
+   {
+    "funder": "McCarthy Stone Foundation",
+    "grants": 2,
+    "total": 750.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1142171: annual return for the year to 2025-09-30 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (32 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

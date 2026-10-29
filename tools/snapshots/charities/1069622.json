@@ -1,0 +1,81 @@
+{
+ "name": "Activate Performing Arts",
+ "number": "1069622",
+ "description": "Dorchester, Dorset",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 641613,
+  "expenditure": 488186,
+  "government_grants": 80335,
+  "government_grant_sources": 15,
+  "government_contracts": 46939,
+  "government_contract_count": 1,
+  "volunteers": 15,
+  "trustees": 7
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 461620,
+   "expenditure": 364291
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 618426,
+   "expenditure": 713344
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 550455,
+   "expenditure": 546132
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 672747,
+   "expenditure": 735736
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 641613,
+   "expenditure": 488186
+  }
+ ],
+ "grantnav": {
+  "period": "2008–2025",
+  "count": 14,
+  "funders": [
+   {
+    "funder": "DCMS",
+    "grants": 7,
+    "total": 1540904.5
+   },
+   {
+    "funder": "BBC Children in Need",
+    "grants": 3,
+    "total": 59260.0
+   },
+   {
+    "funder": "National Lottery Heritage Fund",
+    "grants": 1,
+    "total": 39100.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 12292.0
+   },
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 1,
+    "total": 9957.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 7288.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1069622: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (14 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

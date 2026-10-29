@@ -1,0 +1,76 @@
+{
+ "name": "Swanage and Purbeck Development Trust",
+ "number": "1162662",
+ "description": "Swanage",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-10-31",
+  "income": 385466,
+  "expenditure": 271166,
+  "government_grants": 32218,
+  "government_grant_sources": 5,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 150,
+  "trustees": 9
+ },
+ "history": [
+  {
+   "year_end": "2021-10-31",
+   "income": 338340,
+   "expenditure": 343058
+  },
+  {
+   "year_end": "2022-10-31",
+   "income": 260572,
+   "expenditure": 336083
+  },
+  {
+   "year_end": "2023-10-31",
+   "income": 157976,
+   "expenditure": 155919
+  },
+  {
+   "year_end": "2024-10-31",
+   "income": 944103,
+   "expenditure": 195754
+  },
+  {
+   "year_end": "2025-10-31",
+   "income": 385466,
+   "expenditure": 271166
+  }
+ ],
+ "grantnav": {
+  "period": "2017–2026",
+  "count": 17,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 3,
+    "total": 347455.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 8,
+    "total": 61069.659999999996
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 2,
+    "total": 30000.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 3,
+    "total": 8475.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 0.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1162662: annual return for the year to 2025-10-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (17 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

@@ -1,0 +1,76 @@
+{
+ "name": "The Lantern Trust",
+ "number": "1114979",
+ "description": "Weymouth, Dorset",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 1423694,
+  "expenditure": 1248634,
+  "government_grants": 60560,
+  "government_grant_sources": 5,
+  "government_contracts": 1158959,
+  "government_contract_count": 6,
+  "volunteers": 45,
+  "trustees": 6
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 594672,
+   "expenditure": 477970
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 592863,
+   "expenditure": 524331
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 757804,
+   "expenditure": 684788
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 1226976,
+   "expenditure": 933955
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 1423694,
+   "expenditure": 1248634
+  }
+ ],
+ "grantnav": {
+  "period": "2014–2026",
+  "count": 15,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 5,
+    "total": 353000.0
+   },
+   {
+    "funder": "Tudor Trust",
+    "grants": 3,
+    "total": 172000.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 4,
+    "total": 79250.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 61095.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 2,
+    "total": 35000.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1114979: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (15 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

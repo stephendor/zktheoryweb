@@ -1,0 +1,116 @@
+{
+ "name": "Poole Communities Trust",
+ "number": "1165309",
+ "description": "Poole",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 332937,
+  "expenditure": 348197,
+  "government_grants": 450,
+  "government_grant_sources": 1,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 38,
+  "trustees": 7
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 194019,
+   "expenditure": 87802
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 1830506,
+   "expenditure": 127010
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 500294,
+   "expenditure": 244467
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 349101,
+   "expenditure": 346913
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 332937,
+   "expenditure": 348197
+  }
+ ],
+ "grantnav": {
+  "period": "2016–2025",
+  "count": 37,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 7,
+    "total": 493487.0
+   },
+   {
+    "funder": "Rank Foundation",
+    "grants": 6,
+    "total": 94533.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 2,
+    "total": 80000.0
+   },
+   {
+    "funder": "Postcode Community Trust",
+    "grants": 1,
+    "total": 70000.0
+   },
+   {
+    "funder": "Clothworkers' Foundation",
+    "grants": 1,
+    "total": 60000.0
+   },
+   {
+    "funder": "Power to Change Trust",
+    "grants": 1,
+    "total": 49107.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 9,
+    "total": 42864.75
+   },
+   {
+    "funder": "Foyle Foundation",
+    "grants": 2,
+    "total": 17500.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 15000.0
+   },
+   {
+    "funder": "People's Health Trust",
+    "grants": 1,
+    "total": 13294.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 4,
+    "total": 12147.03
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 6737.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 6737.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1165309: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (37 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

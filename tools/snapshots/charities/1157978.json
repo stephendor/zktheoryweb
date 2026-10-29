@@ -1,0 +1,86 @@
+{
+ "name": "Island Community Action",
+ "number": "1157978",
+ "description": "Portland, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 206522,
+  "expenditure": 188758,
+  "government_grants": 72226,
+  "government_grant_sources": 9,
+  "government_contracts": 1007,
+  "government_contract_count": 1,
+  "volunteers": 1480,
+  "trustees": 6
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 159866,
+   "expenditure": 135919
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 169499,
+   "expenditure": 151791
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 161961,
+   "expenditure": 159600
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 168475,
+   "expenditure": 174554
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 206522,
+   "expenditure": 188758
+  }
+ ],
+ "grantnav": {
+  "period": "2004–2025",
+  "count": 18,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 6,
+    "total": 605351.0
+   },
+   {
+    "funder": "Postcode Community Trust",
+    "grants": 1,
+    "total": 40000.0
+   },
+   {
+    "funder": "Comic Relief",
+    "grants": 1,
+    "total": 39490.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 37275.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 5,
+    "total": 23029.02
+   },
+   {
+    "funder": "DSIT",
+    "grants": 1,
+    "total": 8999.68
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 3,
+    "total": 7205.12
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1157978: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (18 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

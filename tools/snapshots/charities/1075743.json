@@ -1,0 +1,81 @@
+{
+ "name": "Lyme Regis Development Trust",
+ "number": "1075743",
+ "description": "Lyme Regis, Dorset",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-12-31",
+  "income": 171527,
+  "expenditure": 194897,
+  "government_grants": 19500,
+  "government_grant_sources": 7,
+  "government_contracts": 50643,
+  "government_contract_count": 1,
+  "volunteers": 50,
+  "trustees": 3
+ },
+ "history": [
+  {
+   "year_end": "2021-12-31",
+   "income": 179964,
+   "expenditure": 134529
+  },
+  {
+   "year_end": "2022-12-31",
+   "income": 171225,
+   "expenditure": 201001
+  },
+  {
+   "year_end": "2023-12-31",
+   "income": 150352,
+   "expenditure": 182930
+  },
+  {
+   "year_end": "2024-12-31",
+   "income": 130509,
+   "expenditure": 179609
+  },
+  {
+   "year_end": "2025-12-31",
+   "income": 171527,
+   "expenditure": 194897
+  }
+ ],
+ "grantnav": {
+  "period": "2004–2022",
+  "count": 22,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 8,
+    "total": 428746.0
+   },
+   {
+    "funder": "National Lottery Heritage Fund",
+    "grants": 8,
+    "total": 181400.0
+   },
+   {
+    "funder": "Power to Change Trust",
+    "grants": 1,
+    "total": 78981.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 1,
+    "total": 49500.0
+   },
+   {
+    "funder": "Esmée Fairbairn Foundation",
+    "grants": 1,
+    "total": 25000.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 3,
+    "total": 3476.55
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1075743: annual return for the year to 2025-12-31 (register extract of 2026-10-29) and financial history from the register and OpenCharities; 360Giving Datastore (22 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

@@ -25,6 +25,9 @@ const latest = data.years[data.years.length - 1];
 
 const p = (v: number) => `${v.toFixed(1).replace(/\.0$/, '')}%`;
 const pctRound = (v: number) => `${Math.round(v)}%`;
+/** ['a', 'b', 'c'] -> 'a, b and c'. */
+const listAnd = (xs: string[]) =>
+  xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`;
 const has = (s: RateSpread) => s.median !== null && s.p25 !== null && s.p75 !== null;
 /** Break a long label over lines of about 22 characters for the bar chart. */
 const wrap = (label: string) =>
@@ -67,7 +70,7 @@ if (widest)
 const agesShown = (latest.byAge ?? []).filter(has);
 if (agesShown.length >= 2)
   findings.push(
-    `The median provider's rate was ${agesShown.map((a) => `${p(a.median!)} for ${a.label}`).join(' and ')}. Is the gap between your age groups wider or narrower?`
+    `The median provider's rate was ${listAnd(agesShown.map((a) => `${p(a.median!)} (${a.label.replace('-', '–')})`))}. Is the gap between your age groups wider or narrower?`
   );
 if (
   latest.retentionCorrelation !== null &&

@@ -1,0 +1,96 @@
+{
+ "name": "Mosaic Family Support",
+ "number": "1158138",
+ "description": "Dorchester, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2026-03-31",
+  "income": 421723,
+  "expenditure": 361181,
+  "government_grants": 0,
+  "government_grant_sources": 0,
+  "government_contracts": 42200,
+  "government_contract_count": 2,
+  "volunteers": 54,
+  "trustees": 7
+ },
+ "history": [
+  {
+   "year_end": "2022-03-31",
+   "income": 260171,
+   "expenditure": 309573
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 365485,
+   "expenditure": 394581
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 437477,
+   "expenditure": 475255
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 422342,
+   "expenditure": 394053
+  },
+  {
+   "year_end": "2026-03-31",
+   "income": 421723,
+   "expenditure": 361181
+  }
+ ],
+ "grantnav": {
+  "period": "2017–2025",
+  "count": 17,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 2,
+    "total": 451842.0
+   },
+   {
+    "funder": "BBC Children in Need",
+    "grants": 3,
+    "total": 187824.0
+   },
+   {
+    "funder": "Trusthouse Charitable Foundation",
+    "grants": 1,
+    "total": 50000.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 1,
+    "total": 20000.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 18969.0
+   },
+   {
+    "funder": "Freemasons' Charity",
+    "grants": 3,
+    "total": 18000.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 2,
+    "total": 9050.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 2,
+    "total": 6465.73
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 2,
+    "total": 4000.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1158138: annual return for the year to 2026-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (17 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}
