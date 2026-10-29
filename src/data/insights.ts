@@ -33,6 +33,15 @@ export const insights: Insight[] = [
     dataFile: 'dorset-vcs-2026.json',
     draft: false,
   },
+  {
+    slug: 'south-west-apprenticeship-achievement',
+    title:
+      'Apprenticeship achievement among independent training providers in the South West, 2022/23 to 2024/25',
+    description:
+      "How achievement rates spread across independent training providers in the South West and Hampshire, from DfE's published figures. No provider is named.",
+    dataFile: 'sw-apprenticeship-achievement-2025.json',
+    draft: true,
+  },
 ];
 
 export const guides: Guide[] = [
@@ -46,12 +55,15 @@ export const guides: Guide[] = [
 
 export const showDraftInsights = process.env.INSIGHTS_PREVIEW === '1';
 
-export const builtInsights = insights.filter((i) => !i.draft || showDraftInsights);
-
 const dataFiles = import.meta.glob<unknown>('./insights/*.json', {
   eager: true,
   import: 'default',
 });
+
+/** Published insights, plus (in a preview build) drafts whose JSON exists. */
+export const builtInsights = insights.filter(
+  (i) => !i.draft || (showDraftInsights && `./insights/${i.dataFile}` in dataFiles)
+);
 
 /** The frozen JSON for an insight; throws at build time if it is missing. */
 export function insightData<T>(insight: Insight): T {

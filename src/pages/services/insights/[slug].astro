@@ -6,8 +6,12 @@
  */
 import ServicesLayout from '@layouts/ServicesLayout.astro';
 import DorsetVcsInsight from '@components/services/insights/DorsetVcsInsight.astro';
+import SwApprenticeshipsInsight from '@components/services/insights/SwApprenticeshipsInsight.astro';
 import { builtInsights, insightData, type Insight } from '@data/insights';
-import type { DorsetVcsInsight as DorsetVcsData } from '@data/insights/types';
+import type {
+  DorsetVcsInsight as DorsetVcsData,
+  SwApprenticeshipsInsight as SwApprenticeshipsData,
+} from '@data/insights/types';
 
 export function getStaticPaths() {
   return builtInsights.map((insight) => ({ params: { slug: insight.slug }, props: { insight } }));
@@ -24,6 +28,11 @@ const { insight } = Astro.props;
   {
     insight.slug === 'dorset-voluntary-sector-2026' && (
       <DorsetVcsInsight data={insightData<DorsetVcsData>(insight)} />
+    )
+  }
+  {
+    insight.slug === 'south-west-apprenticeship-achievement' && (
+      <SwApprenticeshipsInsight data={insightData<SwApprenticeshipsData>(insight)} />
     )
   }
 </ServicesLayout>
