@@ -17,9 +17,9 @@ On Linux, Chromium also needs system libraries:  python -m playwright install --
 Apprenticeship data: DfE 'Achievement Rates Providers - Volumes and Rates by Provider, SSA T1, Level,
 Standard-framework name' (Explore Education Statistics, Apprenticeships 2025/26 release).
 Charity data: a small JSON file filled in from the Charity Commission register and 360Giving GrantNav
-(see snapshot_workflow.md).
+(see README.md).
 """
-import argparse, base64, html, io, json, re, sys, warnings, datetime as dt
+import argparse, base64, html, io, json, os, re, sys, warnings, datetime as dt
 warnings.filterwarnings("ignore")
 from pathlib import Path
 import numpy as np
@@ -112,7 +112,8 @@ def print_pdf(html_path, pdf_path, title):
               f'display:flex;justify-content:space-between;border-top:0.8px solid {TEAL};padding-top:3px">'
               f'<span>{e(FOOTER)}</span><span>Public-data snapshot</span></div>')
     with sync_playwright() as p:
-        b = p.chromium.launch(); pg = b.new_page()
+        exe = os.environ.get("CHROMIUM_PATH")  # use an installed Chromium instead of Playwright's own
+        b = p.chromium.launch(**({"executable_path": exe} if exe else {})); pg = b.new_page()
         pg.goto(Path(html_path).resolve().as_uri()); pg.wait_for_load_state("networkidle")
         pg.pdf(path=str(pdf_path), format="A4", print_background=True, prefer_css_page_size=True, tagged=True, outline=True,
                display_header_footer=True, header_template="<span></span>", footer_template=footer)
@@ -347,8 +348,13 @@ def charity(path, outdir, price=345):
                   "or grant timing, trustees need a clear forward view. How far ahead can the board currently see?")
     con = latest.get("government_contracts", 0) or 0; gtot = (gov or 0) + con
     if latest["income"] > 500000:
+        # SORP 2026 applies to reporting years beginning on or after 1 January 2026 (Tier 2: income over £500,000).
+        first = dt.date.fromisoformat(latest["year_end"]) + dt.timedelta(days=1)
+        while first < dt.date(2026, 1, 1): first = first.replace(year=first.year + 1)
+        started = ("The first such year has already started. " if first <= dt.date.today()
+                   else f"The first such year begins on {first.day} {first:%B %Y}. ")
         qs.insert(0, f"Income of £{latest['income'] / 1000:,.0f}k puts the charity above £500,000, where the Charities SORP 2026 makes impact reporting a requirement "
-                  "in the trustees' report for reporting years beginning on or after 1 January 2026. The first such year has already started. "
+                  "in the trustees' report for reporting years beginning on or after 1 January 2026. " + started +
                   "Is the evidence for that section being collected as the year goes, or will it be pieced together at year end?")
     if gtot and gtot >= 0.05 * latest["income"]:
         parts = []
@@ -357,8 +363,17 @@ def charity(path, outdir, price=345):
         qs.append(f"{gtot / latest['income'] * 100:.0f}% of income came from public bodies: {' and '.join(parts)}. "
                   "Commissioned work usually brings its own monitoring returns. How much staff time do those returns take each quarter?")
     if (latest.get("volunteers") or 0) >= 5:
-        qs.append(f"{latest['volunteers']:,} volunteers support the charity, and SORP 2026 asks every charity's trustees' report to describe volunteer contributions. "
-                  "Are volunteer hours recorded in a way that can be reported and valued, for that and for funding bids?")
+        # SORP 2026 module 1, para 1.26: Tier 2 and 3 (income over £500,000) only, and only if the charity reports on
+        # general volunteers: it should give their number and the activities they support, and may give hours.
+        # Keep in step with /services/guides/trustees-report-impact-data/.
+        if latest["income"] > 500000:
+            qs.append(f"{latest['volunteers']:,} volunteers support the charity. Under SORP 2026, charities with income over £500,000 that report on their "
+                      "volunteers should give the number and the activities they support, and may give hours. "
+                      "Are volunteer hours and roles recorded as they happen, so they can be reported and valued?")
+        else:
+            qs.append(f"{latest['volunteers']:,} volunteers support the charity. Volunteer hours are strong evidence in funding bids, and under SORP 2026 "
+                      "charities with income over £500,000 that report on their volunteers should give the number and the activities they support. "
+                      "Are hours and roles recorded as they happen, so they can be reported and valued?")
     qs = qs[:4]
 
     m = {"doc_title": f"{name} public-data snapshot",
