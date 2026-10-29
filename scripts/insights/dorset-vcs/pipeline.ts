@@ -39,10 +39,17 @@ export interface LoadedData {
   extractDate: string;
   postcodeLookup: string;
   charities: Charity[];
-  /** Latest Part A row per charity. */
+  /** Each charity's latest Part A (flagged latest by the register). */
   partA: Map<
     string,
-    { periodEnd: string; income: number | null; volunteers: number | null; gov: number | null }
+    {
+      periodEnd: string;
+      income: number | null;
+      volunteers: number | null;
+      /** Government contracts plus grants income (blank fields count as 0). */
+      gov: number;
+      receivesGov: boolean;
+    }
   >;
   /** Gross income by charity and financial year end (calendar year). */
   history: Map<string, Map<number, number>>;
@@ -62,8 +69,10 @@ export function extractFile(rawDir: string, name: string): string {
   return existsSync(json) ? json : join(rawDir, `${name}.txt`);
 }
 
-/** Map postcode -> LAD code, for postcodes in the target areas only. */
-export async function loadPostcodes(lookupCsv: string): Promise<Map<string, string>> {
+/** Map postcode -> LAD code, for postcodes in the target areas only, and the LAD column used. */
+export async function loadPostcodes(
+  lookupCsv: string
+): Promise<{ map: Map<string, string>; ladCol: string }> {
   const header = await readHeader(lookupCsv, ',');
   const pcCol = COLS.onsPostcode.find((c) => header.includes(c));
   const ladCol = header.find((h) => COLS.onsLad.test(h));
@@ -74,7 +83,7 @@ export async function loadPostcodes(lookupCsv: string): Promise<Map<string, stri
     const lad = row[ladCol!];
     if (wanted.has(lad)) map.set(normalisePostcode(row[pcCol!]), lad);
   }
-  return map;
+  return { map, ladCol: ladCol! };
 }
 
 export async function load(rawDir: string, lookupCsv: string): Promise<LoadedData> {
@@ -85,7 +94,7 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
   await checked(file(CC_FILES.history), Object.values(COLS.history));
   await checked(file(CC_FILES.classification), Object.values(COLS.classification));
 
-  const postcodes = await loadPostcodes(lookupCsv);
+  const { map: postcodes, ladCol } = await loadPostcodes(lookupCsv);
 
   let extractDate = '';
   const charities: Charity[] = [];
@@ -107,16 +116,14 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
   const partA: LoadedData['partA'] = new Map();
   const p = COLS.partA;
   for await (const r of readRecords(file(CC_FILES.partA))) {
-    if (!inArea.has(r[p.org])) continue;
-    const prev = partA.get(r[p.org]);
-    if (prev && prev.periodEnd >= r[p.periodEnd]) continue;
-    const contracts = num(r[p.govContracts]);
-    const grants = num(r[p.govGrants]);
+    if (!inArea.has(r[p.org]) || r[p.latest] !== 'true') continue;
+    const gov = (num(r[p.govContracts]) ?? 0) + (num(r[p.govGrants]) ?? 0);
     partA.set(r[p.org], {
       periodEnd: r[p.periodEnd],
       income: num(r[p.income]),
       volunteers: num(r[p.volunteers]),
-      gov: contracts === null && grants === null ? null : (contracts ?? 0) + (grants ?? 0),
+      gov,
+      receivesGov: r[p.receivesContracts] === 'true' || r[p.receivesGrants] === 'true' || gov > 0,
     });
   }
 
@@ -138,7 +145,14 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
       classification.push({ org: r[k.org], type: r[k.type], description: r[k.description] });
   }
 
-  return { extractDate, postcodeLookup: lookupCsv, charities, partA, history, classification };
+  return {
+    extractDate,
+    postcodeLookup: `ONS postcode data, local authorities as coded in its ${ladCol} column`,
+    charities,
+    partA,
+    history,
+    classification,
+  };
 }
 
 function bands(incomes: number[]): CountShare[] {
@@ -183,25 +197,31 @@ export function compute(
 
   // Five complete financial years: those ending before the extract year,
   // since returns for years ending in the extract year are mostly not yet due.
-  const lastYear = Number(data.extractDate.slice(0, 4)) - 1;
-  const trend = Array.from({ length: TREND_YEARS }, (_, i) => lastYear - TREND_YEARS + 1 + i).map(
-    (year) => {
-      const values = [...data.history.values()]
-        .map((m) => m.get(year))
-        .filter((v): v is number => v !== undefined);
-      return {
-        yearEnding: year,
-        filers: suppressCount(values.length),
-        medianIncome: roundTo(suppressStat(values.length, median(values)), 1000),
-        totalIncome: roundTo(suppressStat(values.length, sum(values)), 100_000),
-      };
-    }
-  );
+  // The register keeps at most five returns per charity, so a charity that has
+  // already filed for the extract year has lost its oldest year, and late
+  // returns thin the latest. Comparing years therefore uses the same charities
+  // throughout: those with a return for every year in the window.
+  const extractYear = Number(data.extractDate.slice(0, 4));
+  const lastYear = extractYear - 1;
+  const years = Array.from({ length: TREND_YEARS }, (_, i) => lastYear - TREND_YEARS + 1 + i);
+  const cohort = [...data.history.values()].filter((m) => years.every((y) => m.has(y)));
+  const trend = years.map((year) => {
+    const values = cohort.map((m) => m.get(year)!);
+    return {
+      yearEnding: year,
+      filers: suppressCount(values.length),
+      medianIncome: roundTo(suppressStat(values.length, median(values)), 1000),
+      totalIncome: roundTo(suppressStat(values.length, sum(values)), 100_000),
+    };
+  });
 
-  const partA = [...data.partA.values()];
-  const withGov = partA.filter((r) => r.gov !== null);
-  const govIncome = sum(withGov.map((r) => r.gov ?? 0));
-  const partAIncome = sum(withGov.map((r) => r.income ?? 0));
+  // Current returns only: each charity's latest Part A, for a year ending in
+  // the last two calendar years before the extract.
+  const partA = [...data.partA.values()].filter(
+    (r) => Number(r.periodEnd.slice(0, 4)) >= extractYear - 2
+  );
+  const govIncome = sum(partA.map((r) => r.gov));
+  const partAIncome = sum(partA.map((r) => r.income ?? 0));
   const volunteers = partA.map((r) => r.volunteers).filter((v): v is number => v !== null);
 
   const byType = (t: string) =>
@@ -237,7 +257,7 @@ export function compute(
     schema: 'dorset-vcs/1',
     extractDate: data.extractDate,
     generatedAt,
-    postcodeLookup: `ONS postcode to local authority lookup, November 2025 (ArcGIS item ${'c4f84c38814d4b82aa4760ade686c3cc'})`,
+    postcodeLookup: data.postcodeLookup,
     totals: {
       charities: charities.length,
       // Withheld together: either one gives the other by subtraction from the total.
@@ -249,12 +269,12 @@ export function compute(
     incomeBands: bands(incomes),
     trend,
     government: {
-      charitiesWithPartA: withGov.length,
+      charitiesWithPartA: partA.length,
       shareReceiving: suppressStat(
-        withGov.length,
-        pct(withGov.filter((r) => (r.gov ?? 0) > 0).length, withGov.length) ?? 0
+        partA.length,
+        pct(partA.filter((r) => r.receivesGov).length, partA.length) ?? 0
       ),
-      shareOfIncome: suppressStat(withGov.length, pct(govIncome, partAIncome) ?? 0),
+      shareOfIncome: suppressStat(partA.length, pct(govIncome, partAIncome) ?? 0),
     },
     volunteers: {
       charitiesReporting: volunteers.length,
@@ -269,10 +289,10 @@ export function compute(
     classification: { what: byType('what'), who: byType('who'), how: byType('how') },
     areas,
     methods: [
-      'Registered charities on the Charity Commission register for England and Wales whose contact postcode is in the Dorset Council (E06000059) or Bournemouth, Christchurch and Poole Council (E06000058) area, matched with the ONS postcode to local authority lookup (November 2025). Linked charities are counted with their main charity.',
+      'Registered charities on the Charity Commission register for England and Wales whose contact postcode is in the Dorset Council (E06000059) or Bournemouth, Christchurch and Poole Council (E06000058) area, matched to local authorities with ONS postcode data. Linked charities are counted with their main charity.',
       "Income bands and totals use each charity's latest reported income on the register.",
-      `The five-year trend covers financial years ending ${lastYear - TREND_YEARS + 1} to ${lastYear}, using each charity's annual return history, and counts the charities that filed for each year.`,
-      'Government income is income from government contracts plus government grants, from the latest Part A of the annual return. Part A is filed only by charities above the annual return income threshold.',
+      `The five-year trend covers financial years ending ${years[0]} to ${lastYear}. It follows the same ${cohort.length.toLocaleString('en-GB')} charities through every year: those with an annual return for each of the five years. (The register keeps each charity's last five returns, so charities that have already filed for ${extractYear} are not included.)`,
+      `Government funding comes from each charity's latest Part A of the annual return, for a year ending in ${extractYear - 2} or later: whether it reports government contracts or grants, and the income from them. Part A is filed only by charities above the annual return income threshold, so this covers ${partA.length.toLocaleString('en-GB')} charities. Volunteer numbers come from the same returns.`,
       'Classifications are those charities choose on the register: what they do, who they help and how. A charity can choose several, so shares add up to more than 100%.',
       'Any count below 5, and any figure based on fewer than 5 charities, is withheld. Totals are rounded to the nearest £100,000 and medians to the nearest £1,000.',
     ],
@@ -280,6 +300,7 @@ export function compute(
       'Registered charities only: unregistered groups, community interest companies and exempt or excepted charities are not included.',
       'A charity is placed by its contact postcode, which may not be where it works.',
       'Figures use the latest year each charity has filed, and some returns are late, so recent years are incomplete.',
+      'Some national charities have their contact address in the area, so total income and volunteer numbers include work done across the country. Medians are the better guide to a typical local charity.',
     ],
   };
 }

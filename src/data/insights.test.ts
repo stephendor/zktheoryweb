@@ -28,6 +28,7 @@ describe('insights registry', () => {
 
 describe('insight formatting', () => {
   it('formats pounds', () => {
+    expect(gbp(1_065_700_000)).toBe('£1.1bn');
     expect(gbp(456_700_000)).toBe('£456.7m');
     expect(gbp(2_000_000)).toBe('£2m');
     expect(gbp(23_000)).toBe('£23,000');

@@ -97,19 +97,35 @@ function writeFixture(opts: { dropColumn?: string } = {}) {
       'count_volunteers',
       'income_from_government_contracts',
       'income_from_government_grants',
+      'charity_receives_govt_funding_contracts',
+      'charity_receives_govt_funding_grants',
+      'latest_fin_period_submitted_ind',
     ],
   ];
   for (const org of ['2', '3', '4', '5', '7', '8', '9', '10', '11', '12']) {
     const gov = ['4', '10', '11'].includes(org) ? '50000' : '0';
-    partA.push([org, '2025-03-31', '100000', '10', gov, '0']);
-    partA.push([org, '2024-03-31', '1', '999', '0', '0']); // older: ignored
+    // Income fields are blank for charities without government funding, as in the register.
+    const receives = gov === '0' ? 'false' : 'true';
+    partA.push([
+      org,
+      '2025-03-31',
+      '100000',
+      '10',
+      gov === '0' ? '' : gov,
+      '',
+      receives,
+      'false',
+      'true',
+    ]);
+    partA.push([org, '2024-03-31', '1', '999', '', '', 'false', 'false', 'false']); // not latest: ignored
   }
   fs.writeFileSync(path.join(dir, `${CC_FILES.partA}.txt`), tsv(partA));
 
   const history = [['organisation_number', 'fin_period_end_date', 'total_gross_income']];
   for (const [org, , , , , income] of CHARITIES) {
     if (!income) continue;
-    for (let y = 2021; y <= 2026; y++)
+    // Org 11 has already filed for 2026, so (five returns kept) has lost 2021.
+    for (let y = org === '11' ? 2022 : 2021; y <= 2026; y++)
       history.push([org, `${y}-03-31`, String(Number(income) + (y - 2021) * 1000)]);
   }
   fs.writeFileSync(path.join(dir, `${CC_FILES.history}.txt`), tsv(history));
@@ -165,7 +181,8 @@ describe('dorset-vcs pipeline', () => {
 
     // Trend: five complete years ending before the extract year.
     expect(out.trend.map((t) => t.yearEnding)).toEqual([2021, 2022, 2023, 2024, 2025]);
-    expect(out.trend[0].filers).toBe(10);
+    // Same charities every year: org 11 (no 2021 return) is left out of all five.
+    expect(out.trend.map((t) => t.filers)).toEqual([9, 9, 9, 9, 9]);
 
     // Government: 3 of 9 in-area Part A filers (org 12 is out of area).
     expect(out.government.charitiesWithPartA).toBe(9);
