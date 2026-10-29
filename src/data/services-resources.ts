@@ -327,7 +327,7 @@ export const serviceSheets: ServiceSheet[] = [
     question:
       'How great is the need where we work, is our service reaching the neighbourhoods and groups where it is greatest, and where are the gaps?',
     what_you_get: [
-      'A profile of need in your area from official sources: deprivation, income, child poverty, health and education, compared with county and national figures (England; other UK nations on request, as each uses its own deprivation measure)',
+      'A profile of need in your area from official sources: deprivation, income, child poverty, health and education, compared with county and national figures (England only)',
       'Your reach set against it: participants by neighbourhood and level of deprivation, compared with the local population',
       'The gaps: areas of high need where few people use your service, and groups that are under-represented',
       'A 3–4 page summary with maps, charts and plain-English commentary, plus the workbook so you can update it',
