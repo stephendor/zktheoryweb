@@ -40,3 +40,6 @@ src/data/generated/phase3/candidates/
 # Running list of vault / Zotero follow-ups from vault-to-site sessions
 # (local working notes, not committed)
 followups/
+
+# Raw downloads for the insight pipelines (large, re-downloadable)
+scripts/insights/*/raw/
