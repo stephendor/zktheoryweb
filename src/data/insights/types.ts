@@ -86,6 +86,8 @@ export interface SwApprenticeshipsYear {
   /** Achievement rate across all providers in the dataset, England (%). */
   allProviderRate: number;
   spread: RateSpread;
+  /** Median pass rate (%) of in-scope providers: achievers as a share of those who completed. */
+  passRateMedian: number | null;
   /** In-scope providers below the all-provider rate. */
   below: number | null;
   belowShare: number | null;

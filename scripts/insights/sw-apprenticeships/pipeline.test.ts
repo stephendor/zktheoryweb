@@ -125,6 +125,7 @@ describe('sw-apprenticeships pipeline', () => {
     expect(y.spread).toEqual({ providers: 6, p25: 56.3, median: 62.5, p75: 68.8 });
     expect(out.join).toEqual({ providersInRates: 11, matchedToOfsted: 11, inScopeAnyYear: 6 });
     expect(y.below).toBeNull(); // 50, 55, 60, 65 are below 69.8: 4, withheld
+    expect(y.passRateMedian).toBe(100);
 
     expect(y.bySsa).toEqual([
       { label: 'Construction', providers: 6, p25: 56.3, median: 62.5, p75: 68.8 },
@@ -169,6 +170,7 @@ describe('sw-apprenticeships pipeline', () => {
         leavers: 100,
         achievementRate: i % 2 === 0 ? 40 : 80,
         retentionRate: [50, 65, 90][i % 3],
+        passRate: 98,
       });
       ofsted.set(ukprn, { region: 'South West', localAuthority: 'Devon' });
     }
@@ -181,6 +183,7 @@ describe('sw-apprenticeships pipeline', () => {
       { band: '75% and over', below: 5, atOrAbove: 5 },
     ]);
     expect(y.byAge).toBeNull();
+    expect(y.passRateMedian).toBe(98);
   });
 
   it('includes Hampshire, Portsmouth and Southampton from the South East, and nowhere else there', () => {

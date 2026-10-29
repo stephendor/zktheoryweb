@@ -1,7 +1,7 @@
 /**
  * pipeline.ts: apprenticeship achievement among independent training
  * providers in the South West plus Hampshire, from DfE's provider-level
- * achievement rates joined to Ofsted's FE and skills management information
+ * achievement rates joined to Ofsted's FE and skills inspection data
  * by UKPRN (for region and local authority).
  *
  * DfE rounds the published volumes to the nearest 10 but calculates the rates
@@ -50,6 +50,7 @@ export interface RateRow {
   leavers: number;
   achievementRate: number | null;
   retentionRate: number | null;
+  passRate: number | null;
 }
 
 export interface OfstedProvider {
@@ -90,6 +91,7 @@ export async function loadRates(path: string): Promise<{ rows: RateRow[]; hasAge
       leavers,
       achievementRate: num(r[c.achievementRate]),
       retentionRate: num(r[c.retentionRate]),
+      passRate: num(r[c.passRate]),
     });
   }
   return { rows, hasAge };
@@ -170,6 +172,7 @@ export function compute(
 ): SwApprenticeshipsInsight {
   const allUkprns = new Set(rows.map((r) => r.ukprn));
   const inScopeAnyYear = new Set<string>();
+  const unplaced: number[] = [];
 
   const years: SwApprenticeshipsYear[] = YEARS.map(({ code, label }) => {
     const yearRows = rows.filter((r) => r.year === code);
@@ -196,6 +199,17 @@ export function compute(
       .map((r) => ({ retention: r.retentionRate!, achievement: r.achievementRate! }));
     const enoughPairs = pairs.length >= SUPPRESS_BELOW;
     const belowN = achievement.filter((r) => r < allProviderRate).length;
+    const passRates = scoped.map((r) => r.passRate).filter((v): v is number => v !== null);
+    // Independent providers in the size range that Ofsted's list could not place.
+    unplaced.push(
+      overall.filter(
+        (r) =>
+          SCOPE.providerType.test(r.providerType) &&
+          !ofsted.has(r.ukprn) &&
+          r.leavers >= LEAVERS_MIN &&
+          r.leavers <= LEAVERS_MAX
+      ).length
+    );
     const enough = scoped.length >= SUPPRESS_BELOW;
 
     // The columns add up to published figures (below, and providers - below),
@@ -220,6 +234,15 @@ export function compute(
       year: label,
       allProviderRate,
       spread: spread(achievement),
+      passRateMedian:
+        passRates.length >= SUPPRESS_BELOW
+          ? round1(
+              quantileSorted(
+                [...passRates].sort((a, b) => a - b),
+                0.5
+              )
+            )
+          : null,
       below: enough ? suppressCount(belowN) : null,
       belowShare: enough && suppressCount(belowN) !== null ? pct(belowN, scoped.length) : null,
       byAge: hasAge ? byCategory(yearRows, 'age', ids) : null,
@@ -250,7 +273,7 @@ export function compute(
     methods: [
       "Achievement and retention rates are DfE's published provider-level apprenticeship rates (Explore Education Statistics, Apprenticeships 2025/26 release), taken as published from each provider's overall, subject-area and age-group rows.",
       'Independent training providers are those DfE classes as "Private Sector Public Funded".',
-      `Region and local authority come from Ofsted's further education and skills management information (providers as at 31 August 2025), joined by UKPRN. ${matched.toLocaleString('en-GB')} of ${allUkprns.size.toLocaleString('en-GB')} providers in the rates data matched.`,
+      `Region and local authority come from Ofsted's further education and skills inspection data (most recent inspection outcomes for all providers, as at 31 August 2025), joined by UKPRN. ${matched.toLocaleString('en-GB')} of ${allUkprns.size.toLocaleString('en-GB')} providers in the rates data matched.`,
       `In scope: independent training providers in the South West region, or in Hampshire, Portsmouth or Southampton, with ${LEAVERS_MIN} to ${LEAVERS_MAX} leavers in the year (DfE rounds leaver numbers to the nearest 10). The group can differ from year to year.`,
       "The all-provider rate is the average of every provider's published rate in England, weighted by its leavers, so it can differ slightly from DfE's national headline figure.",
       `Spreads show the quartiles: the middle half of providers lies between the 25th and 75th percentiles. Breakdowns by age or subject area include a provider only where it had at least ${MIN_LEAVERS_IN_CELL} leavers in that group.`,
@@ -258,7 +281,14 @@ export function compute(
     ],
     limits: [
       'Where DfE withholds a figure for small numbers, that provider or group is left out of the spread.',
-      "Ofsted's provider list is a snapshot at 31 August 2025; providers that closed or did not match are left out.",
+      `Ofsted's provider list is a snapshot at 31 August 2025, so providers that had closed by then cannot be placed in a region and are left out. Across England, ${unplaced.slice(0, -1).join(', ')} and ${unplaced[unplaced.length - 1]} independent providers in the size range could not be placed for ${YEARS.slice(
+        0,
+        -1
+      )
+        .map((y) => y.label)
+        .join(
+          ', '
+        )} and ${YEARS[YEARS.length - 1].label}, so earlier years include fewer providers. Compare years by share rather than by count.`,
       'These figures describe a group of providers. They are not a judgement on any provider.',
     ],
   };

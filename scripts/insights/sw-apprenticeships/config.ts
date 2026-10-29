@@ -59,6 +59,7 @@ export const COLS = {
     leavers: 'leavers',
     achievementRate: 'achievement_rate',
     retentionRate: 'retention_rate',
+    passRate: 'pass_rate',
     /** Optional: the age-band breakdown uses these when the file has them. */
     ageGroup: 'age_group',
     ageYouthAdult: 'age_youth_adult',

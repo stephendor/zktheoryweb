@@ -48,7 +48,8 @@ An existing output file is never overwritten unless you pass `--force`.
    Rates by Provider, SSA T1, Level, Standard-framework name"). The data set link is in `sw-apprenticeships/config.ts`.
 2. From gov.uk's "Further education and skills inspections and outcomes as at 31 August 2025" statistics page,
    download `Further_education_and_skills_-_inspection_data_as_at_31_August_2025.csv`. It gives each provider's
-   region and local authority, joined by UKPRN.
+   region and local authority, joined by UKPRN. If only the "data, charts and tables" workbook is offered, save its
+   sheet `D3_Most_recent_inspection_data` as a CSV (columns `Provider UKPRN`, `Local authority`, `Region`).
 3. Run:
 
    ```bash
