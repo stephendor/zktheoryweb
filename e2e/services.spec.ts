@@ -137,3 +137,11 @@ test('[services] the Dorset insight is published and listed, with charts and sou
   await expect(page.getByRole('img', { name: /Bar chart of registered charities/ })).toBeVisible();
   await expect(page.getByRole('link', { name: /full register download/ })).toBeVisible();
 });
+
+test('[services] the South West insight draft is not built', async ({ page }) => {
+  const slug = 'south-west-apprenticeship-achievement';
+  const res = await page.goto(`/services/insights/${slug}/`);
+  expect(res?.status()).toBe(404);
+  await page.goto('/services/insights/');
+  await expect(page.locator(`a[href*="${slug}"]`)).toHaveCount(0);
+});
