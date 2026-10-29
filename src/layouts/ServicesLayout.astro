@@ -10,21 +10,30 @@
  * handful of block classes the MDX uses (.services-cta, .service-segment,
  * .service-step, .service-callout, .service-examples).
  *
- * No scripts, forms or third-party resources — see netlify.toml CSP.
+ * No scripts, forms or third-party resources — see netlify.toml CSP. The one
+ * exception is the ProfessionalService JSON-LD on /services (frontmatter
+ * `professionalService: true`): JSON-LD is data, exempt from script-src.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { professionalService as serviceJsonLd } from '@data/services-contact';
 
 interface Props {
   frontmatter: {
     title: string;
     description: string;
+    professionalService?: boolean;
   };
 }
 
-const { title, description } = Astro.props.frontmatter;
+const { title, description, professionalService } = Astro.props.frontmatter;
 ---
 
 <BaseLayout title={title} description={description}>
+  {professionalService && (
+    <Fragment slot="head">
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(serviceJsonLd)} />
+    </Fragment>
+  )}
   <div class="container-prose--wide services-page">
     <article class="prose services">
       <slot />
@@ -75,6 +84,37 @@ const { title, description } = Astro.props.frontmatter;
     color: var(--color-neutral-bg);
     outline: 2px solid var(--color-tda-teal-light);
     outline-offset: 2px;
+  }
+
+  /* Second, quieter call to action: a plain link beside the main one. */
+  .services :global(.services-ctas) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+    justify-self: start;
+  }
+
+  .services :global(a.services-cta--quiet),
+  .services :global(a.services-cta--quiet:visited) {
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-neutral-body);
+    text-underline-offset: 3px;
+  }
+
+  .services :global(a.services-cta--quiet:focus-visible),
+  .services :global(.service-free a:focus-visible) {
+    outline: 2px solid var(--color-tda-teal-light);
+    outline-offset: 2px;
+  }
+
+  /* Small "free summary" link at the foot of each sector block. */
+  .services :global(.service-free) {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
   }
 
   /* ── Segment and step cards ─────────────────────────────────────────────── */

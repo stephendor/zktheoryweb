@@ -1,0 +1,104 @@
+---
+/**
+ * services/resources/deprivation-check.astro
+ * What the free deprivation check workbook does, linked from /services#free.
+ * The workbook itself is not hosted on the site: it is sent by email on
+ * request, so this page has no download link and no PDF.
+ */
+import ServicesDocLayout from '@layouts/ServicesDocLayout.astro';
+import { mailtos } from '@data/services-contact';
+import { serviceSheets } from '@data/services-resources';
+
+const needAndReach = serviceSheets.find((s) => s.slug === 'need-and-reach-analysis');
+if (!needAndReach) throw new Error('deprivation-check: no need-and-reach-analysis service sheet');
+const needPrice = needAndReach.price.replace(/\s*fixed price$/i, '');
+
+const IOD =
+  'https://www.gov.uk/government/statistics/english-indices-of-deprivation-2025/english-indices-of-deprivation-2025-statistical-release';
+---
+
+<ServicesDocLayout
+  title="Free deprivation check"
+  description="A free spreadsheet for charities: paste in postcodes and see how many of the people you work with live in England's most deprived neighbourhoods. Postcodes never leave your computer."
+  backHref="/services/#free-deprivation-check"
+  backLabel="Back to services"
+  footerLeft="Stephen Dorman | Reporting and data analysis for small organisations | stephen@zktheory.org | zktheory.org/services"
+>
+  <p class="doc-kicker">Free spreadsheet for charities and community groups</p>
+  <h1 class="doc-title">Free deprivation check</h1>
+  <p class="doc-lead">
+    Paste in the postcodes of the people you work with. The spreadsheet shows how many live in
+    England's most deprived 20% of neighbourhoods, compared with everyone who lives in your area,
+    and gives you a sentence ready for a bid.
+  </p>
+
+  <section aria-labelledby="does">
+    <h2 class="doc-h2" id="does">What it does</h2>
+    <ul class="doc-list">
+      <li>
+        Counts how many of your postcodes are in neighbourhoods among the most deprived 20% in
+        England.
+      </li>
+      <li>
+        Shows the same share for everyone who lives in your area, so you can see whether you reach
+        people where the need is greatest.
+      </li>
+      <li>Writes one sentence with its source, ready to paste into a bid.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="doesnt">
+    <h2 class="doc-h2" id="doesnt">What it doesn't do</h2>
+    <p class="dep__text">
+      It gives you the headline only. It doesn't break the figures down neighbourhood by
+      neighbourhood, show where the gaps are, or build a wider profile of need such as income,
+      health and education. The paid
+      <a href="/services/sheets/need-and-reach-analysis/">need and reach analysis</a> does those ({
+        needPrice
+      }, England only, no VAT is added).
+    </p>
+  </section>
+
+  <section aria-labelledby="privacy">
+    <h2 class="doc-h2" id="privacy">Your data stays with you</h2>
+    <ul class="doc-list">
+      <li>The postcodes never leave your computer. I never see them.</li>
+      <li>
+        It's an ordinary spreadsheet with no macros and no links to other files or websites, so
+        nothing is sent anywhere.
+      </li>
+      <li>You can delete the postcodes as soon as you have your figures.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="coverage">
+    <h2 class="doc-h2" id="coverage">Where it covers</h2>
+    <p class="dep__text">
+      It currently covers Dorset, BCP and Somerset, and Wiltshire and Swindon. Neighbourhoods are
+      ranked using the government's official
+      <a href={IOD}>English indices of deprivation 2025</a>.
+    </p>
+  </section>
+
+  <section aria-labelledby="ask">
+    <h2 class="doc-h2" id="ask">How to get it</h2>
+    <p class="dep__text">
+      It isn't available to download from this site. <a href={mailtos.deprivationCheck}
+        >Email me for the free deprivation check</a
+      >, tell me which area you work in, and I'll send the spreadsheet by email. There's nothing to
+      sign up to.
+    </p>
+  </section>
+</ServicesDocLayout>
+
+<style>
+  .dep__text {
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .dep__text a {
+    color: var(--color-neutral-body);
+    font-weight: 700;
+    text-underline-offset: 3px;
+  }
+</style>
