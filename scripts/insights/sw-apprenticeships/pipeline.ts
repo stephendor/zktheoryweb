@@ -41,8 +41,9 @@ export interface RateRow {
   ssa: string;
   age: string | null;
   leavers: number;
-  completers: number;
   achievers: number;
+  /** DfE's published retention rate for the row (%), or null if withheld. */
+  retentionRate: number | null;
 }
 
 export interface OfstedProvider {
@@ -51,17 +52,29 @@ export interface OfstedProvider {
   localAuthority: string;
 }
 
+/** Summed over rows. Retention is a leaver-weighted mean of the published rates. */
 interface Counts {
   leavers: number;
-  completers: number;
   achievers: number;
+  retentionWeighted: number;
+  retentionLeavers: number;
 }
 
-const add = (a: Counts | undefined, r: Counts): Counts => ({
-  leavers: (a?.leavers ?? 0) + r.leavers,
-  completers: (a?.completers ?? 0) + r.completers,
-  achievers: (a?.achievers ?? 0) + r.achievers,
-});
+const ZERO: Counts = { leavers: 0, achievers: 0, retentionWeighted: 0, retentionLeavers: 0 };
+
+const add = (a: Counts | undefined, r: RateRow): Counts => {
+  const base = a ?? ZERO;
+  const hasRate = r.retentionRate !== null;
+  return {
+    leavers: base.leavers + r.leavers,
+    achievers: base.achievers + r.achievers,
+    retentionWeighted: base.retentionWeighted + (hasRate ? r.retentionRate! * r.leavers : 0),
+    retentionLeavers: base.retentionLeavers + (hasRate ? r.leavers : 0),
+  };
+};
+
+const retentionOf = (c: Counts) =>
+  c.retentionLeavers > 0 ? c.retentionWeighted / c.retentionLeavers : null;
 
 export async function loadRates(path: string): Promise<{ rows: RateRow[]; hasAge: boolean }> {
   const c = COLS.rates;
@@ -83,8 +96,8 @@ export async function loadRates(path: string): Promise<{ rows: RateRow[]; hasAge
       ssa: r[c.ssa],
       age: hasAge ? r[age] : null,
       leavers,
-      completers: num(r[c.completers]) ?? 0,
       achievers: num(r[c.achievers]) ?? 0,
+      retentionRate: num(r[c.retentionRate]),
     });
   }
   return { rows, hasAge };
@@ -174,11 +187,7 @@ export function compute(
 
   const years: SwApprenticeshipsYear[] = YEARS.map(({ code, label }) => {
     const yearRows = rows.filter((r) => r.year === code);
-    const national = yearRows.reduce<Counts>((a, r) => add(a, r), {
-      leavers: 0,
-      completers: 0,
-      achievers: 0,
-    });
+    const national = yearRows.reduce<Counts>((a, r) => add(a, r), ZERO);
     const allProviderRate = round1(rate(national));
 
     const byProvider = groupBy(yearRows, (r) => r.ukprn);
@@ -189,7 +198,11 @@ export function compute(
     scoped.forEach(([u]) => inScopeAnyYear.add(u));
     const ids = new Set(scoped.map(([u]) => u));
     const achievement = scoped.map(([, c]) => rate(c));
-    const retention = scoped.map(([, c]) => (100 * c.completers) / c.leavers);
+    // Providers with a published retention rate, paired with their achievement rate.
+    const pairs = scoped
+      .map(([, c], j) => ({ retention: retentionOf(c), achievement: achievement[j] }))
+      .filter((x): x is { retention: number; achievement: number } => x.retention !== null);
+    const enoughPairs = pairs.length >= SUPPRESS_BELOW;
     const belowN = achievement.filter((r) => r < allProviderRate).length;
     const enough = scoped.length >= SUPPRESS_BELOW;
 
@@ -198,12 +211,12 @@ export function compute(
     // subtraction. The table is shown whole or not at all.
     const cells = RETENTION_BANDS.map((b, i) => {
       const lo = i === 0 ? -Infinity : RETENTION_BANDS[i - 1].max;
-      const idx = scoped.map((_, j) => j).filter((j) => retention[j] >= lo && retention[j] < b.max);
-      const below = idx.filter((j) => achievement[j] < allProviderRate).length;
-      return { below, atOrAbove: idx.length - below };
+      const inBand = pairs.filter((x) => x.retention >= lo && x.retention < b.max);
+      const below = inBand.filter((x) => x.achievement < allProviderRate).length;
+      return { below, atOrAbove: inBand.length - below };
     });
     const showTable =
-      enough &&
+      enoughPairs &&
       cells.every((c) => suppressCount(c.below) !== null && suppressCount(c.atOrAbove) !== null);
     const retentionTable = RETENTION_BANDS.map((b, i) => ({
       band: b.label,
@@ -220,7 +233,14 @@ export function compute(
       byAge: hasAge ? byCategory(yearRows, ids, (r) => r.age ?? '') : null,
       bySsa: byCategory(yearRows, ids, (r) => r.ssa),
       retention: retentionTable,
-      retentionCorrelation: enough ? Math.round(pearson(retention, achievement) * 100) / 100 : null,
+      retentionCorrelation: enoughPairs
+        ? Math.round(
+            pearson(
+              pairs.map((x) => x.retention),
+              pairs.map((x) => x.achievement)
+            ) * 100
+          ) / 100
+        : null,
     };
   });
 
@@ -238,8 +258,8 @@ export function compute(
     methods: [
       "Achievement rates are DfE's published provider-level apprenticeship achievement rates (Explore Education Statistics, Apprenticeships 2025/26 release).",
       `Provider type, region and local authority come from Ofsted's further education and skills management information (providers as at 31 August 2025), joined by UKPRN. ${matched} of ${allUkprns.size} providers in the rates data matched.`,
-      `In scope: independent training providers in the South West region or Hampshire with ${LEAVERS_MIN} to ${LEAVERS_MAX} leavers in the year. The group can differ from year to year.`,
-      "Each provider's achievement rate is its achievers divided by its leavers, summed over the published detail rows. Retention here is completers divided by leavers. The all-provider rate is the same calculation over every provider in the data, in England.",
+      `In scope: independent training providers in the South West region, or in Hampshire, Portsmouth or Southampton, with ${LEAVERS_MIN} to ${LEAVERS_MAX} leavers in the year. The group can differ from year to year.`,
+      "Each provider's achievement rate is its achievers divided by its leavers, summed over the published detail rows. Retention is DfE's published retention rate; where a provider has several rows, they are averaged weighted by leavers. The all-provider rate is the same calculation over every provider in the data, in England.",
       `Spreads show the quartiles (the middle half of providers lies between the 25th and 75th percentiles). Breakdowns by age or sector subject area include a provider only where it had at least ${MIN_LEAVERS_IN_CELL} leavers in that group.`,
       'Any count below 5, and any spread or share based on fewer than 5 providers, is withheld. No provider is named.',
     ],

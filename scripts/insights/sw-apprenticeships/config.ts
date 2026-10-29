@@ -36,7 +36,7 @@ export const SCOPE = {
   providerType: /independent (learning|training) provider/i,
   region: 'South West',
   /** Also in scope, though in the South East region. */
-  localAuthorities: ['Hampshire'],
+  localAuthorities: ['Hampshire', 'Portsmouth', 'Southampton'],
 };
 
 export const RETENTION_BANDS = [
@@ -53,7 +53,8 @@ export const COLS = {
     level: 'level',
     standard: 'std_fwk_name',
     leavers: 'leavers',
-    completers: 'completers',
+    /** DfE's published retention rate (%) for the row. */
+    retentionRate: 'retention_rate',
     achievers: 'achievers',
     /** Optional: used for the age-band measure when the file has it. */
     age: 'age_summary',

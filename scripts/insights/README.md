@@ -57,5 +57,6 @@ An existing output file is never overwritten unless you pass `--force`.
 
 4. If a column is missing, the run prints the real header. Fix `sw-apprenticeships/config.ts`, for example the
    Ofsted region column or the provider type wording that `SCOPE.providerType` matches. If the rates file has no age
-   column, the age breakdown is left out. The run says so, and the page skips that table.
+   column, the age breakdown is left out. The run says so, and the page skips that table. Retention uses DfE's
+   published `retention_rate` column, weighted by leavers where a provider has several rows.
 5. Check the figures, then set `draft: false` for the page in `src/data/insights.ts`.

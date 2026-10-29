@@ -8,14 +8,14 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
-import { compute, loadOfsted, loadRates } from './pipeline';
+import { compute, inScope, loadOfsted, loadRates } from './pipeline';
 
 const tmpRoots: string[] = [];
 afterAll(() => {
   for (const d of tmpRoots) fs.rmSync(d, { recursive: true, force: true });
 });
 
-// ukprn, type, region, local authority, leavers, achievers, completers (2024/25, one SSA each unless noted)
+// ukprn, type, region, local authority, leavers, achievers, retention rate % (2024/25, one SSA each unless noted)
 const PROVIDERS: [string, string, string, string, number, number, number][] = [
   ['10000001', 'Independent learning provider', 'South West', 'Devon', 100, 50, 60],
   ['10000002', 'Independent learning provider', 'South West', 'Dorset', 100, 55, 65],
@@ -25,8 +25,8 @@ const PROVIDERS: [string, string, string, string, number, number, number][] = [
   ['10000006', 'Independent learning provider', 'South West', 'Wiltshire', 100, 75, 90],
   ['10000007', 'General further education college', 'South West', 'Devon', 100, 10, 20], // wrong type
   ['10000008', 'Independent learning provider', 'London', 'Camden', 100, 10, 20], // wrong region
-  ['10000009', 'Independent learning provider', 'South West', 'Devon', 15, 15, 15], // too few leavers
-  ['10000010', 'Independent learning provider', 'South West', 'Devon', 700, 700, 700], // too many
+  ['10000009', 'Independent learning provider', 'South West', 'Devon', 15, 15, 100], // too few leavers
+  ['10000010', 'Independent learning provider', 'South West', 'Devon', 700, 700, 100], // too many
   ['10000011', 'Independent learning provider', 'South East', 'Kent', 100, 10, 20], // SE, not Hampshire
 ];
 
@@ -34,19 +34,20 @@ function writeFixture() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sw-app-'));
   tmpRoots.push(dir);
   const header =
-    'time_period,provider_ukprn,provider_name,ssa_tier_1,level,std_fwk_name,age_summary,leavers,completers,achievers';
+    'time_period,provider_ukprn,provider_name,ssa_tier_1,level,std_fwk_name,age_summary,leavers,retention_rate,achievers';
   const lines = [header];
-  for (const [ukprn, , , , leavers, achievers, completers] of PROVIDERS) {
+  for (const [ukprn, , , , leavers, achievers, retention] of PROVIDERS) {
     const name = `Provider ${ukprn}`;
     // Split each provider over two age bands in one SSA, plus a subtotal row that must be skipped.
     const half = (n: number) => [Math.floor(n / 2), n - Math.floor(n / 2)];
     const [l1, l2] = half(leavers);
     const [a1, a2] = half(achievers);
-    const [c1, c2] = half(completers);
+    // Published retention differs by row; with equal halves the leaver-weighted mean is `retention`.
+    const [c1, c2] = l1 === l2 ? [retention - 10, retention + 10] : [retention, retention];
     lines.push(`202425,${ukprn},"${name}",Construction,Level 2,Bricklayer,16-18,${l1},${c1},${a1}`);
     lines.push(`202425,${ukprn},"${name}",Construction,Level 2,Bricklayer,19+,${l2},${c2},${a2}`);
     lines.push(
-      `202425,${ukprn},"${name}",Total,Total,Total,Total,${leavers},${completers},${achievers}`
+      `202425,${ukprn},"${name}",Total,Total,Total,Total,${leavers},${retention},${achievers}`
     );
   }
   // A suppressed row ("c") is skipped, and an out-of-range year is ignored.
@@ -121,7 +122,7 @@ describe('sw-apprenticeships pipeline', () => {
     const ofsted = new Map();
     for (let i = 0; i < 30; i++) {
       const ukprn = String(20000000 + i);
-      const completers = [60, 75, 90][i % 3];
+      const retentionRate = [60, 75, 90][i % 3];
       const achievers = i % 2 === 0 ? 40 : 80;
       rows.push({
         year: '202425',
@@ -129,8 +130,8 @@ describe('sw-apprenticeships pipeline', () => {
         ssa: 'Health',
         age: null,
         leavers: 100,
-        completers,
         achievers,
+        retentionRate,
       });
       ofsted.set(ukprn, {
         type: 'Independent learning provider',
@@ -147,6 +148,20 @@ describe('sw-apprenticeships pipeline', () => {
       { band: '80% and over', below: 5, atOrAbove: 5 },
     ]);
     expect(y.byAge).toBeNull();
+  });
+
+  it('includes Hampshire, Portsmouth and Southampton from the South East, and nowhere else there', () => {
+    const ilp = (localAuthority: string) => ({
+      type: 'Independent learning provider',
+      region: 'South East',
+      localAuthority,
+    });
+    expect(['Hampshire', 'Portsmouth', 'Southampton'].map((la) => inScope(ilp(la)))).toEqual([
+      true,
+      true,
+      true,
+    ]);
+    expect(inScope(ilp('Kent'))).toBe(false);
   });
 
   it('NEGATIVE CONTROL: stops and prints the header when a rates column is missing', async () => {
