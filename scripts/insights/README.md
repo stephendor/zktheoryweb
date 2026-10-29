@@ -46,8 +46,9 @@ An existing output file is never overwritten unless you pass `--force`.
 1. From Explore Education Statistics (Apprenticeships 2025/26 release), download the provider-level achievement
    rates CSV, `na05_app_narts_provider_level_fwk_std_ptype_202526_14.csv` ("Achievement Rates Providers - Volumes and
    Rates by Provider, SSA T1, Level, Standard-framework name"). The data set link is in `sw-apprenticeships/config.ts`.
-2. From gov.uk, download Ofsted's "Further education and skills inspections and outcomes: management information"
-   CSV of providers as at 31 August 2025. It gives each provider's region and local authority, joined by UKPRN.
+2. From gov.uk's "Further education and skills inspections and outcomes as at 31 August 2025" statistics page,
+   download `Further_education_and_skills_-_inspection_data_as_at_31_August_2025.csv`. It gives each provider's
+   region and local authority, joined by UKPRN.
 3. Run:
 
    ```bash

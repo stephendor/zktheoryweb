@@ -64,10 +64,15 @@ export const COLS = {
     ageYouthAdult: 'age_youth_adult',
   },
 
+  /**
+   * Ofsted's "Further education and skills: inspection data as at 31 August
+   * 2025" CSV. Candidate names, first match wins: earlier editions used
+   * "Region" (government office region) and "Ofsted region".
+   */
   ofsted: {
-    ukprn: 'Provider UKPRN',
-    region: 'Provider region',
-    localAuthority: 'Local authority',
+    ukprn: ['Provider UKPRN', 'UKPRN'],
+    region: ['Region', 'Provider region', 'Ofsted region'],
+    localAuthority: ['Local authority', 'Provider local authority'],
   },
 } as const;
 

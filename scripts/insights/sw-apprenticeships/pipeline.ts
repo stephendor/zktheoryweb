@@ -96,11 +96,21 @@ export async function loadRates(path: string): Promise<{ rows: RateRow[]; hasAge
 }
 
 export async function loadOfsted(path: string): Promise<Map<string, OfstedProvider>> {
-  const c = COLS.ofsted;
-  requireColumns(path, await readHeader(path, ','), Object.values(c));
+  const header = await readHeader(path, ',');
+  const pick = (names: readonly string[]) => names.find((n) => header.includes(n));
+  const ukprn = pick(COLS.ofsted.ukprn);
+  const region = pick(COLS.ofsted.region);
+  const localAuthority = pick(COLS.ofsted.localAuthority);
+  if (!ukprn || !region || !localAuthority) {
+    requireColumns(path, header, [
+      ukprn ?? COLS.ofsted.ukprn.join(' or '),
+      region ?? COLS.ofsted.region.join(' or '),
+      localAuthority ?? COLS.ofsted.localAuthority.join(' or '),
+    ]);
+  }
   const map = new Map<string, OfstedProvider>();
   for await (const r of readDelimited(path, ',')) {
-    map.set(r[c.ukprn], { region: r[c.region], localAuthority: r[c.localAuthority] });
+    map.set(r[ukprn!], { region: r[region!], localAuthority: r[localAuthority!] });
   }
   return map;
 }

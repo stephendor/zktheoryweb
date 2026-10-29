@@ -98,8 +98,8 @@ function writeFixture() {
   fs.writeFileSync(
     ofsted,
     [
-      'Provider UKPRN,Provider name,Provider type,Provider region,Local authority',
-      ...PROVIDERS.map(([u, , r, la]) => `${u},"Provider ${u}",x,${r},${la}`),
+      'Provider URN,Provider UKPRN,Provider name,Provider type,Local authority,Region,Ofsted region',
+      ...PROVIDERS.map(([u, , r, la]) => `1${u},${u},"Provider ${u}",x,${la},${r},x`),
     ].join('\n') + '\n'
   );
   return { rates, ofsted };
