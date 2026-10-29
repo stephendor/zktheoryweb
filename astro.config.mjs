@@ -48,7 +48,8 @@ export default defineConfig({
       }),
     }),
     pagefind(),
-    sitemap(),
+    // Unlisted snapshot PDFs under /s/ (public/s/) must never be listed.
+    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/s/') }),
   ],
   markdown: {
     shikiConfig: {
