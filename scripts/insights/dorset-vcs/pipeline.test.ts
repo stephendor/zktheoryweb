@@ -191,6 +191,40 @@ describe('dorset-vcs pipeline', () => {
     expect(json).not.toMatch(/"(DT|BH|SP)\d/); // no postcodes either
   });
 
+  it('gives the same result from the JSON extract as from the text extract', async () => {
+    const { dir, lookup } = writeFixture();
+    const fromText = compute(await load(dir, lookup), 'T');
+    // Rewrite each .txt as the JSON download would have it, then remove the .txt.
+    for (const name of Object.values(CC_FILES)) {
+      const txt = path.join(dir, `${name}.txt`);
+      const [header, ...lines] = fs
+        .readFileSync(txt, 'utf8')
+        .replace(/^\uFEFF/, '')
+        .trimEnd()
+        .split('\n');
+      const keys = header.split('\t');
+      const records: Record<string, unknown>[] = [];
+      let pending = '';
+      for (const line of lines) {
+        pending = pending ? `${pending}\n${line}` : line;
+        const f = pending.split('\t');
+        if (f.length < keys.length) continue;
+        pending = '';
+        records.push(
+          Object.fromEntries(
+            keys.map((k, i) => [
+              k,
+              f[i] === '' ? null : /^-?\d+(\.\d+)?$/.test(f[i]) ? Number(f[i]) : f[i],
+            ])
+          )
+        );
+      }
+      fs.writeFileSync(path.join(dir, `${name}.json`), JSON.stringify(records));
+      fs.rmSync(txt);
+    }
+    expect(compute(await load(dir, lookup), 'T')).toEqual(fromText);
+  });
+
   it('NEGATIVE CONTROL: stops and prints the header when a column is missing', async () => {
     const { dir, lookup } = writeFixture({ dropColumn: 'latest_income' });
     await expect(load(dir, lookup)).rejects.toThrow(

@@ -68,6 +68,72 @@ export async function* readDelimited(path: string, delimiter: '\t' | ','): Async
   }
 }
 
+/**
+ * Stream a JSON file whose top level is an array of flat objects (the
+ * Charity Commission's JSON extract) as rows, without loading the whole
+ * file: each object is cut out of the character stream and parsed alone.
+ * Values become strings (null becomes ''), matching readDelimited.
+ */
+export async function* readJsonArray(path: string, chunkSize = 1 << 20): AsyncGenerator<Row> {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  let current = '';
+  let first = true;
+  for await (const chunk of createReadStream(path, {
+    encoding: 'utf8',
+    highWaterMark: chunkSize,
+  })) {
+    let text = chunk as string;
+    if (first) {
+      text = text.replace(/^\uFEFF/, '');
+      first = false;
+    }
+    let start = depth >= 2 ? 0 : -1;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (inString) {
+        if (escaped) escaped = false;
+        else if (c === '\\') escaped = true;
+        else if (c === '"') inString = false;
+        continue;
+      }
+      if (c === '"') inString = true;
+      else if (c === '{' || c === '[') {
+        depth++;
+        if (depth === 2 && c === '{') start = i;
+      } else if (c === '}' || c === ']') {
+        depth--;
+        if (depth === 1 && c === '}') {
+          const obj = JSON.parse(current + text.slice(start, i + 1)) as Record<string, unknown>;
+          current = '';
+          start = -1;
+          const row: Row = {};
+          for (const [k, v] of Object.entries(obj))
+            row[k] = v === null || v === undefined ? '' : String(v).trim();
+          yield row;
+        }
+      }
+    }
+    if (start !== -1) current += text.slice(start);
+  }
+}
+
+/** Rows from a .json (array of objects), .txt (tab-delimited) or .csv file. */
+export function readRecords(path: string): AsyncGenerator<Row> {
+  if (path.endsWith('.json')) return readJsonArray(path);
+  return readDelimited(path, path.endsWith('.csv') ? ',' : '\t');
+}
+
+/** Field names of a .json, .txt or .csv file (for a JSON array, the first object's keys). */
+export async function readFieldNames(path: string): Promise<string[]> {
+  if (path.endsWith('.json')) {
+    for await (const row of readJsonArray(path)) return Object.keys(row);
+    return [];
+  }
+  return readHeader(path, path.endsWith('.csv') ? ',' : '\t');
+}
+
 /** Read just the header of a delimited file. */
 export async function readHeader(path: string, delimiter: '\t' | ','): Promise<string[]> {
   const rl = createInterface({ input: createReadStream(path, 'utf8'), crlfDelay: Infinity });

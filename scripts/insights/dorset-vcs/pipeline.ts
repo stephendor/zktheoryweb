@@ -8,6 +8,7 @@
  * the aggregate-only, suppressed JSON in src/data/insights/types.ts.
  * No charity name is ever read into the output.
  */
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { CountShare, DorsetVcsInsight } from '../../../src/data/insights/types';
 import {
@@ -15,7 +16,9 @@ import {
   num,
   pct,
   readDelimited,
+  readFieldNames,
   readHeader,
+  readRecords,
   requireColumns,
   roundTo,
   suppressCount,
@@ -49,8 +52,14 @@ export interface LoadedData {
 export const normalisePostcode = (pc: string) => pc.toUpperCase().replace(/\s+/g, '');
 const yearOf = (date: string) => Number(date.slice(0, 4));
 
-async function checked(path: string, delimiter: '\t' | ',', needed: string[]): Promise<void> {
-  requireColumns(path, await readHeader(path, delimiter), needed);
+async function checked(path: string, needed: string[]): Promise<void> {
+  requireColumns(path, await readFieldNames(path), needed);
+}
+
+/** The extract file for `name` in `rawDir`: the JSON download if present, else the text one. */
+export function extractFile(rawDir: string, name: string): string {
+  const json = join(rawDir, `${name}.json`);
+  return existsSync(json) ? json : join(rawDir, `${name}.txt`);
 }
 
 /** Map postcode -> LAD code, for postcodes in the target areas only. */
@@ -69,18 +78,18 @@ export async function loadPostcodes(lookupCsv: string): Promise<Map<string, stri
 }
 
 export async function load(rawDir: string, lookupCsv: string): Promise<LoadedData> {
-  const file = (name: string) => join(rawDir, `${name}.txt`);
+  const file = (name: string) => extractFile(rawDir, name);
   const c = COLS.charity;
-  await checked(file(CC_FILES.charity), '\t', Object.values(c));
-  await checked(file(CC_FILES.partA), '\t', Object.values(COLS.partA));
-  await checked(file(CC_FILES.history), '\t', Object.values(COLS.history));
-  await checked(file(CC_FILES.classification), '\t', Object.values(COLS.classification));
+  await checked(file(CC_FILES.charity), Object.values(c));
+  await checked(file(CC_FILES.partA), Object.values(COLS.partA));
+  await checked(file(CC_FILES.history), Object.values(COLS.history));
+  await checked(file(CC_FILES.classification), Object.values(COLS.classification));
 
   const postcodes = await loadPostcodes(lookupCsv);
 
   let extractDate = '';
   const charities: Charity[] = [];
-  for await (const r of readDelimited(file(CC_FILES.charity), '\t')) {
+  for await (const r of readRecords(file(CC_FILES.charity))) {
     extractDate ||= r[c.extractDate].slice(0, 10);
     if (r[c.status] !== REGISTERED) continue;
     if ((num(r[c.linked]) ?? 0) !== 0) continue; // linked (subsidiary) charities are counted with their main charity
@@ -97,7 +106,7 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
 
   const partA: LoadedData['partA'] = new Map();
   const p = COLS.partA;
-  for await (const r of readDelimited(file(CC_FILES.partA), '\t')) {
+  for await (const r of readRecords(file(CC_FILES.partA))) {
     if (!inArea.has(r[p.org])) continue;
     const prev = partA.get(r[p.org]);
     if (prev && prev.periodEnd >= r[p.periodEnd]) continue;
@@ -113,7 +122,7 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
 
   const history: LoadedData['history'] = new Map();
   const h = COLS.history;
-  for await (const r of readDelimited(file(CC_FILES.history), '\t')) {
+  for await (const r of readRecords(file(CC_FILES.history))) {
     if (!inArea.has(r[h.org])) continue;
     const income = num(r[h.income]);
     if (income === null) continue;
@@ -124,7 +133,7 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
 
   const classification: LoadedData['classification'] = [];
   const k = COLS.classification;
-  for await (const r of readDelimited(file(CC_FILES.classification), '\t')) {
+  for await (const r of readRecords(file(CC_FILES.classification))) {
     if (inArea.has(r[k.org]))
       classification.push({ org: r[k.org], type: r[k.type], description: r[k.description] });
   }

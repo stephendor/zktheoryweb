@@ -68,7 +68,8 @@ export const COLS = {
   },
   /** Candidate names for the ONS lookup's postcode and LAD columns (first match wins). */
   onsPostcode: ['pcds', 'pcd', 'pcd7', 'pcd8'],
-  onsLad: /^lad\d{2}cd$|^ladcd$/i,
+  /** LADnnCD in the postcode-to-LAD lookups; laua (NSPL) or oslaua (ONSPD) in the full postcode products. */
+  onsLad: /^lad\d{2}cd$|^ladcd$|^laua$|^oslaua$/i,
 } as const;
 
 export const REGISTERED = 'Registered';
