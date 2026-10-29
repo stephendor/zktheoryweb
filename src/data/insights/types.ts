@@ -72,3 +72,37 @@ export interface DorsetVcsInsight {
   methods: string[];
   limits: string[];
 }
+
+/** Quartiles of provider rates (%); null when fewer than 5 providers. */
+export interface RateSpread {
+  providers: number | null;
+  p25: number | null;
+  median: number | null;
+  p75: number | null;
+}
+
+export interface SwApprenticeshipsYear {
+  year: string;
+  /** Achievement rate across all providers in the dataset, England (%). */
+  allProviderRate: number;
+  spread: RateSpread;
+  /** In-scope providers below the all-provider rate. */
+  below: number | null;
+  belowShare: number | null;
+  byAge: ({ label: string } & RateSpread)[] | null;
+  bySsa: ({ label: string } & RateSpread)[];
+  /** Providers by retention band and by achievement above/below the all-provider rate. */
+  retention: { band: string; below: number | null; atOrAbove: number | null }[];
+  /** Pearson correlation of provider retention and achievement rates. */
+  retentionCorrelation: number | null;
+}
+
+export interface SwApprenticeshipsInsight {
+  schema: 'sw-apprenticeships/1';
+  generatedAt: string;
+  sources: { rates: string; ofsted: string };
+  join: { providersInRates: number; matchedToOfsted: number; inScopeAnyYear: number };
+  years: SwApprenticeshipsYear[];
+  methods: string[];
+  limits: string[];
+}

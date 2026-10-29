@@ -40,3 +40,22 @@ On Windows PowerShell, set it first with `$env:INSIGHTS_PREVIEW = "1"`. Never se
    `INSIGHTS_PREVIEW=1`, or just build.
 
 An existing output file is never overwritten unless you pass `--force`.
+
+## South West apprenticeship achievement (`sw-apprenticeships/`)
+
+1. From Explore Education Statistics (Apprenticeships 2025/26 release), download the CSV for "Achievement Rates
+   Providers - Volumes and Rates by Provider, SSA T1, Level, Standard-framework name". The data set link is in
+   `sw-apprenticeships/config.ts`.
+2. From gov.uk, download Ofsted's "Further education and skills inspections and outcomes: management information"
+   CSV of providers as at 31 August 2025. It gives the provider type, region and local authority, which are joined
+   by UKPRN.
+3. Run:
+
+   ```bash
+   npx tsx scripts/insights/sw-apprenticeships/run.ts --rates <rates.csv> --ofsted <ofsted.csv>
+   ```
+
+4. If a column is missing, the run prints the real header. Fix `sw-apprenticeships/config.ts`, for example the
+   Ofsted region column or the provider type wording that `SCOPE.providerType` matches. If the rates file has no age
+   column, the age breakdown is left out. The run says so, and the page skips that table.
+5. Check the figures, then set `draft: false` for the page in `src/data/insights.ts`.
