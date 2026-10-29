@@ -55,6 +55,11 @@ export const COLS = {
     volunteers: 'count_volunteers',
     govContracts: 'income_from_government_contracts',
     govGrants: 'income_from_government_grants',
+    /** Yes/no flags: the income fields are left blank when a charity has none. */
+    receivesContracts: 'charity_receives_govt_funding_contracts',
+    receivesGrants: 'charity_receives_govt_funding_grants',
+    /** True on each charity's most recent Part A. */
+    latest: 'latest_fin_period_submitted_ind',
   },
   history: {
     org: 'organisation_number',
