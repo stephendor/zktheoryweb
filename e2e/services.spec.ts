@@ -114,4 +114,8 @@ test('[services] the trustees report guide is linked from the FAQ and the funder
   await page.goto(guide);
   await expect(page.getByRole('img', { name: /made-up data/ })).toBeVisible();
   await expect(page.getByText('Chart data')).toBeVisible();
+  const pdf = page.getByRole('link', { name: /Download PDF/ });
+  await expect(pdf).toHaveAttribute('href', '/services/guides/trustees-report-impact-data.pdf');
+  const res = await page.request.get('/services/guides/trustees-report-impact-data.pdf');
+  expect(res.ok()).toBe(true);
 });

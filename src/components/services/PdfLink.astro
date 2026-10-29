@@ -1,0 +1,20 @@
+---
+/**
+ * PdfLink.astro
+ * "Download PDF (NN KB)" for a page printed by scripts/build-example-pdfs.ts.
+ * Renders nothing until the PDF exists under public/, so no broken link ships.
+ */
+import { existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props {
+  /** PDF path under public/, e.g. "services/guides/x.pdf". */
+  pdf: string;
+}
+
+const { pdf } = Astro.props;
+const path = join(process.cwd(), 'public', pdf);
+const sizeKb = existsSync(path) ? Math.max(1, Math.round(statSync(path).size / 1024)) : 0;
+---
+
+{sizeKb > 0 && <a href={`/${pdf}`}>Download PDF ({sizeKb} KB)</a>}
