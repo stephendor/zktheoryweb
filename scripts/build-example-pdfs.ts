@@ -1,16 +1,19 @@
 /**
  * build-example-pdfs.ts
  * Prints every printable /services document from the built site (dist/) to
- * a tagged, one-page A4 PDF under public/services/:
+ * a tagged A4 PDF under public/services/. Examples, checklists and sheets
+ * must be exactly one page; guides (multiPage) may run longer:
  *   /services/examples/<slug>/   -> public/services/examples/<pdf>
  *   /services/resources/<slug>/  -> public/services/resources/<pdf>
  *   /services/sheets/<slug>/     -> public/services/sheets/<pdf>
+ *   /services/guides/<slug>/     -> public/services/guides/<slug>.pdf
  *
  * Chromium's tagged-PDF output carries the page's structure (headings,
  * lists, table header cells), the document language from <html lang> and the
  * charts' text alternatives, which ReportLab could not produce.
  *
  * Usage: npm run build:example-pdfs   (builds the site first, then prints)
+ * CHROMIUM_PATH=<binary> uses a specific Chromium instead of Playwright's own.
  * Then rebuild or redeploy so dist/ picks up the new PDFs, and commit them.
  */
 import { createServer } from 'node:http';
@@ -37,7 +40,9 @@ const TYPES: Record<string, string> = {
 };
 
 if (!existsSync(join(DIST, 'index.html'))) {
-  console.error('dist/ has no build. Run `npm run build` first (or use `npm run build:example-pdfs`).');
+  console.error(
+    'dist/ has no build. Run `npm run build` first (or use `npm run build:example-pdfs`).'
+  );
   process.exit(1);
 }
 
@@ -61,7 +66,9 @@ const server = createServer((req, res) => {
 await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
 const { port } = server.address() as AddressInfo;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(
+  process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
+);
 let failed = false;
 try {
   const page = await browser.newPage({ colorScheme: 'light' });
@@ -79,8 +86,10 @@ try {
     const pdf = readFileSync(out).toString('latin1');
     const pages = (pdf.match(/\/Type\s*\/Page(?!s)/g) ?? []).length;
     const tagged = pdf.includes('/StructTreeRoot') && pdf.includes('/Lang');
-    console.log(`${job.pdf}: ${pages} page(s), ${Math.round(statSync(out).size / 1024)} KB, tagged: ${tagged}`);
-    if (pages !== 1 || !tagged) failed = true;
+    console.log(
+      `${job.pdf}: ${pages} page(s), ${Math.round(statSync(out).size / 1024)} KB, tagged: ${tagged}`
+    );
+    if (!tagged || pages < 1 || (pages !== 1 && !job.multiPage)) failed = true;
   }
 } finally {
   await browser.close();
@@ -88,6 +97,8 @@ try {
 }
 
 if (failed) {
-  console.error('At least one PDF is not a single tagged page. Adjust the @media print rules for that page.');
+  console.error(
+    'At least one PDF is untagged, or is not a single page when it must be. Adjust the @media print rules for that page.'
+  );
   process.exit(1);
 }

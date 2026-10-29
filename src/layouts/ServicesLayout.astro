@@ -117,6 +117,32 @@ const { title, description, professionalService } = Astro.props.frontmatter;
     font-weight: 600;
   }
 
+  /* ── Guides (/services/guides/) ─────────────────────────────────────────── */
+
+  .services :global(.guide-back) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .services :global(.guide-chart) {
+    max-width: 34rem;
+    margin: var(--space-5) 0;
+  }
+
+  .services :global(.guide-caption) {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    padding-bottom: var(--space-2);
+  }
+
   /* ── Segment and step cards ─────────────────────────────────────────────── */
 
   .services :global(.service-segment),
@@ -206,6 +232,44 @@ const { title, description, professionalService } = Astro.props.frontmatter;
     .services :global(.service-segment),
     .services :global(.service-step) {
       padding: var(--space-5) var(--space-4);
+    }
+  }
+
+  /* ── Print (guides are printed to PDF by scripts/build-example-pdfs.ts) ── */
+  /* Base print rules (chrome hidden, light colours) come from print.css. */
+
+  @page {
+    size: A4;
+    margin: 16mm 16mm 18mm 16mm;
+  }
+
+  @media print {
+    :global(html),
+    :global(body) {
+      background: #fff !important;
+    }
+
+    .services-page {
+      padding: 0;
+    }
+
+    .services :global(.guide-back) {
+      display: none;
+    }
+
+    .services :global(h2) {
+      padding-top: 4mm;
+      break-after: avoid;
+    }
+
+    .services :global(.guide-chart),
+    .services :global(table),
+    .services :global(li) {
+      break-inside: avoid;
+    }
+
+    .services :global(.chart__svg) {
+      max-width: 120mm;
     }
   }
 </style>

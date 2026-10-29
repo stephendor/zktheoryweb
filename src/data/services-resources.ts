@@ -22,6 +22,8 @@ export interface Checklist {
   scoring: { band: string; meaning: string }[];
   questions: string[];
   note: string;
+  /** Optional related guide, linked beside "Back to services" (screen only; not in the PDF). */
+  guide?: { href: string; label: string };
 }
 
 export interface ServiceSheet {
@@ -159,6 +161,10 @@ export const checklists: Checklist[] = [
       'What should trustees see as a known issue rather than discover as a surprise?',
     ],
     note: "This checklist is a practical guide, not accounting, audit or legal advice. You don't need to share any personal data to use it. If you'd like help, the £345 Reporting & Insight Review looks at one of your reports in detail: zktheory.org/services.",
+    guide: {
+      href: '/services/guides/trustees-report-impact-data/',
+      label: "Guide: the impact and volunteer data your trustees' report needs",
+    },
   },
   {
     slug: 'apprenticeship-pre-submission-checklist',

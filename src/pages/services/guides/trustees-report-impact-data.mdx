@@ -1,0 +1,112 @@
+---
+layout: ../../../layouts/ServicesLayout.astro
+title: "The trustees' report: the impact and volunteer data to collect now"
+description: "What changed for charity reports and accounts in 2026, and the impact and volunteer figures to start recording during the year, for charities with income of roughly £100,000 to £1.5 million."
+---
+
+import ExampleBarChart from '@components/services/ExampleBarChart.astro';
+import PdfLink from '@components/services/PdfLink.astro';
+import { familiesCountedFourWays, volunteerRoles } from '@data/services-guides';
+import { serviceSheets } from '@data/services-resources';
+import { mailtos } from '@data/services-contact';
+import '@styles/services-charts.css';
+
+export const SORP = 'https://www.charitysorp.org/documents/d/guest/charities-sorp-2026-1';
+export const THRESHOLDS = 'https://www.gov.uk/government/publications/charity-accounts/threshold-changes-at-a-glance';
+export const ANNUAL_RETURN = 'https://www.gov.uk/send-charity-annual-return';
+export const TAR_GUIDANCE = 'https://www.gov.uk/guidance/prepare-a-charity-trustees-annual-report';
+export const impactPack = serviceSheets.find((s) => s.slug === 'impact-evidence-pack');
+
+<p class="guide-back"><a href="/services/">← Back to services</a> <PdfLink pdf="services/guides/trustees-report-impact-data.pdf" /></p>
+
+# The trustees' report: the impact and volunteer data to collect now
+
+<p class="lead">For treasurers, chief executives and finance or admin leads of charities in England and Wales with income of roughly £100,000 to £1.5 million.</p>
+
+The rules for charity reports and accounts changed in 2026. Under the new Charities SORP, charities with income over £500,000 must explain their impact in the trustees' report and should report on their volunteers, and the thresholds for accounts and scrutiny have moved. The figures you'll need can't be pieced together reliably at year end. This guide sets out what to start recording now.
+
+*This is a practical guide, not accounting or legal advice. Check the detail with your independent examiner or auditor.*
+
+## What's changed and when
+
+| Change | Applies from |
+|---|---|
+| <a href={SORP}>Charities SORP 2026</a> replaces SORP 2019 for charities that prepare accruals accounts | Reporting periods beginning on or after 1 January 2026 |
+| <a href={THRESHOLDS}>New thresholds</a>: accruals accounts above £500,000 income for charities that aren't companies (was £250,000), while company charities always prepare accruals accounts (<a href={SORP}>SORP 2026, appendix, A.1</a>); independent examination above £40,000 (was £25,000); audit above £1.5 million (was £1 million), or above £500,000 with gross assets over £5 million | Financial years ending on or after 30 September 2026 |
+| The Charity Commission's <a href={TAR_GUIDANCE}>guidance on preparing a trustees' annual report</a> updated for SORP 2026 | 16 September 2026 |
+
+SORP 2026 sorts charities into three tiers by gross income. Each tier meets the requirements of the tiers below it as well as its own.
+
+| SORP tier | Gross income | Achievements and impact in the trustees' report |
+|---|---|---|
+| Tier 1 | Up to £500,000 | A summary of the main achievements |
+| Tier 2 | £500,001 to £15 million | Also: how well activities met the charity's aims, and an explanation of its impact |
+| Tier 3 | Over £15 million | Also: fundraising performance |
+
+Most charities this guide is for are in Tier 1 or Tier 2. If your financial year started on 1 April 2026, you're already in your first SORP 2026 year: its report, accounts and annual return will be due by 31 January 2028.
+
+The deadline itself hasn't changed. The <a href={ANNUAL_RETURN}>annual return is due within 10 months</a> of your financial year end, so 31 January 2027 for a year ending 31 March 2026. If your income is over £25,000, you send the trustees' report and accounts with it; a CIO always does.
+
+## What the report asks for
+
+Two parts of the trustees' report depend on records you keep during the year. The paragraph numbers are from <a href={SORP}>SORP 2026, module 1</a>.
+
+- **Achievements (all tiers).** The report must contain a summary of your main achievements. In preparing it, trustees should consider in what way the work has made a difference to beneficiaries, and whether it has provided wider benefits to society (1.27).
+- **Performance and impact (Tier 2 and 3).** The report must also set out how well the charity carried out its activities, and how far its achievements met its aims and objectives for the year (1.28). It must explain the impact the charity is making, considering the long-term effect on individual beneficiaries and on society (1.30). To do that, it should include the measures or indicators you use, the outputs achieved against any numerical targets, and your activities, outputs and outcomes set against your aims (1.31).
+- **Volunteers (Tier 2 and 3).** If you report on general volunteers, you should give the number of volunteers and explain the activities they support. You may also give hours or staff equivalents, where that's practical (1.26).
+
+Tier 1 charities don't have to do the last two. They're still worth recording: funders ask the same questions, and a charity that grows past £500,000 needs the earlier years for comparison.
+
+## Why the data has to be collected during the year
+
+At year end, someone opens last year's report, finds the figures that were used, and tries to repeat them from whatever records survive. Three things go wrong.
+
+- **Volunteer hours can't be rebuilt.** If hours weren't logged as they happened, the year-end figure is a guess. A guess can't be checked, and you can't compare it with next year.
+- **People and attendances get mixed up.** "Families supported" can mean referrals, families who came once, or families who stayed. Without one written definition, each report counts differently.
+- **Outcomes need a starting point.** You can only show change if you recorded where people started. That has to happen when they join, not in March.
+
+There's a fourth risk: your funders. Most end-of-grant reports ask for the same figures as the trustees' report, often at a different time of year. If the two don't agree, someone will ask why.
+
+## What to record now: a checklist
+
+- **Outputs against outcomes.** Record what you delivered (sessions, places, hours) separately from what changed for people (outcomes), and link each outcome to the activity behind it.
+- **Who you reach: counts, not names.** Keep counts of people by the groups that matter to your aims, such as age band, area or referral route. Names stay in your case records, not in the reporting file.
+- **Volunteer numbers, roles and hours.** Log volunteers by role, with hours recorded each week or month rather than estimated at year end. Hours are optional in the report, but they can't be rebuilt later.
+- **One written definition for each figure.** Write down what counts as a participant, a session, an attendance and an outcome, and use the same definition everywhere.
+- **Where each figure comes from.** For every number in the report, note the spreadsheet or system it comes from, who keeps it and the cut-off date.
+- **The funder figures that need to agree.** List the figures you report to funders that also appear in the trustees' report, and check they match before either goes out.
+
+## A worked example (made-up data)
+
+A made-up family support charity with income of about £620,000, so in Tier 2, runs weekly groups and a befriending service. Its trustees' report needs a figure for "families supported". The same year of records gives four honest answers:
+
+<div class="services-charts guide-chart">
+  <ExampleBarChart spec={familiesCountedFourWays} id="guide-chart-families" />
+</div>
+
+None of these is wrong, but they can't all be "families supported". The charity writes one definition: *a family is supported if it attended four or more sessions in the year*. That gives 158 for the trustees' report and the same figure for every funder that asks. Referrals (312) are reported separately as a measure of demand.
+
+The charity also logs volunteer hours monthly, by role:
+
+<table>
+  <caption class="guide-caption">Volunteers by role, made-up data</caption>
+  <thead>
+    <tr>{volunteerRoles.headers.map((h) => <th scope="col">{h}</th>)}</tr>
+  </thead>
+  <tbody>
+    {volunteerRoles.rows.map((r) => <tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>)}
+  </tbody>
+  <tfoot>
+    <tr><th scope="row">{volunteerRoles.total[0]}</th><td>{volunteerRoles.total[1]}</td><td>{volunteerRoles.total[2]}</td></tr>
+  </tfoot>
+</table>
+
+That turns into one checkable sentence for the report: *39 volunteers gave about 2,360 hours across four roles, most of it in befriending.*
+
+## Where I can help
+
+- **Free one-page summary.** Built from your charity's published figures on the Charity Commission register and 360Giving: five years of income and spending, and where your funding comes from. <a href={mailtos.freeSummaryCharity}>Ask for a free one-page summary for your charity</a>.
+- **Reporting & Insight Review: £345**, five working days. We look at one recurring report, such as your trustees' report, and you get a map of where the figures come from and three prioritised improvements. If it doesn't give you at least three you'd act on, I refund it in full. [More about the Review](/services/#how-it-works)
+- **<a href={`/services/sheets/${impactPack.slug}/`}>{impactPack.title}</a>: {impactPack.price.replace(/\s*fixed price$/i, '')}.** Outputs, outcomes, reach and volunteer contribution, checked against your records, in a form you can lift into the trustees' report and reuse with funders.
+
+No VAT is added to any price.

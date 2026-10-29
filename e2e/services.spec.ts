@@ -14,7 +14,12 @@
  */
 import { test, expect } from '@playwright/test';
 
-const SERVICES_PAGES = ['/services/', '/services/resources/deprivation-check/', '/privacy/'];
+const SERVICES_PAGES = [
+  '/services/',
+  '/services/resources/deprivation-check/',
+  '/services/guides/trustees-report-impact-data/',
+  '/privacy/',
+];
 
 for (const url of SERVICES_PAGES) {
   test(`[services] ${url}: mailto links parse and carry a subject`, async ({ page }) => {
@@ -96,4 +101,21 @@ test('[services] deprivation check page offers no download', async ({ page }) =>
     .evaluateAll((as) => as.map((a) => a.getAttribute('href') ?? ''));
   expect(hrefs.filter((h) => /\.(xlsx?|ods|csv|pdf|zip)$/i.test(h))).toEqual([]);
   await expect(page.getByRole('link', { name: /Download/ })).toHaveCount(0);
+});
+
+test('[services] the trustees report guide is linked from the FAQ and the funder checklist', async ({
+  page,
+}) => {
+  const guide = '/services/guides/trustees-report-impact-data/';
+  for (const url of ['/services/', '/services/resources/funder-trustee-reporting-checklist/']) {
+    await page.goto(url);
+    await expect(page.locator(`a[href="${guide}"]`).first()).toBeVisible();
+  }
+  await page.goto(guide);
+  await expect(page.getByRole('img', { name: /made-up data/ })).toBeVisible();
+  await expect(page.getByText('Chart data')).toBeVisible();
+  const pdf = page.getByRole('link', { name: /Download PDF/ });
+  await expect(pdf).toHaveAttribute('href', '/services/guides/trustees-report-impact-data.pdf');
+  const res = await page.request.get('/services/guides/trustees-report-impact-data.pdf');
+  expect(res.ok()).toBe(true);
 });

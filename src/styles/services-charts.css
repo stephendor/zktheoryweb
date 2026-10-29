@@ -1,0 +1,158 @@
+/**
+ * services-charts.css
+ * Styles for the static SVG charts (ExampleLineChart, ExampleBarChart) on
+ * the /services documents: the example reports and the guides. Add the
+ * class "services-charts" to the element that wraps the charts.
+ */
+
+/* Chart colours: inherited by the chart components via custom properties. */
+.services-charts {
+  --chart-primary: var(--color-tda-slate);
+  --chart-secondary: var(--color-tda-teal);
+  --chart-highlight: var(--color-cl-ochre);
+  --chart-muted: var(--color-neutral-muted);
+}
+
+@media screen {
+  [data-theme='dark'] .services-charts {
+    --chart-primary: var(--color-tda-slate-light);
+    --chart-secondary: var(--color-tda-teal-light);
+  }
+}
+
+.services-charts .chart {
+  margin: 0;
+}
+
+.services-charts .chart__title {
+  font-weight: 700;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+}
+
+.services-charts .chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.services-charts .chart__svg text {
+  font-family: var(--font-ui);
+  fill: var(--color-neutral-body);
+}
+
+.services-charts .chart__tick {
+  font-size: 8.5px;
+  fill: var(--color-neutral-muted);
+}
+
+.services-charts .chart__svg .chart__tick {
+  fill: var(--color-neutral-muted);
+}
+
+.services-charts .chart__axis-label,
+.services-charts .chart__note,
+.services-charts .chart__end-label {
+  font-size: 9px;
+}
+
+.services-charts .chart__grid {
+  stroke: var(--color-neutral-border);
+  stroke-width: 0.6;
+}
+
+.services-charts .chart__axis {
+  stroke: var(--color-neutral-muted);
+  stroke-width: 0.8;
+}
+
+.services-charts .chart__line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.services-charts .chart__line--dashed {
+  stroke-dasharray: 5 3;
+}
+
+.services-charts .chart__series--primary {
+  stroke: var(--chart-primary);
+  fill: var(--chart-primary);
+}
+.services-charts .chart__series--secondary {
+  stroke: var(--chart-secondary);
+  fill: var(--chart-secondary);
+}
+.services-charts .chart__series--muted {
+  stroke: var(--chart-muted);
+  fill: var(--chart-muted);
+}
+
+.services-charts .chart__series .chart__point {
+  stroke: none;
+}
+
+.services-charts .chart__series text {
+  stroke: none;
+}
+
+.services-charts .chart__threshold,
+.services-charts .chart__reference {
+  stroke-width: 1.2;
+  stroke-dasharray: 4 3;
+}
+
+.services-charts .chart__threshold {
+  stroke: var(--chart-highlight);
+}
+.services-charts .chart__reference {
+  stroke: var(--chart-muted);
+}
+
+.services-charts .chart__bar {
+  fill: var(--chart-primary);
+}
+.services-charts .chart__bar--highlight {
+  fill: var(--chart-highlight);
+}
+
+.services-charts .chart-data {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.services-charts .chart-data summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-neutral-muted);
+}
+
+.services-charts .chart-data summary:focus-visible {
+  outline: 2px solid var(--color-tda-teal-light);
+  outline-offset: 2px;
+}
+
+.services-charts .chart-data table {
+  margin-top: var(--space-2);
+  border-collapse: collapse;
+}
+
+.services-charts .chart-data th,
+.services-charts .chart-data td {
+  text-align: left;
+  font-weight: 400;
+  padding: var(--space-1) var(--space-3) var(--space-1) 0;
+  border-bottom: 1px solid var(--color-neutral-border);
+}
+
+.services-charts .chart-data thead th {
+  font-weight: 700;
+}
+
+@media print {
+  .services-charts .chart-data {
+    display: none;
+  }
+}
