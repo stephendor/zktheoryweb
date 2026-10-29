@@ -74,6 +74,7 @@ test('[services] /services has the free-offer links and subjects', async ({ page
   await expect(
     page.getByRole('heading', { level: 2, name: 'Free for small organisations' })
   ).toBeVisible();
+  await expect(page.locator('main a[href="/services/insights/"]')).toBeVisible();
 });
 
 test('[services] /services has one ProfessionalService JSON-LD block', async ({ page }) => {
