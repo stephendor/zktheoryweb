@@ -31,7 +31,7 @@ export const insights: Insight[] = [
     description:
       'Registered charities in Dorset and Bournemouth, Christchurch and Poole: size, income, five-year trends, government funding and volunteers, from the Charity Commission register.',
     dataFile: 'dorset-vcs-2026.json',
-    draft: true,
+    draft: false,
   },
 ];
 

@@ -43,19 +43,19 @@ if (small.every((b) => shown(b.share)))
   );
 if (shown(totals.totalIncome) && shown(totals.medianIncome))
   findings.push(
-    `Together they reported ${gbp(totals.totalIncome)} in income. The median charity reported ${gbp(totals.medianIncome)}.`
+    `Together they reported ${gbp(totals.totalIncome)} in income, though that includes national charities based here. The median charity reported ${gbp(totals.medianIncome)}.`
   );
 if (shown(firstTrend.medianIncome) && shown(lastTrend.medianIncome))
   findings.push(
-    `For charities filing each year, median income went from ${gbp(firstTrend.medianIncome)} in ${firstTrend.yearEnding} to ${gbp(lastTrend.medianIncome)} in ${lastTrend.yearEnding}.`
+    `Following the same ${count(firstTrend.filers ?? 0)} charities over five years, median income went from ${gbp(firstTrend.medianIncome)} in ${firstTrend.yearEnding} to ${gbp(lastTrend.medianIncome)} in ${lastTrend.yearEnding}.`
   );
 if (shown(government.shareReceiving) && shown(government.shareOfIncome))
   findings.push(
-    `${pctText(government.shareReceiving)} of charities filing a full return receive government grants or contracts, which make up ${pctText(government.shareOfIncome)} of their combined income.`
+    `${pctText(government.shareReceiving)} of charities filing the fuller annual return report government grants or contracts, which make up ${pctText(government.shareOfIncome)} of those charities' combined income.`
   );
 if (shown(volunteers.total) && shown(volunteers.median))
   findings.push(
-    `Those charities report ${count(volunteers.total)} volunteers between them; the median charity has ${count(volunteers.median)}.`
+    `The same charities report ${count(volunteers.total)} volunteers between them; the median charity has ${count(volunteers.median)}.`
   );
 
 const bandMax = niceAxis(Math.max(...incomeBands.map((b) => b.count ?? 0)));
@@ -84,8 +84,8 @@ const trendChart: LineChartSpec | null =
   trendShown.length >= 2
     ? {
         kind: 'line',
-        title: 'Median income of charities filing each year',
-        alt: `Line chart of the median income of Dorset and BCP charities filing each year: ${trendShown
+        title: `Median income of the same ${count(firstTrend.filers ?? 0)} charities, each year`,
+        alt: `Line chart of the median income of the same ${count(firstTrend.filers ?? 0)} Dorset and BCP charities in each year: ${trendShown
           .map((t) => `${t.yearEnding}, ${gbp(t.medianIncome!)}`)
           .join('; ')}.`,
         categories: trendShown.map((t) => String(t.yearEnding)),
@@ -107,6 +107,8 @@ const trendChart: LineChartSpec | null =
       }
     : null;
 
+/** The register's labels are in Title Case ("Children/young People"): show sentence case. */
+const sentence = (label: string) => label.charAt(0) + label.slice(1).toLowerCase();
 const cell = (v: number | null, fmt: (n: number) => string = count) =>
   v === null ? 'fewer than 5' : fmt(v);
 const shareCell = (c: CountShare) => (c.share === null ? '–' : `${c.share}%`);
@@ -191,8 +193,8 @@ const CLASSIFICATIONS = [
 
 <h2 id="causes">What they do, who they help, how</h2>
 <p>
-  Charities choose these categories themselves, and can choose several, so the shares add up to more
-  than 100%. The most common are shown.
+  Charities choose these categories themselves, and can choose several. Each share is of all the
+  charities in the area, so the shares add up to more than 100%. The most common are shown.
 </p>
 {
   CLASSIFICATIONS.map(({ key, heading }) => (
@@ -202,13 +204,13 @@ const CLASSIFICATIONS = [
         <tr>
           <th scope="col">Category</th>
           <th scope="col">Charities</th>
-          <th scope="col">Share of all charities</th>
+          <th scope="col">Share</th>
         </tr>
       </thead>
       <tbody>
         {top(data.classification[key]).map((c) => (
           <tr>
-            <th scope="row">{c.label}</th>
+            <th scope="row">{sentence(c.label)}</th>
             <td>{cell(c.count)}</td>
             <td>{shareCell(c)}</td>
           </tr>
