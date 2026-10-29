@@ -26,15 +26,32 @@ Builds the one-page PDF snapshots sent to individual organisations and published
 ## Regenerating the charity snapshots in place
 
 Needs Python with `pandas`, `matplotlib`, `numpy`, `pypdf` and `playwright` (with Chromium). Set `CHROMIUM_PATH` to
-use an installed Chromium instead of Playwright's own. From the repo root, for each row of
-`charity_snapshot_links.csv`:
+use an installed Chromium instead of Playwright's own. Run from the repo root.
 
-```bash
-python tools/snapshots/snapshot.py charity --input tools/snapshots/charities/<number>.json --price <price_on_page> --out <scratch folder>
-```
+1. **Rebuild the inputs.** Download the latest register extract file
+   `publicextract.charity_annual_return_parta.zip` from the Charity Commission's full register download and unzip it.
+   Then, on a machine that can reach `opencharities.uk` and `api.threesixtygiving.org`:
 
-```bash
-python tools/snapshots/snapshot.py check <scratch folder>/snapshot-<name>.pdf
-```
+   ```bash
+   python tools/snapshots/build_charity_json.py --parta <path to publicextract.charity_annual_return_parta.txt> --list tools/snapshots/charities_wave1.tsv --out tools/snapshots/charities
+   ```
 
-Then copy the PDF over its `public_path`. Keep the token folder and file name, because sent emails link to them.
+   Repeat with `charities_batch3.tsv`. A charity whose sources can't be read in full (a failed 360Giving page, no
+   latest Part A, or a Part A for a different year from the financial history) is reported and not written, and the
+   run exits with an error. Fix the source and rerun it; don't regenerate its PDF from the old input.
+
+2. **Regenerate each PDF.** For each row of `charity_snapshot_links.csv`:
+
+   ```bash
+   python tools/snapshots/snapshot.py charity --input tools/snapshots/charities/<number>.json --price <price_on_page> --out <scratch folder>
+   ```
+
+   ```bash
+   python tools/snapshots/snapshot.py check <scratch folder>/snapshot-<name>.pdf
+   ```
+
+3. **Publish in place.** Copy each PDF over its `public_path`. Keep the token folder and file name, because sent
+   emails link to them.
+
+To change only the wording (with no new figures), skip step 1 and say so in the PR: the page's source line still
+shows the date the inputs were checked.
