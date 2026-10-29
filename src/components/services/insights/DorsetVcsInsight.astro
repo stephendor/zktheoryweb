@@ -57,6 +57,22 @@ if (shown(volunteers.total) && shown(volunteers.median))
   findings.push(
     `The same charities report ${count(volunteers.total)} volunteers between them; the median charity has ${count(volunteers.median)}.`
   );
+// "Other" is the register's own legal-form value; describe it only by what it is not.
+const formLabels = data.legalForm.map((l) => l.label);
+const namedForms = formLabels
+  .filter((l) => l !== 'Other' && l !== 'Not stated')
+  .map((l) =>
+    l === 'CIO'
+      ? 'CIO'
+      : l === 'Previously excepted'
+        ? 'previously excepted charity'
+        : l.toLowerCase()
+  );
+const otherNote =
+  formLabels.includes('Other') && namedForms.length > 0
+    ? `"Other" is the Charity Commission's own category on the register, for charities not recorded as a ${namedForms.slice(0, -1).join(', ')}${namedForms.length > 1 ? ' or ' : ''}${namedForms[namedForms.length - 1]}.`
+    : null;
+
 const f = funders;
 if (f && f.withGrants !== null && f.topFunderShare.median !== null)
   findings.push(
@@ -254,6 +270,7 @@ const CLASSIFICATIONS = [
     }
   </tbody>
 </table>
+{otherNote && <p>{otherNote}</p>}
 
 <h2 id="causes">What they do, who they help, how</h2>
 <p>
