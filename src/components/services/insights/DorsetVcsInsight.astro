@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { data } = Astro.props;
-const { totals, incomeBands, trend, government, volunteers } = data;
+const { totals, incomeBands, trend, government, volunteers, funders } = data;
 
 const shown = (v: number | null): v is number => v !== null;
 const pctText = (v: number) => `${Math.round(v)}%`;
@@ -56,6 +56,11 @@ if (shown(government.shareReceiving) && shown(government.shareOfIncome))
 if (shown(volunteers.total) && shown(volunteers.median))
   findings.push(
     `The same charities report ${count(volunteers.total)} volunteers between them; the median charity has ${count(volunteers.median)}.`
+  );
+const f = funders;
+if (f && f.withGrants !== null && f.topFunderShare.median !== null)
+  findings.push(
+    `Of ${count(f.charitiesInBand)} charities with income of £100,000 to £1.5 million, ${count(f.withGrants)} have grants recorded in 360Giving for ${f.window}. For half of those, one funder gave ${f.topFunderShare.median}% or more of their recorded grant income.`
   );
 
 const bandMax = niceAxis(Math.max(...incomeBands.map((b) => b.count ?? 0)));
@@ -147,6 +152,65 @@ const CLASSIFICATIONS = [
   )
 }
 
+{
+  f && f.withGrants !== null && f.topFunderShare.median !== null && (
+    <>
+      <h2 id="funders">How concentrated is grant funding?</h2>
+      <p>
+        For charities with income of £100,000 to £1.5 million and at least one grant recorded in
+        360Giving data for {f.window}: the share of each charity's recorded grant value that came
+        from its largest funder.
+      </p>
+      <table>
+        <caption class="guide-caption">
+          Share of recorded grant value from the largest funder
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Measure</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Charities with recorded grants</th>
+            <td>
+              {count(f.withGrants)} of {count(f.charitiesInBand)}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Middle half of charities</th>
+            <td>
+              {f.topFunderShare.p25}% to {f.topFunderShare.p75}%
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Median</th>
+            <td>{f.topFunderShare.median}%</td>
+          </tr>
+          {f.mostlyOneFunderShare !== null && (
+            <tr>
+              <th scope="row">More than half from one funder</th>
+              <td>{Math.round(f.mostlyOneFunderShare)}% of charities</td>
+            </tr>
+          )}
+          {f.medianFunders !== null && (
+            <tr>
+              <th scope="row">Median number of funders</th>
+              <td>{count(f.medianFunders)}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <p>
+        360Giving holds only the grants that funders choose to publish, so a charity with other
+        funders may look more reliant on one funder than it really is. Treat this as a prompt to
+        look at your own funding mix, not as a measure of risk.
+      </p>
+    </>
+  )
+}
+
 <h2 id="areas">Dorset and BCP compared</h2>
 <table>
   <caption class="guide-caption">Registered charities by council area</caption>
@@ -235,6 +299,15 @@ const CLASSIFICATIONS = [
   > (extract of {extract}); {data.postcodeLookup}, from the
   <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a>. Contains public
   sector information licensed under the Open Government Licence v3.0.
+  {
+    f && (
+      <>
+        Grants data published to the 360Giving Data Standard and downloaded from
+        <a href="https://grantnav.threesixtygiving.org/">GrantNav</a>; each funder's data is used
+        under the licence it publishes.
+      </>
+    )
+  }
 </p>
 
 <h2 id="contact">A one-page version for your organisation</h2>

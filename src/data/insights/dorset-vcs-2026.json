@@ -1,8 +1,8 @@
 {
   "schema": "dorset-vcs/1",
   "extractDate": "2026-10-29",
-  "generatedAt": "2026-10-29T17:57:25.090Z",
-  "postcodeLookup": "ONS postcode data, local authorities as coded in its lad25cd column",
+  "generatedAt": "2026-10-29T18:31:22.108Z",
+  "postcodeLookup": "ONS Postcode Directory (ONSPD), November 2025",
   "totals": {
     "charities": 2484,
     "withIncome": 2353,
@@ -354,11 +354,25 @@
       ]
     }
   ],
+  "funders": {
+    "window": "2020 to 2024",
+    "charitiesInBand": 457,
+    "withGrants": 182,
+    "topFunderShare": {
+      "p25": 65,
+      "median": 89,
+      "p75": 100
+    },
+    "mostlyOneFunder": 157,
+    "mostlyOneFunderShare": 86.3,
+    "medianFunders": 2
+  },
   "methods": [
     "Registered charities on the Charity Commission register for England and Wales whose contact postcode is in the Dorset Council (E06000059) or Bournemouth, Christchurch and Poole Council (E06000058) area, matched to local authorities with ONS postcode data. Linked charities are counted with their main charity.",
     "Income bands and totals use each charity's latest reported income on the register.",
     "The five-year trend covers financial years ending 2021 to 2025. It follows the same 1,709 charities through every year: those with an annual return for each of the five years. (The register keeps each charity's last five returns, so charities that have already filed for 2026 are not included.)",
     "Government funding comes from each charity's latest Part A of the annual return, for a year ending in 2024 or later: whether it reports government contracts or grants, and the income from them. Part A is filed only by charities above the annual return income threshold, so this covers 1,545 charities. Volunteer numbers come from the same returns.",
+    "Funder concentration covers charities with latest income from £100,000 to under £1.5 million and at least one grant recorded in 360Giving data for 2020 to 2024 (downloaded from GrantNav, matched by charity number). For each charity it is the share of its recorded grant value that came from its largest funder.",
     "Classifications are those charities choose on the register: what they do, who they help and how. A charity can choose several, so shares add up to more than 100%.",
     "Any count below 5, and any figure based on fewer than 5 charities, is withheld. Totals are rounded to the nearest £100,000 and medians to the nearest £1,000."
   ],
@@ -366,6 +380,7 @@
     "Registered charities only: unregistered groups, community interest companies and exempt or excepted charities are not included.",
     "A charity is placed by its contact postcode, which may not be where it works.",
     "Figures use the latest year each charity has filed, and some returns are late, so recent years are incomplete.",
+    "360Giving holds only grants that funders choose to publish, so a charity with other funders may look more reliant on one funder than it is.",
     "Some national charities have their contact address in the area, so total income and volunteer numbers include work done across the country. Medians are the better guide to a typical local charity."
   ]
 }
