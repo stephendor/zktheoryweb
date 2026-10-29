@@ -154,7 +154,7 @@ describe('dorset-vcs pipeline', () => {
     const out = compute(await load(dir, lookup), '2026-10-29T00:00:00Z');
 
     expect(out.totals.charities).toBe(11);
-    expect(out.totals.withIncome).toBe(10);
+    expect(out.totals.withIncome).toBeNull(); // withheld with noIncomeReported (1)
     expect(out.totals.noIncomeReported).toBeNull(); // 1 charity: withheld
     expect(out.totals.totalIncome).toBe(3_200_000); // 3,245,000 rounded to £100k
     expect(out.totals.medianIncome).toBe(55_000);

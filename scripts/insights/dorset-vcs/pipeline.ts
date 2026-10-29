@@ -19,6 +19,7 @@ import {
   requireColumns,
   roundTo,
   suppressCount,
+  suppressPartition,
   suppressStat,
   type Row,
 } from '../lib';
@@ -132,23 +133,34 @@ export async function load(rawDir: string, lookupCsv: string): Promise<LoadedDat
 }
 
 function bands(incomes: number[]): CountShare[] {
-  return INCOME_BANDS.map((b, i) => {
+  const raw = INCOME_BANDS.map((b, i) => {
     const lo = i === 0 ? -Infinity : INCOME_BANDS[i - 1].max;
-    const n = incomes.filter((v) => v >= lo && v < b.max).length;
-    const count = suppressCount(n);
-    return { label: b.label, count, share: count === null ? null : pct(n, incomes.length) };
+    return incomes.filter((v) => v >= lo && v < b.max).length;
   });
+  const counts = suppressPartition(raw);
+  return INCOME_BANDS.map((b, i) => ({
+    label: b.label,
+    count: counts[i],
+    share: counts[i] === null ? null : pct(raw[i], incomes.length),
+  }));
 }
 
-function countShares(labels: string[], whole: number): CountShare[] {
-  const counts = new Map<string, number>();
-  for (const l of labels) counts.set(l, (counts.get(l) ?? 0) + 1);
-  return [...counts.entries()]
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .map(([label, n]) => {
-      const count = suppressCount(n);
-      return { label, count, share: count === null ? null : pct(n, whole) };
-    });
+/**
+ * Counts and shares per label. `partition` is true when every organisation
+ * has exactly one label (so the counts add up to a published total) and
+ * secondary suppression is needed.
+ */
+function countShares(labels: string[], whole: number, partition: boolean): CountShare[] {
+  const tally = new Map<string, number>();
+  for (const l of labels) tally.set(l, (tally.get(l) ?? 0) + 1);
+  const entries = [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  const raw = entries.map(([, n]) => n);
+  const counts = partition ? suppressPartition(raw) : raw.map(suppressCount);
+  return entries.map(([label, n], i) => ({
+    label,
+    count: counts[i],
+    share: counts[i] === null ? null : pct(n, whole),
+  }));
 }
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
@@ -192,16 +204,20 @@ export function compute(
             .map((c) => `${c.org}\u0000${c.description}`)
         ),
       ].map((key) => key.split('\u0000')[1]),
-      charities.length
+      charities.length,
+      false
     );
 
-  const areas = AREAS.map((a) => {
+  const areaCounts = suppressPartition(
+    AREAS.map((a) => charities.filter((c) => c.lad === a.code).length)
+  );
+  const areas = AREAS.map((a, i) => {
     const inLad = charities.filter((c) => c.lad === a.code);
     const ladIncomes = inLad.map((c) => c.latestIncome).filter((v): v is number => v !== null);
     return {
       code: a.code,
       name: a.name,
-      charities: suppressCount(inLad.length),
+      charities: areaCounts[i],
       totalIncome: roundTo(suppressStat(ladIncomes.length, sum(ladIncomes)), 100_000),
       medianIncome: roundTo(suppressStat(ladIncomes.length, median(ladIncomes)), 1000),
       incomeBands: bands(ladIncomes),
@@ -215,7 +231,8 @@ export function compute(
     postcodeLookup: `ONS postcode to local authority lookup, November 2025 (ArcGIS item ${'c4f84c38814d4b82aa4760ade686c3cc'})`,
     totals: {
       charities: charities.length,
-      withIncome: incomes.length,
+      // Withheld together: either one gives the other by subtraction from the total.
+      withIncome: suppressCount(charities.length - incomes.length) === null ? null : incomes.length,
       noIncomeReported: suppressCount(charities.length - incomes.length),
       totalIncome: roundTo(suppressStat(incomes.length, sum(incomes)), 100_000),
       medianIncome: roundTo(suppressStat(incomes.length, median(incomes)), 1000),
@@ -237,7 +254,8 @@ export function compute(
     },
     legalForm: countShares(
       charities.map((c) => c.type),
-      charities.length
+      charities.length,
+      true
     ),
     classification: { what: byType('what'), who: byType('who'), how: byType('how') },
     areas,
