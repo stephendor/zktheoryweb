@@ -13,7 +13,8 @@ const needAndReach = serviceSheets.find((s) => s.slug === 'need-and-reach-analys
 if (!needAndReach) throw new Error('deprivation-check: no need-and-reach-analysis service sheet');
 const needPrice = needAndReach.price.replace(/\s*fixed price$/i, '');
 
-const IOD = 'https://www.gov.uk/government/collections/english-indices-of-deprivation';
+const IOD =
+  'https://www.gov.uk/government/statistics/english-indices-of-deprivation-2025/english-indices-of-deprivation-2025-statistical-release';
 ---
 
 <ServicesDocLayout
@@ -74,7 +75,8 @@ const IOD = 'https://www.gov.uk/government/collections/english-indices-of-depriv
     <h2 class="doc-h2" id="coverage">Where it covers</h2>
     <p class="dep__text">
       It currently covers Dorset, BCP and Somerset, and Wiltshire and Swindon. Neighbourhoods are
-      ranked using the government's official <a href={IOD}>English indices of deprivation</a>.
+      ranked using the government's official
+      <a href={IOD}>English indices of deprivation 2025</a>.
     </p>
   </section>
 
