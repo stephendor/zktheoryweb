@@ -349,8 +349,12 @@ def charity(path, outdir, price=345):
     con = latest.get("government_contracts", 0) or 0; gtot = (gov or 0) + con
     if latest["income"] > 500000:
         # SORP 2026 applies to reporting years beginning on or after 1 January 2026 (Tier 2: income over £500,000).
-        first = dt.date.fromisoformat(latest["year_end"]) + dt.timedelta(days=1)
-        while first < dt.date(2026, 1, 1): first = first.replace(year=first.year + 1)
+        # Step the year end, not the start: a 28 Feb year end in a leap year starts the next year on 29 Feb,
+        # which has no anniversary. A 29 Feb year end steps to 28 Feb, so the next start stays 1 March.
+        end = dt.date.fromisoformat(latest["year_end"])
+        while end + dt.timedelta(days=1) < dt.date(2026, 1, 1):
+            end = end.replace(year=end.year + 1, day=28) if (end.month, end.day) == (2, 29) else end.replace(year=end.year + 1)
+        first = end + dt.timedelta(days=1)
         started = ("The first such year has already started. " if first <= dt.date.today()
                    else f"The first such year begins on {first.day} {first:%B %Y}. ")
         qs.insert(0, f"Income of £{latest['income'] / 1000:,.0f}k puts the charity above £500,000, where the Charities SORP 2026 makes impact reporting a requirement "
