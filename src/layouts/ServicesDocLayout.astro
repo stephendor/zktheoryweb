@@ -23,11 +23,14 @@ interface Props {
   pdf?: string;
   backHref: string;
   backLabel: string;
+  /** Optional related link shown beside the back link on screen (not printed). */
+  related?: { href: string; label: string };
   footerLeft: string;
   footerRight?: string;
 }
 
-const { title, description, pdf, backHref, backLabel, footerLeft, footerRight } = Astro.props;
+const { title, description, pdf, backHref, backLabel, related, footerLeft, footerRight } =
+  Astro.props;
 const pdfPath = pdf ? join(process.cwd(), 'public', pdf) : '';
 const pdfKb =
   pdfPath && existsSync(pdfPath) ? Math.max(1, Math.round(statSync(pdfPath).size / 1024)) : 0;
@@ -37,6 +40,7 @@ const pdfKb =
   <div class="container-viz doc-page" data-pagefind-ignore="all">
     <nav class="doc-actions" aria-label="Document">
       <a href={backHref}>← {backLabel}</a>
+      {related && <a href={related.href}>{related.label} →</a>}
       {pdfKb > 0 && <a href={`/${pdf}`}>Download PDF ({pdfKb} KB)</a>}
     </nav>
 
