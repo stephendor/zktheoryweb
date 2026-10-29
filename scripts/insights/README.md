@@ -43,20 +43,18 @@ An existing output file is never overwritten unless you pass `--force`.
 
 ## South West apprenticeship achievement (`sw-apprenticeships/`)
 
-1. From Explore Education Statistics (Apprenticeships 2025/26 release), download the CSV for "Achievement Rates
-   Providers - Volumes and Rates by Provider, SSA T1, Level, Standard-framework name". The data set link is in
-   `sw-apprenticeships/config.ts`.
+1. From Explore Education Statistics (Apprenticeships 2025/26 release), download the provider-level achievement
+   rates CSV, `na05_app_narts_provider_level_fwk_std_ptype_202526_14.csv` ("Achievement Rates Providers - Volumes and
+   Rates by Provider, SSA T1, Level, Standard-framework name"). The data set link is in `sw-apprenticeships/config.ts`.
 2. From gov.uk, download Ofsted's "Further education and skills inspections and outcomes: management information"
-   CSV of providers as at 31 August 2025. It gives the provider type, region and local authority, which are joined
-   by UKPRN.
+   CSV of providers as at 31 August 2025. It gives each provider's region and local authority, joined by UKPRN.
 3. Run:
 
    ```bash
    npx tsx scripts/insights/sw-apprenticeships/run.ts --rates <rates.csv> --ofsted <ofsted.csv>
    ```
 
-4. If a column is missing, the run prints the real header. Fix `sw-apprenticeships/config.ts`, for example the
-   Ofsted region column or the provider type wording that `SCOPE.providerType` matches. If the rates file has no age
-   column, the age breakdown is left out. The run says so, and the page skips that table. Retention uses DfE's
-   published `retention_rate` column, weighted by leavers where a provider has several rows.
+4. DfE rounds volumes to the nearest 10, so rates are taken as published from each provider's subtotal rows.
+   Independent training providers are DfE's "Private Sector Public Funded" type. If the Ofsted columns are named
+   differently, the run prints the real header; fix `COLS.ofsted` in `sw-apprenticeships/config.ts`.
 5. Check the figures, then set `draft: false` for the page in `src/data/insights.ts`.
