@@ -1,0 +1,386 @@
+{
+  "schema": "sw-apprenticeships/1",
+  "generatedAt": "2026-10-29T18:45:30.304Z",
+  "sources": {
+    "rates": "na05_app_narts_provider_level_fwk_std_ptype_202526_14.csv",
+    "ofsted": "ofsted-providers-2025-08-31.csv"
+  },
+  "join": {
+    "providersInRates": 1348,
+    "matchedToOfsted": 1224,
+    "inScopeAnyYear": 80
+  },
+  "years": [
+    {
+      "year": "2022/23",
+      "allProviderRate": 54.9,
+      "spread": {
+        "providers": 58,
+        "p25": 45.9,
+        "median": 56.6,
+        "p75": 66.1
+      },
+      "passRateMedian": 99.3,
+      "below": 25,
+      "belowShare": 43.1,
+      "byAge": [
+        {
+          "label": "16-18",
+          "providers": 34,
+          "p25": 48.2,
+          "median": 59.8,
+          "p75": 66.6
+        },
+        {
+          "label": "19-23",
+          "providers": 47,
+          "p25": 48.2,
+          "median": 63.4,
+          "p75": 69.9
+        },
+        {
+          "label": "24+",
+          "providers": 48,
+          "p25": 46.6,
+          "median": 52.1,
+          "p75": 66.9
+        }
+      ],
+      "bySsa": [
+        {
+          "label": "Agriculture, Horticulture and Animal Care",
+          "providers": null,
+          "p25": null,
+          "median": null,
+          "p75": null
+        },
+        {
+          "label": "Business, Administration and Law",
+          "providers": 31,
+          "p25": 48,
+          "median": 56.4,
+          "p75": 66.7
+        },
+        {
+          "label": "Construction, Planning and the Built Environment",
+          "providers": 5,
+          "p25": 45.7,
+          "median": 57.7,
+          "p75": 69.6
+        },
+        {
+          "label": "Digital Technology",
+          "providers": 10,
+          "p25": 59.4,
+          "median": 64.2,
+          "p75": 66.7
+        },
+        {
+          "label": "Education and Training",
+          "providers": 7,
+          "p25": 56.3,
+          "median": 66.7,
+          "p75": 78.2
+        },
+        {
+          "label": "Engineering and Manufacturing Technologies",
+          "providers": 12,
+          "p25": 55.4,
+          "median": 58.1,
+          "p75": 67.1
+        },
+        {
+          "label": "Health, Public Services and Care",
+          "providers": 16,
+          "p25": 34.8,
+          "median": 54.1,
+          "p75": 63.9
+        },
+        {
+          "label": "Leisure, Travel and Tourism",
+          "providers": 5,
+          "p25": 45,
+          "median": 60,
+          "p75": 65.9
+        },
+        {
+          "label": "Retail and Commercial Enterprise",
+          "providers": 11,
+          "p25": 49,
+          "median": 62.5,
+          "p75": 65.5
+        }
+      ],
+      "retention": [
+        {
+          "band": "Under 60%",
+          "below": null,
+          "atOrAbove": null
+        },
+        {
+          "band": "60% to under 75%",
+          "below": null,
+          "atOrAbove": null
+        },
+        {
+          "band": "75% and over",
+          "below": null,
+          "atOrAbove": null
+        }
+      ],
+      "retentionCorrelation": 0.97
+    },
+    {
+      "year": "2023/24",
+      "allProviderRate": 60.6,
+      "spread": {
+        "providers": 68,
+        "p25": 52.2,
+        "median": 63.3,
+        "p75": 71.5
+      },
+      "passRateMedian": 100,
+      "below": 29,
+      "belowShare": 42.6,
+      "byAge": [
+        {
+          "label": "16-18",
+          "providers": 41,
+          "p25": 54.5,
+          "median": 63.9,
+          "p75": 71.6
+        },
+        {
+          "label": "19-23",
+          "providers": 52,
+          "p25": 52.9,
+          "median": 65.1,
+          "p75": 74.6
+        },
+        {
+          "label": "24+",
+          "providers": 56,
+          "p25": 48.9,
+          "median": 64.6,
+          "p75": 72
+        }
+      ],
+      "bySsa": [
+        {
+          "label": "Agriculture, Horticulture and Animal Care",
+          "providers": 6,
+          "p25": 54.2,
+          "median": 70.3,
+          "p75": 84.1
+        },
+        {
+          "label": "Business, Administration and Law",
+          "providers": 35,
+          "p25": 54,
+          "median": 64.7,
+          "p75": 70.6
+        },
+        {
+          "label": "Construction, Planning and the Built Environment",
+          "providers": 6,
+          "p25": 40.6,
+          "median": 47.9,
+          "p75": 61.3
+        },
+        {
+          "label": "Digital Technology",
+          "providers": 9,
+          "p25": 55.4,
+          "median": 62.1,
+          "p75": 66.7
+        },
+        {
+          "label": "Education and Training",
+          "providers": 9,
+          "p25": 75,
+          "median": 75,
+          "p75": 80
+        },
+        {
+          "label": "Engineering and Manufacturing Technologies",
+          "providers": 19,
+          "p25": 48.7,
+          "median": 63.2,
+          "p75": 77.4
+        },
+        {
+          "label": "Health, Public Services and Care",
+          "providers": 16,
+          "p25": 49,
+          "median": 63.9,
+          "p75": 68.5
+        },
+        {
+          "label": "Leisure, Travel and Tourism",
+          "providers": 5,
+          "p25": 61.4,
+          "median": 62.7,
+          "p75": 79.3
+        },
+        {
+          "label": "Retail and Commercial Enterprise",
+          "providers": 12,
+          "p25": 56.6,
+          "median": 62,
+          "p75": 63.9
+        }
+      ],
+      "retention": [
+        {
+          "band": "Under 60%",
+          "below": 23,
+          "atOrAbove": 0
+        },
+        {
+          "band": "60% to under 75%",
+          "below": 6,
+          "atOrAbove": 25
+        },
+        {
+          "band": "75% and over",
+          "below": 0,
+          "atOrAbove": 14
+        }
+      ],
+      "retentionCorrelation": 0.98
+    },
+    {
+      "year": "2024/25",
+      "allProviderRate": 65.5,
+      "spread": {
+        "providers": 72,
+        "p25": 60.5,
+        "median": 66.3,
+        "p75": 76.1
+      },
+      "passRateMedian": 99.8,
+      "below": 34,
+      "belowShare": 47.2,
+      "byAge": [
+        {
+          "label": "16-18",
+          "providers": 47,
+          "p25": 59.3,
+          "median": 66.7,
+          "p75": 73.4
+        },
+        {
+          "label": "19-23",
+          "providers": 58,
+          "p25": 60.1,
+          "median": 67.1,
+          "p75": 76.7
+        },
+        {
+          "label": "24+",
+          "providers": 67,
+          "p25": 55.3,
+          "median": 66,
+          "p75": 75.2
+        }
+      ],
+      "bySsa": [
+        {
+          "label": "Agriculture, Horticulture and Animal Care",
+          "providers": 5,
+          "p25": 56.6,
+          "median": 79.5,
+          "p75": 83.9
+        },
+        {
+          "label": "Business, Administration and Law",
+          "providers": 35,
+          "p25": 58.7,
+          "median": 64.1,
+          "p75": 71.4
+        },
+        {
+          "label": "Construction, Planning and the Built Environment",
+          "providers": 5,
+          "p25": 52.5,
+          "median": 62,
+          "p75": 70
+        },
+        {
+          "label": "Digital Technology",
+          "providers": 12,
+          "p25": 66.7,
+          "median": 70.4,
+          "p75": 77.9
+        },
+        {
+          "label": "Education and Training",
+          "providers": 6,
+          "p25": 80.8,
+          "median": 84.9,
+          "p75": 88.3
+        },
+        {
+          "label": "Engineering and Manufacturing Technologies",
+          "providers": 23,
+          "p25": 56.2,
+          "median": 64.8,
+          "p75": 77.7
+        },
+        {
+          "label": "Health, Public Services and Care",
+          "providers": 20,
+          "p25": 61.3,
+          "median": 67.1,
+          "p75": 75.2
+        },
+        {
+          "label": "Leisure, Travel and Tourism",
+          "providers": 6,
+          "p25": 58.8,
+          "median": 66.2,
+          "p75": 72.1
+        },
+        {
+          "label": "Retail and Commercial Enterprise",
+          "providers": 16,
+          "p25": 57.1,
+          "median": 66.4,
+          "p75": 78.6
+        }
+      ],
+      "retention": [
+        {
+          "band": "Under 60%",
+          "below": 17,
+          "atOrAbove": 0
+        },
+        {
+          "band": "60% to under 75%",
+          "below": 17,
+          "atOrAbove": 18
+        },
+        {
+          "band": "75% and over",
+          "below": 0,
+          "atOrAbove": 20
+        }
+      ],
+      "retentionCorrelation": 0.97
+    }
+  ],
+  "methods": [
+    "Achievement and retention rates are DfE's published provider-level apprenticeship rates (Explore Education Statistics, Apprenticeships 2025/26 release), taken as published from each provider's overall, subject-area and age-group rows.",
+    "Independent training providers are those DfE classes as \"Private Sector Public Funded\".",
+    "Region and local authority come from Ofsted's further education and skills inspection data (most recent inspection outcomes for all providers, as at 31 August 2025), joined by UKPRN. 1,224 of 1,348 providers in the rates data matched.",
+    "In scope: independent training providers in the South West region, or in Hampshire, Portsmouth or Southampton, with 20 to 600 leavers in the year (DfE rounds leaver numbers to the nearest 10). The group can differ from year to year.",
+    "The all-provider rate is the average of every provider's published rate in England, weighted by its leavers, so it can differ slightly from DfE's national headline figure.",
+    "Spreads show the quartiles: the middle half of providers lies between the 25th and 75th percentiles. Breakdowns by age or subject area include a provider only where it had at least 5 leavers in that group.",
+    "Any count below 5, and any spread or share based on fewer than 5 providers, is withheld. No provider is named."
+  ],
+  "limits": [
+    "Where DfE withholds a figure for small numbers, that provider or group is left out of the spread.",
+    "Ofsted's provider list is a snapshot at 31 August 2025, so providers that had closed by then cannot be placed in a region and are left out. Across England, 68, 18 and 10 independent providers in the size range could not be placed for 2022/23, 2023/24 and 2024/25, so earlier years include fewer providers. Compare years by share rather than by count.",
+    "These figures describe a group of providers. They are not a judgement on any provider."
+  ]
+}

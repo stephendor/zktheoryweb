@@ -19,6 +19,7 @@ const SERVICES_PAGES = [
   '/services/resources/deprivation-check/',
   '/services/guides/trustees-report-impact-data/',
   '/services/insights/dorset-voluntary-sector-2026/',
+  '/services/insights/south-west-apprenticeship-achievement/',
   '/privacy/',
 ];
 
@@ -138,10 +139,16 @@ test('[services] the Dorset insight is published and listed, with charts and sou
   await expect(page.getByRole('link', { name: /full register download/ })).toBeVisible();
 });
 
-test('[services] the South West insight draft is not built', async ({ page }) => {
-  const slug = 'south-west-apprenticeship-achievement';
-  const res = await page.goto(`/services/insights/${slug}/`);
-  expect(res?.status()).toBe(404);
+test('[services] the South West insight is published and listed, and names no provider', async ({
+  page,
+}) => {
+  const url = '/services/insights/south-west-apprenticeship-achievement/';
   await page.goto('/services/insights/');
-  await expect(page.locator(`a[href*="${slug}"]`)).toHaveCount(0);
+  await expect(page.locator(`a[href="${url}"]`)).toBeVisible();
+  const res = await page.goto(url);
+  expect(res?.ok()).toBe(true);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Apprenticeship achievement/);
+  await expect(page.getByRole('img', { name: /Line chart by year/ })).toBeVisible();
+  // No UKPRN-like numbers anywhere in the page text.
+  expect(await page.locator('main').innerText()).not.toMatch(/\b10\d{6}\b/);
 });

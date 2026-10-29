@@ -24,6 +24,7 @@ const first = data.years[0];
 const latest = data.years[data.years.length - 1];
 
 const p = (v: number) => `${v.toFixed(1).replace(/\.0$/, '')}%`;
+const pctRound = (v: number) => `${Math.round(v)}%`;
 const has = (s: RateSpread) => s.median !== null && s.p25 !== null && s.p75 !== null;
 /** Break a long label over lines of about 22 characters for the bar chart. */
 const wrap = (label: string) =>
@@ -47,13 +48,14 @@ if (has(latest.spread))
   findings.push(
     `In ${latest.year} the middle half of these providers had achievement rates between ${p(latest.spread.p25!)} and ${p(latest.spread.p75!)}, against ${p(latest.allProviderRate)} for all providers in England. Where does yours sit?`
   );
-if (latest.below !== null && latest.spread.providers !== null) {
+if (latest.belowShare !== null && latest.below !== null && latest.spread.providers !== null) {
+  // Compare years by share: earlier years cannot include providers that have since closed.
   const then =
-    first.below !== null && first.spread.providers !== null
-      ? `, compared with ${first.below} of ${first.spread.providers} in ${first.year}`
+    first.belowShare !== null
+      ? `, compared with ${pctRound(first.belowShare)} in ${first.year}`
       : '';
   findings.push(
-    `${latest.below} of ${latest.spread.providers} providers were below the all-provider rate in ${latest.year}${then}. Has your own position moved over the three years?`
+    `${pctRound(latest.belowShare)} of these providers (${latest.below} of ${latest.spread.providers}) were below the all-provider rate in ${latest.year}${then}. Has your own position moved over the three years?`
   );
 }
 const ssaShown = latest.bySsa.filter(has);
@@ -67,7 +69,15 @@ if (agesShown.length >= 2)
   findings.push(
     `The median provider's rate was ${agesShown.map((a) => `${p(a.median!)} for ${a.label}`).join(' and ')}. Is the gap between your age groups wider or narrower?`
   );
-if (latest.retentionCorrelation !== null)
+if (
+  latest.retentionCorrelation !== null &&
+  latest.passRateMedian !== null &&
+  latest.passRateMedian >= 90
+)
+  findings.push(
+    `Almost everyone who completes passes: the median provider's pass rate was ${p(latest.passRateMedian)} in ${latest.year}. So achievement rates move with retention (correlation ${latest.retentionCorrelation.toFixed(2)}), and the gap is mostly apprentices leaving early. At what point in the programme do your leavers leave?`
+  );
+else if (latest.retentionCorrelation !== null)
   findings.push(
     latest.retentionCorrelation >= 0.3
       ? `Providers that kept more apprentices to the end tended to have higher achievement rates (correlation ${latest.retentionCorrelation.toFixed(2)}). At what point in the programme do your leavers leave?`
@@ -114,18 +124,26 @@ const trendChart: LineChartSpec | null =
       }
     : null;
 
+// The chart has room for six bars; the table below it lists every subject area.
+const ssaCharted = [...ssaShown]
+  .sort((a, b) => b.providers! - a.providers! || a.label.localeCompare(b.label))
+  .slice(0, 6);
+// Chart labels use the part before the first comma; the table and alt text keep full names.
+const shortLabel = (label: string) => wrap(label.split(',')[0]);
 const ssaChart: BarChartSpec | null =
-  ssaShown.length >= 2
+  ssaCharted.length >= 2
     ? {
         kind: 'bar',
-        title: `Median provider achievement rate by sector subject area, ${latest.year}`,
-        alt: `Bar chart of the median provider's achievement rate by sector subject area in ${latest.year}: ${ssaShown
+        title: `Median provider achievement rate by sector subject area, ${latest.year}${
+          ssaShown.length > ssaCharted.length ? ' (the six with most providers)' : ''
+        }`,
+        alt: `Bar chart of the median provider's achievement rate by sector subject area in ${latest.year}: ${ssaCharted
           .map((s) => `${s.label}, ${p(s.median!)}`)
           .join('; ')}. The all-provider rate was ${p(latest.allProviderRate)}.`,
         categoryHeading: 'Sector subject area',
         valueHeading: 'Median provider achievement rate',
-        bars: ssaShown.map((s) => ({
-          label: wrap(s.label),
+        bars: ssaCharted.map((s) => ({
+          label: shortLabel(s.label),
           value: s.median!,
           display: p(s.median!),
         })),
@@ -298,10 +316,10 @@ const breakdowns = [
     name</a
   > (Apprenticeships release); Ofsted,
   <a
-    href="https://www.gov.uk/government/statistical-data-sets/further-education-and-skills-inspections-and-outcomes-management-information-from-september-2024-to-august-2025"
-    >further education and skills inspections and outcomes: management information</a
-  > (providers as at 31 August 2025). Contains public sector information licensed under the Open Government
-  Licence v3.0.
+    href="https://www.gov.uk/government/statistics/further-education-and-skills-inspections-and-outcomes-as-at-31-august-2025"
+    >further education and skills inspections and outcomes as at 31 August 2025</a
+  > (most recent inspection data for all providers). Contains public sector information licensed under
+  the Open Government Licence v3.0.
 </p>
 
 <h2 id="contact">Your own one-page snapshot</h2>

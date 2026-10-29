@@ -40,7 +40,7 @@ export const insights: Insight[] = [
     description:
       "How achievement rates spread across independent training providers in the South West and Hampshire, from DfE's published figures. No provider is named.",
     dataFile: 'sw-apprenticeship-achievement-2025.json',
-    draft: true,
+    draft: false,
   },
 ];
 
