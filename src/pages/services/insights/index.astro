@@ -1,0 +1,51 @@
+---
+/**
+ * services/insights/index.astro
+ * Lists the published insight pages and the guides (src/data/insights.ts).
+ * Draft insights are not listed.
+ */
+import ServicesLayout from '@layouts/ServicesLayout.astro';
+import { builtInsights, guides } from '@data/insights';
+---
+
+<ServicesLayout
+  frontmatter={{
+    title: 'Insights and guides',
+    description:
+      'Free public-data insights and practical guides for small charities, training providers and alternative provision.',
+  }}
+>
+  <p class="guide-back"><a href="/services/">← Back to services</a></p>
+
+  <h1>Insights and guides</h1>
+
+  <p class="lead">
+    Free to read and share. The insights use public data only and name no organisation.
+  </p>
+
+  {
+    builtInsights.length > 0 && (
+      <>
+        <h2 id="insights">Insights</h2>
+        <ul>
+          {builtInsights.map((i) => (
+            <li>
+              <a href={`/services/insights/${i.slug}/`}>{i.title}</a>: {i.description}
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  <h2 id="guides">Guides</h2>
+  <ul>
+    {
+      guides.map((g) => (
+        <li>
+          <a href={g.href}>{g.title}</a>: {g.description}
+        </li>
+      ))
+    }
+  </ul>
+</ServicesLayout>

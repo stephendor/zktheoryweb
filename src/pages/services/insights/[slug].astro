@@ -1,0 +1,38 @@
+---
+/**
+ * services/insights/[slug].astro
+ * Public-data insight pages, registered in src/data/insights.ts. Drafts are
+ * not built (see that file). Each insight's body is its own component.
+ */
+import ServicesLayout from '@layouts/ServicesLayout.astro';
+import DorsetVcsInsight from '@components/services/insights/DorsetVcsInsight.astro';
+import SwApprenticeshipsInsight from '@components/services/insights/SwApprenticeshipsInsight.astro';
+import { builtInsights, insightData, type Insight } from '@data/insights';
+import type {
+  DorsetVcsInsight as DorsetVcsData,
+  SwApprenticeshipsInsight as SwApprenticeshipsData,
+} from '@data/insights/types';
+
+export function getStaticPaths() {
+  return builtInsights.map((insight) => ({ params: { slug: insight.slug }, props: { insight } }));
+}
+
+interface Props {
+  insight: Insight;
+}
+
+const { insight } = Astro.props;
+---
+
+<ServicesLayout frontmatter={{ title: insight.title, description: insight.description }}>
+  {
+    insight.slug === 'dorset-voluntary-sector-2026' && (
+      <DorsetVcsInsight data={insightData<DorsetVcsData>(insight)} />
+    )
+  }
+  {
+    insight.slug === 'south-west-apprenticeship-achievement' && (
+      <SwApprenticeshipsInsight data={insightData<SwApprenticeshipsData>(insight)} />
+    )
+  }
+</ServicesLayout>

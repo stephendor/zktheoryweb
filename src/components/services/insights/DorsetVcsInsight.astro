@@ -1,0 +1,335 @@
+---
+/**
+ * DorsetVcsInsight.astro
+ * Body of /services/insights/dorset-voluntary-sector-2026/, from the frozen
+ * JSON written by scripts/insights/dorset-vcs/run.ts. Aggregates only; every
+ * finding is skipped if any number it needs was withheld (null).
+ */
+import ExampleBarChart from '@components/services/ExampleBarChart.astro';
+import ExampleLineChart from '@components/services/ExampleLineChart.astro';
+import type { BarChartSpec, LineChartSpec } from '@data/services-examples';
+import type { CountShare, DorsetVcsInsight } from '@data/insights/types';
+import { mailtos } from '@data/services-contact';
+import { count, gbp, niceAxis } from '@lib/insight-format';
+import '@styles/services-charts.css';
+
+interface Props {
+  data: DorsetVcsInsight;
+}
+
+const { data } = Astro.props;
+const { totals, incomeBands, trend, government, volunteers, funders } = data;
+
+const shown = (v: number | null): v is number => v !== null;
+const pctText = (v: number) => `${Math.round(v)}%`;
+const extract = new Date(`${data.extractDate}T00:00:00Z`).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+const small = [incomeBands[0], incomeBands[1]];
+const firstTrend = trend[0];
+const lastTrend = trend[trend.length - 1];
+
+const findings: string[] = [];
+findings.push(
+  `${count(totals.charities)} registered charities are based in Dorset and Bournemouth, Christchurch and Poole.`
+);
+if (small.every((b) => shown(b.share)))
+  findings.push(
+    `Most are small: ${pctText(small[0].share! + small[1].share!)} of those reporting income have less than £100,000 a year.`
+  );
+if (shown(totals.totalIncome) && shown(totals.medianIncome))
+  findings.push(
+    `Together they reported ${gbp(totals.totalIncome)} in income, though that includes national charities based here. The median charity reported ${gbp(totals.medianIncome)}.`
+  );
+if (shown(firstTrend.medianIncome) && shown(lastTrend.medianIncome))
+  findings.push(
+    `Following the same ${count(firstTrend.filers ?? 0)} charities over five years, median income went from ${gbp(firstTrend.medianIncome)} in ${firstTrend.yearEnding} to ${gbp(lastTrend.medianIncome)} in ${lastTrend.yearEnding}.`
+  );
+if (shown(government.shareReceiving) && shown(government.shareOfIncome))
+  findings.push(
+    `${pctText(government.shareReceiving)} of charities filing the fuller annual return report government grants or contracts, which make up ${pctText(government.shareOfIncome)} of those charities' combined income.`
+  );
+if (shown(volunteers.total) && shown(volunteers.median))
+  findings.push(
+    `The same charities report ${count(volunteers.total)} volunteers between them; the median charity has ${count(volunteers.median)}.`
+  );
+// "Other" is the register's own legal-form value; describe it only by what it is not.
+const formLabels = data.legalForm.map((l) => l.label);
+const namedForms = formLabels
+  .filter((l) => l !== 'Other' && l !== 'Not stated')
+  .map((l) =>
+    l === 'CIO'
+      ? 'CIO'
+      : l === 'Previously excepted'
+        ? 'previously excepted charity'
+        : l.toLowerCase()
+  );
+const otherNote =
+  formLabels.includes('Other') && namedForms.length > 0
+    ? `"Other" is the Charity Commission's own category on the register, for charities not recorded as a ${namedForms.slice(0, -1).join(', ')}${namedForms.length > 1 ? ' or ' : ''}${namedForms[namedForms.length - 1]}.`
+    : null;
+
+const f = funders;
+if (f && f.withGrants !== null && f.topFunderShare.median !== null)
+  findings.push(
+    `Of ${count(f.charitiesInBand)} charities with income of £100,000 to £1.5 million, ${count(f.withGrants)} have grants recorded in 360Giving for ${f.window}. For half of those, one funder gave ${f.topFunderShare.median}% or more of their recorded grant income.`
+  );
+
+const bandMax = niceAxis(Math.max(...incomeBands.map((b) => b.count ?? 0)));
+const bandChart: BarChartSpec = {
+  kind: 'bar',
+  title: 'Charities by latest income',
+  alt: `Bar chart of registered charities in Dorset and BCP by latest income: ${incomeBands
+    .map((b) => `${b.label}, ${b.count === null ? 'fewer than 5' : b.count}`)
+    .join('; ')}.`,
+  categoryHeading: 'Latest income',
+  valueHeading: 'Charities',
+  bars: incomeBands.map((b) => ({
+    label: b.label,
+    value: b.count ?? 0,
+    display: b.count === null ? 'fewer than 5' : count(b.count),
+  })),
+  xMin: 0,
+  xMax: bandMax.max,
+  xTicks: bandMax.ticks,
+  xLabel: 'Number of charities',
+};
+
+const trendShown = trend.filter((t) => shown(t.medianIncome));
+const trendAxis = niceAxis(Math.max(...trendShown.map((t) => t.medianIncome! / 1000)));
+const trendChart: LineChartSpec | null =
+  trendShown.length >= 2
+    ? {
+        kind: 'line',
+        title: `Median income of the same ${count(firstTrend.filers ?? 0)} charities, each year`,
+        alt: `Line chart of the median income of the same ${count(firstTrend.filers ?? 0)} Dorset and BCP charities in each year: ${trendShown
+          .map((t) => `${t.yearEnding}, ${gbp(t.medianIncome!)}`)
+          .join('; ')}.`,
+        categories: trendShown.map((t) => String(t.yearEnding)),
+        categoryHeading: 'Financial year ending',
+        series: [
+          {
+            name: 'Median income (£k)',
+            values: trendShown.map((t) => t.medianIncome! / 1000),
+            tone: 'primary',
+            endLabel: ['Median', gbp(trendShown[trendShown.length - 1].medianIncome!)],
+          },
+        ],
+        format: 'gbp-k',
+        yMin: 0,
+        yMax: trendAxis.max,
+        yTicks: trendAxis.ticks,
+        yLabel: 'Median income (£k)',
+        xLabel: 'Financial year ending',
+      }
+    : null;
+
+/** The register's labels are in Title Case ("Children/young People"): show sentence case. */
+const sentence = (label: string) => label.charAt(0) + label.slice(1).toLowerCase();
+const cell = (v: number | null, fmt: (n: number) => string = count) =>
+  v === null ? 'fewer than 5' : fmt(v);
+const shareCell = (c: CountShare) => (c.share === null ? '–' : `${c.share}%`);
+const top = (rows: CountShare[], n = 8) => rows.filter((r) => r.count !== null).slice(0, n);
+const CLASSIFICATIONS = [
+  { key: 'what', heading: 'What they do' },
+  { key: 'who', heading: 'Who they help' },
+  { key: 'how', heading: 'How they work' },
+] as const;
+---
+
+<p class="guide-back"><a href="/services/insights/">← All insights</a></p>
+
+<h1>Dorset's voluntary sector in numbers, 2026</h1>
+
+<p class="lead">
+  Registered charities based in Dorset and Bournemouth, Christchurch and Poole, from the Charity
+  Commission register extract of {extract}. Figures for groups of charities only; no charity is
+  named.
+</p>
+
+<h2 id="findings">Findings</h2>
+<ul>
+  {findings.map((f) => <li>{f}</li>)}
+</ul>
+
+<h2 id="income">Size and income</h2>
+<div class="services-charts guide-chart">
+  <ExampleBarChart spec={bandChart} id="insight-bands" />
+</div>
+{
+  trendChart && (
+    <div class="services-charts guide-chart">
+      <ExampleLineChart spec={trendChart} id="insight-trend" />
+    </div>
+  )
+}
+
+{
+  f && f.withGrants !== null && f.topFunderShare.median !== null && (
+    <>
+      <h2 id="funders">How concentrated is grant funding?</h2>
+      <p>
+        For charities with income of £100,000 to £1.5 million and at least one grant recorded in
+        360Giving data for {f.window}: the share of each charity's recorded grant value that came
+        from its largest funder.
+      </p>
+      <table>
+        <caption class="guide-caption">
+          Share of recorded grant value from the largest funder
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Measure</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Charities with recorded grants</th>
+            <td>
+              {count(f.withGrants)} of {count(f.charitiesInBand)}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Middle half of charities</th>
+            <td>
+              {f.topFunderShare.p25}% to {f.topFunderShare.p75}%
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Median</th>
+            <td>{f.topFunderShare.median}%</td>
+          </tr>
+          {f.mostlyOneFunderShare !== null && (
+            <tr>
+              <th scope="row">More than half from one funder</th>
+              <td>{Math.round(f.mostlyOneFunderShare)}% of charities</td>
+            </tr>
+          )}
+          {f.medianFunders !== null && (
+            <tr>
+              <th scope="row">Median number of funders</th>
+              <td>{count(f.medianFunders)}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <p>
+        360Giving holds only the grants that funders choose to publish, so a charity with other
+        funders may look more reliant on one funder than it really is. Treat this as a prompt to
+        look at your own funding mix, not as a measure of risk.
+      </p>
+    </>
+  )
+}
+
+<h2 id="areas">Dorset and BCP compared</h2>
+<table>
+  <caption class="guide-caption">Registered charities by council area</caption>
+  <thead>
+    <tr>
+      <th scope="col">Council area</th>
+      <th scope="col">Charities</th>
+      <th scope="col">Total income</th>
+      <th scope="col">Median income</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      data.areas.map((a) => (
+        <tr>
+          <th scope="row">{a.name}</th>
+          <td>{cell(a.charities)}</td>
+          <td>{cell(a.totalIncome, gbp)}</td>
+          <td>{cell(a.medianIncome, gbp)}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<h2 id="form">Legal form</h2>
+<table>
+  <caption class="guide-caption">Charities by legal form</caption>
+  <thead>
+    <tr><th scope="col">Legal form</th><th scope="col">Charities</th><th scope="col">Share</th></tr>
+  </thead>
+  <tbody>
+    {
+      data.legalForm.map((f) => (
+        <tr>
+          <th scope="row">{f.label}</th>
+          <td>{cell(f.count)}</td>
+          <td>{shareCell(f)}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+{otherNote && <p>{otherNote}</p>}
+
+<h2 id="causes">What they do, who they help, how</h2>
+<p>
+  Charities choose these categories themselves, and can choose several. Each share is of all the
+  charities in the area, so the shares add up to more than 100%. The most common are shown.
+</p>
+{
+  CLASSIFICATIONS.map(({ key, heading }) => (
+    <table>
+      <caption class="guide-caption">{heading}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Charities</th>
+          <th scope="col">Share</th>
+        </tr>
+      </thead>
+      <tbody>
+        {top(data.classification[key]).map((c) => (
+          <tr>
+            <th scope="row">{sentence(c.label)}</th>
+            <td>{cell(c.count)}</td>
+            <td>{shareCell(c)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ))
+}
+
+<h2 id="methods">Methods and sources</h2>
+<ul>
+  {data.methods.map((m) => <li>{m}</li>)}
+</ul>
+<p><strong>Limits.</strong></p>
+<ul>
+  {data.limits.map((l) => <li>{l}</li>)}
+</ul>
+<p>
+  Sources: <a
+    href="https://register-of-charities.charitycommission.gov.uk/en/register/full-register-download"
+    >Charity Commission register of charities, full register download</a
+  > (extract of {extract}); {data.postcodeLookup}, from the
+  <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a>. Contains public
+  sector information licensed under the Open Government Licence v3.0.
+  {
+    f && (
+      <>
+        Grants data published to the 360Giving Data Standard and downloaded from
+        <a href="https://grantnav.threesixtygiving.org/">GrantNav</a>; each funder's data is used
+        under the licence it publishes.
+      </>
+    )
+  }
+</p>
+
+<h2 id="contact">A one-page version for your organisation</h2>
+<p>
+  Want a one-page version for your organisation? <a href={mailtos.freeSummary}
+    >Email me for a free one-page summary</a
+  >. It's built from public data only, and you choose whether to reply.
+</p>

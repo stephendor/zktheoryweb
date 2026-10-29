@@ -1,0 +1,389 @@
+/**
+ * pipeline.ts: Dorset and BCP voluntary sector figures from the Charity
+ * Commission register extract.
+ *
+ * load(): streams the four extract files and the ONS postcode lookup, keeping
+ * only main (not linked) registered charities whose contact postcode is in
+ * the Dorset Council or BCP Council areas. compute(): turns those rows into
+ * the aggregate-only, suppressed JSON in src/data/insights/types.ts.
+ * No charity name is ever read into the output.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import type { CountShare, DorsetVcsInsight } from '../../../src/data/insights/types';
+import {
+  median,
+  num,
+  pct,
+  quantileSorted,
+  readDelimited,
+  readFieldNames,
+  readHeader,
+  readRecords,
+  requireColumns,
+  roundTo,
+  suppressCount,
+  suppressPartition,
+  suppressStat,
+  type Row,
+} from '../lib';
+import { AREAS, CC_FILES, COLS, GRANTS, INCOME_BANDS, REGISTERED, TREND_YEARS } from './config';
+
+export interface Charity {
+  org: string;
+  /** Registered charity number, used to match 360Giving grants. */
+  regNo: string;
+  lad: string;
+  type: string;
+  latestIncome: number | null;
+}
+
+export interface LoadedData {
+  extractDate: string;
+  postcodeLookup: string;
+  charities: Charity[];
+  /** Each charity's latest Part A (flagged latest by the register). */
+  partA: Map<
+    string,
+    {
+      periodEnd: string;
+      income: number | null;
+      volunteers: number | null;
+      /** Government contracts plus grants income (blank fields count as 0). */
+      gov: number;
+      receivesGov: boolean;
+    }
+  >;
+  /** Gross income by charity and financial year end (calendar year). */
+  history: Map<string, Map<number, number>>;
+  classification: { org: string; type: string; description: string }[];
+}
+
+export const normalisePostcode = (pc: string) => pc.toUpperCase().replace(/\s+/g, '');
+const yearOf = (date: string) => Number(date.slice(0, 4));
+
+async function checked(path: string, needed: string[]): Promise<void> {
+  requireColumns(path, await readFieldNames(path), needed);
+}
+
+/** The extract file for `name` in `rawDir`: the JSON download if present, else the text one. */
+export function extractFile(rawDir: string, name: string): string {
+  const json = join(rawDir, `${name}.json`);
+  return existsSync(json) ? json : join(rawDir, `${name}.txt`);
+}
+
+/** Map postcode -> LAD code, for postcodes in the target areas only, and the LAD column used. */
+export async function loadPostcodes(
+  lookupCsv: string
+): Promise<{ map: Map<string, string>; ladCol: string }> {
+  const header = await readHeader(lookupCsv, ',');
+  const pcCol = COLS.onsPostcode.find((c) => header.includes(c));
+  const ladCol = header.find((h) => COLS.onsLad.test(h));
+  if (!pcCol || !ladCol) requireColumns(lookupCsv, header, ['pcds (or pcd)', 'ladNNcd']);
+  const wanted = new Set<string>(AREAS.map((a) => a.code));
+  const map = new Map<string, string>();
+  for await (const row of readDelimited(lookupCsv, ',')) {
+    const lad = row[ladCol!];
+    if (wanted.has(lad)) map.set(normalisePostcode(row[pcCol!]), lad);
+  }
+  return { map, ladCol: ladCol! };
+}
+
+export async function load(rawDir: string, lookupCsv: string): Promise<LoadedData> {
+  const file = (name: string) => extractFile(rawDir, name);
+  const c = COLS.charity;
+  await checked(file(CC_FILES.charity), Object.values(c));
+  await checked(file(CC_FILES.partA), Object.values(COLS.partA));
+  await checked(file(CC_FILES.history), Object.values(COLS.history));
+  await checked(file(CC_FILES.classification), Object.values(COLS.classification));
+
+  const { map: postcodes, ladCol } = await loadPostcodes(lookupCsv);
+
+  let extractDate = '';
+  const charities: Charity[] = [];
+  for await (const r of readRecords(file(CC_FILES.charity))) {
+    extractDate ||= r[c.extractDate].slice(0, 10);
+    if (r[c.status] !== REGISTERED) continue;
+    if ((num(r[c.linked]) ?? 0) !== 0) continue; // linked (subsidiary) charities are counted with their main charity
+    const lad = postcodes.get(normalisePostcode(r[c.postcode]));
+    if (!lad) continue;
+    charities.push({
+      org: r[c.org],
+      regNo: r[c.regNo],
+      lad,
+      type: r[c.type] || 'Not stated',
+      latestIncome: num(r[c.latestIncome]),
+    });
+  }
+  const inArea = new Set(charities.map((ch) => ch.org));
+
+  const partA: LoadedData['partA'] = new Map();
+  const p = COLS.partA;
+  for await (const r of readRecords(file(CC_FILES.partA))) {
+    if (!inArea.has(r[p.org]) || r[p.latest] !== 'true') continue;
+    const gov = (num(r[p.govContracts]) ?? 0) + (num(r[p.govGrants]) ?? 0);
+    partA.set(r[p.org], {
+      periodEnd: r[p.periodEnd],
+      income: num(r[p.income]),
+      volunteers: num(r[p.volunteers]),
+      gov,
+      receivesGov: r[p.receivesContracts] === 'true' || r[p.receivesGrants] === 'true' || gov > 0,
+    });
+  }
+
+  const history: LoadedData['history'] = new Map();
+  const h = COLS.history;
+  for await (const r of readRecords(file(CC_FILES.history))) {
+    if (!inArea.has(r[h.org])) continue;
+    const income = num(r[h.income]);
+    if (income === null) continue;
+    const byYear = history.get(r[h.org]) ?? new Map<number, number>();
+    byYear.set(yearOf(r[h.periodEnd]), income); // one return per charity per year
+    history.set(r[h.org], byYear);
+  }
+
+  const classification: LoadedData['classification'] = [];
+  const k = COLS.classification;
+  for await (const r of readRecords(file(CC_FILES.classification))) {
+    if (inArea.has(r[k.org]))
+      classification.push({ org: r[k.org], type: r[k.type], description: r[k.description] });
+  }
+
+  return {
+    extractDate,
+    postcodeLookup: `ONS postcode data, local authorities as coded in its ${ladCol} column`,
+    charities,
+    partA,
+    history,
+    classification,
+  };
+}
+
+function bands(incomes: number[]): CountShare[] {
+  const raw = INCOME_BANDS.map((b, i) => {
+    const lo = i === 0 ? -Infinity : INCOME_BANDS[i - 1].max;
+    return incomes.filter((v) => v >= lo && v < b.max).length;
+  });
+  const counts = suppressPartition(raw);
+  return INCOME_BANDS.map((b, i) => ({
+    label: b.label,
+    count: counts[i],
+    share: counts[i] === null ? null : pct(raw[i], incomes.length),
+  }));
+}
+
+/**
+ * Counts and shares per label. `partition` is true when every organisation
+ * has exactly one label (so the counts add up to a published total) and
+ * secondary suppression is needed.
+ */
+function countShares(labels: string[], whole: number, partition: boolean): CountShare[] {
+  const tally = new Map<string, number>();
+  for (const l of labels) tally.set(l, (tally.get(l) ?? 0) + 1);
+  const entries = [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  const raw = entries.map(([, n]) => n);
+  const counts = partition ? suppressPartition(raw) : raw.map(suppressCount);
+  return entries.map(([label, n], i) => ({
+    label,
+    count: counts[i],
+    share: counts[i] === null ? null : pct(n, whole),
+  }));
+}
+
+const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+
+/** Recorded grant value by charity number and funder. */
+export type GrantsByCharity = Map<string, Map<string, number>>;
+
+/**
+ * Read 360Giving (GrantNav) CSVs: GBP grants awarded in the GRANTS window to
+ * the given charity numbers, summed by funder. A grant in more than one file
+ * (same Identifier) is counted once.
+ */
+export async function loadGrants(
+  paths: string[],
+  charityNos: Set<string>
+): Promise<GrantsByCharity> {
+  const g = GRANTS.cols;
+  const seen = new Set<string>();
+  const out: GrantsByCharity = new Map();
+  for (const path of paths) {
+    requireColumns(path, await readHeader(path, ','), Object.values(g));
+    for await (const r of readDelimited(path, ',')) {
+      if (seen.has(r[g.id])) continue;
+      seen.add(r[g.id]);
+      const no = r[g.charityNo].replace(/\D/g, '');
+      const year = Number(r[g.date].slice(0, 4));
+      const amount = num(r[g.amount]);
+      if (!charityNos.has(no) || r[g.currency] !== 'GBP' || amount === null || amount <= 0)
+        continue;
+      if (year < GRANTS.fromYear || year > GRANTS.toYear) continue;
+      const byFunder = out.get(no) ?? new Map<string, number>();
+      byFunder.set(r[g.funder], (byFunder.get(r[g.funder]) ?? 0) + amount);
+      out.set(no, byFunder);
+    }
+  }
+  return out;
+}
+
+function funderConcentration(charities: Charity[], grants: GrantsByCharity) {
+  const inBand = charities.filter(
+    (c) =>
+      c.latestIncome !== null &&
+      c.latestIncome >= GRANTS.incomeMin &&
+      c.latestIncome < GRANTS.incomeMax
+  );
+  const shares: number[] = [];
+  const funderCounts: number[] = [];
+  for (const c of inBand) {
+    const byFunder = grants.get(c.regNo);
+    if (!byFunder) continue;
+    const amounts = [...byFunder.values()];
+    shares.push((100 * Math.max(...amounts)) / amounts.reduce((a, b) => a + b, 0));
+    funderCounts.push(amounts.length);
+  }
+  const sorted = [...shares].sort((a, b) => a - b);
+  const q = (p: number) => roundTo(suppressStat(sorted.length, quantileSorted(sorted, p)), 1);
+  const mostly = shares.filter((s) => s > 50).length;
+  return {
+    window: `${GRANTS.fromYear} to ${GRANTS.toYear}`,
+    charitiesInBand: inBand.length,
+    withGrants: suppressCount(shares.length),
+    topFunderShare: { p25: q(0.25), median: q(0.5), p75: q(0.75) },
+    mostlyOneFunder: shares.length < 5 ? null : suppressCount(mostly),
+    mostlyOneFunderShare:
+      shares.length < 5 || suppressCount(mostly) === null ? null : pct(mostly, shares.length),
+    medianFunders: suppressStat(funderCounts.length, median(funderCounts)),
+  };
+}
+
+export function compute(
+  data: LoadedData,
+  generatedAt = new Date().toISOString(),
+  grants: GrantsByCharity | null = null
+): DorsetVcsInsight {
+  const { charities } = data;
+  const incomes = charities.map((c) => c.latestIncome).filter((v): v is number => v !== null);
+
+  // Five complete financial years: those ending before the extract year,
+  // since returns for years ending in the extract year are mostly not yet due.
+  // The register keeps at most five returns per charity, so a charity that has
+  // already filed for the extract year has lost its oldest year, and late
+  // returns thin the latest. Comparing years therefore uses the same charities
+  // throughout: those with a return for every year in the window.
+  const extractYear = Number(data.extractDate.slice(0, 4));
+  const lastYear = extractYear - 1;
+  const years = Array.from({ length: TREND_YEARS }, (_, i) => lastYear - TREND_YEARS + 1 + i);
+  const cohort = [...data.history.values()].filter((m) => years.every((y) => m.has(y)));
+  const trend = years.map((year) => {
+    const values = cohort.map((m) => m.get(year)!);
+    return {
+      yearEnding: year,
+      filers: suppressCount(values.length),
+      medianIncome: roundTo(suppressStat(values.length, median(values)), 1000),
+      totalIncome: roundTo(suppressStat(values.length, sum(values)), 100_000),
+    };
+  });
+
+  // Current returns only: each charity's latest Part A, for a year ending in
+  // the last two calendar years before the extract.
+  const partA = [...data.partA.values()].filter(
+    (r) => Number(r.periodEnd.slice(0, 4)) >= extractYear - 2
+  );
+  const govIncome = sum(partA.map((r) => r.gov));
+  const partAIncome = sum(partA.map((r) => r.income ?? 0));
+  const volunteers = partA.map((r) => r.volunteers).filter((v): v is number => v !== null);
+
+  const byType = (t: string) =>
+    countShares(
+      [
+        ...new Set(
+          data.classification
+            .filter((c) => c.type.toLowerCase() === t)
+            .map((c) => `${c.org}\u0000${c.description}`)
+        ),
+      ].map((key) => key.split('\u0000')[1]),
+      charities.length,
+      false
+    );
+
+  const areaCounts = suppressPartition(
+    AREAS.map((a) => charities.filter((c) => c.lad === a.code).length)
+  );
+  const areas = AREAS.map((a, i) => {
+    const inLad = charities.filter((c) => c.lad === a.code);
+    const ladIncomes = inLad.map((c) => c.latestIncome).filter((v): v is number => v !== null);
+    return {
+      code: a.code,
+      name: a.name,
+      charities: areaCounts[i],
+      totalIncome: roundTo(suppressStat(ladIncomes.length, sum(ladIncomes)), 100_000),
+      medianIncome: roundTo(suppressStat(ladIncomes.length, median(ladIncomes)), 1000),
+      incomeBands: bands(ladIncomes),
+    };
+  });
+
+  return {
+    schema: 'dorset-vcs/1',
+    extractDate: data.extractDate,
+    generatedAt,
+    postcodeLookup: data.postcodeLookup,
+    totals: {
+      charities: charities.length,
+      // Withheld together: either one gives the other by subtraction from the total.
+      withIncome: suppressCount(charities.length - incomes.length) === null ? null : incomes.length,
+      noIncomeReported: suppressCount(charities.length - incomes.length),
+      totalIncome: roundTo(suppressStat(incomes.length, sum(incomes)), 100_000),
+      medianIncome: roundTo(suppressStat(incomes.length, median(incomes)), 1000),
+    },
+    incomeBands: bands(incomes),
+    trend,
+    government: {
+      charitiesWithPartA: partA.length,
+      shareReceiving: suppressStat(
+        partA.length,
+        pct(partA.filter((r) => r.receivesGov).length, partA.length) ?? 0
+      ),
+      shareOfIncome: suppressStat(partA.length, pct(govIncome, partAIncome) ?? 0),
+    },
+    volunteers: {
+      charitiesReporting: volunteers.length,
+      total: suppressStat(volunteers.length, sum(volunteers)),
+      median: suppressStat(volunteers.length, median(volunteers)),
+    },
+    legalForm: countShares(
+      charities.map((c) => c.type),
+      charities.length,
+      true
+    ),
+    classification: { what: byType('what'), who: byType('who'), how: byType('how') },
+    areas,
+    funders: grants ? funderConcentration(charities, grants) : null,
+    methods: [
+      'Registered charities on the Charity Commission register for England and Wales whose contact postcode is in the Dorset Council (E06000059) or Bournemouth, Christchurch and Poole Council (E06000058) area, matched to local authorities with ONS postcode data. Linked charities are counted with their main charity.',
+      "Income bands and totals use each charity's latest reported income on the register.",
+      `The five-year trend covers financial years ending ${years[0]} to ${lastYear}. It follows the same ${cohort.length.toLocaleString('en-GB')} charities through every year: those with an annual return for each of the five years. (The register keeps each charity's last five returns, so charities that have already filed for ${extractYear} are not included.)`,
+      `Government funding comes from each charity's latest Part A of the annual return, for a year ending in ${extractYear - 2} or later: whether it reports government contracts or grants, and the income from them. Part A is filed only by charities above the annual return income threshold, so this covers ${partA.length.toLocaleString('en-GB')} charities. Volunteer numbers come from the same returns.`,
+      ...(grants
+        ? [
+            `Funder concentration covers charities with latest income from £100,000 to under £1.5 million and at least one grant recorded in 360Giving data for ${GRANTS.fromYear} to ${GRANTS.toYear} (downloaded from GrantNav, matched by charity number). For each charity it is the share of its recorded grant value that came from its largest funder.`,
+          ]
+        : []),
+      'Classifications are those charities choose on the register: what they do, who they help and how. A charity can choose several, so shares add up to more than 100%.',
+      'Any count below 5, and any figure based on fewer than 5 charities, is withheld. Totals are rounded to the nearest £100,000 and medians to the nearest £1,000.',
+    ],
+    limits: [
+      'Registered charities only: unregistered groups, community interest companies and exempt or excepted charities are not included.',
+      'A charity is placed by its contact postcode, which may not be where it works.',
+      'Figures use the latest year each charity has filed, and some returns are late, so recent years are incomplete.',
+      ...(grants
+        ? [
+            '360Giving holds only grants that funders choose to publish, so a charity with other funders may look more reliant on one funder than it is.',
+          ]
+        : []),
+      'Some national charities have their contact address in the area, so total income and volunteer numbers include work done across the country. Medians are the better guide to a typical local charity.',
+    ],
+  };
+}
+
+export type { Row };

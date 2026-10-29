@@ -18,6 +18,8 @@ const SERVICES_PAGES = [
   '/services/',
   '/services/resources/deprivation-check/',
   '/services/guides/trustees-report-impact-data/',
+  '/services/insights/dorset-voluntary-sector-2026/',
+  '/services/insights/south-west-apprenticeship-achievement/',
   '/privacy/',
 ];
 
@@ -74,6 +76,7 @@ test('[services] /services has the free-offer links and subjects', async ({ page
   await expect(
     page.getByRole('heading', { level: 2, name: 'Free for small organisations' })
   ).toBeVisible();
+  await expect(page.locator('main a[href="/services/insights/"]')).toBeVisible();
 });
 
 test('[services] /services has one ProfessionalService JSON-LD block', async ({ page }) => {
@@ -118,4 +121,34 @@ test('[services] the trustees report guide is linked from the FAQ and the funder
   await expect(pdf).toHaveAttribute('href', '/services/guides/trustees-report-impact-data.pdf');
   const res = await page.request.get('/services/guides/trustees-report-impact-data.pdf');
   expect(res.ok()).toBe(true);
+});
+
+test('[services] the Dorset insight is published and listed, with charts and sources', async ({
+  page,
+}) => {
+  await page.goto('/services/insights/');
+  await expect(
+    page.locator('a[href="/services/insights/dorset-voluntary-sector-2026/"]')
+  ).toBeVisible();
+  const res = await page.goto('/services/insights/dorset-voluntary-sector-2026/');
+  expect(res?.ok()).toBe(true);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    /Dorset's voluntary sector in numbers, 2026/
+  );
+  await expect(page.getByRole('img', { name: /Bar chart of registered charities/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /full register download/ })).toBeVisible();
+});
+
+test('[services] the South West insight is published and listed, and names no provider', async ({
+  page,
+}) => {
+  const url = '/services/insights/south-west-apprenticeship-achievement/';
+  await page.goto('/services/insights/');
+  await expect(page.locator(`a[href="${url}"]`)).toBeVisible();
+  const res = await page.goto(url);
+  expect(res?.ok()).toBe(true);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Apprenticeship achievement/);
+  await expect(page.getByRole('img', { name: /Line chart by year/ })).toBeVisible();
+  // No UKPRN-like numbers anywhere in the page text.
+  expect(await page.locator('main').innerText()).not.toMatch(/\b10\d{6}\b/);
 });

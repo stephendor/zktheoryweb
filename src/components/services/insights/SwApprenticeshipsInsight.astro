@@ -1,0 +1,338 @@
+---
+/**
+ * SwApprenticeshipsInsight.astro
+ * Body of /services/insights/south-west-apprenticeship-achievement/, from
+ * the frozen JSON written by scripts/insights/sw-apprenticeships/run.ts.
+ * Distributions only: no provider is named. Findings are framed as
+ * questions a provider might ask of its own data, never as judgements, and
+ * each is skipped if a number it needs was withheld.
+ */
+import ExampleBarChart from '@components/services/ExampleBarChart.astro';
+import ExampleLineChart from '@components/services/ExampleLineChart.astro';
+import type { BarChartSpec, LineChartSpec } from '@data/services-examples';
+import type { RateSpread, SwApprenticeshipsInsight } from '@data/insights/types';
+import { mailtos } from '@data/services-contact';
+import { niceAxis } from '@lib/insight-format';
+import '@styles/services-charts.css';
+
+interface Props {
+  data: SwApprenticeshipsInsight;
+}
+
+const { data } = Astro.props;
+const first = data.years[0];
+const latest = data.years[data.years.length - 1];
+
+const p = (v: number) => `${v.toFixed(1).replace(/\.0$/, '')}%`;
+const pctRound = (v: number) => `${Math.round(v)}%`;
+const has = (s: RateSpread) => s.median !== null && s.p25 !== null && s.p75 !== null;
+/** Break a long label over lines of about 22 characters for the bar chart. */
+const wrap = (label: string) =>
+  label
+    .split(' ')
+    .reduce<string[]>((lines, word) => {
+      const last = lines[lines.length - 1];
+      if (last !== undefined && `${last} ${word}`.length <= 22)
+        lines[lines.length - 1] = `${last} ${word}`;
+      else lines.push(word);
+      return lines;
+    }, [])
+    .join('\n');
+const middleHalf = (s: RateSpread) =>
+  s.p25 === null || s.p75 === null ? 'withheld' : `${p(s.p25)} to ${p(s.p75)}`;
+const cell = (v: number | null, fmt: (n: number) => string = String) =>
+  v === null ? 'withheld' : fmt(v);
+
+const findings: string[] = [];
+if (has(latest.spread))
+  findings.push(
+    `In ${latest.year} the middle half of these providers had achievement rates between ${p(latest.spread.p25!)} and ${p(latest.spread.p75!)}, against ${p(latest.allProviderRate)} for all providers in England. Where does yours sit?`
+  );
+if (latest.belowShare !== null && latest.below !== null && latest.spread.providers !== null) {
+  // Compare years by share: earlier years cannot include providers that have since closed.
+  const then =
+    first.belowShare !== null
+      ? `, compared with ${pctRound(first.belowShare)} in ${first.year}`
+      : '';
+  findings.push(
+    `${pctRound(latest.belowShare)} of these providers (${latest.below} of ${latest.spread.providers}) were below the all-provider rate in ${latest.year}${then}. Has your own position moved over the three years?`
+  );
+}
+const ssaShown = latest.bySsa.filter(has);
+const widest = [...ssaShown].sort((a, b) => b.p75! - b.p25! - (a.p75! - a.p25!))[0];
+if (widest)
+  findings.push(
+    `Rates varied most in ${widest.label}, where the middle half of providers ran from ${p(widest.p25!)} to ${p(widest.p75!)}. How do your largest subject areas compare with each other?`
+  );
+const agesShown = (latest.byAge ?? []).filter(has);
+if (agesShown.length >= 2)
+  findings.push(
+    `The median provider's rate was ${agesShown.map((a) => `${p(a.median!)} for ${a.label}`).join(' and ')}. Is the gap between your age groups wider or narrower?`
+  );
+if (
+  latest.retentionCorrelation !== null &&
+  latest.passRateMedian !== null &&
+  latest.passRateMedian >= 90
+)
+  findings.push(
+    `Almost everyone who completes passes: the median provider's pass rate was ${p(latest.passRateMedian)} in ${latest.year}. So achievement rates move with retention (correlation ${latest.retentionCorrelation.toFixed(2)}), and the gap is mostly apprentices leaving early. At what point in the programme do your leavers leave?`
+  );
+else if (latest.retentionCorrelation !== null)
+  findings.push(
+    latest.retentionCorrelation >= 0.3
+      ? `Providers that kept more apprentices to the end tended to have higher achievement rates (correlation ${latest.retentionCorrelation.toFixed(2)}). At what point in the programme do your leavers leave?`
+      : `Retention and achievement were only loosely linked across these providers (correlation ${latest.retentionCorrelation.toFixed(2)}). Is the gap in your data at the end, rather than during the programme?`
+  );
+
+const yearsShown = data.years.filter((y) => has(y.spread));
+const lineMax = niceAxis(
+  Math.max(...yearsShown.flatMap((y) => [y.spread.p75!, y.allProviderRate]))
+);
+const trendChart: LineChartSpec | null =
+  yearsShown.length >= 2
+    ? {
+        kind: 'line',
+        title:
+          'Median provider achievement rate (solid line) and all providers in England (dashed)',
+        alt: `Line chart by year. Median achievement rate of independent training providers in the South West and Hampshire: ${yearsShown
+          .map((y) => `${y.year} ${p(y.spread.median!)}`)
+          .join(
+            ', '
+          )}. All providers in England: ${yearsShown.map((y) => `${y.year} ${p(y.allProviderRate)}`).join(', ')}.`,
+        categories: yearsShown.map((y) => y.year),
+        categoryHeading: 'Year',
+        series: [
+          {
+            name: 'Median provider (%)',
+            values: yearsShown.map((y) => y.spread.median!),
+            tone: 'primary',
+            endLabel: ['Median', 'provider'],
+          },
+          {
+            name: 'All providers, England (%)',
+            values: yearsShown.map((y) => y.allProviderRate),
+            tone: 'muted',
+            dashed: true,
+            endLabel: [],
+          },
+        ],
+        format: 'pct',
+        yMin: 0,
+        yMax: Math.min(100, lineMax.max),
+        yTicks: lineMax.ticks.filter((t) => t <= 100),
+        yLabel: 'Achievement rate (%)',
+      }
+    : null;
+
+// The chart has room for six bars; the table below it lists every subject area.
+const ssaCharted = [...ssaShown]
+  .sort((a, b) => b.providers! - a.providers! || a.label.localeCompare(b.label))
+  .slice(0, 6);
+// Chart labels use the part before the first comma; the table and alt text keep full names.
+const shortLabel = (label: string) => wrap(label.split(',')[0]);
+const ssaChart: BarChartSpec | null =
+  ssaCharted.length >= 2
+    ? {
+        kind: 'bar',
+        title: `Median provider achievement rate by sector subject area, ${latest.year}${
+          ssaShown.length > ssaCharted.length ? ' (the six with most providers)' : ''
+        }`,
+        alt: `Bar chart of the median provider's achievement rate by sector subject area in ${latest.year}: ${ssaCharted
+          .map((s) => `${s.label}, ${p(s.median!)}`)
+          .join('; ')}. The all-provider rate was ${p(latest.allProviderRate)}.`,
+        categoryHeading: 'Sector subject area',
+        valueHeading: 'Median provider achievement rate',
+        bars: ssaCharted.map((s) => ({
+          label: shortLabel(s.label),
+          value: s.median!,
+          display: p(s.median!),
+        })),
+        xMin: 0,
+        xMax: 100,
+        xTicks: [0, 25, 50, 75, 100],
+        xLabel: 'Achievement rate (%)',
+        reference: { value: latest.allProviderRate, label: 'All providers' },
+      }
+    : null;
+
+const breakdowns = [
+  { id: 'ssa', heading: `By sector subject area, ${latest.year}`, rows: latest.bySsa },
+  ...(latest.byAge ? [{ id: 'age', heading: `By age, ${latest.year}`, rows: latest.byAge }] : []),
+];
+---
+
+<p class="guide-back"><a href="/services/insights/">← All insights</a></p>
+
+<h1>
+  Apprenticeship achievement among independent training providers in the South West, 2022/23 to
+  2024/25
+</h1>
+
+<p class="lead">
+  How achievement rates spread across independent training providers in the South West and Hampshire
+  (including Portsmouth and Southampton), from the Department for Education's published figures.
+  Distributions only: no provider is named, and nothing here is a judgement on any provider.
+</p>
+
+<h2 id="questions">Questions to ask of your own data</h2>
+<ul>
+  {findings.map((f) => <li>{f}</li>)}
+</ul>
+
+<h2 id="spread">How rates spread</h2>
+<p>
+  The middle half is the range from the 25th to the 75th percentile: half of the providers had rates
+  within it.
+</p>
+{
+  trendChart && (
+    <div class="services-charts guide-chart">
+      <ExampleLineChart spec={trendChart} id="insight-sw-trend" />
+    </div>
+  )
+}
+<table>
+  <caption class="guide-caption">Provider achievement rates by year</caption>
+  <thead>
+    <tr>
+      <th scope="col">Year</th>
+      <th scope="col">Providers</th>
+      <th scope="col">Middle half</th>
+      <th scope="col">Median</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      data.years.map((y) => (
+        <tr>
+          <th scope="row">{y.year}</th>
+          <td>{cell(y.spread.providers)}</td>
+          <td>{middleHalf(y.spread)}</td>
+          <td>{cell(y.spread.median, p)}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+<table>
+  <caption class="guide-caption">Against the all-provider rate</caption>
+  <thead>
+    <tr>
+      <th scope="col">Year</th>
+      <th scope="col">All providers, England</th>
+      <th scope="col">Providers below it</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      data.years.map((y) => (
+        <tr>
+          <th scope="row">{y.year}</th>
+          <td>{p(y.allProviderRate)}</td>
+          <td>{cell(y.below)}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<h2 id="breakdowns">By subject area and age</h2>
+{
+  ssaChart && (
+    <div class="services-charts guide-chart">
+      <ExampleBarChart spec={ssaChart} id="insight-sw-ssa" />
+    </div>
+  )
+}
+{
+  breakdowns.map((b) => (
+    <table>
+      <caption class="guide-caption">{b.heading}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Group</th>
+          <th scope="col">Providers</th>
+          <th scope="col">Middle half</th>
+          <th scope="col">Median</th>
+        </tr>
+      </thead>
+      <tbody>
+        {b.rows.map((r) => (
+          <tr>
+            <th scope="row">{r.label}</th>
+            <td>{cell(r.providers)}</td>
+            <td>{middleHalf(r)}</td>
+            <td>{cell(r.median, p)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ))
+}
+
+<h2 id="retention">Retention and achievement</h2>
+{
+  latest.retention.every((r) => r.below !== null) ? (
+    <table>
+      <caption class="guide-caption">Providers by retention, {latest.year}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Retention</th>
+          <th scope="col">Below the all-provider achievement rate</th>
+          <th scope="col">At or above it</th>
+        </tr>
+      </thead>
+      <tbody>
+        {latest.retention.map((r) => (
+          <tr>
+            <th scope="row">{r.band}</th>
+            <td>{r.below}</td>
+            <td>{r.atOrAbove}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>
+      The table by retention band is withheld for {latest.year}, because some groups have fewer than
+      5 providers.
+    </p>
+  )
+}
+
+<h2 id="methods">Methods and sources</h2>
+<ul>
+  {data.methods.map((m) => <li>{m}</li>)}
+</ul>
+<p><strong>Limits.</strong></p>
+<ul>
+  {data.limits.map((l) => <li>{l}</li>)}
+</ul>
+<p>
+  Sources: Department for Education,
+  <a
+    href="https://explore-education-statistics.service.gov.uk/data-catalogue/data-set/107f0f84-fac2-4655-bc72-19422a5acf33"
+    >Achievement Rates Providers: volumes and rates by provider, SSA T1, level, standard/framework
+    name</a
+  > (Apprenticeships release); Ofsted,
+  <a
+    href="https://www.gov.uk/government/statistics/further-education-and-skills-inspections-and-outcomes-as-at-31-august-2025"
+    >further education and skills inspections and outcomes as at 31 August 2025</a
+  > (most recent inspection data for all providers). Contains public sector information licensed under
+  the Open Government Licence v3.0.
+</p>
+
+<h2 id="contact">Your own one-page snapshot</h2>
+<p>
+  <a href={mailtos.freeSummaryTrainingProvider}>Ask for your own one-page snapshot</a>: three years
+  of your published achievement rates by age and standard, against national rates. It's free, and
+  you choose whether to reply.
+</p>
+<p>
+  To keep your figures right through the year, the free
+  <a href="/services/resources/apprenticeship-pre-submission-checklist/"
+    >monthly pre-submission checklist</a
+  > covers the checks before each ILR return, and the
+  <a href="/services/sheets/sar-data-pack/">self-assessment data pack</a> sets out the analysis behind
+  your next self-assessment report.
+</p>

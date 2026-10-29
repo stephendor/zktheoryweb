@@ -1,0 +1,110 @@
+/**
+ * types.ts: schemas of the frozen insight JSON files in this folder, written
+ * by the pipelines in scripts/insights/ and read by the insight pages.
+ * A null number means the value was withheld (fewer than 5 organisations).
+ */
+
+export interface CountShare {
+  label: string;
+  count: number | null;
+  /** Percentage of the group total, one decimal place. */
+  share: number | null;
+}
+
+export interface DorsetVcsArea {
+  code: string;
+  name: string;
+  charities: number | null;
+  totalIncome: number | null;
+  medianIncome: number | null;
+  incomeBands: CountShare[];
+}
+
+export interface DorsetVcsInsight {
+  schema: 'dorset-vcs/1';
+  /** Date of the Charity Commission register extract (YYYY-MM-DD). */
+  extractDate: string;
+  generatedAt: string;
+  postcodeLookup: string;
+  totals: {
+    charities: number;
+    withIncome: number | null;
+    noIncomeReported: number | null;
+    /** £, rounded to the nearest £100,000. */
+    totalIncome: number | null;
+    /** £, rounded to the nearest £1,000. */
+    medianIncome: number | null;
+  };
+  incomeBands: CountShare[];
+  trend: {
+    yearEnding: number;
+    filers: number | null;
+    medianIncome: number | null;
+    totalIncome: number | null;
+  }[];
+  government: {
+    charitiesWithPartA: number;
+    shareReceiving: number | null;
+    shareOfIncome: number | null;
+  };
+  volunteers: {
+    charitiesReporting: number;
+    total: number | null;
+    median: number | null;
+  };
+  legalForm: CountShare[];
+  classification: { what: CountShare[]; who: CountShare[]; how: CountShare[] };
+  areas: DorsetVcsArea[];
+  /** Funder concentration from 360Giving grants; null when no grants file was given. */
+  funders: {
+    window: string;
+    /** In-area charities with latest income £100k to £1.5m. */
+    charitiesInBand: number;
+    /** Of those, charities with at least one recorded grant in the window. */
+    withGrants: number | null;
+    /** Quartiles of the share (%) of each charity's recorded grant value from its largest funder. */
+    topFunderShare: { p25: number | null; median: number | null; p75: number | null };
+    /** Charities with more than half their recorded grant value from one funder. */
+    mostlyOneFunder: number | null;
+    mostlyOneFunderShare: number | null;
+    medianFunders: number | null;
+  } | null;
+  methods: string[];
+  limits: string[];
+}
+
+/** Quartiles of provider rates (%); null when fewer than 5 providers. */
+export interface RateSpread {
+  providers: number | null;
+  p25: number | null;
+  median: number | null;
+  p75: number | null;
+}
+
+export interface SwApprenticeshipsYear {
+  year: string;
+  /** Achievement rate across all providers in the dataset, England (%). */
+  allProviderRate: number;
+  spread: RateSpread;
+  /** Median pass rate (%) of in-scope providers: achievers as a share of those who completed. */
+  passRateMedian: number | null;
+  /** In-scope providers below the all-provider rate. */
+  below: number | null;
+  belowShare: number | null;
+  byAge: ({ label: string } & RateSpread)[] | null;
+  bySsa: ({ label: string } & RateSpread)[];
+  /** Providers by retention band and by achievement above/below the all-provider rate. */
+  retention: { band: string; below: number | null; atOrAbove: number | null }[];
+  /** Pearson correlation of provider retention and achievement rates. */
+  retentionCorrelation: number | null;
+}
+
+export interface SwApprenticeshipsInsight {
+  schema: 'sw-apprenticeships/1';
+  generatedAt: string;
+  sources: { rates: string; ofsted: string };
+  join: { providersInRates: number; matchedToOfsted: number; inScopeAnyYear: number };
+  years: SwApprenticeshipsYear[];
+  methods: string[];
+  limits: string[];
+}

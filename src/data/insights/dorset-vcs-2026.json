@@ -1,0 +1,386 @@
+{
+  "schema": "dorset-vcs/1",
+  "extractDate": "2026-10-29",
+  "generatedAt": "2026-10-29T18:31:22.108Z",
+  "postcodeLookup": "ONS Postcode Directory (ONSPD), November 2025",
+  "totals": {
+    "charities": 2484,
+    "withIncome": 2353,
+    "noIncomeReported": 131,
+    "totalIncome": 1065700000,
+    "medianIncome": 16000
+  },
+  "incomeBands": [
+    {
+      "label": "Under £10k",
+      "count": 950,
+      "share": 40.4
+    },
+    {
+      "label": "£10k–£100k",
+      "count": 884,
+      "share": 37.6
+    },
+    {
+      "label": "£100k–£500k",
+      "count": 357,
+      "share": 15.2
+    },
+    {
+      "label": "£500k–£1.5m",
+      "count": 100,
+      "share": 4.2
+    },
+    {
+      "label": "Over £1.5m",
+      "count": 62,
+      "share": 2.6
+    }
+  ],
+  "trend": [
+    {
+      "yearEnding": 2021,
+      "filers": 1709,
+      "medianIncome": 14000,
+      "totalIncome": 688000000
+    },
+    {
+      "yearEnding": 2022,
+      "filers": 1709,
+      "medianIncome": 15000,
+      "totalIncome": 772400000
+    },
+    {
+      "yearEnding": 2023,
+      "filers": 1709,
+      "medianIncome": 17000,
+      "totalIncome": 809400000
+    },
+    {
+      "yearEnding": 2024,
+      "filers": 1709,
+      "medianIncome": 18000,
+      "totalIncome": 881300000
+    },
+    {
+      "yearEnding": 2025,
+      "filers": 1709,
+      "medianIncome": 18000,
+      "totalIncome": 976300000
+    }
+  ],
+  "government": {
+    "charitiesWithPartA": 1545,
+    "shareReceiving": 20.1,
+    "shareOfIncome": 11.2
+  },
+  "volunteers": {
+    "charitiesReporting": 1545,
+    "total": 70296,
+    "median": 10
+  },
+  "legalForm": [
+    {
+      "label": "Other",
+      "count": 1187,
+      "share": 47.8
+    },
+    {
+      "label": "CIO",
+      "count": 626,
+      "share": 25.2
+    },
+    {
+      "label": "Charitable company",
+      "count": 323,
+      "share": 13
+    },
+    {
+      "label": "Trust",
+      "count": 293,
+      "share": 11.8
+    },
+    {
+      "label": "Previously excepted",
+      "count": 55,
+      "share": 2.2
+    }
+  ],
+  "classification": {
+    "what": [
+      {
+        "label": "Education/training",
+        "count": 1114,
+        "share": 44.8
+      },
+      {
+        "label": "General Charitable Purposes",
+        "count": 794,
+        "share": 32
+      },
+      {
+        "label": "Arts/culture/heritage/science",
+        "count": 485,
+        "share": 19.5
+      },
+      {
+        "label": "Religious Activities",
+        "count": 436,
+        "share": 17.6
+      },
+      {
+        "label": "The Prevention Or Relief Of Poverty",
+        "count": 402,
+        "share": 16.2
+      },
+      {
+        "label": "Amateur Sport",
+        "count": 394,
+        "share": 15.9
+      },
+      {
+        "label": "Disability",
+        "count": 391,
+        "share": 15.7
+      },
+      {
+        "label": "The Advancement Of Health Or Saving Of Lives",
+        "count": 375,
+        "share": 15.1
+      },
+      {
+        "label": "Recreation",
+        "count": 322,
+        "share": 13
+      },
+      {
+        "label": "Environment/conservation/heritage",
+        "count": 292,
+        "share": 11.8
+      },
+      {
+        "label": "Economic/community Development/employment",
+        "count": 250,
+        "share": 10.1
+      },
+      {
+        "label": "Other Charitable Purposes",
+        "count": 228,
+        "share": 9.2
+      },
+      {
+        "label": "Accommodation/housing",
+        "count": 104,
+        "share": 4.2
+      },
+      {
+        "label": "Overseas Aid/famine Relief",
+        "count": 104,
+        "share": 4.2
+      },
+      {
+        "label": "Animals",
+        "count": 100,
+        "share": 4
+      },
+      {
+        "label": "Human Rights/religious Or Racial Harmony/equality Or Diversity",
+        "count": 76,
+        "share": 3.1
+      },
+      {
+        "label": "Armed Forces/emergency Service Efficiency",
+        "count": 32,
+        "share": 1.3
+      }
+    ],
+    "who": [
+      {
+        "label": "Children/young People",
+        "count": 1346,
+        "share": 54.2
+      },
+      {
+        "label": "The General Public/mankind",
+        "count": 1319,
+        "share": 53.1
+      },
+      {
+        "label": "Elderly/old People",
+        "count": 742,
+        "share": 29.9
+      },
+      {
+        "label": "People With Disabilities",
+        "count": 709,
+        "share": 28.5
+      },
+      {
+        "label": "Other Charities Or Voluntary Bodies",
+        "count": 636,
+        "share": 25.6
+      },
+      {
+        "label": "Other Defined Groups",
+        "count": 391,
+        "share": 15.7
+      },
+      {
+        "label": "People Of A Particular Ethnic Or Racial Origin",
+        "count": 110,
+        "share": 4.4
+      }
+    ],
+    "how": [
+      {
+        "label": "Provides Services",
+        "count": 979,
+        "share": 39.4
+      },
+      {
+        "label": "Provides Buildings/facilities/open Space",
+        "count": 880,
+        "share": 35.4
+      },
+      {
+        "label": "Makes Grants To Organisations",
+        "count": 735,
+        "share": 29.6
+      },
+      {
+        "label": "Provides Advocacy/advice/information",
+        "count": 567,
+        "share": 22.8
+      },
+      {
+        "label": "Makes Grants To Individuals",
+        "count": 528,
+        "share": 21.3
+      },
+      {
+        "label": "Other Charitable Activities",
+        "count": 372,
+        "share": 15
+      },
+      {
+        "label": "Provides Human Resources",
+        "count": 355,
+        "share": 14.3
+      },
+      {
+        "label": "Acts As An Umbrella Or Resource Body",
+        "count": 192,
+        "share": 7.7
+      },
+      {
+        "label": "Provides Other Finance",
+        "count": 185,
+        "share": 7.4
+      },
+      {
+        "label": "Sponsors Or Undertakes Research",
+        "count": 142,
+        "share": 5.7
+      }
+    ]
+  },
+  "areas": [
+    {
+      "code": "E06000059",
+      "name": "Dorset",
+      "charities": 1679,
+      "totalIncome": 408500000,
+      "medianIncome": 14000,
+      "incomeBands": [
+        {
+          "label": "Under £10k",
+          "count": 702,
+          "share": 44.1
+        },
+        {
+          "label": "£10k–£100k",
+          "count": 594,
+          "share": 37.3
+        },
+        {
+          "label": "£100k–£500k",
+          "count": 212,
+          "share": 13.3
+        },
+        {
+          "label": "£500k–£1.5m",
+          "count": 54,
+          "share": 3.4
+        },
+        {
+          "label": "Over £1.5m",
+          "count": 30,
+          "share": 1.9
+        }
+      ]
+    },
+    {
+      "code": "E06000058",
+      "name": "Bournemouth, Christchurch and Poole",
+      "charities": 805,
+      "totalIncome": 657200000,
+      "medianIncome": 25000,
+      "incomeBands": [
+        {
+          "label": "Under £10k",
+          "count": 248,
+          "share": 32.6
+        },
+        {
+          "label": "£10k–£100k",
+          "count": 290,
+          "share": 38.1
+        },
+        {
+          "label": "£100k–£500k",
+          "count": 145,
+          "share": 19.1
+        },
+        {
+          "label": "£500k–£1.5m",
+          "count": 46,
+          "share": 6
+        },
+        {
+          "label": "Over £1.5m",
+          "count": 32,
+          "share": 4.2
+        }
+      ]
+    }
+  ],
+  "funders": {
+    "window": "2020 to 2024",
+    "charitiesInBand": 457,
+    "withGrants": 182,
+    "topFunderShare": {
+      "p25": 65,
+      "median": 89,
+      "p75": 100
+    },
+    "mostlyOneFunder": 157,
+    "mostlyOneFunderShare": 86.3,
+    "medianFunders": 2
+  },
+  "methods": [
+    "Registered charities on the Charity Commission register for England and Wales whose contact postcode is in the Dorset Council (E06000059) or Bournemouth, Christchurch and Poole Council (E06000058) area, matched to local authorities with ONS postcode data. Linked charities are counted with their main charity.",
+    "Income bands and totals use each charity's latest reported income on the register.",
+    "The five-year trend covers financial years ending 2021 to 2025. It follows the same 1,709 charities through every year: those with an annual return for each of the five years. (The register keeps each charity's last five returns, so charities that have already filed for 2026 are not included.)",
+    "Government funding comes from each charity's latest Part A of the annual return, for a year ending in 2024 or later: whether it reports government contracts or grants, and the income from them. Part A is filed only by charities above the annual return income threshold, so this covers 1,545 charities. Volunteer numbers come from the same returns.",
+    "Funder concentration covers charities with latest income from £100,000 to under £1.5 million and at least one grant recorded in 360Giving data for 2020 to 2024 (downloaded from GrantNav, matched by charity number). For each charity it is the share of its recorded grant value that came from its largest funder.",
+    "Classifications are those charities choose on the register: what they do, who they help and how. A charity can choose several, so shares add up to more than 100%.",
+    "Any count below 5, and any figure based on fewer than 5 charities, is withheld. Totals are rounded to the nearest £100,000 and medians to the nearest £1,000."
+  ],
+  "limits": [
+    "Registered charities only: unregistered groups, community interest companies and exempt or excepted charities are not included.",
+    "A charity is placed by its contact postcode, which may not be where it works.",
+    "Figures use the latest year each charity has filed, and some returns are late, so recent years are incomplete.",
+    "360Giving holds only grants that funders choose to publish, so a charity with other funders may look more reliant on one funder than it is.",
+    "Some national charities have their contact address in the area, so total income and volunteer numbers include work done across the country. Medians are the better guide to a typical local charity."
+  ]
+}
