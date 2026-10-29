@@ -15,7 +15,7 @@ import { existsSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { assertExists, download, unzip } from '../lib';
 import { CC_BASE, CC_FILES, ONS_LOOKUP_URL } from './config';
-import { compute, load } from './pipeline';
+import { compute, extractFile, load } from './pipeline';
 
 const HERE = resolve('scripts/insights/dorset-vcs');
 const DEFAULT_OUT = resolve('src/data/insights/dorset-vcs-2026.json');
@@ -46,8 +46,8 @@ if (!lookup) {
 }
 for (const name of Object.values(CC_FILES)) {
   assertExists(
-    join(rawDir, `${name}.txt`),
-    'Run with --download, or unzip the extract into --raw.'
+    extractFile(rawDir, name),
+    'Run with --download, or put the unzipped extract files (.json or .txt) in --raw.'
   );
 }
 if (existsSync(out) && !process.argv.includes('--force')) {

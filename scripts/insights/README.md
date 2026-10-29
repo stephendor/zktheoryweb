@@ -22,8 +22,11 @@ On Windows PowerShell, set it first with `$env:INSIGHTS_PREVIEW = "1"`. Never se
 ## Dorset voluntary sector (`dorset-vcs/`)
 
 1. Download the ONS postcode to local authority lookup (November 2025, ArcGIS item
-   `c4f84c38814d4b82aa4760ade686c3cc`) from the ONS Open Geography Portal and unzip the CSV.
-2. Download and unzip the four register extract files, then build the JSON:
+   `c4f84c38814d4b82aa4760ade686c3cc`) from the ONS Open Geography Portal and unzip the CSV. The full ONS postcode
+   directory (ONSPD) or the National Statistics Postcode Lookup (NSPL) also work: the pipeline accepts a `pcds`
+   postcode column and a `ladNNcd`, `laua` or `oslaua` local authority column.
+2. Download and unzip the four register extract files, as JSON or text (either works; JSON is used if both are
+   present), then build the JSON:
 
    ```bash
    npx tsx scripts/insights/dorset-vcs/run.ts --download --lookup <path-to-ons-lookup.csv>

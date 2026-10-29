@@ -1,7 +1,16 @@
 /**
  * Disclosure helpers shared by the insight pipelines.
  */
-import { quantileSorted, suppressCount, suppressPartition, suppressStat } from './lib';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {
+  quantileSorted,
+  readJsonArray,
+  suppressCount,
+  suppressPartition,
+  suppressStat,
+} from './lib';
 
 describe('insight suppression', () => {
   it('withholds counts below 5 but shows zero', () => {
@@ -23,5 +32,28 @@ describe('insight suppression', () => {
   it('interpolates quantiles (type 7)', () => {
     expect(quantileSorted([10, 20, 30, 40, 50], 0.25)).toBe(20);
     expect(quantileSorted([10, 20, 30, 40], 0.5)).toBe(25);
+  });
+});
+
+describe('readJsonArray', () => {
+  it('streams flat objects across chunk boundaries, with strings containing braces and quotes', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'json-'));
+    const file = path.join(dir, 'x.json');
+    const objects = [
+      { a: 1, b: 'plain', c: null },
+      { a: 2, b: 'has } and { and "quotes" and \\ backslash', c: '2024-03-31T00:00:00' },
+      { a: 3, b: '', c: true },
+    ];
+    fs.writeFileSync(file, '\uFEFF' + JSON.stringify(objects, null, 2));
+    for (const chunk of [7, 64, 1 << 20]) {
+      const rows = [];
+      for await (const r of readJsonArray(file, chunk)) rows.push(r);
+      expect(rows).toEqual([
+        { a: '1', b: 'plain', c: '' },
+        { a: '2', b: 'has } and { and "quotes" and \\ backslash', c: '2024-03-31T00:00:00' },
+        { a: '3', b: '', c: 'true' },
+      ]);
+    }
+    fs.rmSync(dir, { recursive: true, force: true });
   });
 });
