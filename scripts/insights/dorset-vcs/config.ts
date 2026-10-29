@@ -42,6 +42,7 @@ export const COLS = {
   charity: {
     extractDate: 'date_of_extract',
     org: 'organisation_number',
+    regNo: 'registered_charity_number',
     linked: 'linked_charity_number',
     status: 'charity_registration_status',
     type: 'charity_type',
@@ -78,3 +79,25 @@ export const COLS = {
 } as const;
 
 export const REGISTERED = 'Registered';
+
+/**
+ * Optional funder concentration, from 360Giving data downloaded from GrantNav
+ * (recipient district filtered to Dorset, and to Bournemouth, Christchurch and
+ * Poole). Grants are matched to charities by registered charity number.
+ */
+export const GRANTS = {
+  /** Award years used: recent years are thin because funders publish late. */
+  fromYear: 2020,
+  toYear: 2024,
+  /** Charities in this latest-income range (inclusive lower, exclusive upper). */
+  incomeMin: 100_000,
+  incomeMax: 1_500_000,
+  cols: {
+    id: 'Identifier',
+    currency: 'Currency',
+    amount: 'Amount Awarded',
+    date: 'Award Date',
+    charityNo: 'Recipient Org:Charity Number',
+    funder: 'Funding Org:Identifier',
+  },
+} as const;

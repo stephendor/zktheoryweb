@@ -3,6 +3,7 @@
  *
  *   npx tsx scripts/insights/dorset-vcs/run.ts --download [--lookup <ons.csv>]
  *   npx tsx scripts/insights/dorset-vcs/run.ts --raw <dir> --lookup <ons.csv> [--out <file>]
+ *     [--lookup-name "<product, edition>"] [--grants <GrantNav.csv> ...]
  *
  * --download fetches the four register extract zips into
  * scripts/insights/dorset-vcs/raw/ (gitignored) and unzips them. The ONS
@@ -15,7 +16,7 @@ import { existsSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { assertExists, download, unzip } from '../lib';
 import { CC_BASE, CC_FILES, ONS_LOOKUP_URL } from './config';
-import { compute, extractFile, load } from './pipeline';
+import { compute, extractFile, load, loadGrants } from './pipeline';
 
 const HERE = resolve('scripts/insights/dorset-vcs');
 const DEFAULT_OUT = resolve('src/data/insights/dorset-vcs-2026.json');
@@ -57,7 +58,18 @@ if (existsSync(out) && !process.argv.includes('--force')) {
   process.exit(1);
 }
 
-const result = compute(await load(rawDir, resolve(lookup)));
+// Optional, repeatable: --grants <GrantNav CSV> for the funder-concentration measure.
+const grantFiles = process.argv.flatMap((a, i) =>
+  a === '--grants' && process.argv[i + 1] ? [resolve(process.argv[i + 1])] : []
+);
+const data = await load(rawDir, resolve(lookup));
+// --lookup-name names the postcode product on the page, e.g. "ONS Postcode Directory (ONSPD), November 2025".
+const lookupName = arg('lookup-name');
+if (lookupName) data.postcodeLookup = lookupName;
+const grants = grantFiles.length
+  ? await loadGrants(grantFiles, new Set(data.charities.map((c) => c.regNo)))
+  : null;
+const result = compute(data, undefined, grants);
 writeFileSync(out, `${JSON.stringify(result, null, 2)}\n`);
 console.log(
   `Wrote ${out}: ${result.totals.charities} charities, extract ${result.extractDate}. ` +
