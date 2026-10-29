@@ -5,6 +5,7 @@ description: "What changed for charity reports and accounts in 2026, and the imp
 ---
 
 import ExampleBarChart from '@components/services/ExampleBarChart.astro';
+import PdfLink from '@components/services/PdfLink.astro';
 import { familiesCountedFourWays, volunteerRoles } from '@data/services-guides';
 import { serviceSheets } from '@data/services-resources';
 import { mailtos } from '@data/services-contact';
@@ -16,13 +17,13 @@ export const ANNUAL_RETURN = 'https://www.gov.uk/send-charity-annual-return';
 export const TAR_GUIDANCE = 'https://www.gov.uk/guidance/prepare-a-charity-trustees-annual-report';
 export const impactPack = serviceSheets.find((s) => s.slug === 'impact-evidence-pack');
 
-<p class="guide-back"><a href="/services/">← Back to services</a></p>
+<p class="guide-back"><a href="/services/">← Back to services</a> <PdfLink pdf="services/guides/trustees-report-impact-data.pdf" /></p>
 
 # The trustees' report: the impact and volunteer data to collect now
 
 <p class="lead">For treasurers, chief executives and finance or admin leads of charities in England and Wales with income of roughly £100,000 to £1.5 million.</p>
 
-The rules for charity reports and accounts changed in 2026. The new Charities SORP asks the trustees' report to say more about impact and volunteers, and the thresholds for accounts and scrutiny have moved. The figures you'll need can't be pieced together reliably at year end. This guide sets out what to start recording now.
+The rules for charity reports and accounts changed in 2026. Under the new Charities SORP, charities with income over £500,000 must explain their impact in the trustees' report and should report on their volunteers, and the thresholds for accounts and scrutiny have moved. The figures you'll need can't be pieced together reliably at year end. This guide sets out what to start recording now.
 
 *This is a practical guide, not accounting or legal advice. Check the detail with your independent examiner or auditor.*
 
@@ -31,16 +32,16 @@ The rules for charity reports and accounts changed in 2026. The new Charities SO
 | Change | Applies from |
 |---|---|
 | <a href={SORP}>Charities SORP 2026</a> replaces SORP 2019 for charities that prepare accruals accounts | Reporting periods beginning on or after 1 January 2026 |
-| <a href={THRESHOLDS}>New thresholds</a>: accruals accounts above £500,000 income (was £250,000); independent examination above £40,000 (was £25,000); audit above £1.5 million (was £1 million), or above £500,000 with gross assets over £5 million | Financial years ending on or after 30 September 2026 |
+| <a href={THRESHOLDS}>New thresholds</a>: accruals accounts above £500,000 income for charities that aren't companies (was £250,000), while company charities always prepare accruals accounts (<a href={SORP}>SORP 2026, appendix, A.1</a>); independent examination above £40,000 (was £25,000); audit above £1.5 million (was £1 million), or above £500,000 with gross assets over £5 million | Financial years ending on or after 30 September 2026 |
 | The Charity Commission's <a href={TAR_GUIDANCE}>guidance on preparing a trustees' annual report</a> updated for SORP 2026 | 16 September 2026 |
 
 SORP 2026 sorts charities into three tiers by gross income. Each tier meets the requirements of the tiers below it as well as its own.
 
-| SORP tier | Gross income |
-|---|---|
-| Tier 1 | Up to £500,000 |
-| Tier 2 | £500,001 to £15 million |
-| Tier 3 | Over £15 million |
+| SORP tier | Gross income | Achievements and impact in the trustees' report |
+|---|---|---|
+| Tier 1 | Up to £500,000 | A summary of the main achievements |
+| Tier 2 | £500,001 to £15 million | Also: how well activities met the charity's aims, and an explanation of its impact |
+| Tier 3 | Over £15 million | Also: fundraising performance |
 
 Most charities this guide is for are in Tier 1 or Tier 2. If your financial year started on 1 April 2026, you're already in your first SORP 2026 year: its report, accounts and annual return will be due by 31 January 2028.
 
@@ -48,10 +49,13 @@ The deadline itself hasn't changed. The <a href={ANNUAL_RETURN}>annual return is
 
 ## What the report asks for
 
-Two parts of the trustees' report depend on records you keep during the year (<a href={SORP}>SORP 2026, module 1</a>):
+Two parts of the trustees' report depend on records you keep during the year. The paragraph numbers are from <a href={SORP}>SORP 2026, module 1</a>.
 
-- **Impact.** The report explains what difference your work made to the people you work with, and whether there were wider benefits to society. That needs evidence of outcomes, not just activity.
-- **Volunteers.** The report must explain the scale and nature of volunteer activities and what volunteers put in. You may also give the hours they contributed, or the staff equivalent, where that's practical.
+- **Achievements (all tiers).** The report must contain a summary of your main achievements. In preparing it, trustees should consider in what way the work has made a difference to beneficiaries, and whether it has provided wider benefits to society (1.27).
+- **Performance and impact (Tier 2 and 3).** The report must also set out how well the charity carried out its activities, and how far its achievements met its aims and objectives for the year (1.28). It must explain the impact the charity is making, considering the long-term effect on individual beneficiaries and on society (1.30). To do that, it should include the measures or indicators you use, the outputs achieved against any numerical targets, and your activities, outputs and outcomes set against your aims (1.31).
+- **Volunteers (Tier 2 and 3).** If you report on general volunteers, you should give the number of volunteers and explain the activities they support. You may also give hours or staff equivalents, where that's practical (1.26).
+
+Tier 1 charities don't have to do the last two. They're still worth recording: funders ask the same questions, and a charity that grows past £500,000 needs the earlier years for comparison.
 
 ## Why the data has to be collected during the year
 
@@ -67,14 +71,14 @@ There's a fourth risk: your funders. Most end-of-grant reports ask for the same 
 
 - **Outputs against outcomes.** Record what you delivered (sessions, places, hours) separately from what changed for people (outcomes), and link each outcome to the activity behind it.
 - **Who you reach: counts, not names.** Keep counts of people by the groups that matter to your aims, such as age band, area or referral route. Names stay in your case records, not in the reporting file.
-- **Volunteer numbers, roles and hours.** Log volunteers by role, with hours recorded each week or month rather than estimated at year end.
+- **Volunteer numbers, roles and hours.** Log volunteers by role, with hours recorded each week or month rather than estimated at year end. Hours are optional in the report, but they can't be rebuilt later.
 - **One written definition for each figure.** Write down what counts as a participant, a session, an attendance and an outcome, and use the same definition everywhere.
 - **Where each figure comes from.** For every number in the report, note the spreadsheet or system it comes from, who keeps it and the cut-off date.
 - **The funder figures that need to agree.** List the figures you report to funders that also appear in the trustees' report, and check they match before either goes out.
 
 ## A worked example (made-up data)
 
-A made-up family support charity with income of about £340,000 runs weekly groups and a befriending service. Its trustees' report needs a figure for "families supported". The same year of records gives four honest answers:
+A made-up family support charity with income of about £620,000, so in Tier 2, runs weekly groups and a befriending service. Its trustees' report needs a figure for "families supported". The same year of records gives four honest answers:
 
 <div class="services-charts guide-chart">
   <ExampleBarChart spec={familiesCountedFourWays} id="guide-chart-families" />
