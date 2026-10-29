@@ -18,6 +18,7 @@ const SERVICES_PAGES = [
   '/services/',
   '/services/resources/deprivation-check/',
   '/services/guides/trustees-report-impact-data/',
+  '/services/insights/dorset-voluntary-sector-2026/',
   '/privacy/',
 ];
 
@@ -121,9 +122,18 @@ test('[services] the trustees report guide is linked from the FAQ and the funder
   expect(res.ok()).toBe(true);
 });
 
-test('[services] draft insight pages are not built', async ({ page }) => {
-  const res = await page.goto('/services/insights/dorset-voluntary-sector-2026/');
-  expect(res?.status()).toBe(404);
+test('[services] the Dorset insight is published and listed, with charts and sources', async ({
+  page,
+}) => {
   await page.goto('/services/insights/');
-  await expect(page.locator('a[href*="dorset-voluntary-sector-2026"]')).toHaveCount(0);
+  await expect(
+    page.locator('a[href="/services/insights/dorset-voluntary-sector-2026/"]')
+  ).toBeVisible();
+  const res = await page.goto('/services/insights/dorset-voluntary-sector-2026/');
+  expect(res?.ok()).toBe(true);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    /Dorset's voluntary sector in numbers, 2026/
+  );
+  await expect(page.getByRole('img', { name: /Bar chart of registered charities/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /full register download/ })).toBeVisible();
 });

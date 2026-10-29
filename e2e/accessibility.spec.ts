@@ -50,6 +50,7 @@ const PAGES = [
   { name: 'Deprivation check', url: '/services/resources/deprivation-check/'                           },
   { name: 'Guide: trustees',   url: '/services/guides/trustees-report-impact-data/'                     },
   { name: 'Insights index',    url: '/services/insights/'                                               },
+  { name: 'Insight: Dorset',   url: '/services/insights/dorset-voluntary-sector-2026/'                  },
   { name: 'Sheet: impact',     url: '/services/sheets/impact-evidence-pack/'                          },
   { name: 'Sheet: need',       url: '/services/sheets/need-and-reach-analysis/'                       },
   { name: 'Sheet: scores',     url: '/services/sheets/outcome-measure-analysis/'                      },

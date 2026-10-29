@@ -134,6 +134,11 @@ const { title, description, professionalService } = Astro.props.frontmatter;
     margin: var(--space-5) 0;
   }
 
+  /* Long labels such as "Arts/culture/heritage/science" have no spaces to wrap at. */
+  .services :global(table th[scope='row']) {
+    overflow-wrap: anywhere;
+  }
+
   .services :global(.guide-caption) {
     caption-side: top;
     text-align: left;
