@@ -1,0 +1,111 @@
+{
+ "name": "People First Dorset",
+ "number": "1106963",
+ "description": "Dorchester",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 275809,
+  "expenditure": 133500,
+  "government_grants": 81000,
+  "government_grant_sources": 4,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 14,
+  "trustees": 4
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 306376,
+   "expenditure": 253036
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 258187,
+   "expenditure": 270426
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 166685,
+   "expenditure": 269073
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 203000,
+   "expenditure": 293393
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 275809,
+   "expenditure": 133500
+  }
+ ],
+ "grantnav": {
+  "period": "2005–2025",
+  "count": 33,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 7,
+    "total": 723898.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 7,
+    "total": 267450.0
+   },
+   {
+    "funder": "Henry Smith Foundation",
+    "grants": 2,
+    "total": 142820.0
+   },
+   {
+    "funder": "Comic Relief",
+    "grants": 1,
+    "total": 103625.0
+   },
+   {
+    "funder": "People's Health Trust",
+    "grants": 3,
+    "total": 92951.0
+   },
+   {
+    "funder": "Somerset Community Foundation",
+    "grants": 5,
+    "total": 54342.0
+   },
+   {
+    "funder": "Postcode Local Trust",
+    "grants": 1,
+    "total": 25000.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 2,
+    "total": 21095.0
+   },
+   {
+    "funder": "CAF",
+    "grants": 1,
+    "total": 19959.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 10399.0
+   },
+   {
+    "funder": "Quartet Community Foundation",
+    "grants": 2,
+    "total": 9549.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 1,
+    "total": 4264.13
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1106963: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (33 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

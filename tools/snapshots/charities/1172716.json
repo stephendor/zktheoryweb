@@ -1,0 +1,101 @@
+{
+ "name": "PramaLife",
+ "number": "1172716",
+ "description": "Bournemouth",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 454319,
+  "expenditure": 479596,
+  "government_grants": 69559,
+  "government_grant_sources": 2,
+  "government_contracts": 30000,
+  "government_contract_count": 1,
+  "volunteers": 231,
+  "trustees": 4
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 283840,
+   "expenditure": 278125
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 381651,
+   "expenditure": 338501
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 335506,
+   "expenditure": 332871
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 372647,
+   "expenditure": 432428
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 454319,
+   "expenditure": 479596
+  }
+ ],
+ "grantnav": {
+  "period": "2017–2024",
+  "count": 19,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 6,
+    "total": 441508.19
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 33387.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 3,
+    "total": 19500.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 1,
+    "total": 15000.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 11600.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 3,
+    "total": 10765.77
+   },
+   {
+    "funder": "Ministry of Defence",
+    "grants": 1,
+    "total": 9931.0
+   },
+   {
+    "funder": "National Lottery Heritage Fund",
+    "grants": 1,
+    "total": 8600.0
+   },
+   {
+    "funder": "Charles Hayward Foundation",
+    "grants": 1,
+    "total": 5000.0
+   },
+   {
+    "funder": "Clothworkers' Foundation",
+    "grants": 1,
+    "total": 3000.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1172716: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (19 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

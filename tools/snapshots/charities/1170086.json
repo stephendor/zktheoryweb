@@ -1,0 +1,81 @@
+{
+ "name": "The Harmony Centre",
+ "number": "1170086",
+ "description": "Bridport, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2026-03-31",
+  "income": 167065,
+  "expenditure": 452823,
+  "government_grants": 0,
+  "government_grant_sources": 0,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 8,
+  "trustees": 8
+ },
+ "history": [
+  {
+   "year_end": "2022-03-31",
+   "income": 135333,
+   "expenditure": 150666
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 192696,
+   "expenditure": 165218
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 218237,
+   "expenditure": 234459
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 378465,
+   "expenditure": 318135
+  },
+  {
+   "year_end": "2026-03-31",
+   "income": 167065,
+   "expenditure": 452823
+  }
+ ],
+ "grantnav": {
+  "period": "2018–2024",
+  "count": 16,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 4,
+    "total": 323181.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 3,
+    "total": 50000.0
+   },
+   {
+    "funder": "CAF",
+    "grants": 1,
+    "total": 29820.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 5,
+    "total": 14180.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 2,
+    "total": 11900.0
+   },
+   {
+    "funder": "Clothworkers' Foundation",
+    "grants": 1,
+    "total": 4500.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1170086: annual return for the year to 2026-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (16 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

@@ -1,0 +1,66 @@
+{
+ "name": "Dorset Reclaim",
+ "number": "1076996",
+ "description": "Bournemouth",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-09-30",
+  "income": 972754,
+  "expenditure": 984605,
+  "government_grants": 0,
+  "government_grant_sources": 0,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 45,
+  "trustees": 5
+ },
+ "history": [
+  {
+   "year_end": "2021-09-30",
+   "income": 844869,
+   "expenditure": 796052
+  },
+  {
+   "year_end": "2022-09-30",
+   "income": 757463,
+   "expenditure": 840186
+  },
+  {
+   "year_end": "2023-09-30",
+   "income": 904745,
+   "expenditure": 842923
+  },
+  {
+   "year_end": "2024-09-30",
+   "income": 922069,
+   "expenditure": 915467
+  },
+  {
+   "year_end": "2025-09-30",
+   "income": 972754,
+   "expenditure": 984605
+  }
+ ],
+ "grantnav": {
+  "period": "2020–2022",
+  "count": 4,
+  "funders": [
+   {
+    "funder": "Power to Change Trust",
+    "grants": 2,
+    "total": 56392.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 1,
+    "total": 2200.0
+   },
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 1,
+    "total": 855.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1076996: annual return for the year to 2025-09-30 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (4 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

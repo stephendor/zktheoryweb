@@ -1,0 +1,91 @@
+{
+ "name": "Purbeck Youth and Community Foundation",
+ "number": "1168537",
+ "description": "Wareham",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-08-31",
+  "income": 236012,
+  "expenditure": 238824,
+  "government_grants": 30577,
+  "government_grant_sources": 7,
+  "government_contracts": 35502,
+  "government_contract_count": 4,
+  "volunteers": 12,
+  "trustees": 6
+ },
+ "history": [
+  {
+   "year_end": "2021-08-31",
+   "income": 216040,
+   "expenditure": 161787
+  },
+  {
+   "year_end": "2022-08-31",
+   "income": 150059,
+   "expenditure": 141689
+  },
+  {
+   "year_end": "2023-08-31",
+   "income": 137405,
+   "expenditure": 136070
+  },
+  {
+   "year_end": "2024-08-31",
+   "income": 225658,
+   "expenditure": 147112
+  },
+  {
+   "year_end": "2025-08-31",
+   "income": 236012,
+   "expenditure": 238824
+  }
+ ],
+ "grantnav": {
+  "period": "2017–2022",
+  "count": 15,
+  "funders": [
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 40000.0
+   },
+   {
+    "funder": "BBC Children in Need",
+    "grants": 2,
+    "total": 30990.0
+   },
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 2,
+    "total": 14800.0
+   },
+   {
+    "funder": "Clothworkers' Foundation",
+    "grants": 1,
+    "total": 10000.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 1,
+    "total": 10000.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 3,
+    "total": 8427.810000000001
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 4,
+    "total": 4735.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 2000.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1168537: annual return for the year to 2025-08-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (15 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

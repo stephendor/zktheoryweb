@@ -1,0 +1,86 @@
+{
+ "name": "Prout Bridge Project",
+ "number": "1169903",
+ "description": "Beaminster, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-08-31",
+  "income": 180146,
+  "expenditure": 134865,
+  "government_grants": 10000,
+  "government_grant_sources": 1,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 14,
+  "trustees": 8
+ },
+ "history": [
+  {
+   "year_end": "2021-08-31",
+   "income": 87770,
+   "expenditure": 67298
+  },
+  {
+   "year_end": "2022-08-31",
+   "income": 111558,
+   "expenditure": 125697
+  },
+  {
+   "year_end": "2023-08-31",
+   "income": 147520,
+   "expenditure": 134450
+  },
+  {
+   "year_end": "2024-08-31",
+   "income": 135570,
+   "expenditure": 113593
+  },
+  {
+   "year_end": "2025-08-31",
+   "income": 180146,
+   "expenditure": 134865
+  }
+ ],
+ "grantnav": {
+  "period": "2018–2024",
+  "count": 18,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 1,
+    "total": 309047.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 3,
+    "total": 65000.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 5,
+    "total": 18809.67
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 4,
+    "total": 12180.72
+   },
+   {
+    "funder": "Grocers' Charity",
+    "grants": 1,
+    "total": 5000.0
+   },
+   {
+    "funder": "Power to Change Trust",
+    "grants": 1,
+    "total": 4000.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 3,
+    "total": 1250.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1169903: annual return for the year to 2025-08-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (18 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

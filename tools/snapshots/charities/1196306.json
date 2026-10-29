@@ -1,0 +1,106 @@
+{
+ "name": "The Blackmore Vale Charity",
+ "number": "1196306",
+ "description": "Sturminster Newton, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-12-31",
+  "income": 245796,
+  "expenditure": 486648,
+  "government_grants": 60520,
+  "government_grant_sources": 5,
+  "government_contracts": 48000,
+  "government_contract_count": 1,
+  "volunteers": 30,
+  "trustees": 5
+ },
+ "history": [
+  {
+   "year_end": "2022-12-31",
+   "income": 367884,
+   "expenditure": 212641
+  },
+  {
+   "year_end": "2023-12-31",
+   "income": 394015,
+   "expenditure": 288118
+  },
+  {
+   "year_end": "2024-12-31",
+   "income": 544445,
+   "expenditure": 331424
+  },
+  {
+   "year_end": "2025-12-31",
+   "income": 245796,
+   "expenditure": 486648
+  }
+ ],
+ "grantnav": {
+  "period": "2021–2026",
+  "count": 25,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 7,
+    "total": 449712.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 3,
+    "total": 90000.0
+   },
+   {
+    "funder": "Royal Countryside Fund",
+    "grants": 2,
+    "total": 22400.0
+   },
+   {
+    "funder": "Postcode Local Trust",
+    "grants": 1,
+    "total": 20000.0
+   },
+   {
+    "funder": "Benefact Trust",
+    "grants": 1,
+    "total": 16000.0
+   },
+   {
+    "funder": "Clothworkers' Foundation",
+    "grants": 1,
+    "total": 15000.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 4,
+    "total": 11840.0
+   },
+   {
+    "funder": "Foyle Foundation",
+    "grants": 1,
+    "total": 7500.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 2,
+    "total": 2875.84
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 2630.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 2630.0
+   },
+   {
+    "funder": "Woodward Charitable Trust",
+    "grants": 1,
+    "total": 1000.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1196306: annual return for the year to 2025-12-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (25 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

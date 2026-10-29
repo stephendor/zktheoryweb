@@ -1,0 +1,141 @@
+{
+ "name": "Home-Start Wessex",
+ "number": "1109046",
+ "description": "Bournemouth",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2026-03-31",
+  "income": 665882,
+  "expenditure": 671520,
+  "government_grants": 65193,
+  "government_grant_sources": 5,
+  "government_contracts": 8500,
+  "government_contract_count": 1,
+  "volunteers": 90,
+  "trustees": 9
+ },
+ "history": [
+  {
+   "year_end": "2022-03-31",
+   "income": 224460,
+   "expenditure": 232853
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 269880,
+   "expenditure": 285065
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 418651,
+   "expenditure": 390696
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 494501,
+   "expenditure": 512573
+  },
+  {
+   "year_end": "2026-03-31",
+   "income": 665882,
+   "expenditure": 671520
+  }
+ ],
+ "grantnav": {
+  "period": "2005–2026",
+  "count": 39,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 8,
+    "total": 1376298.0
+   },
+   {
+    "funder": "Henry Smith Foundation",
+    "grants": 3,
+    "total": 226380.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 3,
+    "total": 73350.0
+   },
+   {
+    "funder": "BBC Children in Need",
+    "grants": 2,
+    "total": 50712.0
+   },
+   {
+    "funder": "Forte Charitable Foundation",
+    "grants": 1,
+    "total": 49626.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 3,
+    "total": 35000.0
+   },
+   {
+    "funder": "Postcode Community Trust",
+    "grants": 2,
+    "total": 30000.0
+   },
+   {
+    "funder": "Veterans Foundation",
+    "grants": 1,
+    "total": 30000.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 2,
+    "total": 24022.0
+   },
+   {
+    "funder": "Dorset Community Foundation",
+    "grants": 5,
+    "total": 20311.0
+   },
+   {
+    "funder": "Postcode Local Trust",
+    "grants": 1,
+    "total": 18220.0
+   },
+   {
+    "funder": "Freemasons' Charity",
+    "grants": 1,
+    "total": 14400.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 7075.0
+   },
+   {
+    "funder": "Quartet Community Foundation",
+    "grants": 1,
+    "total": 4968.0
+   },
+   {
+    "funder": "Grocers' Charity",
+    "grants": 1,
+    "total": 4555.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 2,
+    "total": 4418.65
+   },
+   {
+    "funder": "Sir Jules Thorn Charitable Trust",
+    "grants": 1,
+    "total": 2000.0
+   },
+   {
+    "funder": "Woodward Charitable Trust",
+    "grants": 1,
+    "total": 1000.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1109046: annual return for the year to 2026-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (39 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

@@ -1,0 +1,86 @@
+{
+ "name": "Space Youth Project",
+ "number": "1167902",
+ "description": "Poole",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 178642,
+  "expenditure": 202785,
+  "government_grants": 41876,
+  "government_grant_sources": 1,
+  "government_contracts": 27083,
+  "government_contract_count": 1,
+  "volunteers": 20,
+  "trustees": 6
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 171321,
+   "expenditure": 119080
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 200069,
+   "expenditure": 178558
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 274322,
+   "expenditure": 189708
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 147735,
+   "expenditure": 188360
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 178642,
+   "expenditure": 202785
+  }
+ ],
+ "grantnav": {
+  "period": "2019–2025",
+  "count": 10,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 2,
+    "total": 594733.0
+   },
+   {
+    "funder": "BBC Children in Need",
+    "grants": 2,
+    "total": 135993.0
+   },
+   {
+    "funder": "Rank Foundation",
+    "grants": 2,
+    "total": 20090.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 20000.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 9960.0
+   },
+   {
+    "funder": "LGBT Consortium",
+    "grants": 1,
+    "total": 8767.0
+   },
+   {
+    "funder": "Co-operative Group",
+    "grants": 1,
+    "total": 3082.92
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1167902: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (10 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

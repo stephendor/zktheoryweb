@@ -1,0 +1,91 @@
+{
+ "name": "Stormbreak",
+ "number": "1182771",
+ "description": "Poole, Dorset",
+ "legal_form": "CIO",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 408974,
+  "expenditure": 428477,
+  "government_grants": 0,
+  "government_grant_sources": 0,
+  "government_contracts": 74299,
+  "government_contract_count": 2,
+  "volunteers": 2,
+  "trustees": 8
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 135534,
+   "expenditure": 145757
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 414940,
+   "expenditure": 230161
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 530973,
+   "expenditure": 486883
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 440414,
+   "expenditure": 388405
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 408974,
+   "expenditure": 428477
+  }
+ ],
+ "grantnav": {
+  "period": "2022–2025",
+  "count": 9,
+  "funders": [
+   {
+    "funder": "Henry Smith Foundation",
+    "grants": 2,
+    "total": 185640.0
+   },
+   {
+    "funder": "Rayne Foundation",
+    "grants": 1,
+    "total": 60000.0
+   },
+   {
+    "funder": "Dulverton Trust",
+    "grants": 1,
+    "total": 35000.0
+   },
+   {
+    "funder": "Peter Harrison Foundation",
+    "grants": 1,
+    "total": 20000.0
+   },
+   {
+    "funder": "Funding Network",
+    "grants": 1,
+    "total": 13472.63
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 12000.0
+   },
+   {
+    "funder": "Wimbledon Foundation",
+    "grants": 1,
+    "total": 10000.0
+   },
+   {
+    "funder": "Harpur Trust",
+    "grants": 1,
+    "total": 9402.5
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1182771: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (9 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}

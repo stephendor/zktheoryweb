@@ -1,0 +1,91 @@
+{
+ "name": "Dorset Race Equality Council",
+ "number": "1104642",
+ "description": "Bournemouth, Dorset",
+ "legal_form": "Charitable company",
+ "latest": {
+  "year_end": "2025-03-31",
+  "income": 47994,
+  "expenditure": 59118,
+  "government_grants": 0,
+  "government_grant_sources": 0,
+  "government_contracts": 0,
+  "government_contract_count": 0,
+  "volunteers": 3,
+  "trustees": 6
+ },
+ "history": [
+  {
+   "year_end": "2021-03-31",
+   "income": 164582,
+   "expenditure": 163133
+  },
+  {
+   "year_end": "2022-03-31",
+   "income": 118383,
+   "expenditure": 138094
+  },
+  {
+   "year_end": "2023-03-31",
+   "income": 101461,
+   "expenditure": 113291
+  },
+  {
+   "year_end": "2024-03-31",
+   "income": 73918,
+   "expenditure": 77290
+  },
+  {
+   "year_end": "2025-03-31",
+   "income": 47994,
+   "expenditure": 59118
+  }
+ ],
+ "grantnav": {
+  "period": "2004–2024",
+  "count": 10,
+  "funders": [
+   {
+    "funder": "National Lottery Community Fund",
+    "grants": 3,
+    "total": 31205.0
+   },
+   {
+    "funder": "Talbot Village Trust",
+    "grants": 1,
+    "total": 20890.0
+   },
+   {
+    "funder": "Lloyds Bank Foundation",
+    "grants": 1,
+    "total": 20000.0
+   },
+   {
+    "funder": "UK Community Foundations",
+    "grants": 1,
+    "total": 20000.0
+   },
+   {
+    "funder": "DCMS",
+    "grants": 1,
+    "total": 14720.0
+   },
+   {
+    "funder": "Garfield Weston Foundation",
+    "grants": 1,
+    "total": 10000.0
+   },
+   {
+    "funder": "Sport England",
+    "grants": 1,
+    "total": 8795.0
+   },
+   {
+    "funder": "National Lottery Heritage Fund",
+    "grants": 1,
+    "total": 1340.0
+   }
+  ]
+ },
+ "source_note": "Sources: Charity Commission register, charity 1104642: annual return for the year to 2025-03-31 (register extract of 2026-10-29) and financial history via OpenCharities; 360Giving Datastore (10 grants). Grant data covers only funders that publish to 360Giving. Checked 2026-10-29."
+}
