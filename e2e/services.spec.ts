@@ -119,3 +119,10 @@ test('[services] the trustees report guide is linked from the FAQ and the funder
   const res = await page.request.get('/services/guides/trustees-report-impact-data.pdf');
   expect(res.ok()).toBe(true);
 });
+
+test('[services] draft insight pages are not built', async ({ page }) => {
+  const res = await page.goto('/services/insights/dorset-voluntary-sector-2026/');
+  expect(res?.status()).toBe(404);
+  await page.goto('/services/insights/');
+  await expect(page.locator('a[href*="dorset-voluntary-sector-2026"]')).toHaveCount(0);
+});
